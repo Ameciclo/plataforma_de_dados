@@ -29,5 +29,5 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.disable("x-powered-by");
-app.use("/v1", routes);
+app.use(routes);
 export default app;
