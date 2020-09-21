@@ -29,5 +29,5 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.disable("x-powered-by");
-app.use(routes);
+app.use("/contagens/v1", routes);
 export default app;

@@ -4,7 +4,7 @@ import CyclistCount from "./schemas/CyclistCount";
 const router = Router();
 
 router
-  .route("/contagens/v1/cyclistCount")
+  .route("/cyclistCount")
   .get(async (req, res) => {
     const cyclistCounts = await CyclistCount.find().select(
       "_id summary location name date"
