@@ -1,0 +1,49 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
+services:
+  app:
+    container_name: "Contagem de Ciclistas"
+    restart: always
+    build: .
+    environment:
+      PORT: 4000
+      MONGO_DB: contagem
+      MONGO_HOSTNAME: mongodb
+      MONGO_PORT: 27017
+      MONGO_USERNAME: ameciclo
+      MONGO_PASSWORD: ameciclo
+      NODE_ENV: "${ENV}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.contagem.rule=(Host(`api.plataforma.ameciclo.org`) && Path(`/contagens`))"
+      - "traefik.http.routers.contagem.tls.certresolver=le"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
+      - "traefik.docker.network=web"
+    networks:
+      - internal
+      - web
+    ports:
+      - "4000:4000"
+    links:
+      - mongo
+  mongodb:
+    container_name: mongodb
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ameciclo
+      MONGO_INITDB_ROOT_PASSWORD: ameciclo
+    ports:
+      - "27017:27017"
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
+    volumes:
+      - ./data:/data/db
