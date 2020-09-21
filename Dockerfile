@@ -1,6 +1,6 @@
 FROM node:lts
 WORKDIR /contagem
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 COPY tsconfig.json ./
 RUN npm install
 RUN npm install pm2 -g
