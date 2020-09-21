@@ -6,7 +6,9 @@ const router = Router();
 router
   .route("/contagens/v1/cyclistCount")
   .get(async (req, res) => {
-    const cyclistCounts = await CyclistCount.find();
+    const cyclistCounts = await CyclistCount.find().select(
+      "_id summary location name date"
+    );
     return res.json(cyclistCounts);
   })
   .post(async (req, res) => {
