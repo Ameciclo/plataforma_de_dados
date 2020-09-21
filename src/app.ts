@@ -30,4 +30,8 @@ app.use(cors());
 app.use(helmet());
 app.disable("x-powered-by");
 app.use(routes);
+app.get("/", (req, res) => {
+  console.log("Bateu no /");
+  res.json("OK");
+});
 export default app;

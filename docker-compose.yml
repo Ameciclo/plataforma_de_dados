@@ -21,7 +21,7 @@ services:
       NODE_ENV: "${ENV}"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.contagem.rule=Host(`api.plataforma.ameciclo.org`) && PathPrefix(`/contagens/v1`)"
+      - "traefik.http.routers.contagem.rule=Host(`api.plataforma.ameciclo.org`) && PathPrefix(`/contagens/v1/`)"
       - "traefik.http.routers.contagem.tls.certresolver=le"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirectscheme.redirectscheme.permanent=true"
