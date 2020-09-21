@@ -12,7 +12,7 @@ services:
     restart: always
     build: .
     environment:
-      PORT: 4000
+      PORT: 80
       MONGO_DB: contagem
       MONGO_HOSTNAME: mongodb
       MONGO_PORT: 27017
