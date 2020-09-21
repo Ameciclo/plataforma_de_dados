@@ -4,7 +4,7 @@ import CyclistCount from "./schemas/CyclistCount";
 const router = Router();
 
 router
-  .route("/cyclistCount")
+  .route("/cyclist-count")
   .get(async (req, res) => {
     const cyclistCounts = await CyclistCount.find().select(
       "_id summary location name date"
@@ -20,5 +20,15 @@ router
       console.log(e);
     }
   });
+
+router.route("/cyclist-count/:id").get(async (req, res) => {
+  try {
+    const cyclistCount = await CyclistCount.findById(req.params.id);
+    return res.json(cyclistCount);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(404);
+  }
+});
 
 export default router;
