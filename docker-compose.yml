@@ -8,7 +8,7 @@ networks:
 
 services:
   contagem:
-    container_name: "Contagem de Ciclistas"
+    container_name: "contagem_de_ciclistas"
     restart: always
     build: .
     environment:
