@@ -7,7 +7,7 @@ networks:
     external: false
 
 services:
-  app:
+  contagem:
     container_name: "Contagem de Ciclistas"
     restart: always
     build: .
@@ -32,7 +32,7 @@ services:
     ports:
       - "4000:4000"
     links:
-      - mongo
+      - mongodb
   mongodb:
     container_name: mongodb
     image: mongo
