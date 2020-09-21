@@ -30,12 +30,4 @@ app.use(cors());
 app.use(helmet());
 app.disable("x-powered-by");
 app.use(routes);
-app.get("/", (req, res) => {
-  console.log("Bateu no /");
-  res.json("OK");
-});
-app.get("/contagens/v1/cyclistCount", (req, res) => {
-  console.log("Bateu no /contagens/v1/cyclistCount");
-  res.json("OK");
-});
 export default app;
