@@ -5,6 +5,12 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    // The folder or files you want to exclude
+    // You can also use regex `**/*.spec.ts` for ex
+    "exclude":[
+      "node_modules",
+      "build"
+    ]
   }
 }
