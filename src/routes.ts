@@ -1,34 +1,17 @@
 import { Router } from "express";
-import CyclistCount from "./schemas/CyclistCount";
+import * as cyclistCountController from "./controllers/CyclistCountController";
 
 const router = Router();
 
 router
   .route("/cyclist-count")
-  .get(async (req, res) => {
-    const cyclistCounts = await CyclistCount.find().select(
-      "_id summary location name date"
-    );
-    return res.json(cyclistCounts);
-  })
-  .post(async (req, res) => {
-    try {
-      const cyclistCount = await CyclistCount.create(req.body);
-      return res.json(cyclistCount);
-    } catch (e) {
-      res.sendStatus(500);
-      console.log(e);
-    }
-  });
+  .get(cyclistCountController.getCyclistCount)
+  .post(cyclistCountController.postCyclistCount);
 
-router.route("/cyclist-count/:id").get(async (req, res) => {
-  try {
-    const cyclistCount = await CyclistCount.findById(req.params.id);
-    return res.json(cyclistCount);
-  } catch (e) {
-    console.log(e);
-    res.sendStatus(404);
-  }
-});
+router
+  .route("/cyclist-count/:id")
+  .get(cyclistCountController.getCyclistCountById);
+
+router.route("/").get(cyclistCountController.getCyclistCountMetadata);
 
 export default router;
