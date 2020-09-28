@@ -3,6 +3,12 @@ import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes";
 import helmet from "helmet";
+import rateLimit from "express-rate-limit"
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+});
 
 const {
   MONGO_USERNAME,
@@ -27,7 +33,11 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(limiter);
 app.use(helmet());
 app.disable("x-powered-by");
 app.use("/contagens/v1", routes);
+app.get('*', function(req, res){
+    res.status(404).json({message:"Not found"});
+});
 export default app;
