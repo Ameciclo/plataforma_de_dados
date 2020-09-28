@@ -30,7 +30,7 @@ export const postCyclistCount = async (req: Request, res: Response) => {
 
 export const getCyclistCountMetadata = async (req: Request, res: Response) => {
   try {
-    const numberOfDistinctCounts = await CyclistCount.distinct("name");
+    //TODO: Create aggregate for percentiles and distinct count
     const totalSummary = await CyclistCount.aggregate([
       {
         $group: {
@@ -46,24 +46,7 @@ export const getCyclistCountMetadata = async (req: Request, res: Response) => {
       },
     ]);
     console.log(totalSummary);
-    console.log(numberOfDistinctCounts);
     res.json(totalSummary);
-    // const nCountWomen = await CyclistCount.aggregate([
-    //   {
-    //     $project: {
-    //       hour: {
-    //         $objectToArray: "$data.qualitative.women.count_per_hour",
-    //       },
-    //     },
-    //   },
-    //   { $unwind: "$hour" },
-    //   {
-    //     $group: {
-    //       _id: 1,
-    //       count: { $sum: "$hour.v" },
-    //     },
-    //   },
-    // ]);
   } catch (e) {
     res.sendStatus(500);
     console.log(e);
