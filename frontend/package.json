@@ -1,5 +1,5 @@
 {
-  "name": "learn-starter",
+  "name": "contagem_de_ciclistas",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,15 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "9.5.3",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "next": "10.0.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "sass": "^1.29.0"
   },
   "devDependencies": {
-    "@types/node": "^14.11.2",
-    "@types/react": "^16.9.49",
+    "@fullhuman/postcss-purgecss": "^3.0.0",
+    "@types/node": "^14.14.6",
+    "@types/react": "^16.9.56",
     "postcss-preset-env": "^6.7.0",
-    "tailwindcss": "^1.8.10",
-    "typescript": "^4.0.3"
+    "tailwindcss": "^1.9.6",
+    "typescript": "^4.0.5"
   }
 }
