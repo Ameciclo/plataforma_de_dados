@@ -13,6 +13,7 @@ const CyclistCountSchema = new mongoose.Schema({
     total: Number,
     hour_max: Number,
     women_percent: Number,
+    men_percent: Number,
     children_percent: Number,
     sharing_percent: Number,
   },
