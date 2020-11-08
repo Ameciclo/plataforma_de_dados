@@ -1,0 +1,35 @@
+.icon {
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin: 0 auto 14px;
+  text-align: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.label-info {
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 14px;
+}
+
+.count {
+  font-size: 3em;
+}
+
+.icon-counters {
+  background: url('/icons/abacus.svg');
+}
+
+.icon-bikers {
+  background: url('/icons/bike.svg');
+}
+
+.icon-points {
+  background: url('/icons/data.svg');
+}
+
+.icon-maximum {
+  background: url('/icons/research.svg');
+}
