@@ -13,6 +13,7 @@ const CyclistCountSchema = new mongoose.Schema({
     total: Number,
     hour_max: Number,
     women_percent: Number,
+    men_percent: Number,
     children_percent: Number,
     sharing_percent: Number,
   },
@@ -304,6 +305,24 @@ const CyclistCountSchema = new mongoose.Schema({
     },
     qualitative: {
       women: {
+        count_per_hour: {
+          6: Number,
+          7: Number,
+          8: Number,
+          9: Number,
+          10: Number,
+          11: Number,
+          12: Number,
+          13: Number,
+          14: Number,
+          15: Number,
+          16: Number,
+          17: Number,
+          18: Number,
+          19: Number,
+        },
+      },
+      men: {
         count_per_hour: {
           6: Number,
           7: Number,
