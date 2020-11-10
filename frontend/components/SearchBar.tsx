@@ -29,7 +29,7 @@ export const SearchBar = () => {
   }, [term]);
 
   return (
-    <div className="relative">
+    <div className="relative mx-6">
       <div className="flex flex-col items-center relative ">
         <h1 className="text-4xl font-bold mb-4">O que você está procurando?</h1>
         <input
