@@ -96,7 +96,6 @@ const Contagem = ({ count }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
         style={{ marginTop: "16px", height: "25vh" }}>
@@ -104,9 +103,9 @@ const Contagem = ({ count }) => {
           <div className="container mx-auto my-12">
             <h1 className="text-4xl font-bold">{count.name}</h1>
           </div>
-
         </div>
       </div>
+      
       <main className="flex-auto">
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
@@ -156,7 +155,7 @@ const Contagem = ({ count }) => {
             </ReactMapGL>
           </div>
         </section>
-        
+
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
           <div
             className="shadow-2xl rounded p-10 text-center"
