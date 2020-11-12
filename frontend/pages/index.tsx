@@ -2,7 +2,9 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
+// @ts-ignore
 import ResarchIcon from "../public/icons/research.svg";
+// @ts-ignore
 import CalendarIcon from "../public/icons/calendar.svg";
 
 export default function Home() {
