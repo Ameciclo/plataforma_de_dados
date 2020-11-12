@@ -122,35 +122,6 @@ const Contagem = ({ count }) => {
             <h3 className="text-4xl">{count.date.substr(0, 10).split("-").reverse().join("/")}</h3>
           </div>
         </section>
-        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              % de caracteristicas de acordo com o total
-            </h2>
-            <PieChart data={summaryData} />
-          </div>
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              Quantidade de ciclistas por hora
-            </h2>
-            <HourlyChart data={hourlyData} />
-          </div>
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              Quantidade de ciclistas por hora
-            </h2>
-            <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
-          </div>
-        </section>
         <section className="container mx-auto my-10">
           <div className="bg-green-200 rounded shadow-2xl">
             <ReactMapGL
@@ -185,6 +156,37 @@ const Contagem = ({ count }) => {
             </ReactMapGL>
           </div>
         </section>
+        
+        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
+          <div
+            className="shadow-2xl rounded p-10 text-center"
+            style={{ height: "700px" }}
+          >
+            <h2 className="text-gray-600 text-3xl">
+              % de caracteristicas de acordo com o total
+            </h2>
+            <PieChart data={summaryData} />
+          </div>
+          <div
+            className="shadow-2xl rounded p-10 text-center"
+            style={{ height: "700px" }}
+          >
+            <h2 className="text-gray-600 text-3xl">
+              Quantidade de ciclistas por hora
+            </h2>
+            <HourlyChart data={hourlyData} />
+          </div>
+          <div
+            className="shadow-2xl rounded p-10 text-center"
+            style={{ height: "700px" }}
+          >
+            <h2 className="text-gray-600 text-3xl">
+              Quantidade de ciclistas por hora
+            </h2>
+            <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
+          </div>
+        </section>
+        
       </main>
     </Layout>
   );
