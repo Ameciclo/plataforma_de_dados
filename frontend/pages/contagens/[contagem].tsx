@@ -3,6 +3,8 @@ import ReactMapGL, { Marker } from "react-map-gl";
 import dynamic from "next/dynamic";
 import { HourlyBarChart } from "../../components/HourlyBarChart";
 import Footer from "../../components/Footer";
+import Layout from "../../components/Layout";
+import Head from "next/head";
 
 const PieChart = dynamic(() => import("../../components/PieChart"), {
   ssr: false,
@@ -87,18 +89,23 @@ const Contagem = ({ count }) => {
   ];
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-row bg-red-200">
-        <nav>
-          <div>Menu</div>
-          <ul>
-            <li>
-              <a>
-                <span>Link</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+
+    <Layout>
+      <Head>
+        <title>Plataforma de Dados | Contagens</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+
+      <div
+        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
+        style={{ marginTop: "16px", height: "25vh" }}>
+        <div className="container mx-auto my-8">
+          <div className="container mx-auto my-12">
+            <h1 className="text-4xl font-bold">{count.name}</h1>
+          </div>
+
+        </div>
       </div>
       <main className="flex-auto">
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
@@ -179,8 +186,7 @@ const Contagem = ({ count }) => {
           </div>
         </section>
       </main>
-      <Footer />
-    </div>
+    </Layout>
   );
 };
 
