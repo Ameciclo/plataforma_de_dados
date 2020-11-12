@@ -109,17 +109,17 @@ const Contagem = ({ count }) => {
       </div>
       <main className="flex-auto">
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl">
-            <h3>Número de Ciclistas contados:</h3>
-            <h3>{count.summary.total}</h3>
+          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
+            <h3>Número de ciclistas contados:</h3>
+            <h3 className="text-4xl">{count.summary.total}</h3>
           </div>
-          <div className="bg-green-200 h-32 rounded shadow-2xl">
-            <h3>Número máxima de ciclistas no intervalo de 1h</h3>
-            <h3>{count.summary.hour_max}</h3>
+          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
+            <h3>Pico de ciclistas no intervalo de 1h</h3>
+            <h3 className="text-4xl">{count.summary.hour_max}</h3>
           </div>
-          <div className="bg-green-200 h-32 rounded shadow-2xl">
-            <h3>Data da Contagem</h3>
-            <h3>{count.date.substr(0, 10).split("-").reverse().join("/")}</h3>
+          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
+            <h3>Data da contagem</h3>
+            <h3 className="text-4xl">{count.date.substr(0, 10).split("-").reverse().join("/")}</h3>
           </div>
         </section>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
