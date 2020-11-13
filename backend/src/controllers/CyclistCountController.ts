@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Parser } from "json2csv";
 import CyclistCount from "../schemas/CyclistCount";
+import flatten from "flat";
 
 export const getCyclistCount = async (req: Request, res: Response) => {
   const cyclistCounts = await CyclistCount.find().select(
@@ -15,11 +16,14 @@ export const getCyclistCountById = async (req: Request, res: Response) => {
     const format = req.query.format;
     if (format === "csv") {
       const json2csv = new Parser({ header: true });
-      const csv = json2csv.parse(cyclistCount);
+      const csv = json2csv.parse(flatten(cyclistCount?.toObject()));
       res.header("Content-Type", "text/csv");
       res.attachment("contagens.csv");
       return res.send(csv);
     } else if (format === "json") {
+      res.header("Content-Type", "application/json");
+      res.attachment("contagens.json");
+      return res.send(cyclistCount?.toObject());
     }
 
     return res.json(cyclistCount);
@@ -56,7 +60,6 @@ export const getCyclistCountMetadata = async (req: Request, res: Response) => {
         },
       },
     ]);
-    console.log(totalSummary);
     res.json(totalSummary);
   } catch (e) {
     res.sendStatus(500);

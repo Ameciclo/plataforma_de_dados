@@ -3,11 +3,14 @@ import mongoose from "mongoose";
 import cors from "cors";
 import routes from "./routes";
 import helmet from "helmet";
-import rateLimit from "express-rate-limit"
+import rateLimit from "express-rate-limit";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100
+  windowMs: 15 * 60 * 1000,
+  max: 100,
 });
 
 const {
@@ -37,7 +40,7 @@ app.use(limiter);
 app.use(helmet());
 app.disable("x-powered-by");
 app.use("/contagens/v1", routes);
-app.get('*', function(req, res){
-    res.status(404).json({message:"Not found"});
+app.get("*", function (req, res) {
+  res.status(404).json({ message: "Not found" });
 });
 export default app;
