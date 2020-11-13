@@ -42,7 +42,7 @@ const Contagens = ({ cyclistCounts }) => {
           assim deseje.
         </p>
       </section>
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto">
+      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <ContagensTable data={cyclistCounts} />
       </section>
     </Layout>

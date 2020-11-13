@@ -91,20 +91,23 @@ const ContagensTable = ({ data }) => {
   );
 
   return (
-    <>
-      <table {...getTableProps()} className="table-auto border-collapse w-full">
+    <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
+      <table
+        {...getTableProps()}
+        className="table-auto shadow min-w-full divide-y divide-gray-200"
+      >
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr
               {...headerGroup.getHeaderGroupProps()}
-              className="rounded-lg text-sm font-medium text-gray-700 text-left"
+              className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
             >
               {headerGroup.headers.map((column) => (
                 <th
                   {...column.getHeaderProps()}
-                  className="px-4 py-2 bg-gray-200"
+                  className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
                 >
-                  <div {...column.getSortByToggleProps()}>
+                  <div {...column.getSortByToggleProps()} className="">
                     {column.render("Header")}
                     <span>
                       {column.isSorted
@@ -114,7 +117,7 @@ const ContagensTable = ({ data }) => {
                         : ""}
                     </span>
                   </div>
-                  <div>{column.canFilter ? column.render("Filter") : null}</div>
+                  {column.canFilter ? column.render("Filter") : null}
                 </th>
               ))}
             </tr>
@@ -130,7 +133,7 @@ const ContagensTable = ({ data }) => {
         </thead>
         <tbody
           {...getTableBodyProps()}
-          className="text-sm font-normal text-gray-700"
+          className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
         >
           {page.map((row, i) => {
             prepareRow(row);
@@ -141,7 +144,10 @@ const ContagensTable = ({ data }) => {
               >
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()} className="px-4 py-4">
+                    <td
+                      {...cell.getCellProps()}
+                      className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm"
+                    >
                       {cell.render("Cell")}
                     </td>
                   );
@@ -152,51 +158,28 @@ const ContagensTable = ({ data }) => {
         </tbody>
       </table>
 
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Go to page:{" "}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: "100px" }}
-          />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+      <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+        <div className="text-xs xs:text-sm text-gray-900">
+          <span>{`Página ${pageIndex + 1} de ${pageOptions.length}`}</span>
+        </div>
+        <div className="inline-flex mt-2 xs:mt-0">
+          <button
+            className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            Anterior
+          </button>
+          <button
+            className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            Próxima
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
