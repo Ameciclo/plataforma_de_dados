@@ -58,6 +58,16 @@ const ContagensTable = ({ data }) => {
         Filter: ColumnFilter,
         disableFilters: true,
       },
+      {
+        Header: "Dados",
+        accessor: "_id",
+        Cell: ({ value }) => (
+          <Link href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=csv`}>
+            <a className="text-blue-500">CSV</a>
+          </Link>
+        ),
+        disableFilters: true
+      }
     ],
     []
   );
