@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Parser } from "json2csv";
 import CyclistCount from "../schemas/CyclistCount";
 
 export const getCyclistCount = async (req: Request, res: Response) => {
@@ -11,6 +12,16 @@ export const getCyclistCount = async (req: Request, res: Response) => {
 export const getCyclistCountById = async (req: Request, res: Response) => {
   try {
     const cyclistCount = await CyclistCount.findById(req.params.id);
+    const format = req.query.format;
+    if (format === "csv") {
+      const json2csv = new Parser({ header: true });
+      const csv = json2csv.parse(cyclistCount);
+      res.header("Content-Type", "text/csv");
+      res.attachment("contagens.csv");
+      return res.send(csv);
+    } else if (format === "json") {
+    }
+
     return res.json(cyclistCount);
   } catch (e) {
     console.log(e);
