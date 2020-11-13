@@ -1,28 +1,8 @@
 import React from "react";
-import {
-  useTable,
-  usePagination,
-  useFilters,
-  useAsyncDebounce,
-} from "react-table";
+import { useTable, usePagination, useFilters, useSortBy } from "react-table";
 import { matchSorter } from "match-sorter";
-
-// Define a default UI for filtering
-const DefaultColumnFilter = ({
-  column: { filterValue, preFilteredRows, setFilter },
-}) => {
-  const count = preFilteredRows.length;
-
-  return (
-    <input
-      value={filterValue || ""}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-      }}
-      placeholder={`Search ${count} records...`}
-    />
-  );
-};
+import Link from "next/link";
+import ColumnFilter from "./ColumnFilter";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -52,32 +32,31 @@ const ContagensTable = ({ data }) => {
     []
   );
 
-  const defaultColumn = React.useMemo(
-    () => ({
-      // Let's set up our default Filter UI
-      Filter: DefaultColumnFilter,
-    }),
-    []
-  );
-
   const columns = React.useMemo(
     () => [
       {
         Header: "Nome",
         accessor: "name",
+        Cell: ({ row }) => (
+          <Link href={`contagens/${row.original._id}`} key={row.original._id}>
+            <a className="text-blue-500">{row.original.name}</a>
+          </Link>
+        ),
+        Filter: ColumnFilter,
       },
       {
         Header: "Data",
         accessor: "date",
-        Cell: ({ row }) => (
-          <span>
-            {row.original.date.substr(0, 10).split("-").reverse().join("/")}
-          </span>
+        Cell: ({ value }) => (
+          <span>{value.substr(0, 10).split("-").reverse().join("/")}</span>
         ),
+        Filter: ColumnFilter,
       },
       {
         Header: "Total de Ciclistas",
         accessor: "summary.total",
+        Filter: ColumnFilter,
+        disableFilters: true,
       },
     ],
     []
@@ -104,10 +83,10 @@ const ContagensTable = ({ data }) => {
       columns,
       data,
       initialState: { pageIndex: 0 },
-      defaultColumn,
       filterTypes,
     },
     useFilters,
+    useSortBy,
     usePagination
   );
 
@@ -125,7 +104,16 @@ const ContagensTable = ({ data }) => {
                   {...column.getHeaderProps()}
                   className="px-4 py-2 bg-gray-200"
                 >
-                  {column.render("Header")}
+                  <div {...column.getSortByToggleProps()}>
+                    {column.render("Header")}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? " 🔽️"
+                          : " 🔼"
+                        : ""}
+                    </span>
+                  </div>
                   <div>{column.canFilter ? column.render("Filter") : null}</div>
                 </th>
               ))}
@@ -137,7 +125,7 @@ const ContagensTable = ({ data }) => {
               style={{
                 textAlign: "left",
               }}
-            ></th>
+            />
           </tr>
         </thead>
         <tbody
