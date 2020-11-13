@@ -3,7 +3,15 @@ import Layout from "../components/Layout";
 import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
 
-const Contagens = ({ cyclistCounts }) => {
+const Contagens = ({ cyclistCounts, globalSummary }) => {
+  
+  function groupBy(xs, f) {
+    return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
+  }
+
+  var countsGroupedByLocation = groupBy(cyclistCounts, (count) => count.name)
+  var countsGroupedArray = Object.entries(countsGroupedByLocation)
+
   return (
     <Layout>
       <Head>
@@ -22,6 +30,26 @@ const Contagens = ({ cyclistCounts }) => {
         </div>
       </div>
       <section className="container mx-auto grid-cols-1 p-8">
+
+        <section className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
+          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
+            <h3>Número de ciclistas contados</h3>
+            <h3 className="text-4xl">{globalSummary[0].totalAmount}</h3>
+          </div>
+          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
+            <h3>Contagens Realizadas</h3>
+            <h3 className="text-4xl">{globalSummary[0].numberOfCounts}</h3>
+          </div>
+          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
+            <h3>Pontos Monitorados</h3>
+            <h3 className="text-4xl">{countsGroupedArray.length}</h3>
+          </div>
+          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
+            <h3>Máximo em um ponto</h3>
+            <h3 className="text-4xl">{globalSummary[0].MaximumValue}</h3>
+          </div>
+        </section>
+
         <p className="text-justify">
           Registramos as pessoas que passam de bicicleta durante 14 horas em um
           pré-escolhido cruzamento da cidade do Recife. As nossas contagens são
@@ -50,11 +78,18 @@ const Contagens = ({ cyclistCounts }) => {
 };
 
 export async function getServerSideProps() {
+  const globalSummaryRes = await fetch(
+    `https://api.plataforma.ameciclo.org/contagens/v1/`
+  );
+
   const res = await fetch(
     `https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count`
   );
+
   const cyclistCounts = await res.json();
-  return { props: { cyclistCounts } };
+  const globalSummary = await globalSummaryRes.json();
+
+  return { props: { cyclistCounts, globalSummary } };
 }
 
 export default Contagens;
