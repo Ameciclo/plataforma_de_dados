@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
+import ReactMapGL, { Marker } from "react-map-gl";
+import { elementDragControls } from "framer-motion/types/gestures/drag/VisualElementDragControls";
+import CountsPins from './CountsPins';
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
-  
+
   function groupBy(xs, f) {
     return xs.reduce((r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r), {});
   }
 
   var countsGroupedByLocation = groupBy(cyclistCounts, (count) => count.name)
   var countsGroupedArray = Object.entries(countsGroupedByLocation)
+
+  const [viewport, setViewport] = useState({
+    latitude: -8.0584364,
+    longitude: -34.945277,
+    zoom: 10,
+    bearing: 0,
+    pitch: 0,
+  });
+
 
   return (
     <Layout>
@@ -69,6 +81,22 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           abertos para serem usados pela mídia, academia ou quaisquer pessoa que
           assim deseje.
         </p>
+      </section>
+      <section className="container mx-auto my-10">
+        <div className="bg-green-200 rounded shadow-2xl">
+          <ReactMapGL
+            {...viewport}
+            width="100%"
+            height="500px"
+            mapStyle="mapbox://styles/mapbox/light-v10"
+            mapboxApiAccessToken={
+              "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
+            }>
+              
+            <CountsPins data={cyclistCounts} />
+            
+            </ReactMapGL>
+        </div>
       </section>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <ContagensTable data={cyclistCounts} />
