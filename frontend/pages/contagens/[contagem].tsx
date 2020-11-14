@@ -127,7 +127,7 @@ const Contagem = ({ count }) => {
               {...viewport}
               width="100%"
               height="500px"
-              mapStyle="mapbox://styles/mapbox/streets-v11"
+              mapStyle="mapbox://styles/mapbox/light-v10"
               mapboxApiAccessToken={
                 "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
               }
