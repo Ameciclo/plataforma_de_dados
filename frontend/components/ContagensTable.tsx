@@ -60,20 +60,23 @@ const ContagensTable = ({ data }) => {
       },
       {
         Header: "Dados",
-        accessor: "_id",
         Cell: ({ value }) => (
           <span>
-          <Link href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=csv`}>
-            <a className="text-blue-500">CSV</a>
-          </Link>
-          <span> | </span>
-          <Link href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=json`}>
-            <a className="text-blue-500">JSON</a>
-          </Link>
+            <Link
+              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=csv`}
+            >
+              <a className="text-blue-500">CSV</a>
+            </Link>
+            <span> | </span>
+            <Link
+              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=json`}
+            >
+              <a className="text-blue-500">JSON</a>
+            </Link>
           </span>
         ),
-        disableFilters: true
-      }
+        disableFilters: true,
+      },
     ],
     []
   );
