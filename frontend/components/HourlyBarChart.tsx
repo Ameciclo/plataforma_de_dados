@@ -20,7 +20,7 @@ export const HourlyBarChart = ({ data, keys }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Hora",
+          legend: "Quantidade",
           legendPosition: "middle",
           legendOffset: 32,
         }}
@@ -28,7 +28,7 @@ export const HourlyBarChart = ({ data, keys }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Quantidade",
+          legend: "Hora",
           legendPosition: "middle",
           legendOffset: -40,
         }}
