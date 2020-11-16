@@ -90,13 +90,10 @@ const ContagensTable = ({ data }) => {
     canPreviousPage,
     canNextPage,
     pageOptions,
-    pageCount,
-    gotoPage,
     nextPage,
     previousPage,
-    setPageSize,
     visibleColumns,
-    state: { pageIndex, pageSize },
+    state: { pageIndex },
   } = useTable(
     {
       columns,
@@ -126,9 +123,12 @@ const ContagensTable = ({ data }) => {
                   {...column.getHeaderProps()}
                   className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
                 >
-                  <div {...column.getSortByToggleProps()} className="">
+                  <div
+                    {...column.getSortByToggleProps({ title: "Ordenar" })}
+                    className="flex items-center"
+                  >
                     {column.render("Header")}
-                    <span>
+                    <span className="inline-block">
                       {column.isSorted
                         ? column.isSortedDesc
                           ? " 🔽️"

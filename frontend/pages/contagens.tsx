@@ -4,6 +4,7 @@ import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
 import ReactMapGL, { Marker } from "react-map-gl";
 import Breadcrumb from "../components/Breadcrumb";
+import InfoCard from "../components/InfoCard";
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -56,27 +57,26 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           />
         </div>
       </div>
-      <section className="container mx-auto grid-cols-1 p-8">
-        <section className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
-          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
-            <h3>Número de ciclistas contados</h3>
-            <h3 className="text-4xl">{globalSummary[0].totalAmount}</h3>
-          </div>
-          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
-            <h3>Contagens Realizadas</h3>
-            <h3 className="text-4xl">{globalSummary[0].numberOfCounts}</h3>
-          </div>
-          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
-            <h3>Pontos Monitorados</h3>
-            <h3 className="text-4xl">{countsGroupedArray.length}</h3>
-          </div>
-          <div className="bg-white text-ameciclo h-32 rounded shadow-2xl p-3">
-            <h3>Máximo em um ponto</h3>
-            <h3 className="text-4xl">{globalSummary[0].MaximumValue}</h3>
-          </div>
-        </section>
-
-        <p className="text-justify">
+      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
+          <InfoCard
+            data={globalSummary[0].totalAmount}
+            label={"N.º de ciclistas contados"}
+          />
+          <InfoCard
+            data={globalSummary[0].numberOfCounts}
+            label={"Contagens Realizadas"}
+          />
+          <InfoCard
+            data={countsGroupedArray.length}
+            label={"Pontos Monitorados"}
+          />
+          <InfoCard
+            data={globalSummary[0].MaximumValue}
+            label={"N.º máximo contado"}
+          />
+        </div>
+        <p className="text-justify text-gray-800">
           Registramos as pessoas que passam de bicicleta durante 14 horas em um
           pré-escolhido cruzamento da cidade do Recife. As nossas contagens são
           registradas manualmente através da observação das pessoas voluntárias
@@ -87,7 +87,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           são registrados outros fatores qualitativos que podem ser
           especificidades de cada local.
         </p>
-        <p className="mt-3 text-justify">
+        <p className="mt-3 text-justify text-gray-800">
           As contagens de ciclistas são importantes instrumentos de planejamento
           urbano. Elas permitem identificar os pontos de maior demanda por
           estruturas cicláveis, além das tendências futuras. A Ameciclo as

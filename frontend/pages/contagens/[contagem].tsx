@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
+import InfoCard from "../../components/InfoCard";
 
 const PieChart = dynamic(() => import("../../components/PieChart"), {
   ssr: false,
@@ -168,20 +169,21 @@ const Contagem = ({ count }) => {
 
       <main className="flex-auto">
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
-            <h3>Número de ciclistas contados:</h3>
-            <h3 className="text-4xl">{count.summary.total}</h3>
-          </div>
-          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
-            <h3>Pico de ciclistas no intervalo de 1h</h3>
-            <h3 className="text-4xl">{count.summary.hour_max}</h3>
-          </div>
-          <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
-            <h3>Data da contagem</h3>
-            <h3 className="text-4xl">
-              {count.date.substr(0, 10).split("-").reverse().join("/")}
-            </h3>
-          </div>
+          <InfoCard
+            data={count.summary.total}
+            label={"Número de ciclistas contados"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Pico de ciclistas no intervalo de 1h"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.date.substr(0, 10).split("-").reverse().join("/")}
+            label={"Data da contagem"}
+            style={"ameciclo"}
+          />
         </section>
         <section className="container mx-auto my-10">
           <div className="bg-green-200 rounded shadow-2xl">
@@ -228,6 +230,7 @@ const Contagem = ({ count }) => {
             </h2>
             <PieChart data={summaryData} />
           </div>
+          {/*TODO: Fix issue with svg errors*/}
           <div
             className="shadow-2xl rounded p-10 text-center"
             style={{ height: "700px" }}
