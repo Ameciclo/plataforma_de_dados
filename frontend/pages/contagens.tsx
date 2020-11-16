@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
 import ReactMapGL, { Marker } from "react-map-gl";
+import Breadcrumb from "../components/Breadcrumb";
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -44,6 +45,15 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           <div className="container mx-auto my-12">
             <h1 className="text-4xl font-bold">Contagens</h1>
           </div>
+        </div>
+      </div>
+      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
+        <div className="container mx-auto">
+          <Breadcrumb
+            label="Contagens"
+            slug="/contagens"
+            routes={["/", "/contagens"]}
+          />
         </div>
       </div>
       <section className="container mx-auto grid-cols-1 p-8">

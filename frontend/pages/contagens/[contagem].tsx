@@ -5,6 +5,7 @@ import { HourlyBarChart } from "../../components/HourlyBarChart";
 import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import Head from "next/head";
+import Breadcrumb from "../../components/Breadcrumb";
 
 const PieChart = dynamic(() => import("../../components/PieChart"), {
   ssr: false,
@@ -153,6 +154,15 @@ const Contagem = ({ count }) => {
           <div className="container mx-auto my-12">
             <h1 className="text-4xl font-bold">{count.name}</h1>
           </div>
+        </div>
+      </div>
+      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
+        <div className="container mx-auto">
+          <Breadcrumb
+            label={count.name}
+            slug={count._id}
+            routes={["/", "/contagens", count._id]}
+          />
         </div>
       </div>
 
