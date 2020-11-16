@@ -14,6 +14,10 @@ const HourlyChart = dynamic(() => import("../../components/HourlyChart"), {
   ssr: false,
 });
 
+const FlowChart = dynamic(() => import("../../components/FlowChart"), {
+  ssr: false,
+});
+
 const Contagem = ({ count }) => {
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
@@ -88,8 +92,53 @@ const Contagem = ({ count }) => {
     },
   ];
 
-  return (
+  const sumCountPerHour = (flowCount: object) => {
+    if (flowCount === undefined) {
+      return 0;
+    }
+    return Object.values(flowCount["count_per_hour"]).reduce(
+      (a: number, b: number) => a + b,
+      0
+    );
+  };
 
+  const quantitativeData = count.data.quantitative;
+
+  // TODO: Refactor to more generic cases
+  let flowKeys = [
+      count.north.name,
+      count.east.name,
+      count.west.name,
+      count.south.name,
+    ],
+    flowMatrix = [
+      [
+        0,
+        sumCountPerHour(quantitativeData.north_east),
+        sumCountPerHour(quantitativeData.north_west),
+        sumCountPerHour(quantitativeData.north_south),
+      ],
+      [
+        sumCountPerHour(quantitativeData.east_north),
+        0,
+        sumCountPerHour(quantitativeData.east_west),
+        sumCountPerHour(quantitativeData.east_south),
+      ],
+      [
+        sumCountPerHour(quantitativeData.west_north),
+        sumCountPerHour(quantitativeData.west_east),
+        0,
+        sumCountPerHour(quantitativeData.west_south),
+      ],
+      [
+        sumCountPerHour(quantitativeData.south_north),
+        sumCountPerHour(quantitativeData.south_east),
+        sumCountPerHour(quantitativeData.south_west),
+        0,
+      ],
+    ];
+
+  return (
     <Layout>
       <Head>
         <title>Plataforma de Dados | Contagens</title>
@@ -98,14 +147,15 @@ const Contagem = ({ count }) => {
 
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ marginTop: "16px", height: "25vh" }}>
+        style={{ marginTop: "16px", height: "25vh" }}
+      >
         <div className="container mx-auto my-8">
           <div className="container mx-auto my-12">
             <h1 className="text-4xl font-bold">{count.name}</h1>
           </div>
         </div>
       </div>
-      
+
       <main className="flex-auto">
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
@@ -118,7 +168,9 @@ const Contagem = ({ count }) => {
           </div>
           <div className="bg-ameciclo text-white h-32 rounded shadow-2xl p-3">
             <h3>Data da contagem</h3>
-            <h3 className="text-4xl">{count.date.substr(0, 10).split("-").reverse().join("/")}</h3>
+            <h3 className="text-4xl">
+              {count.date.substr(0, 10).split("-").reverse().join("/")}
+            </h3>
           </div>
         </section>
         <section className="container mx-auto my-10">
@@ -184,8 +236,14 @@ const Contagem = ({ count }) => {
             </h2>
             <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
           </div>
+          <div
+            className="shadow-2xl rounded p-10 text-center"
+            style={{ height: "700px" }}
+          >
+            <h2 className="text-gray-600 text-3xl">Fluxo de Ciclistas</h2>
+            <FlowChart data={flowMatrix} keys={flowKeys} />
+          </div>
         </section>
-        
       </main>
     </Layout>
   );
