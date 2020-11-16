@@ -53,7 +53,13 @@ const Contagem = ({ count }) => {
   let hourlyMen = [],
     hourlyWomen = [],
     hourlyChildren = [],
-    hourlyBarKeys = Object.keys(count.data.qualitative),
+    keyMap = new Map([
+      ["men", { name: "Homens" }],
+      ["women", { name: "Mulheres" }],
+      ["child", { name: "Crianças" }],
+    ]),
+    hourlyBarKeysOriginal = ["men", "women", "child"],
+    hourlyBarKeys = ["Homens", "Mulheres", "Crianças"],
     hourlyBarData = [],
     hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 
@@ -70,8 +76,9 @@ const Contagem = ({ count }) => {
     let hourObject = {
       hour: h.toString(),
     };
-    hourlyBarKeys.forEach((k) => {
-      hourObject[k] = count.data.qualitative[k].count_per_hour[h];
+    hourlyBarKeysOriginal.forEach((k) => {
+      hourObject[keyMap.get(k).name] =
+        count.data.qualitative[k].count_per_hour[h];
     });
     hourlyBarData.push(hourObject);
   });
