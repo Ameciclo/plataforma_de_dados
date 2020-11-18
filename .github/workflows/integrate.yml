@@ -24,7 +24,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '12'
-    - run: cd backend/
+    - working-directory: ./backend/
     - run: npm ci
     - run: npm run test
     - run: npm build
