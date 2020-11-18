@@ -29,7 +29,7 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true,
   })
-  .then((result) => console.log("⚡ MongoDB conectado"))
+  .then(() => console.info("⚡ MongoDB conectado"))
   .catch((error) => console.log(error));
 
 const app = express();
