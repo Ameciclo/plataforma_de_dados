@@ -14,10 +14,9 @@ export default function Home() {
         <title>Plataforma de Dados | Ameciclo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ marginTop: "16px", height: "75vh" }}
+        style={{ height: "75vh" }}
       >
         <div className="container mx-auto my-8">
           <div className="container mx-auto my-12">
@@ -28,12 +27,12 @@ export default function Home() {
         </div>
       </div>
       <section>
-        <div className="container mx-auto flex flex-wrap my-8 flex-1">
+        <div className="container mx-auto flex flex-wrap p-10 flex-1">
           <div className="w-1/4 justify-center flex items-center">
-            <ResarchIcon className="h-32" />
+            <ResarchIcon className="h-32 fill-current" />
           </div>
           <div className="w-3/4 justify-center flex items-center">
-            <p className="text-lg">
+            <p className="text-base">
               Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
               Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
               Lorem Ipsum Lorem Ipsum Lorem Ipsumv Lorem Ipsum Lorem IpsumLorem
@@ -43,62 +42,41 @@ export default function Home() {
         </div>
       </section>
       <section className="bg-ameciclo">
-        <div className="flex-1 container mx-auto px-10 py-10 text-center">
+        <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="text-2xl text-white py-8 w-1/2 mx-auto">
             Navegue e visualize os dados
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 grid-rows-2 sm:grid-rows-3 gap-4 grid-flow-row">
-            <div className="lg:row-span-2 lg:col-span-3 bg-gray-300 h-full rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <CalendarIcon className="h-32" fill="#028083" />
-                <h2 className="text-2xl">Contagens</h2>
-                <p className="text-lg">
-                  Contagens das viagens de bicicleta e suas caracteristicas
-                  observaveis
-                </p>
-              </div>
-            </div>
-            <div className="bg-gray-300 h-full rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <CalendarIcon className="h-32" fill="#028083" />
-                <h2 className="text-2xl">Mapa</h2>
-                <p className="text-lg">
-                  Acompanhamento da execução do plano diretor cicloviario
-                </p>
-              </div>
-            </div>
-            <div className="bg-gray-300 h-full rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <CalendarIcon className="h-32" fill="#028083" />
-                <h2 className="text-2xl">Ideciclo</h2>
-                <p className="text-lg">
-                  Índice que mede a malha e qualidade da estrutura cicloviaria
-                </p>
-              </div>
-            </div>
-            <div className="lg:col-span-2 bg-gray-300 h-full rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <CalendarIcon className="h-32" fill="#028083" />
-                <h2 className="text-2xl">Relatorio de Mobilidade</h2>
-                <p className="text-lg">
-                  Informações obtidas a partir de pedidos de acesso a informação
-                </p>
-              </div>
-            </div>
-            <div className="lg:col-span-2 bg-gray-300 h-full rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <CalendarIcon className="h-32" fill="#028083" />
-                <h2 className="text-2xl">Perfil</h2>
-                <p className="text-lg">
-                  Dados socio-economicos dos ciclistas e suas percepções
-                </p>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-5 sm:grid-rows-2 gap-8 grid-flow-row">
+            <GridCard
+              title="Contagens"
+              text="Contagens das viagens de bicicleta e suas caracteristicas observaveis"
+              icon={CalendarIcon}
+            />
+            <GridCard
+              title="Mapa"
+              text="Acompanhamento da execução do plano diretor cicloviario"
+              icon={CalendarIcon}
+            />
+            <GridCard
+              title="Ideciclo"
+              text="Índice que mede a malha e qualidade da estrutura cicloviaria"
+              icon={CalendarIcon}
+            />
+            <GridCard
+              title="Relatorio de Mobilidade"
+              text="Informações obtidas a partir de pedidos de acesso a informação"
+              icon={CalendarIcon}
+            />
+            <GridCard
+              title="Perfil"
+              text="Dados socio-economicos dos ciclistas e suas percepções"
+              icon={CalendarIcon}
+            />
           </div>
         </div>
       </section>
       <section className="bg-white">
-        <div className="flex-1 container mx-auto px-10 my-10 text-center">
+        <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="text-2xl text-ameciclo py-8">
             Mais dados em parceria
           </h3>
@@ -122,7 +100,7 @@ export default function Home() {
         </div>
       </section>
       <section className="bg-ameciclo">
-        <div className="flex-1 container mx-auto px-10 my-10 py-10 text-center">
+        <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="text-2xl text-white py-8">Realização</h3>
           <div className="grid grid-cols-1 grid-rows-1 gap-4 grid-flow-row">
             <div className="bg-white h-32 rounded-lg shadow-xl flex items-center justify-center max-w-sm mx-auto">
@@ -136,3 +114,15 @@ export default function Home() {
     </Layout>
   );
 }
+
+const GridCard = ({ title, text, icon }) => {
+  return (
+    <div className="bg-white w-full rounded-lg shadow-xl flex items-center justify-center text-gray-600 p-10">
+      <div className="flex flex-col text-center">
+        <CalendarIcon className="h-32 fill-current" />
+        <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
+        <p className="text-base">{text}</p>
+      </div>
+    </div>
+  );
+};

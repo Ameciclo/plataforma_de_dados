@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Highlight from "react-highlighter";
 import axios from "axios";
+import useDebounce from "../hooks/useDebounce";
 
 export const SearchBar = () => {
-  const [term, setTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
   const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   useEffect(() => {
-    const getResults = async () => {
+    const searchQuestion = async (q) => {
       try {
         const res = await axios.get("http://bicipai.emdados.org/api/pais/", {
           params: {
             format: "json",
-            q: term,
+            q: q,
           },
         });
-        console.log(res.data);
+        setIsSearching(false);
         setResults(res.data);
       } catch (e) {
+        setIsSearching(false);
+        setResults([]);
         console.log(e);
         throw new Error("Erro na requisição");
       }
     };
-    if (term.length > 5) {
-      getResults();
+
+    // Make sure we have a value (user has entered something in input)
+    if (debouncedSearchTerm) {
+      // Set isSearching state
+      setIsSearching(true);
+      // Fire off our API call
+      searchQuestion(debouncedSearchTerm);
+    } else {
+      setResults([]);
     }
-  }, [term]);
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="relative mx-6">
@@ -37,14 +50,14 @@ export const SearchBar = () => {
           name="search"
           placeholder="O uso de capacete é obrigatório?"
           className="bg-white text-gray-600 w-full h-10 px-5 pr-10 rounded shadow-2xl text-sm focus:outline-none"
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => {
             setSearchResultsVisible(true);
           }}
         />
       </div>
-      {term.length > 0 && searchResultsVisible && (
+      {searchTerm.length > 0 && !isSearching && searchResultsVisible && (
         <div
           className="text-gray-800 absolute normal-case bg-white border left-0 right-0 w-108 text-left mb-4 mt-2 rounded-lg shadow overflow-hidden z-10 overflow-y-auto"
           style={{ maxHeight: "32rem" }}
@@ -57,9 +70,9 @@ export const SearchBar = () => {
                   key={result.protocolo}
                   href={result.url}
                 >
-                  <Highlight search={term}>{result.protocolo}</Highlight>
+                  <Highlight search={searchTerm}>{result.protocolo}</Highlight>
                   <span className="block font-normal text-sm my-1">
-                    <Highlight search={term}>{result.pergunta}</Highlight>
+                    <Highlight search={searchTerm}>{result.pergunta}</Highlight>
                   </span>
                 </a>
               );
@@ -67,7 +80,7 @@ export const SearchBar = () => {
             {results.length === 0 && (
               <div className="font-normal w-full border-b cursor-pointer p-4">
                 <p className="my-0">
-                  Nenhum resultado para '<strong>{term}</strong>'
+                  Nenhum resultado para '<strong>{searchTerm}</strong>'
                 </p>
               </div>
             )}
