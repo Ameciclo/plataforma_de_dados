@@ -11,7 +11,7 @@ const InfoCard = ({ label, data, style }) => {
       } h-32 rounded shadow-2xl p-3 uppercase tracking-widest`}
     >
       <h3>{label}</h3>
-      <h3 className="text-4xl">{data}</h3>
+      <h3 className="text-5xl font-bold">{data}</h3>
     </div>
   );
 };

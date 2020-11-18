@@ -15,3 +15,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.main-padding-top {
+  @media (min-width: 768px) {
+  padding-top: 58px;
+  }
+  padding-top: 32px;
+}

@@ -1,16 +1,18 @@
-import { ResponsiveBar } from "@nivo/bar";
+import { Bar } from "@nivo/bar";
 import React from "react";
 
 export const HourlyBarChart = ({ data, keys }) => {
   return (
     <>
-      <ResponsiveBar
+      <Bar
         data={data}
         keys={keys}
+        width={1200}
+        height={500}
         indexBy="hour"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
-        layout="horizontal"
+        layout="vertical"
         valueScale={{ type: "linear" }}
         colors={{ scheme: "nivo" }}
         borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
@@ -20,7 +22,7 @@ export const HourlyBarChart = ({ data, keys }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Quantidade",
+          legend: "Hora",
           legendPosition: "middle",
           legendOffset: 32,
         }}
@@ -28,7 +30,7 @@ export const HourlyBarChart = ({ data, keys }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "Hora",
+          legend: "Quantidade",
           legendPosition: "middle",
           legendOffset: -40,
         }}

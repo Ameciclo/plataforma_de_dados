@@ -83,49 +83,33 @@ const Contagem = ({ count }) => {
     hourlyBarData.push(hourObject);
   });
 
-  let hourlyData = [
-    {
-      id: "Homens",
-      color: "hsl(320, 70%, 50%)",
-      data: hourlyMen,
-    },
-    {
-      id: "Mulheres",
-      color: "hsl(75, 70%, 50%)",
-      data: hourlyWomen,
-    },
-    {
-      id: "Crianças",
-      color: "hsl(26, 70%, 50%)",
-      data: hourlyChildren,
-    },
-  ];
-
-  const sumCountPerHour = (flowCount: object) => {
-    if (flowCount === undefined) {
-      return 0;
-    }
+  const sumCountPerHour = (flowCount: object): number => {
     return Object.values(flowCount["count_per_hour"]).reduce(
       (a: number, b: number) => a + b,
       0
-    );
+    ) as number;
   };
 
-  const quantitativeData = count.data.quantitative;
+  const quantitativeData = count.data.quantitative,
+    qualitativeData = count.data.qualitative,
+    womenSum = `${(
+      (100 * sumCountPerHour(qualitativeData.women)) /
+      count.summary.total
+    ).toFixed(1)}%`;
 
   // TODO: Refactor to more generic cases
   let flowKeys = [
       count.north.name,
       count.east.name,
-      count.west.name,
       count.south.name,
+      count.west.name,
     ],
     flowMatrix = [
       [
         0,
-        sumCountPerHour(quantitativeData.north_east),
         sumCountPerHour(quantitativeData.north_west),
         sumCountPerHour(quantitativeData.north_south),
+        sumCountPerHour(quantitativeData.north_east),
       ],
       [
         sumCountPerHour(quantitativeData.east_north),
@@ -134,15 +118,15 @@ const Contagem = ({ count }) => {
         sumCountPerHour(quantitativeData.east_south),
       ],
       [
-        sumCountPerHour(quantitativeData.west_north),
-        sumCountPerHour(quantitativeData.west_east),
+        sumCountPerHour(quantitativeData.south_east),
+        sumCountPerHour(quantitativeData.south_north),
         0,
-        sumCountPerHour(quantitativeData.west_south),
+        sumCountPerHour(quantitativeData.south_west),
       ],
       [
-        sumCountPerHour(quantitativeData.south_north),
-        sumCountPerHour(quantitativeData.south_east),
-        sumCountPerHour(quantitativeData.south_west),
+        sumCountPerHour(quantitativeData.west_south),
+        sumCountPerHour(quantitativeData.west_north),
+        sumCountPerHour(quantitativeData.west_east),
         0,
       ],
     ];
@@ -156,7 +140,7 @@ const Contagem = ({ count }) => {
 
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ marginTop: "16px", height: "25vh" }}
+        style={{ height: "25vh" }}
       >
         <div className="container mx-auto my-8">
           <div className="container mx-auto my-12">
@@ -178,8 +162,8 @@ const Contagem = ({ count }) => {
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <InfoCard
             data={count.summary.total}
-            label={"Número de ciclistas contados"}
-            style={"ameciclo"}
+            label={"Ciclistas"}
+            // style={"ameciclo"}
           />
           <InfoCard
             data={count.summary.hour_max}
@@ -192,12 +176,15 @@ const Contagem = ({ count }) => {
             style={"ameciclo"}
           />
         </section>
-        <section className="container mx-auto my-10">
-          <div className="bg-green-200 rounded shadow-2xl">
+        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
+          <div
+            className="bg-green-200 rounded shadow-2xl lg:col-span-3"
+            style={{ minHeight: "400px" }}
+          >
             <ReactMapGL
               {...viewport}
               width="100%"
-              height="500px"
+              height="100%"
               mapStyle="mapbox://styles/mapbox/light-v10"
               mapboxApiAccessToken={
                 "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
@@ -223,45 +210,126 @@ const Contagem = ({ count }) => {
                   />
                 </svg>
               </Marker>
+              <Marker
+                latitude={count.location.coordinates[0]}
+                longitude={count.location.coordinates[1]}
+              >
+                <svg
+                  height={40}
+                  viewBox="0 0 24 24"
+                  style={{
+                    fill: "#d00",
+                    stroke: "none",
+                    transform: `translate(${-40 / 2}px,${-40}px)`,
+                  }}
+                >
+                  <path
+                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
+  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
+  C20.1,15.8,20.2,15.8,20.2,15.7z`}
+                  />
+                </svg>
+              </Marker>
+              <Marker
+                latitude={count.location.coordinates[0] + 0.001}
+                longitude={count.location.coordinates[1]}
+              >
+                <svg
+                  height={40}
+                  viewBox="0 0 24 24"
+                  style={{
+                    fill: "#d00",
+                    stroke: "none",
+                    transform: `translate(${-40 / 2}px,${-40}px)`,
+                  }}
+                >
+                  <path
+                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
+  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
+  C20.1,15.8,20.2,15.8,20.2,15.7z`}
+                  />
+                </svg>
+              </Marker>
+              <Marker
+                latitude={count.location.coordinates[0] - 0.001}
+                longitude={count.location.coordinates[1]}
+              >
+                <svg
+                  height={40}
+                  viewBox="0 0 24 24"
+                  style={{
+                    fill: "#d00",
+                    stroke: "none",
+                    transform: `translate(${-40 / 2}px,${-40}px)`,
+                  }}
+                >
+                  <path
+                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
+  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
+  C20.1,15.8,20.2,15.8,20.2,15.7z`}
+                  />
+                </svg>
+              </Marker>
+              <Marker
+                latitude={count.location.coordinates[0]}
+                longitude={count.location.coordinates[1] + 0.001}
+              >
+                <svg
+                  height={40}
+                  viewBox="0 0 24 24"
+                  style={{
+                    fill: "#d00",
+                    stroke: "none",
+                    transform: `translate(${-40 / 2}px,${-40}px)`,
+                  }}
+                >
+                  <path
+                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
+  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
+  C20.1,15.8,20.2,15.8,20.2,15.7z`}
+                  />
+                </svg>
+              </Marker>
             </ReactMapGL>
           </div>
         </section>
-
-        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+          <InfoCard data={womenSum} label={"Mulheres"} style={"ameciclo"} />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Pico de ciclistas no intervalo de 1h"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.date.substr(0, 10).split("-").reverse().join("/")}
+            label={"Data da contagem"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.summary.total}
+            label={"Ciclistas"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Pico de ciclistas no intervalo de 1h"}
+            style={"ameciclo"}
+          />
+          <InfoCard
+            data={count.date.substr(0, 10).split("-").reverse().join("/")}
+            label={"Data da contagem"}
+            style={"ameciclo"}
+          />
+        </section>
+        <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              % de caracteristicas de acordo com o total
-            </h2>
-            <PieChart data={summaryData} />
-          </div>
-          {/*TODO: Fix issue with svg errors*/}
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              Quantidade de ciclistas por hora
-            </h2>
-            <HourlyChart data={hourlyData} />
-          </div>
-          <div
-            className="shadow-2xl rounded p-10 text-center"
+            className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
             style={{ height: "700px" }}
           >
             <h2 className="text-gray-600 text-3xl">
               Quantidade de ciclistas por hora
             </h2>
             <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
-          </div>
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">Fluxo de Ciclistas</h2>
-            <FlowChart data={flowMatrix} keys={flowKeys} />
           </div>
         </section>
       </main>
