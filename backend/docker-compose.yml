@@ -8,7 +8,7 @@ networks:
 
 services:
   contagem:
-    container_name: "contagem_de_ciclistas"
+    container_name: "contagem_de_ciclistas_api"
     restart: always
     build: .
     environment:
@@ -34,7 +34,7 @@ services:
     links:
       - mongodb
   mongodb:
-    container_name: mongodb
+    container_name: "contagem_de_ciclistas_mongodb"
     image: mongo
     environment:
       MONGO_INITDB_ROOT_USERNAME: ameciclo
