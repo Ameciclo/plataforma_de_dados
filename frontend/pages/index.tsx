@@ -6,6 +6,7 @@ import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
 // @ts-ignore
 import CalendarIcon from "../public/icons/calendar.svg";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -14,18 +15,13 @@ export default function Home() {
         <title>Plataforma de Dados | Ameciclo</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ height: "75vh" }}
-      >
-        <div className="container mx-auto my-8">
-          <div className="container mx-auto my-12">
-            <h1 className="text-4xl font-bold">Plataforma de Dados</h1>
-            <h3>Seja bem vinde ao portal de dados de mobilidade urbana</h3>
-          </div>
+
+      <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto bg-ameciclo">
+        <div className="container mx-auto my-16">
           <SearchBar />
         </div>
       </div>
+
       <section>
         <div className="container mx-auto flex flex-wrap p-10 flex-1">
           <div className="w-1/4 justify-center flex items-center">
@@ -82,9 +78,11 @@ export default function Home() {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4 grid-flow-row">
             <div className="bg-white h-32 rounded-lg shadow-xl flex items-center justify-center">
-              <div className="flex flex-col text-center px-16 text-ameciclo">
-                <h2 className="text-2xl">CicloMapa</h2>
-              </div>
+              <img
+                src="/ciclomapa.png"
+                alt="Logo do Ciclomapa"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="bg-white h-32 rounded-lg shadow-xl flex items-center justify-center">
               <div className="flex flex-col text-center px-16 text-ameciclo">
