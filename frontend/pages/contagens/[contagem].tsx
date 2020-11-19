@@ -1,24 +1,10 @@
 import React, { useState } from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
-import dynamic from "next/dynamic";
 import { HourlyBarChart } from "../../components/HourlyBarChart";
-import Footer from "../../components/Footer";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
-
-const PieChart = dynamic(() => import("../../components/PieChart"), {
-  ssr: false,
-});
-
-const HourlyChart = dynamic(() => import("../../components/HourlyChart"), {
-  ssr: false,
-});
-
-const FlowChart = dynamic(() => import("../../components/FlowChart"), {
-  ssr: false,
-});
 
 const Contagem = ({ count }) => {
   const [viewport, setViewport] = useState({

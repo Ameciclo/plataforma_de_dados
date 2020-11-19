@@ -28,6 +28,7 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
     "@fullhuman/postcss-purgecss": "^3.0.0",
     "@types/node": "^14.14.8",
     "@types/react": "^16.9.56",
