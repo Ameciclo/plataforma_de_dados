@@ -2,23 +2,25 @@ import { Request, Response } from "express";
 import CyclistCount from "../schemas/CyclistCount";
 
 export const getCyclistCount = async (req: Request, res: Response) => {
-  const cyclistCounts = await CyclistCount.find().select(
-    "_id summary location name date"
-  );
-  return res.json(cyclistCounts);
+  try {
+    if (req.query.q) {
+      const cyclistCount = await CyclistCount.find({
+        $text: { $search: req.query.q as string },
+      }).select("_id summary location name date");
+      return res.json(cyclistCount);
+    }
+    const cyclistCounts = await CyclistCount.find().select(
+      "_id summary location name date"
+    );
+    return res.json(cyclistCounts);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(404);
+  }
 };
 
 export const getCyclistCountById = async (req: Request, res: Response) => {
   try {
-    if (req.query.q) {
-      console.log(req.query.q);
-      const cyclistCount = await CyclistCount.find({
-        $text: { $search: req.query.q as string },
-      });
-      console.log(cyclistCount);
-      return res.json(cyclistCount);
-    }
-
     const cyclistCount = await CyclistCount.findById(req.params.id);
     return res.json(cyclistCount);
   } catch (e) {
