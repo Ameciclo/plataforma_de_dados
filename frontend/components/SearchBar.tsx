@@ -139,15 +139,22 @@ export const SearchBar = () => {
                   return (
                     <a
                       className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
-                      key={result.protocolo}
-                      href={result.url}
+                      key={result._id}
+                      href={`/contagens/${result._id}`}
                     >
-                      <label>Contagem: </label>
                       <Highlight search={searchTerm}>{result.name}</Highlight>
-                      <label>Total: </label>
-                      <span className="block font-normal text-sm my-1">
-                        {result.summary.total}
-                      </span>
+                      <div>
+                        <span className="block font-normal text-sm my-1">
+                          {`Data: ${result.date
+                            .substr(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("/")}`}
+                        </span>
+                        <span className="block font-normal text-sm my-1">
+                          {`Total: ${result.summary.total}`}
+                        </span>
+                      </div>
                     </a>
                   );
                 })}
