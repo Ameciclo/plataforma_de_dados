@@ -14,17 +14,3 @@ describe("GET /contagens/v1/", () => {
       });
   });
 });
-
-describe("GET /contagens/v1/cyclist-count/", () => {
-  it("should return 200 & summary", async (done) => {
-    request(app)
-      .get(`/contagens/v1/cyclist-count/`)
-      .expect("Content-Type", /json/)
-      .expect(200)
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.body).toBeInstanceOf(Array);
-        done();
-      });
-  });
-});

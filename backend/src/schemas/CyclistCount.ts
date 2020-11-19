@@ -614,6 +614,8 @@ const CyclistCountSchema = new mongoose.Schema({
   },
 });
 
+CyclistCountSchema.index({ name: "text" });
+
 export default mongoose.model(
   "CyclistCount",
   CyclistCountSchema,
