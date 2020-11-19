@@ -11,9 +11,11 @@ export const getCyclistCount = async (req: Request, res: Response) => {
 export const getCyclistCountById = async (req: Request, res: Response) => {
   try {
     if (req.query.q) {
+      console.log(req.query.q);
       const cyclistCount = await CyclistCount.find({
         $text: { $search: req.query.q as string },
       });
+      console.log(cyclistCount);
       return res.json(cyclistCount);
     }
 
