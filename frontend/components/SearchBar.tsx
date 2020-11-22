@@ -16,7 +16,7 @@ export const SearchBar = () => {
     const searchQuestion = async (q) => {
       try {
         if (selectedFilter === "protocolos") {
-          const res = await axios.get("http://bicipai.emdados.org/api/pais/", {
+          const res = await axios.get("https://bicipai.emdados.org/api/pais/", {
             params: {
               format: "json",
               q: q,

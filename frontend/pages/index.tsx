@@ -1,14 +1,12 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
 // @ts-ignore
 import ResarchIcon from "../public/icons/research.svg";
 // @ts-ignore
 import CalendarIcon from "../public/icons/calendar.svg";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import React from "react";
+import Img from "../components/Img";
 
 export default function Home() {
   return (
@@ -82,37 +80,25 @@ export default function Home() {
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4 grid-flow-row"
             style={{ justifyItems: "center" }}
           >
-            <div
-              className="bg-white rounded-lg shadow-xl"
-              style={{ height: "122px", width: "233px" }}
-            >
-              <Image
+            <div className="bg-white rounded-lg shadow-xl h-48 w-full">
+              <Img
                 src="/ciclomapa.png"
-                alt="Logo do Ciclomapa"
-                width={233}
-                height={122}
+                aspectRatio={1200 / 630}
+                className="h-full w-full object-cover object-top"
               />
             </div>
-            <div
-              className="bg-white rounded-lg shadow-xl"
-              style={{ height: "122px", width: "233px" }}
-            >
-              <Image
-                src="/mobilidados.png"
-                alt="Logo do Mobilidados"
-                width={233}
-                height={122}
+            <div className="bg-white rounded-lg shadow-xl h-48 w-full">
+              <Img
+                src="/observatorio.webp"
+                aspectRatio={700 / 480}
+                className="h-full w-full object-cover object-top"
               />
             </div>
-            <div
-              className="bg-white rounded-lg shadow-xl"
-              style={{ height: "122px", width: "233px" }}
-            >
-              <Image
-                src="/observatório.png"
-                alt="Logo do Observatório"
-                width={233}
-                height={122}
+            <div className="bg-white rounded-lg shadow-xl h-32 w-full">
+              <Img
+                src="/mobilidados.jpg"
+                aspectRatio={653 / 294}
+                className="h-full w-full object-cover object-top"
               />
             </div>
           </div>
