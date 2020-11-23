@@ -141,14 +141,6 @@ const ContagensTable = ({ data }) => {
               ))}
             </tr>
           ))}
-          <tr>
-            <th
-              colSpan={visibleColumns.length}
-              style={{
-                textAlign: "left",
-              }}
-            />
-          </tr>
         </thead>
         <tbody
           {...getTableBodyProps()}
