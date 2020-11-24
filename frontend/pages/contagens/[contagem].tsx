@@ -81,6 +81,30 @@ const Contagem = ({ count }) => {
     womenSum = `${(
       (100 * sumCountPerHour(qualitativeData.women)) /
       count.summary.total
+    ).toFixed(1)}%`,
+    childrenSum = `${(
+      (100 * sumCountPerHour(qualitativeData.child)) /
+      count.summary.total
+    ).toFixed(1)}%`,
+    helmetSum = `${(
+      (100 * sumCountPerHour(qualitativeData.helmet)) /
+      count.summary.total
+    ).toFixed(1)}%`,
+    serviceSum = `${(
+      (100 * sumCountPerHour(qualitativeData.service)) /
+      count.summary.total
+    ).toFixed(1)}%`,
+    wrongWaySum = `${(
+      (100 * sumCountPerHour(qualitativeData.wrong_way)) /
+      count.summary.total
+    ).toFixed(1)}%`,
+    cargoSum = `${(
+      (100 * sumCountPerHour(qualitativeData.cargo)) /
+      count.summary.total
+    ).toFixed(1)}%`,
+    sidewalkSum = `${(
+      (100 * sumCountPerHour(qualitativeData.sidewalk)) /
+      count.summary.total
     ).toFixed(1)}%`;
 
   // TODO: Refactor to more generic cases
@@ -145,23 +169,26 @@ const Contagem = ({ count }) => {
       </div>
 
       <main className="flex-auto">
-        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={count.summary.total}
-            label={"Ciclistas"}
-            // style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Pico de ciclistas no intervalo de 1h"}
-            style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.date.substr(0, 10).split("-").reverse().join("/")}
-            label={"Data da contagem"}
-            style={"ameciclo"}
-          />
-        </section>
+        <div className="mx-auto text-center my-24">
+          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"N.º de Ciclistas"}</h3>
+              <h3 className="text-5xl font-bold mt-2">{count.summary.total}</h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"Pico de ciclistas no intervalo de 1h"}</h3>
+              <h3 className="text-5xl font-bold mt-2">
+                {count.summary.hour_max}
+              </h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"Data da contagem"}</h3>
+              <h3 className="text-5xl font-bold mt-2">
+                {count.date.substr(0, 10).split("-").reverse().join("/")}
+              </h3>
+            </div>
+          </div>
+        </div>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
           <div
             className="bg-green-200 rounded shadow-2xl lg:col-span-3"
@@ -216,96 +243,17 @@ const Contagem = ({ count }) => {
                   />
                 </svg>
               </Marker>
-              <Marker
-                latitude={count.location.coordinates[0] + 0.001}
-                longitude={count.location.coordinates[1]}
-              >
-                <svg
-                  height={40}
-                  viewBox="0 0 24 24"
-                  style={{
-                    fill: "#d00",
-                    stroke: "none",
-                    transform: `translate(${-40 / 2}px,${-40}px)`,
-                  }}
-                >
-                  <path
-                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
-  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
-  C20.1,15.8,20.2,15.8,20.2,15.7z`}
-                  />
-                </svg>
-              </Marker>
-              <Marker
-                latitude={count.location.coordinates[0] - 0.001}
-                longitude={count.location.coordinates[1]}
-              >
-                <svg
-                  height={40}
-                  viewBox="0 0 24 24"
-                  style={{
-                    fill: "#d00",
-                    stroke: "none",
-                    transform: `translate(${-40 / 2}px,${-40}px)`,
-                  }}
-                >
-                  <path
-                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
-  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
-  C20.1,15.8,20.2,15.8,20.2,15.7z`}
-                  />
-                </svg>
-              </Marker>
-              <Marker
-                latitude={count.location.coordinates[0]}
-                longitude={count.location.coordinates[1] + 0.001}
-              >
-                <svg
-                  height={40}
-                  viewBox="0 0 24 24"
-                  style={{
-                    fill: "#d00",
-                    stroke: "none",
-                    transform: `translate(${-40 / 2}px,${-40}px)`,
-                  }}
-                >
-                  <path
-                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
-  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
-  C20.1,15.8,20.2,15.8,20.2,15.7z`}
-                  />
-                </svg>
-              </Marker>
             </ReactMapGL>
           </div>
         </section>
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard data={womenSum} label={"Mulheres"} style={"ameciclo"} />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Pico de ciclistas no intervalo de 1h"}
-            style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.date.substr(0, 10).split("-").reverse().join("/")}
-            label={"Data da contagem"}
-            style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.summary.total}
-            label={"Ciclistas"}
-            style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Pico de ciclistas no intervalo de 1h"}
-            style={"ameciclo"}
-          />
-          <InfoCard
-            data={count.date.substr(0, 10).split("-").reverse().join("/")}
-            label={"Data da contagem"}
-            style={"ameciclo"}
-          />
+          <InfoCard data={womenSum} label={"Mulheres"} />
+          <InfoCard data={childrenSum} label={"Crianças"} />
+          <InfoCard data={helmetSum} label={"Capacete"} />
+          <InfoCard data={serviceSum} label={"Serviço"} />
+          <InfoCard data={wrongWaySum} label={"Contra Mão"} />
+          <InfoCard data={cargoSum} label={"Cargueira"} />
+          <InfoCard data={sidewalkSum} label={"Calçada"} />
         </section>
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
