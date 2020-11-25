@@ -131,7 +131,7 @@ export default function Home() {
   );
 }
 
-const GridCard = ({ title, text, icon, url }) => {
+const GridCard = ({ title, text, icon}) => {
   return (
     <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
       <div className="flex flex-col text-center">
