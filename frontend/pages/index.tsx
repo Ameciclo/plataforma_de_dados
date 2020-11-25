@@ -47,6 +47,7 @@ export default function Home() {
               title="Contagens"
               text="Contagens das viagens de bicicleta e suas caracteristicas observaveis"
               icon={CalendarIcon}
+              url="/contagens"
             />
             <GridCard
               title="Mapa"
@@ -131,14 +132,16 @@ export default function Home() {
   );
 }
 
-const GridCard = ({ title, text, icon}) => {
+const GridCard = ({ title, text, icon, url = "#" }) => {
   return (
-    <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
-      <div className="flex flex-col text-center">
-        <CalendarIcon className="h-32 fill-current" />
-        <h2 className="text-2xl font-bold text-ameciclo">{title}</h2>
-        <p className="text-base font-medium">{text}</p>
+    <a href={url} >
+      <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
+        <div className="flex flex-col text-center">
+          <CalendarIcon className="h-32 fill-current" />
+          <h2 className="text-2xl font-bold text-ameciclo">{title}</h2>
+          <p className="text-base font-medium">{text}</p>
+        </div>
       </div>
-    </div>
+    </a>
   );
 };
