@@ -83,6 +83,7 @@ export const SearchBar = () => {
           <input
             type="search"
             name="search"
+            autoComplete="off"
             placeholder="O uso de capacete é obrigatório?"
             className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
             value={searchTerm}

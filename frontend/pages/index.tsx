@@ -17,18 +17,18 @@ export default function Home() {
       </Head>
 
       <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto bg-ameciclo">
-        <div className="container mx-auto my-16">
+        <div className="container mx-auto">
           <SearchBar />
         </div>
       </div>
 
       <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1">
+        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4">
           <div className="w-1/4 justify-center flex items-center">
             <ResarchIcon className="h-32 fill-current" />
           </div>
           <div className="w-3/4 justify-center flex items-center">
-            <p className="text-base">
+            <p className="text-base text-2xl">
               Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
               Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
               Lorem Ipsum Lorem Ipsum Lorem Ipsumv Lorem Ipsum Lorem IpsumLorem
@@ -37,9 +37,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-ameciclo">
+      <section >
         <div className="flex-1 container mx-auto p-10 text-center">
-          <h3 className="font-bold text-3xl text-white py-8 w-1/2 mx-auto">
+          <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
             Navegue e visualize os dados
           </h3>
           <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-5 sm:grid-rows-2 gap-8 grid-flow-row">
@@ -131,13 +131,13 @@ export default function Home() {
   );
 }
 
-const GridCard = ({ title, text, icon }) => {
+const GridCard = ({ title, text, icon, url }) => {
   return (
-    <div className="bg-white w-full rounded-lg shadow-xl flex items-center justify-center text-gray-600 p-10">
+    <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
       <div className="flex flex-col text-center">
         <CalendarIcon className="h-32 fill-current" />
-        <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
-        <p className="text-base">{text}</p>
+        <h2 className="text-2xl font-bold text-ameciclo">{title}</h2>
+        <p className="text-base font-medium">{text}</p>
       </div>
     </div>
   );
