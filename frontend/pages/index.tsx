@@ -23,12 +23,12 @@ export default function Home() {
       </div>
 
       <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border border-customGrey rounded-xl">
+        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
           <div className="w-1/4 justify-center flex items-center hidden md:block">
             <ResarchIcon className="h-32 fill-current" />
           </div>
           <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">
-            <p className="text-base text-sm">
+            <p className="text-lg">
               Aqui divulgamos nossos dados de mobilidade ativa, facilitando a
               visualização para estudantes, jornalistas, cicloativistas,
               pesquisadoras(es) e outras(os). Nossas informações são abertas

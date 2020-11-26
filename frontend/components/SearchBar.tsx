@@ -56,10 +56,10 @@ export const SearchBar = () => {
   }, [debouncedSearchTerm]);
 
   return (
-    <div className="relative mx-6">
+    <div className="relative mx-12">
       <div className="flex flex-col items-center relative ">
-        <div className="hero-headline flex flex-col items-center justify-center pt-14 text-center pb-4">
-          <h1 className=" font-bold text-5xl text-ameciclo">
+        <div className="hero-headline flex flex-col items-center justify-center text-center pb-4">
+          <h1 className="font-bold text-5xl text-ameciclo">
             Plataforma de dados
           </h1>
           {/* <p className=" font-base text-base text-ameciclo">
@@ -135,32 +135,32 @@ export const SearchBar = () => {
                 })}
               </>
             ) : (
-              <>
-                {results.map((result) => {
-                  return (
-                    <a
-                      className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
-                      key={result._id}
-                      href={`/contagens/${result._id}`}
-                    >
-                      <Highlight search={searchTerm}>{result.name}</Highlight>
-                      <div>
-                        <span className="block font-normal text-sm my-1">
-                          {`Data: ${result.date
-                            .substr(0, 10)
-                            .split("-")
-                            .reverse()
-                            .join("/")}`}
-                        </span>
-                        <span className="block font-normal text-sm my-1">
-                          {`Total: ${result.summary.total}`}
-                        </span>
-                      </div>
-                    </a>
-                  );
-                })}
-              </>
-            )}
+                <>
+                  {results.map((result) => {
+                    return (
+                      <a
+                        className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
+                        key={result._id}
+                        href={`/contagens/${result._id}`}
+                      >
+                        <Highlight search={searchTerm}>{result.name}</Highlight>
+                        <div>
+                          <span className="block font-normal text-sm my-1">
+                            {`Data: ${result.date
+                              .substr(0, 10)
+                              .split("-")
+                              .reverse()
+                              .join("/")}`}
+                          </span>
+                          <span className="block font-normal text-sm my-1">
+                            {`Total: ${result.summary.total}`}
+                          </span>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </>
+              )}
 
             {results.length === 0 && (
               <div className="font-normal w-full border-b cursor-pointer p-4">
