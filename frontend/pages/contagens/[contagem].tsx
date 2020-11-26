@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import { HourlyBarChart } from "../../components/HourlyBarChart";
 import Layout from "../../components/Layout";
 import Head from "next/head";
@@ -7,6 +7,7 @@ import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
 
 const Contagem = ({ count }) => {
+  const [popupInfo, setPopupInfo] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
     longitude: count.location.coordinates[1],
@@ -109,6 +110,7 @@ const Contagem = ({ count }) => {
           >
             <ReactMapGL
               {...viewport}
+              onViewportChange={(nextViewport) => setViewport(nextViewport)}
               width="100%"
               height="100%"
               mapStyle="mapbox://styles/mapbox/light-v10"
@@ -136,26 +138,49 @@ const Contagem = ({ count }) => {
                   />
                 </svg>
               </Marker>
-              <Marker
-                latitude={count.location.coordinates[0]}
-                longitude={count.location.coordinates[1]}
-              >
-                <svg
-                  height={40}
-                  viewBox="0 0 24 24"
-                  style={{
-                    fill: "#d00",
-                    stroke: "none",
-                    transform: `translate(${-40 / 2}px,${-40}px)`,
-                  }}
-                >
-                  <path
-                    d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
+              {["north", "east", "west", "south"].map((d, i) => {
+                return (
+                  <Marker
+                    latitude={count[d]?.location.coordinates[1]}
+                    longitude={count[d]?.location.coordinates[0]}
+                    key={i}
+                  >
+                    <svg
+                      className="cursor-pointer"
+                      height={40}
+                      viewBox="0 0 24 24"
+                      style={{
+                        fill: "#d00",
+                        stroke: "none",
+                        transform: `translate(${-40 / 2}px,${-40}px)`,
+                      }}
+                      onClick={() => {
+                        setPopupInfo(count[d]);
+                      }}
+                    >
+                      <path
+                        d={`M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
   C20.1,15.8,20.2,15.8,20.2,15.7z`}
-                  />
-                </svg>
-              </Marker>
+                      />
+                    </svg>
+                  </Marker>
+                );
+              })}
+              {popupInfo && (
+                <>
+                  <Popup
+                    tipSize={5}
+                    anchor="top"
+                    longitude={popupInfo.location.coordinates[0]}
+                    latitude={popupInfo.location.coordinates[1]}
+                    closeOnClick={false}
+                    onClose={() => setPopupInfo(null)}
+                  >
+                    <span>{popupInfo.name}</span>
+                  </Popup>
+                </>
+              )}
             </ReactMapGL>
           </div>
         </section>
