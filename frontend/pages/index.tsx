@@ -16,23 +16,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto bg-ameciclo">
+      <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
         <div className="container mx-auto">
           <SearchBar />
         </div>
       </div>
 
       <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4">
+        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border border-customGrey rounded-xl">
           <div className="w-1/4 justify-center flex items-center">
             <ResarchIcon className="h-32 fill-current" />
           </div>
           <div className="w-3/4 justify-center flex items-center">
-            <p className="text-base text-2xl">
-              Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
-              Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
-              Lorem Ipsum Lorem Ipsum Lorem Ipsumv Lorem Ipsum Lorem IpsumLorem
-              Ipsum Lorem Ipsum
+            <p className="text-base text-sm">
+            Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis.
             </p>
           </div>
         </div>

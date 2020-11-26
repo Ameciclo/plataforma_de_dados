@@ -58,15 +58,15 @@ export const SearchBar = () => {
   return (
     <div className="relative mx-6">
       <div className="flex flex-col items-center relative ">
-        <div className="flex flex-col items-center justify-center pt-32 md:pt-24 text-center pb-4">
-          <h1 className="font-bold text-3xl text-white">
-            O que você está procurando?
+        <div className="hero-headline flex flex-col items-center justify-center pt-14 text-center pb-4">
+          <h1 className=" font-bold text-5xl text-ameciclo">
+            Plataforma de dados
           </h1>
-          <p className="font-base text-base text-gray-200">
+          {/* <p className=" font-base text-base text-ameciclo">
             Pedidos de Acesso á informação, dados de contagem...
-          </p>
+          </p> */}
         </div>
-        <div className="bg-white rounded flex items-center w-full p-3 shadow-sm border border-gray-200">
+        <div className="bg-white rounded w-full flex items-center  p-3 shadow-sm border border-gray-200 mt-8">
           <button className="outline-none focus:outline-none">
             <svg
               className=" w-5 text-gray-600 h-5 cursor-pointer"
@@ -84,7 +84,7 @@ export const SearchBar = () => {
             type="search"
             name="search"
             autoComplete="off"
-            placeholder="O uso de capacete é obrigatório?"
+            placeholder="Pedidos de Acesso á informação, dados de contagem..."
             className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
