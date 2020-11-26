@@ -21,7 +21,7 @@ const CyclistCountSchema = new mongoose.Schema({
     service_percent: Number,
     wrong_way_percent: Number,
     sidewalk_percent: Number,
-    download_xlsx_url: String
+    download_xlsx_url: String,
   },
   location: {
     type: {
@@ -39,11 +39,9 @@ const CyclistCountSchema = new mongoose.Schema({
       type: {
         type: String,
         enum: ["Point"],
-        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true,
       },
     },
     name: String,
@@ -53,11 +51,9 @@ const CyclistCountSchema = new mongoose.Schema({
       type: {
         type: String,
         enum: ["Point"],
-        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true,
       },
     },
     name: String,
@@ -67,11 +63,9 @@ const CyclistCountSchema = new mongoose.Schema({
       type: {
         type: String,
         enum: ["Point"],
-        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true,
       },
     },
     name: String,
@@ -81,11 +75,9 @@ const CyclistCountSchema = new mongoose.Schema({
       type: {
         type: String,
         enum: ["Point"],
-        required: true,
       },
       coordinates: {
         type: [Number],
-        required: true,
       },
     },
     name: String,
