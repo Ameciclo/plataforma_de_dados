@@ -39,14 +39,10 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       </Head>
 
       <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
+        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
         style={{ height: "25vh" }}
       >
-        <div className="container mx-auto my-8">
-          <div className="container mx-auto my-12">
-            <h1 className="text-4xl font-bold">Contagens</h1>
-          </div>
-        </div>
+        <h1 className="text-4xl font-bold">Contagens</h1>
       </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">

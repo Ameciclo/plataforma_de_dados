@@ -37,7 +37,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section >
+      <section>
         <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
             Navegue e visualize os dados
@@ -81,25 +81,19 @@ export default function Home() {
             className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4 grid-flow-row"
             style={{ justifyItems: "center" }}
           >
-            <div className="bg-white rounded-lg shadow-xl h-48 w-full">
-              <Img
-                src="/ciclomapa.png"
-                aspectRatio={1200 / 630}
-                className="h-full w-full object-cover object-top"
-              />
+            <div className="bg-white rounded-lg shadow-xl w-full">
+              <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
             </div>
-            <div className="bg-white rounded-lg shadow-xl h-48 w-full">
-              <Img
+            <div className="bg-white rounded-lg shadow-xl w-full">
+              <img
                 src="/observatorio.webp"
-                aspectRatio={700 / 480}
-                className="h-full w-full object-cover object-top"
+                className="object-contain h-48 w-full"
               />
             </div>
-            <div className="bg-white rounded-lg shadow-xl h-32 w-full">
-              <Img
-                src="/mobilidados.jpg"
-                aspectRatio={653 / 294}
-                className="h-full w-full object-cover object-top"
+            <div className="bg-white rounded-lg shadow-xl w-full">
+              <img
+                src="/mobilidados.webp"
+                className="object-fill h-48 w-full"
               />
             </div>
           </div>
@@ -134,7 +128,7 @@ export default function Home() {
 
 const GridCard = ({ title, text, icon, url = "#" }) => {
   return (
-    <a href={url} >
+    <a href={url}>
       <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
         <div className="flex flex-col text-center">
           <CalendarIcon className="h-32 fill-current" />

@@ -15,27 +15,6 @@ const Contagem = ({ count }) => {
     pitch: 0,
   });
 
-  let summaryData = [
-    {
-      id: "Mulheres",
-      label: "Mulheres",
-      value: (count.summary.women_percent * 100).toFixed(1),
-      color: "hsl(1, 70%, 50%)",
-    },
-    {
-      id: "Homens",
-      label: "Homens",
-      value: (count.summary.men_percent * 100).toFixed(1),
-      color: "hsl(293, 70%, 50%)",
-    },
-    {
-      id: "Crianças",
-      label: `Crianças ${(count.summary.children_percent * 100).toFixed(1)}%`,
-      value: (count.summary.children_percent * 100).toFixed(1),
-      color: "hsl(163, 70%, 50%)",
-    },
-  ];
-
   let hourlyMen = [],
     hourlyWomen = [],
     hourlyChildren = [],
@@ -47,7 +26,8 @@ const Contagem = ({ count }) => {
     hourlyBarKeysOriginal = ["men", "women", "child"],
     hourlyBarKeys = ["Homens", "Mulheres", "Crianças"],
     hourlyBarData = [],
-    hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+    hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+    summary = count.summary;
 
   hours.forEach((h) => {
     hourlyMen.push({ x: h, y: count.data.qualitative.men.count_per_hour[h] });
@@ -69,77 +49,12 @@ const Contagem = ({ count }) => {
     hourlyBarData.push(hourObject);
   });
 
-  const sumCountPerHour = (flowCount: object): number => {
-    return Object.values(flowCount["count_per_hour"]).reduce(
-      (a: number, b: number) => a + b,
-      0
-    ) as number;
-  };
-
-  const quantitativeData = count.data.quantitative,
-    qualitativeData = count.data.qualitative,
-    womenSum = `${(
-      (100 * sumCountPerHour(qualitativeData.women)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    childrenSum = `${(
-      (100 * sumCountPerHour(qualitativeData.child)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    helmetSum = `${(
-      (100 * sumCountPerHour(qualitativeData.helmet)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    serviceSum = `${(
-      (100 * sumCountPerHour(qualitativeData.service)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    wrongWaySum = `${(
-      (100 * sumCountPerHour(qualitativeData.wrong_way)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    cargoSum = `${(
-      (100 * sumCountPerHour(qualitativeData.cargo)) /
-      count.summary.total
-    ).toFixed(1)}%`,
-    sidewalkSum = `${(
-      (100 * sumCountPerHour(qualitativeData.sidewalk)) /
-      count.summary.total
-    ).toFixed(1)}%`;
-
-  // TODO: Refactor to more generic cases
-  let flowKeys = [
-      count.north.name,
-      count.east.name,
-      count.south.name,
-      count.west.name,
-    ],
-    flowMatrix = [
-      [
-        0,
-        sumCountPerHour(quantitativeData.north_west),
-        sumCountPerHour(quantitativeData.north_south),
-        sumCountPerHour(quantitativeData.north_east),
-      ],
-      [
-        sumCountPerHour(quantitativeData.east_north),
-        0,
-        sumCountPerHour(quantitativeData.east_west),
-        sumCountPerHour(quantitativeData.east_south),
-      ],
-      [
-        sumCountPerHour(quantitativeData.south_east),
-        sumCountPerHour(quantitativeData.south_north),
-        0,
-        sumCountPerHour(quantitativeData.south_west),
-      ],
-      [
-        sumCountPerHour(quantitativeData.west_south),
-        sumCountPerHour(quantitativeData.west_north),
-        sumCountPerHour(quantitativeData.west_east),
-        0,
-      ],
-    ];
+  // const sumCountPerHour = (flowCount: object): number => {
+  //   return Object.values(flowCount["count_per_hour"]).reduce(
+  //     (a: number, b: number) => a + b,
+  //     0
+  //   ) as number;
+  // };
 
   return (
     <Layout>
@@ -152,13 +67,11 @@ const Contagem = ({ count }) => {
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
         style={{ height: "25vh" }}
       >
-        <div className="container mx-auto my-8">
-          <div className="container mx-auto my-12">
-            <h1 className="text-4xl font-bold">{count.name}</h1>
-          </div>
+        <div className="container mx-auto pt-24 md:pt-0">
+          <h1 className="text-4xl font-bold truncate">{count.name}</h1>
         </div>
       </div>
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
+      <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
         <div className="container mx-auto">
           <Breadcrumb
             label={count.name}
@@ -247,13 +160,34 @@ const Contagem = ({ count }) => {
           </div>
         </section>
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard data={womenSum} label={"Mulheres"} />
-          <InfoCard data={childrenSum} label={"Crianças"} />
-          <InfoCard data={helmetSum} label={"Capacete"} />
-          <InfoCard data={serviceSum} label={"Serviço"} />
-          <InfoCard data={wrongWaySum} label={"Contra Mão"} />
-          <InfoCard data={cargoSum} label={"Cargueira"} />
-          <InfoCard data={sidewalkSum} label={"Calçada"} />
+          <InfoCard
+            data={`${(summary.women_percent * 100).toFixed(2)}%`}
+            label={"Mulheres"}
+          />
+          <InfoCard
+            data={`${(summary.children_percent * 100).toFixed(2)}%`}
+            label={"Crianças e Adolescentes"}
+          />
+          <InfoCard
+            data={`${(summary.helmet_percent * 100).toFixed(2)}%`}
+            label={"Capacete"}
+          />
+          <InfoCard
+            data={`${(summary.service_percent * 100).toFixed(2)}%`}
+            label={"Serviço"}
+          />
+          <InfoCard
+            data={`${(summary.wrong_way_percent * 100).toFixed(2)}%`}
+            label={"Contramão"}
+          />
+          <InfoCard
+            data={`${(summary.cargo_percent * 100).toFixed(2)}%`}
+            label={"Cargueira"}
+          />
+          <InfoCard
+            data={`${(summary.sidewalk_percent * 100).toFixed(2)}%`}
+            label={"Calçada"}
+          />
         </section>
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div

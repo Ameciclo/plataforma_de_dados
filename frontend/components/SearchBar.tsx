@@ -58,11 +58,11 @@ export const SearchBar = () => {
   return (
     <div className="relative mx-6">
       <div className="flex flex-col items-center relative ">
-        <div className="hero-headline flex flex-col items-center justify-center pt-24 text-center pb-4">
-          <h1 className=" font-bold text-3xl text-white">
+        <div className="flex flex-col items-center justify-center pt-32 md:pt-24 text-center pb-4">
+          <h1 className="font-bold text-3xl text-white">
             O que você está procurando?
           </h1>
-          <p className=" font-base text-base text-gray-200">
+          <p className="font-base text-base text-gray-200">
             Pedidos de Acesso á informação, dados de contagem...
           </p>
         </div>
