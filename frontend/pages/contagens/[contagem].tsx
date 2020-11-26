@@ -86,11 +86,11 @@ const Contagem = ({ count }) => {
         <div className="mx-auto text-center my-24">
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>{"N.º de Ciclistas"}</h3>
+              <h3>{"Total de ciclistas"}</h3>
               <h3 className="text-5xl font-bold mt-2">{count.summary.total}</h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>{"Pico de ciclistas no intervalo de 1h"}</h3>
+              <h3>{"Pico em 1h"}</h3>
               <h3 className="text-5xl font-bold mt-2">
                 {count.summary.hour_max}
               </h3>
@@ -202,12 +202,12 @@ const Contagem = ({ count }) => {
             label={"Serviço"}
           />
           <InfoCard
-            data={`${(summary.wrong_way_percent * 100).toFixed(2)}%`}
-            label={"Contramão"}
-          />
-          <InfoCard
             data={`${(summary.cargo_percent * 100).toFixed(2)}%`}
             label={"Cargueira"}
+          />
+          <InfoCard
+            data={`${(summary.wrong_way_percent * 100).toFixed(2)}%`}
+            label={"Contramão"}
           />
           <InfoCard
             data={`${(summary.sidewalk_percent * 100).toFixed(2)}%`}

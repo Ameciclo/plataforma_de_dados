@@ -2,6 +2,9 @@ module.exports = {
   purge: ["./components/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        custom: ['Open Sans']
+      },
       colors: {
         customGrey: "#F1F1F1",
         ameciclo: "#028083",

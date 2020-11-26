@@ -7,9 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const linksArray = [
   { name: "Página Principal", url: "/" },
-  { name: "Contagens", url: "/contagens" },
-  { name: "Ideciclo", url: "https://ideciclo.ameciclo.org/" },
-  { name: "Contato", url: "/contato" },
+  { name: "Contagens", url: "/contagens" }
 ];
 
 const ButtonContainer = styled.div`

@@ -21,12 +21,12 @@ export default function Home() {
       </div>
 
       <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border border-customGrey rounded-xl">
+        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
           <div className="w-1/4 justify-center flex items-center hidden md:block">
             <ResarchIcon className="h-32 fill-current" />
           </div>
           <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">
-            <p className="text-base text-sm">
+            <p className="text-lg">
               Aqui divulgamos nossos dados de mobilidade ativa, facilitando a
               visualização para estudantes, jornalistas, cicloativistas,
               pesquisadoras(es) e outras(os). Nossas informações são abertas
@@ -81,19 +81,25 @@ export default function Home() {
             style={{ justifyItems: "center" }}
           >
             <div className="bg-white rounded-lg shadow-xl w-full">
-              <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
+              <a href="http://ciclomapa.org.br">
+                <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
+              </a>
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
-              <img
-                src="/observatorio.webp"
-                className="object-contain h-48 w-full"
-              />
+              <a href="https://observatoriodabicicleta.org.br">
+                <img
+                  src="/observatorio.webp"
+                  className="object-contain h-48 w-full"
+                />
+              </a>
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
+              <a href="https://mobilidados.org.br">
               <img
                 src="/mobilidados.webp"
                 className="object-fill h-48 w-full"
               />
+              </a>
             </div>
           </div>
         </div>
