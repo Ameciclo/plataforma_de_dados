@@ -83,19 +83,25 @@ export default function Home() {
             style={{ justifyItems: "center" }}
           >
             <div className="bg-white rounded-lg shadow-xl w-full">
-              <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
+              <a href="http://ciclomapa.org.br">
+                <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
+              </a>
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
-              <img
-                src="/observatorio.webp"
-                className="object-contain h-48 w-full"
-              />
+              <a href="https://observatoriodabicicleta.org.br">
+                <img
+                  src="/observatorio.webp"
+                  className="object-contain h-48 w-full"
+                />
+              </a>
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
+              <a href="https://mobilidados.org.br">
               <img
                 src="/mobilidados.webp"
                 className="object-fill h-48 w-full"
               />
+              </a>
             </div>
           </div>
         </div>
