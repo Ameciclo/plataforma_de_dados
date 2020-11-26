@@ -1,9 +1,7 @@
 import Head from "next/head";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
-// @ts-ignore
 import ResarchIcon from "../public/icons/research.svg";
-// @ts-ignore
 import CalendarIcon from "../public/icons/calendar.svg";
 import React from "react";
 import Img from "../components/Img";
