@@ -57,7 +57,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
         <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
           <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Total de ciclistas contados"}</h3>
+            <h3>{"Total de ciclistas"}</h3>
             <h3 className="text-5xl font-bold mt-2">
               {globalSummary[0].totalAmount}
             </h3>
@@ -75,7 +75,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
             </h3>
           </div>
           <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Máximo contado em um ponto"}</h3>
+            <h3>{"Máximo em um ponto"}</h3>
             <h3 className="text-5xl font-bold mt-2">
               {globalSummary[0].MaximumValue}
             </h3>
