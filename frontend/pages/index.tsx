@@ -17,19 +17,23 @@ export default function Home() {
       </Head>
 
       <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
-        <div className="container mx-auto">
+        <div className="container mx-auto mt-20">
           <SearchBar />
         </div>
       </div>
 
       <section>
         <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border border-customGrey rounded-xl">
-          <div className="w-1/4 justify-center flex items-center">
+          <div className="w-1/4 justify-center flex items-center hidden md:block">
             <ResarchIcon className="h-32 fill-current" />
           </div>
-          <div className="w-3/4 justify-center flex items-center">
+          <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">
             <p className="text-base text-sm">
-            Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis.
+              Aqui divulgamos nossos dados de mobilidade ativa, facilitando a
+              visualização para estudantes, jornalistas, cicloativistas,
+              pesquisadoras(es) e outras(os). Nossas informações são abertas
+              para uso de todas as pessoas que desejam uma cidade mais humanas,
+              democráticas e sustentáveis.
             </p>
           </div>
         </div>
