@@ -50,13 +50,6 @@ const Contagem = ({ count }) => {
     hourlyBarData.push(hourObject);
   });
 
-  // const sumCountPerHour = (flowCount: object): number => {
-  //   return Object.values(flowCount["count_per_hour"]).reduce(
-  //     (a: number, b: number) => a + b,
-  //     0
-  //   ) as number;
-  // };
-
   return (
     <Layout>
       <Head>
