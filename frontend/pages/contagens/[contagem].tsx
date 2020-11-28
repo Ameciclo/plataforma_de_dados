@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
+import { Dirent } from "fs";
 
 const Contagem = ({ count }) => {
   const [popupInfo, setPopupInfo] = useState(null);
@@ -15,6 +16,37 @@ const Contagem = ({ count }) => {
     bearing: 0,
     pitch: 0,
   });
+
+
+  function getFlowsFromDirection(direction): string[] {
+    return Object.keys(count.data.quantitative).filter(key => key.startsWith(`${direction}_`));
+  }
+
+  function getTotalCountFromFlow(flow): number {
+    var total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    return total.reduce((sum: number, current: number) => sum + current, 0);
+  }
+
+  function getTotalCountFromDirection(direction): number {
+    var result: number = 0;
+
+    getFlowsFromDirection(direction).forEach(flow => {
+      result += getTotalCountFromFlow(flow);
+    });
+
+    return result;
+  }
+
+  // function getPopupText(direction) : string {
+  //   var message = `Total: ${getTotalCountFromDirection(direction)}\n\n`
+
+  //   getFlowsFromDirection(direction).forEach(flow => {
+  //     message += `${flow}`
+  //   })
+
+  //   return message;
+  // }
+
 
   let hourlyMen = [],
     hourlyWomen = [],
@@ -148,7 +180,7 @@ const Contagem = ({ count }) => {
                         transform: `translate(${-40 / 2}px,${-40}px)`,
                       }}
                       onClick={() => {
-                        setPopupInfo(count[d]);
+                        setPopupInfo(d);
                       }}
                     >
                       <path
@@ -160,17 +192,32 @@ const Contagem = ({ count }) => {
                   </Marker>
                 );
               })}
+
               {popupInfo && (
                 <>
                   <Popup
                     tipSize={5}
                     anchor="top"
-                    longitude={popupInfo.location.coordinates[0]}
-                    latitude={popupInfo.location.coordinates[1]}
+                    longitude={count[popupInfo].location.coordinates[0]}
+                    latitude={count[popupInfo].location.coordinates[1]}
                     closeOnClick={false}
                     onClose={() => setPopupInfo(null)}
                   >
-                    <span>{popupInfo.name}</span>
+                    <span><b>{count[popupInfo].name}</b></span>
+                    <p>
+                      Total: {getTotalCountFromDirection(popupInfo)}<br /><br />
+                      {count[popupInfo].name} para..
+
+                    </p>
+
+                    {
+                      getFlowsFromDirection(popupInfo).map(flow => {
+                        return (
+                          <p>{count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
+                        )
+                      })
+                    }
+
                   </Popup>
                 </>
               )}
