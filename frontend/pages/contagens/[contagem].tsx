@@ -37,15 +37,18 @@ const Contagem = ({ count }) => {
     return result;
   }
 
-  // function getPopupText(direction) : string {
-  //   var message = `Total: ${getTotalCountFromDirection(direction)}\n\n`
-
-  //   getFlowsFromDirection(direction).forEach(flow => {
-  //     message += `${flow}`
-  //   })
-
-  //   return message;
-  // }
+  function getIconFor(direction): string {
+    switch (direction) {
+      case "north":
+        return "⬆️";
+      case "south":
+        return "⬇️";
+      case "east":
+        return "➡️";
+      case "west":
+        return "⬅️";
+    }
+  }
 
 
   let hourlyMen = [],
@@ -213,7 +216,7 @@ const Contagem = ({ count }) => {
                     {
                       getFlowsFromDirection(popupInfo).map(flow => {
                         return (
-                          <p>{count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
+                        <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
                         )
                       })
                     }
