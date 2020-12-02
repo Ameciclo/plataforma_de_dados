@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 networks:
   web:
@@ -11,6 +11,7 @@ services:
     container_name: "contagem_de_ciclistas_api"
     restart: always
     build: .
+    image: ameciclo/contagem_de_ciclistas
     environment:
       PORT: 4000
       MONGO_DB: contagem
