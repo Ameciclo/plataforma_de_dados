@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",
-    "@nivo/bar": "^0.64.0",
+    "@nivo/bar": "^0.66.0",
+    "@nivo/core": "^0.66.0",
     "@svgr/webpack": "^5.5.0",
     "axios": "^0.21.0",
     "framer-motion": "^2.9.4",

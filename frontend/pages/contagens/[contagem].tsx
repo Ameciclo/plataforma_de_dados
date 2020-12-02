@@ -5,6 +5,7 @@ import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
+import FlowContainer from "../../components/FlowChart/FlowContainer";
 
 const Contagem = ({ count }) => {
   const [popupInfo, setPopupInfo] = useState(null);
@@ -50,11 +51,28 @@ const Contagem = ({ count }) => {
     hourlyBarData.push(hourObject);
   });
 
-  // const sumCountPerHour = (flowCount: object): number => {
-  //   return Object.values(flowCount["count_per_hour"]).reduce(
-  //     (a: number, b: number) => a + b,
-  //     0
-  //   ) as number;
+  const sumCountPerHour = (flowCount: object): number => {
+    return Object.values(flowCount["count_per_hour"]).reduce(
+      (a: number, b: number) => a + b,
+      0
+    ) as number;
+  };
+
+  let flowData = {};
+
+  ["north", "east", "west", "south"].forEach((d) => {
+    if (count[d]) {
+      flowData[d] = {};
+    }
+  });
+
+  // let flowData = {
+  //   north: {
+  //     north_east: sumCountPerHour(count.data.quantitative.north_east),
+  //     north_west: sumCountPerHour(count.data.quantitative.north_west),
+  //     north_south: sumCountPerHour(count.data.quantitative.north_west),
+  //     total: 0,
+  //   },
   // };
 
   return (
@@ -224,6 +242,9 @@ const Contagem = ({ count }) => {
             </h2>
             <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
           </div>
+        </section>
+        <section className="container mx-auto">
+          <FlowContainer count={count} flowData={flowData} />
         </section>
       </main>
     </Layout>

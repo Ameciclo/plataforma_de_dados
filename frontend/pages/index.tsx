@@ -2,9 +2,10 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
-import CalendarIcon from "../public/icons/calendar.svg";
+import ContagemIcon from "../public/icons/contagem.svg";
 import React from "react";
 import Img from "../components/Img";
+import FlowContainer from "../components/FlowChart/FlowContainer";
 
 export default function Home() {
   return (
@@ -45,28 +46,28 @@ export default function Home() {
             <GridCard
               title="Contagens"
               text="Contagens das viagens de bicicleta e suas caracteristicas observaveis"
-              icon={CalendarIcon}
+              icon="contagem"
               url="/contagens"
             />
             <GridCard
               title="Mapa"
               text="Acompanhamento da execução do plano diretor cicloviario"
-              icon={CalendarIcon}
+              icon="mapa"
             />
             <GridCard
               title="Ideciclo"
               text="Índice que mede a malha e qualidade da estrutura cicloviaria"
-              icon={CalendarIcon}
+              icon="ideciclo"
             />
             <GridCard
               title="Relatorio de Mobilidade"
               text="Informações obtidas a partir de pedidos de acesso a informação"
-              icon={CalendarIcon}
+              icon="relatorio"
             />
             <GridCard
               title="Perfil"
               text="Dados socio-economicos dos ciclistas e suas percepções"
-              icon={CalendarIcon}
+              icon="perfil"
             />
           </div>
         </div>
@@ -82,7 +83,10 @@ export default function Home() {
           >
             <div className="bg-white rounded-lg shadow-xl w-full">
               <a href="http://ciclomapa.org.br">
-                <img src="/ciclomapa.webp" className="object-fill h-48 w-full" />
+                <img
+                  src="/ciclomapa.webp"
+                  className="object-fill h-48 w-full"
+                />
               </a>
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
@@ -95,10 +99,10 @@ export default function Home() {
             </div>
             <div className="bg-white rounded-lg shadow-xl w-full">
               <a href="https://mobilidados.org.br">
-              <img
-                src="/mobilidados.webp"
-                className="object-fill h-48 w-full"
-              />
+                <img
+                  src="/mobilidados.webp"
+                  className="object-fill h-48 w-full"
+                />
               </a>
             </div>
           </div>
@@ -136,8 +140,10 @@ const GridCard = ({ title, text, icon, url = "#" }) => {
     <a href={url}>
       <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
         <div className="flex flex-col text-center">
-          <CalendarIcon className="h-32 fill-current" />
-          <h2 className="text-2xl font-bold text-ameciclo">{title}</h2>
+          <img src={`/icons/${icon}.svg`} className="h-32 fill-current" />
+          <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
+            {title}
+          </h2>
           <p className="text-base font-medium">{text}</p>
         </div>
       </div>
