@@ -17,6 +17,40 @@ const Contagem = ({ count }) => {
     pitch: 0,
   });
 
+
+  function getFlowsFromDirection(direction): string[] {
+    return Object.keys(count.data.quantitative).filter(key => key.startsWith(`${direction}_`));
+  }
+
+  function getTotalCountFromFlow(flow): number {
+    var total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    return total.reduce((sum: number, current: number) => sum + current, 0);
+  }
+
+  function getTotalCountFromDirection(direction): number {
+    var result: number = 0;
+
+    getFlowsFromDirection(direction).forEach(flow => {
+      result += getTotalCountFromFlow(flow);
+    });
+
+    return result;
+  }
+
+  function getIconFor(direction): string {
+    switch (direction) {
+      case "north":
+        return "⬆️";
+      case "south":
+        return "⬇️";
+      case "east":
+        return "➡️";
+      case "west":
+        return "⬅️";
+    }
+  }
+
+
   let hourlyMen = [],
     hourlyWomen = [],
     hourlyChildren = [],
@@ -173,7 +207,7 @@ const Contagem = ({ count }) => {
                         transform: `translate(${-40 / 2}px,${-40}px)`,
                       }}
                       onClick={() => {
-                        setPopupInfo(count[d]);
+                        setPopupInfo(d);
                       }}
                     >
                       <path
@@ -190,12 +224,26 @@ const Contagem = ({ count }) => {
                   <Popup
                     tipSize={5}
                     anchor="top"
-                    longitude={popupInfo.location.coordinates[0]}
-                    latitude={popupInfo.location.coordinates[1]}
+                    longitude={count[popupInfo].location.coordinates[0]}
+                    latitude={count[popupInfo].location.coordinates[1]}
                     closeOnClick={false}
                     onClose={() => setPopupInfo(null)}
                   >
-                    <span>{popupInfo.name}</span>
+                    <span><b>{count[popupInfo].name}</b></span>
+                    <p>
+                      Total: {getTotalCountFromDirection(popupInfo)}<br /><br />
+                      {count[popupInfo].name} para..
+
+                    </p>
+
+                    {
+                      getFlowsFromDirection(popupInfo).map(flow => {
+                        return (
+                        <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
+                        )
+                      })
+                    }
+
                   </Popup>
                 </>
               )}
@@ -262,8 +310,6 @@ export async function getStaticPaths() {
     params: { contagem: c._id },
   }));
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
   return { paths, fallback: false };
 }
 
