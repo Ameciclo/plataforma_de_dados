@@ -23,12 +23,12 @@ const Contagem = ({ count }) => {
   }
 
   function getTotalCountFromFlow(flow): number {
-    var total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    let total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
     return total.reduce((sum: number, current: number) => sum + current, 0);
   }
 
   function getTotalCountFromDirection(direction): number {
-    var result: number = 0;
+    let result: number = 0;
 
     getFlowsFromDirection(direction).forEach(flow => {
       result += getTotalCountFromFlow(flow);
