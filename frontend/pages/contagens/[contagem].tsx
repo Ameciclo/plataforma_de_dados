@@ -153,6 +153,11 @@ const Contagem = ({ count }) => {
                 {count.date.substr(0, 10).split("-").reverse().join("/")}
               </h3>
             </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"Dados"}</h3>
+              <a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>
+              <a href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
+            </div>
           </div>
         </div>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
@@ -239,7 +244,7 @@ const Contagem = ({ count }) => {
                     {
                       getFlowsFromDirection(popupInfo).map(flow => {
                         return (
-                        <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
+                          <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
                         )
                       })
                     }
