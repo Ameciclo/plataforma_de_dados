@@ -2,6 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const InfoCard = ({ label, data, style }) => {
+  let percent = (data * 100)
+  let text = `${percent.toLocaleString("pt-BR", {maximumFractionDigits: 1})}%`
+
   return (
     <div
       className={`${
@@ -11,7 +14,7 @@ const InfoCard = ({ label, data, style }) => {
       } h-32 rounded shadow-2xl p-3 uppercase tracking-widest`}
     >
       <h3>{label}</h3>
-      <h3 className="text-5xl font-bold">{data}</h3>
+      <h3 className="text-5xl font-bold">{text}</h3>
     </div>
   );
 };

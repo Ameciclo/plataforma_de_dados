@@ -257,31 +257,31 @@ const Contagem = ({ count }) => {
         </section>
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <InfoCard
-            data={`${(summary.women_percent * 100).toFixed(2)}%`}
+            data={summary.women_percent}
             label={"Mulheres"}
           />
           <InfoCard
-            data={`${(summary.children_percent * 100).toFixed(2)}%`}
+            data={summary.children_percent}
             label={"Crianças e Adolescentes"}
           />
           <InfoCard
-            data={`${(summary.helmet_percent * 100).toFixed(2)}%`}
+            data={summary.helmet_percent}
             label={"Capacete"}
           />
           <InfoCard
-            data={`${(summary.service_percent * 100).toFixed(2)}%`}
+            data={summary.service_percent}
             label={"Serviço"}
           />
           <InfoCard
-            data={`${(summary.cargo_percent * 100).toFixed(2)}%`}
+            data={summary.cargo_percent}
             label={"Cargueira"}
           />
           <InfoCard
-            data={`${(summary.wrong_way_percent * 100).toFixed(2)}%`}
+            data={summary.wrong_way_percent}
             label={"Contramão"}
           />
           <InfoCard
-            data={`${(summary.sidewalk_percent * 100).toFixed(2)}%`}
+            data={summary.sidewalk_percent}
             label={"Calçada"}
           />
         </section>
