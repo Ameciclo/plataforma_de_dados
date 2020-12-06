@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import Breadcrumb from "../components/Breadcrumb";
-import InfoCard from "../components/InfoCard";
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -29,6 +28,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     zoom: 10,
     bearing: 0,
     pitch: 0,
+  });
+
+  const [settings, setsettings] = useState({
+    dragPan: true,
+    dragRotate: true,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    boxZoom: true,
+    doubleClickZoom: true
   });
 
   return (
@@ -133,6 +143,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         <div className="bg-green-200 rounded shadow-2xl">
           <ReactMapGL
             {...viewport}
+            {...settings}
             onViewportChange={(nextViewport) => setViewport(nextViewport)}
             width="100%"
             height="500px"
@@ -141,6 +152,26 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
             }
           >
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <FullscreenControl />
+            </div>
+
+            <div style={{
+              position: 'absolute',
+              top: 40,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <NavigationControl />
+            </div>
+
             {cyclistCounts.map((c) => (
               <Marker
                 key={c._id}
