@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
 import { HourlyBarChart } from "../../components/HourlyBarChart";
 import Layout from "../../components/Layout";
 import Head from "next/head";
@@ -12,9 +12,20 @@ const Contagem = ({ count }) => {
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
     longitude: count.location.coordinates[1],
-    zoom: 16,
+    zoom: 17,
     bearing: 0,
     pitch: 0,
+  });
+
+  const [settings, setsettings] = useState({
+    dragPan: true,
+    dragRotate: true,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    boxZoom: true,
+    doubleClickZoom: true
   });
 
 
@@ -167,6 +178,7 @@ const Contagem = ({ count }) => {
           >
             <ReactMapGL
               {...viewport}
+              {...settings}
               onViewportChange={(nextViewport) => setViewport(nextViewport)}
               width="100%"
               height="100%"
@@ -175,6 +187,15 @@ const Contagem = ({ count }) => {
                 "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
               }
             >
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                padding: '10px',
+                zIndex: 500
+              }}>
+                <NavigationControl />
+              </div>
               <Marker
                 latitude={count.location.coordinates[0]}
                 longitude={count.location.coordinates[1]}
