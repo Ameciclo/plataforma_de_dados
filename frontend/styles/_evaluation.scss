@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900");
+
+.wrapper {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 100px;
+  margin-bottom: 40px;
+  width: 100%;
+  .container {
+    width: 100%;
+    max-width: 1600px;
+    display: flex;
+    .box {
+      padding: 41px 20px;
+      position: relative;
+      background: #fff;
+      height: 150px;
+      min-width: 218px;
+      width: 25%;
+      z-index: 3;
+      border-radius: 5px;
+      box-shadow: 0 20px 20px rgba(0, 0, 0, 0.08);
+      transition: all 250ms cubic-bezier(0.02, 0.01, 0.47, 1);
+      display: inline-block;
+      margin: 15px 1.25%;
+      cursor: default;
+      &:hover {
+        box-shadow: 0 40px 40px rgba(0, 0, 0, 0.16);
+      }
+      .meta {
+        position: absolute;
+        top: 11.7%;
+        left: 0%;
+        padding: 0;
+        padding-left: 10px;
+        h1 {
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: 500;
+          font-size: 16px;
+          color: #666;
+          padding: 0;
+          float: left;
+        }
+        h2 {
+          display: block;
+          margin-top: 0%;
+          font-weight: 700;
+          font-size: 75px;
+          color: #ff4e2b;
+        }
+        h3 {
+          position: absolute;
+          top: 4.5%;
+          right: 15px;
+          color: #00d1b2;
+          font-size: 20px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+
+.wrapper .container .box h3 {
+  position: absolute;
+  top: 8.5%;
+  right: 15px;
+  color: #00d1b2;
+  font-size: 20px;
+  font-weight: 400;
+}
+.wrapper .container .box h3.down {
+  color: #ff4c4c;
+}
+.wrapper .container .box h3.down:before {
+  content: "";
+  position: relative;
+  top: 19px;
+  right: 4px;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+  border-top: 13px solid #ff4c4c;
+}
+.wrapper .container .box h3.up:before {
+  content: "";
+  position: relative;
+  top: -19px;
+  right: 4px;
+  border-left: 7.5px solid transparent;
+  border-right: 7.5px solid transparent;
+  border-bottom: 13px solid #00d1b2;
+}

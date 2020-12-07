@@ -30,7 +30,9 @@ const Contagem = ({ count }) => {
 
 
   function getFlowsFromDirection(direction): string[] {
-    return Object.keys(count.data.quantitative).filter(key => key.startsWith(`${direction}_`));
+    return Object.keys(count.data.quantitative).filter((key) =>
+      key.startsWith(`${direction}_`)
+    );
   }
 
   function getTotalCountFromFlow(flow): number {
@@ -41,7 +43,7 @@ const Contagem = ({ count }) => {
   function getTotalCountFromDirection(direction): number {
     let result: number = 0;
 
-    getFlowsFromDirection(direction).forEach(flow => {
+    getFlowsFromDirection(direction).forEach((flow) => {
       result += getTotalCountFromFlow(flow);
     });
 
@@ -60,7 +62,6 @@ const Contagem = ({ count }) => {
         return "⬅️";
     }
   }
-
 
   let hourlyMen = [],
     hourlyWomen = [],
@@ -255,11 +256,14 @@ const Contagem = ({ count }) => {
                     closeOnClick={false}
                     onClose={() => setPopupInfo(null)}
                   >
-                    <span><b>{count[popupInfo].name}</b></span>
+                    <span>
+                      <b>{count[popupInfo].name}</b>
+                    </span>
                     <p>
-                      Total: {getTotalCountFromDirection(popupInfo)}<br /><br />
+                      Total: {getTotalCountFromDirection(popupInfo)}
+                      <br />
+                      <br />
                       {count[popupInfo].name} para..
-
                     </p>
 
                     {
@@ -276,34 +280,41 @@ const Contagem = ({ count }) => {
             </ReactMapGL>
           </div>
         </section>
-        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <InfoCard
             data={summary.women_percent}
             label={"Mulheres"}
+            icon="women"
           />
           <InfoCard
             data={summary.children_percent}
             label={"Crianças e Adolescentes"}
+            icon="children"
           />
           <InfoCard
             data={summary.helmet_percent}
             label={"Capacete"}
+            icon="helmet"
           />
           <InfoCard
             data={summary.service_percent}
             label={"Serviço"}
+            icon="service"
           />
           <InfoCard
             data={summary.cargo_percent}
             label={"Cargueira"}
+            icon="cargo"
           />
           <InfoCard
             data={summary.wrong_way_percent}
             label={"Contramão"}
+            icon="wrong_way"
           />
           <InfoCard
             data={summary.sidewalk_percent}
             label={"Calçada"}
+            icon="sidewalk"
           />
         </section>
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">

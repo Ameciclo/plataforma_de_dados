@@ -150,12 +150,13 @@ function FlowContainer({ count, flowData }) {
             </text>
           </g>
 
-          <g clipPath="url(#clip-path)">
+          <g>
             <rect x="300" y="99" width="19" height="121" fill="#008081" />
             <text
+              textAnchor="start"
               fill="#fff"
               fontFamily="Helvetica"
-              fontSize="12"
+              fontSize="10"
               transform="rotate(90 85 221)"
               className="uppercase"
             >
@@ -168,7 +169,7 @@ function FlowContainer({ count, flowData }) {
           <text
             fill="#fff"
             fontFamily="Helvetica"
-            fontSize="12"
+            fontSize="10"
             transform="rotate(-90 96.574 82.444)"
             className="uppercase"
           >
