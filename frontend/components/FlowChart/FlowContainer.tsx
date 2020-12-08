@@ -6,12 +6,37 @@ import FlowTotalCount from "./FlowTotalCount";
 FlowContainer.propTypes = {};
 
 function FlowContainer({ count, flowData }) {
+
+  function getFlowsFromDirection(direction): string[] {
+    return Object.keys(count.data.quantitative).filter((key) =>
+      key.startsWith(`${direction}_`)
+    );
+  }
+
+  function getTotalCountFromFlow(flow): number {
+    let total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    return total.reduce((sum: number, current: number) => sum + current, 0);
+  }
+
+  function getTotalCountFromDirection(direction): number {
+    let result: number = 0;
+
+    getFlowsFromDirection(direction).forEach((flow) => {
+      result += getTotalCountFromFlow(flow);
+    });
+
+    return result;
+  }
+
+
+
+
   return (
     <>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
-        height="800px"
+        height="400px"
         viewBox="0 0 318.345 318.388"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -75,7 +100,7 @@ function FlowContainer({ count, flowData }) {
             fontSize="20"
             transform="rotate(90 68.876 213.325)"
           >
-            142
+            {getTotalCountFromDirection("east")}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -89,7 +114,7 @@ function FlowContainer({ count, flowData }) {
             fontSize="20"
             transform="translate(144.403 296.096)"
           >
-            142
+            {getTotalCountFromDirection("south")}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -103,7 +128,7 @@ function FlowContainer({ count, flowData }) {
             fontSize="20"
             transform="rotate(-90 105.064 68.92)"
           >
-            142
+            {getTotalCountFromDirection("west")}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -117,7 +142,7 @@ function FlowContainer({ count, flowData }) {
             fontSize="20"
             transform="translate(144.403 36.145)"
           >
-            142
+            {getTotalCountFromDirection("north")}
           </text>
           <g>
             <rect x="98" y="0" width="121" height="19" fill="#008081" />
@@ -182,7 +207,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="rotate(-90 132.225 69.606)"
           >
-            142
+            {getTotalCountFromFlow("west_south")}
           </text>
           <text
             fill="#008081"
@@ -191,10 +216,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.09em"
             transform="rotate(-90 117.974 55.354)"
           >
-            1
-            <tspan x="5.995" y="0" letterSpacing="-.03em">
-              042
-            </tspan>
+            {getTotalCountFromFlow("west_east")}
           </text>
           <text
             fill="#008081"
@@ -203,10 +225,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.09em"
             transform="rotate(-90 100.325 37.705)"
           >
-            1
-            <tspan x="5.995" y="0" letterSpacing="-.03em">
-              02
-            </tspan>
+            {getTotalCountFromFlow("west_north")}
           </text>
           <text
             fill="#008081"
@@ -215,7 +234,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="rotate(90 70.33 186.597)"
           >
-            115
+            {getTotalCountFromFlow("east_north")}
           </text>
           <text
             fill="#008081"
@@ -224,7 +243,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="rotate(90 52.868 204.058)"
           >
-            76
+            {getTotalCountFromFlow("east_west")}
           </text>
           <text
             fill="#008081"
@@ -233,7 +252,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="rotate(90 36.43 220.496)"
           >
-            83
+            {getTotalCountFromFlow("east_south")}
           </text>
           <text
             fill="#008081"
@@ -242,7 +261,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(119.927 266.035)"
           >
-            55
+            {getTotalCountFromFlow("south_west")}
           </text>
           <text
             fill="#008081"
@@ -251,7 +270,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(151.428 266.035)"
           >
-            35
+            {getTotalCountFromFlow("south_north")}
           </text>
           <text
             fill="#008081"
@@ -260,7 +279,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(184.303 266.035)"
           >
-            97
+            {getTotalCountFromFlow("south_east")}
           </text>
           <text
             fill="#008081"
@@ -269,7 +288,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(116.497 62.48)"
           >
-            {flowData.north.north_west}
+            {getTotalCountFromFlow("north_west")}
           </text>
           <text
             fill="#008081"
@@ -278,7 +297,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(152.42 62.48)"
           >
-            {flowData.north.north_south}
+            {getTotalCountFromFlow("north_south")}
           </text>
           <text
             fill="#008081"
@@ -287,7 +306,7 @@ function FlowContainer({ count, flowData }) {
             letterSpacing="-.03em"
             transform="translate(184.294 62.48)"
           >
-            {flowData.north.north_east}
+            {getTotalCountFromFlow("north_east")}
           </text>
         </g>
       </svg>

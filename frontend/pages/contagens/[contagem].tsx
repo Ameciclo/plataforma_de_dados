@@ -172,9 +172,9 @@ const Contagem = ({ count }) => {
             </div>
           </div>
         </div>
-        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
-            className="bg-green-200 rounded shadow-2xl lg:col-span-3"
+            className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
             style={{ minHeight: "400px" }}
           >
             <ReactMapGL
@@ -205,7 +205,7 @@ const Contagem = ({ count }) => {
                   height={40}
                   viewBox="0 0 24 24"
                   style={{
-                    fill: "#d00",
+                    fill: "#028083",
                     stroke: "none",
                     transform: `translate(${-40 / 2}px,${-40}px)`,
                   }}
@@ -216,6 +216,7 @@ const Contagem = ({ count }) => {
   C20.1,15.8,20.2,15.8,20.2,15.7z`}
                   />
                 </svg>
+
               </Marker>
               {["north", "east", "west", "south"].map((d, i) => {
                 return (
@@ -229,7 +230,7 @@ const Contagem = ({ count }) => {
                       height={40}
                       viewBox="0 0 24 24"
                       style={{
-                        fill: "#d00",
+                        fill: "#028083",
                         stroke: "none",
                         transform: `translate(${-40 / 2}px,${-40}px)`,
                       }}
@@ -279,6 +280,9 @@ const Contagem = ({ count }) => {
               )}
             </ReactMapGL>
           </div>
+          <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
+            <FlowContainer count={count} flowData={flowData} />
+          </div>
         </section>
         <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <InfoCard
@@ -327,9 +331,6 @@ const Contagem = ({ count }) => {
             </h2>
             <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
           </div>
-        </section>
-        <section className="container mx-auto">
-          <FlowContainer count={count} flowData={flowData} />
         </section>
       </main>
     </Layout>
