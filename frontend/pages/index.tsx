@@ -58,6 +58,7 @@ export default function Home() {
               title="Ideciclo"
               text="Índice que mede a malha e qualidade da estrutura cicloviaria"
               icon="ideciclo"
+              url="/ideciclo"
             />
             <GridCard
               title="Relatorio de Mobilidade"
