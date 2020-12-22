@@ -25,9 +25,8 @@ const Contagem = ({ count }) => {
     touchRotate: true,
     keyboard: true,
     boxZoom: true,
-    doubleClickZoom: true
+    doubleClickZoom: true,
   });
-
 
   function getFlowsFromDirection(direction): string[] {
     return Object.keys(count.data.quantitative).filter((key) =>
@@ -36,7 +35,9 @@ const Contagem = ({ count }) => {
   }
 
   function getTotalCountFromFlow(flow): number {
-    let total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    let total: number[] = Object.values(
+      count.data.quantitative[flow].count_per_hour
+    );
     return total.reduce((sum: number, current: number) => sum + current, 0);
   }
 
@@ -167,8 +168,18 @@ const Contagem = ({ count }) => {
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
-              <a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>
-              <a href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
+              <a
+                href={count.summary.download_xlsx_url}
+                className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2"
+              >
+                XLSX
+              </a>
+              <a
+                href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${count._id}`}
+                className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2"
+              >
+                JSON
+              </a>
             </div>
           </div>
         </div>
@@ -188,13 +199,15 @@ const Contagem = ({ count }) => {
                 "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
               }
             >
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                padding: '10px',
-                zIndex: 500
-              }}>
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  padding: "10px",
+                  zIndex: 500,
+                }}
+              >
                 <NavigationControl />
               </div>
               <Marker
@@ -216,7 +229,6 @@ const Contagem = ({ count }) => {
   C20.1,15.8,20.2,15.8,20.2,15.7z`}
                   />
                 </svg>
-
               </Marker>
               {["north", "east", "west", "south"].map((d, i) => {
                 return (
@@ -267,14 +279,15 @@ const Contagem = ({ count }) => {
                       {count[popupInfo].name} para..
                     </p>
 
-                    {
-                      getFlowsFromDirection(popupInfo).map(flow => {
-                        return (
-                          <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
-                        )
-                      })
-                    }
-
+                    {getFlowsFromDirection(popupInfo).map((flow) => {
+                      return (
+                        <p>
+                          {getIconFor(flow.split("_")[1])}{" "}
+                          {count[flow.split("_")[1]].name}:{" "}
+                          {getTotalCountFromFlow(flow)}{" "}
+                        </p>
+                      );
+                    })}
                   </Popup>
                 </>
               )}

@@ -15,6 +15,7 @@
     "@nivo/radar": "^0.66.0",
     "@svgr/webpack": "^5.5.0",
     "@tippyjs/react": "^4.2.0",
+    "@vojtechportes/react-query-builder": "^0.4.3",
     "axios": "^0.21.0",
     "framer-motion": "^2.9.4",
     "match-sorter": "^5.0.0",

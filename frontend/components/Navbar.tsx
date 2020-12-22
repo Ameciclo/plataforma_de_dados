@@ -9,6 +9,7 @@ const linksArray = [
   { name: "Página Principal", url: "/" },
   { name: "Contagens", url: "/contagens" },
   { name: "Ideciclo", url: "/ideciclo" },
+  { name: "Perfil", url: "/perfil" },
 ];
 
 const ButtonContainer = styled.div`
@@ -126,7 +127,10 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full" style={{zIndex: 501}}>
+    <nav
+      className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full"
+      style={{ zIndex: 501 }}
+    >
       <div className="flex-1 flex justify-between items-center container mx-auto">
         <Link href="/">
           <a>
