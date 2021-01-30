@@ -236,9 +236,7 @@ const Perfil = ({ cyclistProfiles }) => {
 };
 
 export async function getServerSideProps() {
-  const res = await fetch(
-    `https://api.perfil.ameciclo.org/v1/cyclist-profile/`
-  );
+  const res = await fetch(`http://localhost:8000/v1/cyclist-profile/`);
 
   const cyclistProfiles = await res.json();
 
