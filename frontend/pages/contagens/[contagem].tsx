@@ -178,18 +178,15 @@ const Contagem = ({ count }) => {
         <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
           <InfoCard
             data={count.summary.total}
-            label={"Número de ciclistas contados"}
-            style={"ameciclo"}
+            label={"Total de ciclistas"}
           />
           <InfoCard
             data={count.summary.hour_max}
-            label={"Pico de ciclistas no intervalo de 1h"}
-            style={"ameciclo"}
+            label={"Máximo em 1h"}
           />
           <InfoCard
             data={count.date.substr(0, 10).split("-").reverse().join("/")}
             label={"Data da contagem"}
-            style={"ameciclo"}
           />
         </section>
         <section className="container mx-auto my-10">
@@ -226,7 +223,28 @@ const Contagem = ({ count }) => {
             </ReactMapGL>
           </div>
         </section>
-
+        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+          <InfoCard
+            data={count.summary.total}
+            label={"Mulheres"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Crianças e adolescentes"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Capacetes"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Cargueiras"}
+          />
+          <InfoCard
+            data={count.summary.hour_max}
+            label={"Serviço"}
+          />
+        </section>
         <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
           <div
             className="shadow-2xl rounded p-10 text-center"

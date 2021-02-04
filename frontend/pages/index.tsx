@@ -6,6 +6,8 @@ import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
 // @ts-ignore
 import CalendarIcon from "../public/icons/calendar.svg";
+import FrontCard from "../components/FrontCard";
+
 
 export default function Home() {
   return (
@@ -22,7 +24,7 @@ export default function Home() {
         <div className="container mx-auto my-8">
           <div className="container mx-auto my-12">
             <h1 className="text-4xl font-bold">Plataforma de Dados</h1>
-            <h3>Seja bem vinde ao portal de dados de mobilidade urbana</h3>
+            <h3>Dados de mobilidade urbana, focados na mobilidade ativa.</h3>
           </div>
           <SearchBar />
         </div>
@@ -40,6 +42,35 @@ export default function Home() {
               Ipsum Lorem Ipsum
             </p>
           </div>
+        </div>
+      </section>
+      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+        <FrontCard
+            data="Contagens das viagens de bicicleta e suas caracteristicas observáveis"
+            label="Contagens"
+            icon={CalendarIcon}
+          />
+        <FrontCard
+            data="Índice que mede a malha e qualidade da estrutura cicloviaria"
+            label="IDECICLO"
+            icon=""
+          />
+          <FrontCard
+            data="Informações obtidas a partir de pedidos de acesso a informação"
+            label="Relatorio da Mobilidade"
+            icon=""
+          />
+          <FrontCard
+            data="Dados socio-economicos dos ciclistas e suas percepções"
+            label="Perfil de Ciclistas"
+            icon=""
+          />
+          <FrontCard
+            data="Acompanhamento da execução do Plano Diretor Cicloviário"
+            label="Observatório do PDC"
+            icon=""
+          />
         </div>
       </section>
       <section className="bg-ameciclo">

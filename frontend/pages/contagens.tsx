@@ -61,7 +61,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
           <InfoCard
             data={globalSummary[0].totalAmount}
-            label={"N.º de ciclistas contados"}
+            label={"Total de ciclistas"}
           />
           <InfoCard
             data={globalSummary[0].numberOfCounts}
@@ -73,10 +73,26 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           />
           <InfoCard
             data={globalSummary[0].MaximumValue}
-            label={"N.º máximo contado"}
+            label={"Máximo em um ponto"}
+          />
+          <InfoCard
+            data={globalSummary[0].MaximumValue}
+            label={"Média de mulheres"}
+          />
+          <InfoCard
+            data={globalSummary[0].MaximumValue}
+            label={"Média de crianças e adolescentes"}
+          />
+          <InfoCard
+            data={globalSummary[0].MaximumValue}
+            label={"Média de caronas"}
+          />
+          <InfoCard
+            data={globalSummary[0].MaximumValue}
+            label={"Última contagem"}
           />
         </div>
-        <p className="text-justify text-gray-800">
+        <p className="text-justify text-gray-800 grid-cols-2">
           Registramos as pessoas que passam de bicicleta durante 14 horas em um
           pré-escolhido cruzamento da cidade do Recife. As nossas contagens são
           registradas manualmente através da observação das pessoas voluntárias
@@ -94,7 +110,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           utiliza como ferramentas para incidir no planejamento e tem seus dados
           abertos para serem usados pela mídia, academia ou quaisquer pessoa que
           assim deseje.
-        </p>
+          </p>
       </section>
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
