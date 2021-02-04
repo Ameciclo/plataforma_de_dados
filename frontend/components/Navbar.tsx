@@ -8,8 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const linksArray = [
   { name: "Página Principal", url: "/" },
   { name: "Contagens", url: "/contagens" },
-  { name: "Ideciclo", url: "https://ideciclo.ameciclo.org/" },
-  { name: "Contato", url: "/contato" },
+  { name: "Ideciclo", url: "/ideciclo" },
 ];
 
 const ButtonContainer = styled.div`
@@ -127,7 +126,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full">
+    <nav className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full" style={{zIndex: 501}}>
       <div className="flex-1 flex justify-between items-center container mx-auto">
         <Link href="/">
           <a>

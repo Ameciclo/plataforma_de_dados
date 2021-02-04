@@ -60,16 +60,14 @@ const ContagensTable = ({ data }) => {
       },
       {
         Header: "Dados",
-        Cell: ({ value }) => (
+        Cell: ({ row }) => (
           <span>
-            <Link
-              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=csv`}
-            >
-              <a className="text-blue-500">CSV</a>
+            <Link href={row.original.summary.download_xlsx_url}>
+              <a className="text-blue-500">XLSX</a>
             </Link>
             <span> | </span>
             <Link
-              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${value}?format=json`}
+              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${row.original._id}`}
             >
               <a className="text-blue-500">JSON</a>
             </Link>
@@ -141,14 +139,6 @@ const ContagensTable = ({ data }) => {
               ))}
             </tr>
           ))}
-          <tr>
-            <th
-              colSpan={visibleColumns.length}
-              style={{
-                textAlign: "left",
-              }}
-            />
-          </tr>
         </thead>
         <tbody
           {...getTableBodyProps()}

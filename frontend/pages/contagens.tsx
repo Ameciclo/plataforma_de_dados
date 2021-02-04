@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import Breadcrumb from "../components/Breadcrumb";
-import InfoCard from "../components/InfoCard";
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -31,6 +30,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     pitch: 0,
   });
 
+  const [settings, setsettings] = useState({
+    dragPan: true,
+    dragRotate: true,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    boxZoom: true,
+    doubleClickZoom: true
+  });
+
   return (
     <Layout>
       <Head>
@@ -39,14 +49,10 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       </Head>
 
       <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ marginTop: "16px", height: "25vh" }}
+        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
+        style={{ height: "25vh" }}
       >
-        <div className="container mx-auto my-8">
-          <div className="container mx-auto my-12">
-            <h1 className="text-4xl font-bold">Contagens</h1>
-          </div>
-        </div>
+        <h1 className="text-4xl font-bold">Contagens</h1>
       </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
@@ -57,7 +63,37 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           />
         </div>
       </div>
+      <div className="mx-auto text-center my-24">
+        <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
+        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+            <h3>{"Total de ciclistas"}</h3>
+            <h3 className="text-5xl font-bold mt-2">
+              {globalSummary[0].totalAmount}
+            </h3>
+          </div>
+          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+            <h3>{"Contagens Realizadas"}</h3>
+            <h3 className="text-5xl font-bold mt-2">
+              {globalSummary[0].numberOfCounts}
+            </h3>
+          </div>
+          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+            <h3>{"Pontos Monitorados"}</h3>
+            <h3 className="text-5xl font-bold mt-2">
+              {countsGroupedArray.length}
+            </h3>
+          </div>
+          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+            <h3>{"Máximo em um ponto"}</h3>
+            <h3 className="text-5xl font-bold mt-2">
+              {globalSummary[0].MaximumValue}
+            </h3>
+          </div>
+        </div>
+      </div>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+<<<<<<< HEAD
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
           <InfoCard
             data={globalSummary[0].totalAmount}
@@ -111,11 +147,59 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           abertos para serem usados pela mídia, academia ou quaisquer pessoa que
           assim deseje.
           </p>
+=======
+        {/*<div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">*/}
+        {/*  <InfoCard*/}
+        {/*    data={globalSummary[0].totalAmount}*/}
+        {/*    label={"N.º de ciclistas contados"}*/}
+        {/*  />*/}
+        {/*  <InfoCard*/}
+        {/*    data={globalSummary[0].numberOfCounts}*/}
+        {/*    label={"Contagens Realizadas"}*/}
+        {/*  />*/}
+        {/*  <InfoCard*/}
+        {/*    data={countsGroupedArray.length}*/}
+        {/*    label={"Pontos Monitorados"}*/}
+        {/*  />*/}
+        {/*  <InfoCard*/}
+        {/*    data={globalSummary[0].MaximumValue}*/}
+        {/*    label={"N.º máximo contado"}*/}
+        {/*  />*/}
+        {/*</div>*/}
+        <div className="flex flex-col sm:flex-row justify-between">
+          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
+            <h1 className="text-4xl font-bold mb-2">O que é?</h1>
+            <p>
+              Registramos as pessoas que passam de bicicleta durante 14 horas em
+              um pré-escolhido cruzamento da cidade do Recife. As nossas
+              contagens são registradas manualmente através da observação das
+              pessoas voluntárias na contagem, registrando a direção do
+              deslocamento e fatores qualitativos. Dentre esses fatores estão o
+              gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
+              se são crianças se estão à serviço e comportamentos como contramão
+              e pedalada na calçada. Ainda são registrados outros fatores
+              qualitativos que podem ser especificidades de cada local.
+            </p>
+          </div>
+          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
+            <h1 className="text-4xl font-bold mb-2">Para que serve?</h1>
+            <p>
+              As contagens de ciclistas são importantes instrumentos de
+              planejamento urbano. Elas permitem identificar os pontos de maior
+              demanda por estruturas cicláveis, além das tendências futuras. A
+              Ameciclo as utiliza como ferramentas para incidir no planejamento
+              e tem seus dados abertos para serem usados pela mídia, academia ou
+              quaisquer pessoa que assim deseje.
+            </p>
+          </div>
+        </div>
+>>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
       </section>
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
           <ReactMapGL
             {...viewport}
+            {...settings}
             onViewportChange={(nextViewport) => setViewport(nextViewport)}
             width="100%"
             height="500px"
@@ -124,6 +208,26 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
             }
           >
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <FullscreenControl />
+            </div>
+
+            <div style={{
+              position: 'absolute',
+              top: 40,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <NavigationControl />
+            </div>
+
             {cyclistCounts.map((c) => (
               <Marker
                 key={c._id}
@@ -135,7 +239,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
                   viewBox="0 0 24 24"
                   style={{
                     cursor: "pointer",
-                    fill: "#d00",
+                    fill: "#028083",
                     stroke: "none",
                     transform: `translate(${-SIZE / 2}px,${-SIZE}px)`,
                   }}

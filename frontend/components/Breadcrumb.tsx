@@ -4,7 +4,7 @@ import Link from "next/link";
 const Breadcrumb = ({ label, slug, routes }) => {
   return (
     <nav className="bg-grey-light rounded font-sans w-full">
-      <ol className="list-none p-0 inline-flex">
+      <ol className="list-none p-0 inline-flex max-w-full">
         {routes.map((route, i) => {
           if (route === "/") {
             return (
@@ -42,9 +42,11 @@ const Breadcrumb = ({ label, slug, routes }) => {
 
 const BreadcrumbItem = ({ slug, label, lastItem }) => {
   return (
-    <li className="flex items-center">
+    <li className={`flex items-center ${lastItem ? "last-breadcrumb" : ""}`}>
       <Link href={slug}>
-        <a>{label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")}</a>
+        <a className="truncate">
+          {label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")}
+        </a>
       </Link>
       {lastItem ? null : (
         <svg
