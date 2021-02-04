@@ -10,7 +10,7 @@ const Breadcrumb = ({ label, slug, routes }) => {
             return (
               <BreadcrumbItem
                 slug="/"
-                label="Página Principal"
+                label="Plataforma de Dados"
                 lastItem={false}
                 key={i}
               />

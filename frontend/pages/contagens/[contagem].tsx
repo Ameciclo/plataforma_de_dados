@@ -147,24 +147,6 @@ const Contagem = ({ count }) => {
       </div>
 
       <main className="flex-auto">
-<<<<<<< HEAD
-        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={count.summary.total}
-            label={"Total de ciclistas"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Máximo em 1h"}
-          />
-          <InfoCard
-            data={count.date.substr(0, 10).split("-").reverse().join("/")}
-            label={"Data da contagem"}
-          />
-        </section>
-        <section className="container mx-auto my-10">
-          <div className="bg-green-200 rounded shadow-2xl">
-=======
         <div className="mx-auto text-center my-24">
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
@@ -195,7 +177,6 @@ const Contagem = ({ count }) => {
             className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
             style={{ minHeight: "400px" }}
           >
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
             <ReactMapGL
               {...viewport}
               {...settings}
@@ -237,42 +218,6 @@ const Contagem = ({ count }) => {
                 </svg>
 
               </Marker>
-<<<<<<< HEAD
-            </ReactMapGL>
-          </div>
-        </section>
-        <section className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={count.summary.total}
-            label={"Mulheres"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Crianças e adolescentes"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Capacetes"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Cargueiras"}
-          />
-          <InfoCard
-            data={count.summary.hour_max}
-            label={"Serviço"}
-          />
-        </section>
-        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-2 auto-rows-auto gap-10 my-10">
-          <div
-            className="shadow-2xl rounded p-10 text-center"
-            style={{ height: "700px" }}
-          >
-            <h2 className="text-gray-600 text-3xl">
-              % de caracteristicas de acordo com o total
-            </h2>
-            <PieChart data={summaryData} />
-=======
               {["north", "east", "west", "south"].map((d, i) => {
                 return (
                   <Marker
@@ -334,7 +279,6 @@ const Contagem = ({ count }) => {
                 </>
               )}
             </ReactMapGL>
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
           </div>
           <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
             <FlowContainer count={count} flowData={flowData} />

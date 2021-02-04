@@ -6,7 +6,9 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { AnimatePresence, motion } from "framer-motion";
 
 const linksArray = [
-  { name: "Página Principal", url: "/" },
+  { name: "Página Principal", url: "http://www.ameciclo.org" },
+  { name: "Plataforma de Dados", url: "/" },
+  { name: "Documentos", url: "/documentos" },
   { name: "Contagens", url: "/contagens" },
   { name: "Ideciclo", url: "/ideciclo" },
 ];

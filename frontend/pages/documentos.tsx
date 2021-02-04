@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
-import SEO from "../components/SEO";
+import Head from "next/head";
+
+//import SEO from "../components/SEO";
 import Breadcrumb from "../components/Breadcrumb";
 import { DocumentCard } from "../components/DocumentCard";
 
@@ -22,27 +24,54 @@ const Documentos = ({ documents }) => {
 
   return (
     <Layout>
-      <SEO title="Documentos" />
+      <Head>
+        <title>Documentos | Plataforma de Dados</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <div
-        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
-        style={{
-          width: "100%",
-          height: "40vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundImage: `url('/projetos.webp')`,
-        }}
-      />
+        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
+        style={{ height: "25vh" }}
+      >
+        <h1 className="text-4xl font-bold">Documentos e Estudos</h1>
+      </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb
             label="Documentos"
             slug="/documentos"
-            routes={["/", "/documentos"]}
+            routes={["/", "/Documentos"]}
           />
         </div>
       </div>
+
+      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+        <div className="flex flex-col sm:flex-row justify-between">
+          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
+            <h1 className="text-4xl font-bold mb-2">O que são?</h1>
+            <p>
+              A Ameciclo realizou e realiza diversas pesquisas ao longo de sua
+              história e documentamos todas elas nessa sessão. São estudos, pesquisas, 
+              documentos técnicos e livros acerca do perfil de quem pedala e de quem 
+              não pedala no dia a dia, da qualidade da estrutura cicloviária, de contagem 
+              de ciclistas e de análise da gestão pública com relação à mobilidade.
+            </p>
+          </div>
+          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
+            <h1 className="text-4xl font-bold mb-2">... e tem mais!</h1>
+            <p>
+              Também guardamos aqui as pesquisas nas quais a Ameciclo contribuiu para
+              serem realizadas, seja com o fornecimento de dados, seja por ser 
+              o objeto de pesquisa de estudantes nas universidades. É um orgulho
+              conseguir contribuir com a ciência e alavancar a ciclomobilidade.
+
+              Se você deseja ver nossos livros de histórias lúdicas, busque na sessão
+              biblioteca (em breve).
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="container my-12 mx-auto">
         <div className="mt-5 mx-3">
           <div className="inline-block relative w-64">

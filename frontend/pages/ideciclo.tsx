@@ -89,7 +89,7 @@ const Ideciclo = ({ cities, structures }) => {
   return (
     <Layout>
       <Head>
-        <title>Plataforma de Dados | Ideciclo</title>
+        <title>Ideciclo | Plataforma de Dados</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -103,7 +103,7 @@ const Ideciclo = ({ cities, structures }) => {
         <div className="container mx-auto">
           <Breadcrumb
             label="Ideciclo"
-            slug="/perfil"
+            slug="/ideciclo"
             routes={["/", "/ideciclo"]}
           />
         </div>

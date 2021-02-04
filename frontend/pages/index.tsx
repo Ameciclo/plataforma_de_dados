@@ -2,17 +2,10 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
-<<<<<<< HEAD
-// @ts-ignore
-import CalendarIcon from "../public/icons/calendar.svg";
-import FrontCard from "../components/FrontCard";
-
-=======
 import ContagemIcon from "../public/icons/contagem.svg";
 import React from "react";
 import Img from "../components/Img";
 import FlowContainer from "../components/FlowChart/FlowContainer";
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
 
 export default function Home() {
   return (
@@ -22,20 +15,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-<<<<<<< HEAD
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ marginTop: "16px", height: "75vh" }}
-      >
-        <div className="container mx-auto my-8">
-          <div className="container mx-auto my-12">
-            <h1 className="text-4xl font-bold">Plataforma de Dados</h1>
-            <h3>Dados de mobilidade urbana, focados na mobilidade ativa.</h3>
-          </div>
-=======
       <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
         <div className="container mx-auto mt-20">
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
           <SearchBar />
         </div>
       </div>
@@ -56,44 +37,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-<<<<<<< HEAD
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-        <FrontCard
-            data="Contagens das viagens de bicicleta e suas caracteristicas observáveis"
-            label="Contagens"
-            icon={CalendarIcon}
-          />
-        <FrontCard
-            data="Índice que mede a malha e qualidade da estrutura cicloviaria"
-            label="IDECICLO"
-            icon=""
-          />
-          <FrontCard
-            data="Informações obtidas a partir de pedidos de acesso a informação"
-            label="Relatorio da Mobilidade"
-            icon=""
-          />
-          <FrontCard
-            data="Dados socio-economicos dos ciclistas e suas percepções"
-            label="Perfil de Ciclistas"
-            icon=""
-          />
-          <FrontCard
-            data="Acompanhamento da execução do Plano Diretor Cicloviário"
-            label="Observatório do PDC"
-            icon=""
-          />
-        </div>
-      </section>
-      <section className="bg-ameciclo">
-        <div className="flex-1 container mx-auto px-10 py-10 text-center">
-          <h3 className="text-2xl text-white py-8 w-1/2 mx-auto">
-=======
       <section>
         <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
             Navegue e visualize os dados
           </h3>
           <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-5 sm:grid-rows-2 gap-8 grid-flow-row">
@@ -103,11 +49,13 @@ export default function Home() {
               icon="contagem"
               url="/contagens"
             />
+            {/*
             <GridCard
               title="Mapa"
               text="Acompanhamento da execução do plano diretor cicloviario"
               icon="mapa"
             />
+            */}
             <GridCard
               title="Ideciclo"
               text="Índice que mede a malha e qualidade da estrutura cicloviaria"
@@ -115,15 +63,18 @@ export default function Home() {
               url="/ideciclo"
             />
             <GridCard
-              title="Relatorio de Mobilidade"
-              text="Informações obtidas a partir de pedidos de acesso a informação"
+              title="Estudos e Pesquisas"
+              text="Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
               icon="relatorio"
+              url="/documentos"
             />
+            {/*
             <GridCard
               title="Perfil"
               text="Dados socio-economicos dos ciclistas e suas percepções"
               icon="perfil"
             />
+            */}
           </div>
         </div>
       </section>

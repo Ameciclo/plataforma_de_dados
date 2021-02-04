@@ -44,7 +44,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
   return (
     <Layout>
       <Head>
-        <title>Plataforma de Dados | Contagens</title>
+        <title>Contagens | Plataforma de Dados</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -93,61 +93,6 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         </div>
       </div>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-<<<<<<< HEAD
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={globalSummary[0].totalAmount}
-            label={"Total de ciclistas"}
-          />
-          <InfoCard
-            data={globalSummary[0].numberOfCounts}
-            label={"Contagens Realizadas"}
-          />
-          <InfoCard
-            data={countsGroupedArray.length}
-            label={"Pontos Monitorados"}
-          />
-          <InfoCard
-            data={globalSummary[0].MaximumValue}
-            label={"Máximo em um ponto"}
-          />
-          <InfoCard
-            data={globalSummary[0].MaximumValue}
-            label={"Média de mulheres"}
-          />
-          <InfoCard
-            data={globalSummary[0].MaximumValue}
-            label={"Média de crianças e adolescentes"}
-          />
-          <InfoCard
-            data={globalSummary[0].MaximumValue}
-            label={"Média de caronas"}
-          />
-          <InfoCard
-            data={globalSummary[0].MaximumValue}
-            label={"Última contagem"}
-          />
-        </div>
-        <p className="text-justify text-gray-800 grid-cols-2">
-          Registramos as pessoas que passam de bicicleta durante 14 horas em um
-          pré-escolhido cruzamento da cidade do Recife. As nossas contagens são
-          registradas manualmente através da observação das pessoas voluntárias
-          na contagem, registrando a direção do deslocamento e fatores
-          qualitativos. Dentre esses fatores estão o gênero, tipo de bicicleta,
-          uso de capacete, se estão dando carona, se são crianças se estão à
-          serviço e comportamentos como contramão e pedalada na calçada. Ainda
-          são registrados outros fatores qualitativos que podem ser
-          especificidades de cada local.
-        </p>
-        <p className="mt-3 text-justify text-gray-800">
-          As contagens de ciclistas são importantes instrumentos de planejamento
-          urbano. Elas permitem identificar os pontos de maior demanda por
-          estruturas cicláveis, além das tendências futuras. A Ameciclo as
-          utiliza como ferramentas para incidir no planejamento e tem seus dados
-          abertos para serem usados pela mídia, academia ou quaisquer pessoa que
-          assim deseje.
-          </p>
-=======
         {/*<div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">*/}
         {/*  <InfoCard*/}
         {/*    data={globalSummary[0].totalAmount}*/}
@@ -193,7 +138,6 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
             </p>
           </div>
         </div>
->>>>>>> af809bf393570006dd2093c0a9c24d9d36b7db2e
       </section>
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
