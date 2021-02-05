@@ -59,17 +59,17 @@ export const DocumentCard = ({ document }) => {
       <div className="px-4 py-5 lg:p-6">
         <dl className="pb-6">
           <Link href={`${document.url}`}>
-            <dt className="mt-1 text-3xl font-semibold leading-9 text-gray-900 cursor-pointer">
+            <dt className="mt-1 text-2xl font-semibold leading-9 text-gray-900 cursor-pointer">
               {document.title} ({document.release_date.substr(0,4)})
             </dt>
           </Link>
           <dt
             className="text-sm text-gray-600"
             style={{
-              maxHeight: "80px",
+              maxHeight: "100px",
               overflow: "hidden",
               display: "-webkit-box",
-              WebkitLineClamp: 3,
+              WebkitLineClamp: 6,
               WebkitBoxOrient: "vertical",
             }}
           >
