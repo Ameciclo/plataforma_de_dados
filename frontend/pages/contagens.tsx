@@ -44,7 +44,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
   return (
     <Layout>
       <Head>
-        <title>Plataforma de Dados | Contagens</title>
+        <title>Contagens | Plataforma de Dados</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

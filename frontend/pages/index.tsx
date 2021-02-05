@@ -49,11 +49,13 @@ export default function Home() {
               icon="contagem"
               url="/contagens"
             />
+            {/*
             <GridCard
               title="Mapa"
               text="Acompanhamento da execução do plano diretor cicloviario"
               icon="mapa"
             />
+            */}
             <GridCard
               title="Ideciclo"
               text="Índice que mede a malha e qualidade da estrutura cicloviaria"
@@ -61,15 +63,18 @@ export default function Home() {
               url="/ideciclo"
             />
             <GridCard
-              title="Relatorio de Mobilidade"
-              text="Informações obtidas a partir de pedidos de acesso a informação"
+              title="Estudos e Pesquisas"
+              text="Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
               icon="relatorio"
+              url="/documentos"
             />
+            {/*
             <GridCard
               title="Perfil"
               text="Dados socio-economicos dos ciclistas e suas percepções"
               icon="perfil"
             />
+            */}
           </div>
         </div>
       </section>
