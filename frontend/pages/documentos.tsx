@@ -91,7 +91,7 @@ const Documentos = ({ documents }) => {
           </div>
         </div>
         <div className="mt-5 mx-3 grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {filteredDocuments.sort((a, b) => a.relase_date > b.relase_date ? 1 : -1)
+          {filteredDocuments.sort((a, b) => a.release_date > b.release_date ? -1 : 1)
           .map((document) => (
             <DocumentCard document={document} key={document.id} />
           ))}
