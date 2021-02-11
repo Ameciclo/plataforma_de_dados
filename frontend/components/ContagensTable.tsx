@@ -39,7 +39,7 @@ const ContagensTable = ({ data }) => {
         accessor: "name",
         Cell: ({ row }) => (
           <Link href={`contagens/${row.original._id}`} key={row.original._id}>
-            <a className="text-blue-500">{row.original.name}</a>
+            <a className="text-ameciclo">{row.original.name}</a>
           </Link>
         ),
         Filter: ColumnFilter,
