@@ -63,13 +63,13 @@ const ContagensTable = ({ data }) => {
         Cell: ({ row }) => (
           <span>
             <Link href={row.original.summary.download_xlsx_url}>
-              <a className="text-blue-500">XLSX</a>
+              <a className="text-ameciclo">XLSX</a>
             </Link>
             <span> | </span>
             <Link
               href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${row.original._id}`}
             >
-              <a className="text-blue-500">JSON</a>
+              <a className="text-ameciclo">JSON</a>
             </Link>
           </span>
         ),

@@ -4,6 +4,8 @@ import Head from "next/head";
 import ContagensTable from "../components/ContagensTable";
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import Breadcrumb from "../components/Breadcrumb";
+import InfoCard from "../components/InfoCard";
+
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -139,6 +141,40 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           </div>
         </div>
       </section>
+
+      <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+        <InfoCard
+          data={globalSummary[0].totalWomenPercentile}
+          label={"Mulheres"}
+          icon="women"
+        />
+        <InfoCard
+          data={globalSummary[0].totalChildrenPercentile}
+          label={"Crianças e Adolescentes"}
+          icon="children"
+        />
+        <InfoCard
+          data={globalSummary[0].totalHelmetPercentile}
+          label={"Capacete"}
+          icon="helmet"
+        />
+        <InfoCard
+          data={globalSummary[0].totalServicePercentile}
+          label={"Serviço"}
+          icon="service"
+        />
+        <InfoCard
+          data={globalSummary[0].totalCargoPercentile}
+          label={"Cargueira"}
+          icon="cargo"
+        />
+        <InfoCard
+          data={globalSummary[0].totalWrongWayPercentile}
+          label={"Contramão"}
+          icon="wrong_way"
+        />
+      </section>
+      
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
           <ReactMapGL
