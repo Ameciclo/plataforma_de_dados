@@ -51,7 +51,7 @@ const Ideciclo = ({ cities, structures }) => {
         accessor: "street",
         Cell: ({ row }) => (
           <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
-            <a className="text-blue-500">{row.original.street}</a>
+            <a className="text-ameciclo">{row.original.street}</a>
           </Link>
         ),
       },
