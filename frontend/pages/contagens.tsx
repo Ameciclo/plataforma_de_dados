@@ -6,6 +6,21 @@ import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-
 import Breadcrumb from "../components/Breadcrumb";
 import InfoCard from "../components/InfoCard";
 
+const GridCard = ({ title, text, icon, url = "#" }) => {
+  return (
+    <a href={url}>
+      <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-8">
+        <div className="flex flex-col text-center">
+          {/*<img src={`/icons/${icon}.svg`} className="h-12 fill-current" />*/}
+          <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
+            {title}
+          </h2>
+          <p className="text-base font-medium">{text}</p>
+        </div>
+      </div>
+    </a>
+  );
+};
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   function groupBy(xs, f) {
@@ -233,6 +248,63 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       </section>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <ContagensTable data={cyclistCounts} />
+      </section>
+      <section>
+        <div className="flex-1 container mx-auto p-10 text-center">
+          <h3 className="font-bold text-3xl text-ameciclo py-8 w-2/3 mx-auto">
+            Documentos para realizar contagens de ciclistas.
+          </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-5 sm:grid-rows-1 gap-8 grid-flow-row">
+            <GridCard
+              title="Planilha de Contagem"
+              text="Planilha que faz as contagens de fluxos e características de ciclistas"
+              icon="ideciclo"
+              url="https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP"
+            />
+            <GridCard
+              title="Planilha Auxiliar"
+              text="Planilha com os dados qualitativos para auxiliar na contagem."
+              icon="relatorio"
+              url="https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT"
+            />
+            <GridCard
+              title="Planilha Eletrônica"
+              text="Planilha para compilar todos os dados e chegar às conclusões."
+              icon="relatorio"
+              url="https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011"
+            />
+            <GridCard
+              title="Modelo de Relatório"
+              text="Relatório modelo para cada contagem de ciclistas."
+              icon="relatorio"
+              url="https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing"
+            />
+            <GridCard
+              title="Panfleto de instruções"
+              text="Panfleto informativo que mostra como as informações devem ser marcadas."
+              icon="contagem"
+              url="https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA"
+            />
+            <GridCard
+              title="Instruções gerais"
+              text="Mais informações acerca de como nossa contagem é realizada."
+              icon="contagem"
+              url="https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV"
+            />
+            <GridCard
+              title="Manual da Transporte Ativo"
+              text="Manual de contagens fotográficas que baseou muitas das contagens no Brasil."
+              icon="ideciclo"
+              url="http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf"
+            />
+            <GridCard
+              title="Manual do ITDP"
+              text="Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."
+              icon="relatorio"
+              url="http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf"
+            />
+          </div>
+        </div>
       </section>
     </Layout>
   );
