@@ -5,7 +5,7 @@ const DocTypeIndicator = ({ type: docType }) => {
   const typeMap = new Map([
     [
       "studies", 
-      { name: "Estudos e pesquisas", color: "#3CAEA3", fontColor: "#581f0f" },
+      { name: "Estudos e pesquisas", color: "#008080", fontColor: "#581f0f" },
     ],
     [
       "books", 
