@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        custom: ['Open Sans']
+        custom: ["Open Sans"],
       },
       colors: {
         customGrey: "#F1F1F1",
@@ -20,7 +20,10 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ["checked"],
+      borderColor: ["checked"],
+    },
   },
   plugins: [],
 };
