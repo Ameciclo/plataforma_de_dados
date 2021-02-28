@@ -19,41 +19,51 @@ const Perfil = ({ cyclistProfiles }) => {
       { key: "gender", value: "Masculino" },
       { key: "gender", value: "Feminino" },
       { key: "gender", value: "Outro" },
-    ];
-
-  // [
-  //  {
-  //    "day": 1,
-  //      "Masculino": 180,
-  //      "Feminino": 200
-  //  },
-  // ]
-
-  const count = cyclistProfiles.reduce(
-    (acc, cur) => (cur.data.days_usage.total === 7 ? ++acc : acc),
-    0
-  );
-
-  console.log(count);
-
-  filters.map((f) => {
-    cyclistProfiles.map((c) => {
-      if (!dataDays.some((d) => d[c.data.days_usage.total])) {
-        dataDays.push({ day: c.data.days_usage.total, [f.value]: 1 });
-      } else {
-        console.log("Já tem o dia");
-      }
-      if (!dataDay[c.data.days_usage.total]) {
-        dataDay[c.data.days_usage.total] = {
-          day: c.data.days_usage.total,
-          masculino: 1,
-          [f.value]: 1,
-        };
-      } else {
-        dataDay[c.data.days_usage.total][f.value]++;
-      }
+    ],
+    keys = filters.map((f) => {
+      return f.value;
     });
-  });
+
+  console.log(keys);
+
+  function filterByField(data, filters) {
+    const groupedByField = data.reduce((result, item) => {
+      const itemKeys = Object.keys(item.data);
+      const {
+        days_usage: { total: groupBy },
+      } = item.data;
+
+      filters.forEach((filter) => {
+        const { key, value } = filter;
+
+        if (!result[groupBy]) {
+          result[groupBy] = {};
+        }
+        if (itemKeys.includes(key) && item.data[key] === value) {
+          if (!result[groupBy][value]) {
+            result[groupBy][value] = 1;
+          } else {
+            result[groupBy][value] = result[groupBy][value] + 1;
+          }
+        }
+      });
+
+      return result;
+    }, {});
+
+    return Object.keys(groupedByField).reduce((result, key) => {
+      const obj = { day: parseInt(key) };
+
+      Object.keys(groupedByField[key]).forEach((field) => {
+        obj[field] = groupedByField[key][field];
+      });
+
+      result.push(obj);
+      return result;
+    }, []);
+  }
+
+  const filteredByGender = filterByField(cyclistProfiles, filters);
 
   cyclistProfiles.forEach((c) => {
     if (!obj2[c.data.years_using]) {
@@ -248,8 +258,8 @@ const Perfil = ({ cyclistProfiles }) => {
             transporte.
           </h2>
           <BarChart
-            data={dataDays}
-            keys={["Masculino", "Feminino", "Outro", "Preto", "Branco"]}
+            data={filteredByGender}
+            keys={keys}
             index={"day"}
             groupMode="grouped"
           />
