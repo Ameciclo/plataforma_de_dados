@@ -6,6 +6,8 @@ import InfoCard from "../components/InfoCard";
 import Select from "react-select";
 import BarChart from "../components/BarChart";
 import axios from "axios";
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 
 const Perfil = ({ cyclistProfiles }) => {
   const [data, setData] = useState([]);
@@ -24,7 +26,18 @@ const Perfil = ({ cyclistProfiles }) => {
       return f.value;
     });
 
-  console.log(keys);
+  const options = {
+    chart: {
+      type: "bar"
+    },
+    title: {
+      text: 'Quantos dias da semana costuma utilizar a bicicleta como meio de transporte'
+    },
+    xAxis: {
+      categories: ["1","2","3","4","5","6","7"]
+    },
+    series: cyclistProfiles.dayAggregate
+  }
 
   function filterByField(data, filters) {
     const groupedByField = data.reduce((result, item) => {
@@ -63,18 +76,6 @@ const Perfil = ({ cyclistProfiles }) => {
     }, []);
   }
 
-  const filteredByGender = filterByField(cyclistProfiles, filters);
-
-  cyclistProfiles.forEach((c) => {
-    if (!obj2[c.data.years_using]) {
-      obj2[c.data.years_using] = {
-        years: c.data.years_using,
-        quantity: 1,
-      };
-    } else {
-      obj2[c.data.years_using].quantity++;
-    }
-  });
 
   // dataDays = Object.values(dataDay);
   dataDays = [
@@ -251,31 +252,21 @@ const Perfil = ({ cyclistProfiles }) => {
       <section className="container mx-auto grid grid-cols-2 auto-rows-auto gap-10 my-10">
         <div
           className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
-          style={{ height: "700px" }}
         >
-          <h2 className="text-gray-600 text-3xl">
-            Quantos dias da semana costuma utilizar a bicicleta como meio de
-            transporte.
-          </h2>
-          <BarChart
-            data={filteredByGender}
-            keys={keys}
-            index={"day"}
-            groupMode="grouped"
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
           />
         </div>
         <div
           className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
-          style={{ height: "700px" }}
         >
           <h2 className="text-gray-600 text-3xl">
             Há quanto tempo utiliza a bicicleta como meio de transporte.
           </h2>
-          <BarChart
-            data={dataYears}
-            keys={["quantity"]}
-            index={"years"}
-            groupMode="grouped"
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={options}
           />
         </div>
       </section>
@@ -284,7 +275,7 @@ const Perfil = ({ cyclistProfiles }) => {
 };
 
 export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:8000/v1/cyclist-profile/`);
+  const res = await fetch(`http://localhost:8000/v1/cyclist-profile/summary/`);
 
   const cyclistProfiles = await res.json();
 
