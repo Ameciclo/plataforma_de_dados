@@ -20,6 +20,11 @@ const Perfil = () => {
   const [dayData, setDayData] = useState([]);
   const [yearData, setYearData] = useState([]);
   const [needData, setNeedData] = useState([]);
+  const [startData, setStartData] = useState([]);
+  const [continueData, setContinueData] = useState([]);
+  const [issueData, setIssueData] = useState([]);
+  const [distanceData, setDistanceData] = useState([]);
+  const [collisionData, setCollisionData] = useState([]);
   const [genderData, setGenderData] = useState([]);
 
   const toggleFilter = (f, i: number) => {
@@ -65,8 +70,13 @@ const Perfil = () => {
       setDayData(data.dayAggregate);
       setYearData(data.yearAggregate);
       setNeedData(data.needAggregate);
-      console.log(needData);
+      setStartData(data.startAggregate);
+      setContinueData(data.continueAggregate);
+      setIssueData(data.issueAggregate);
+      setDistanceData(data.distanceAggregate);
+      setCollisionData(data.collisionAggregate);
       setGenderData(data.genderCount);
+      console.log(data.collisionData);
     });
   }, []);
 
@@ -85,6 +95,11 @@ const Perfil = () => {
     setDayData(data.dayAggregate);
     setYearData(data.yearAggregate);
     setNeedData(data.needAggregate);
+    setStartData(data.needAggregate);
+    setContinueData(data.needAggregate);
+    setIssueData(data.issueAggregate);
+    setDistanceData(data.distanceAggregate);
+    setCollisionData(data.collisionAggregate);
   };
 
   const dayOptions = {
@@ -148,6 +163,94 @@ const Perfil = () => {
       },
     },
     series: needData,
+
+    credits: {
+      enabled: false,
+    },
+  };
+
+  const startOptions = {
+    chart: {
+      type: "bar",
+    },
+    title: {
+      text: "Qual foi a sua motivação para começar?",
+    },
+    xAxis: {
+      type: "category",
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+    },
+    series: startData,
+
+    credits: {
+      enabled: false,
+    },
+  };
+
+  const continueOptions = {
+    chart: {
+      type: "bar",
+    },
+    title: {
+      text: "Qual foi a sua motivação para continuar a pedalar?",
+    },
+    xAxis: {
+      type: "category",
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+    },
+    series: continueData,
+
+    credits: {
+      enabled: false,
+    },
+  };
+
+  const issueOptions = {
+    chart: {
+      type: "bar",
+    },
+    title: {
+      text: "Qual o seu maior problema ao pedalar?",
+    },
+    xAxis: {
+      type: "category",
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+    },
+    series: issueData,
+
+    credits: {
+      enabled: false,
+    },
+  };
+
+  const collisionOptions = {
+    chart: {
+      type: "bar",
+    },
+    title: {
+      text: "Já sofreu algum tipo de colisão?",
+    },
+    xAxis: {
+      type: "category",
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+    },
+    series: collisionData,
 
     credits: {
       enabled: false,
@@ -320,6 +423,18 @@ const Perfil = () => {
         </div>
         <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={needOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={startOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={continueOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={issueOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={collisionOptions} />
         </div>
       </section>
     </Layout>

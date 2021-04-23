@@ -11,7 +11,7 @@ const linksArray = [
   { name: "Documentos", url: "/documentos" },
   { name: "Contagens", url: "/contagens" },
   { name: "Ideciclo", url: "/ideciclo" },
-  { name: "Perfil do Ciclista", url: "/perfil" },
+  { name: "Pesquisa Perfil", url: "/perfil" },
 ];
 
 const ButtonContainer = styled.div`
