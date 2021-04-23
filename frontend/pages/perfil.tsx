@@ -2,127 +2,179 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../components/Breadcrumb";
-import InfoCard from "../components/InfoCard";
-import Select from "react-select";
-import BarChart from "../components/BarChart";
-import axios from "axios";
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
-const Perfil = ({ cyclistProfiles }) => {
-  const [data, setData] = useState([]);
+const Perfil = () => {
   const [isSearching, setIsSearching] = useState(false);
+  const [filters, setFilters] = useState([
+    { key: "gender", value: "Masculino", checked: true },
+    { key: "gender", value: "Feminino", checked: true },
+    { key: "gender", value: "Outro", checked: true },
+    { key: "color_race", value: "Amarela", checked: false },
+    { key: "color_race", value: "Branca", checked: false },
+    { key: "color_race", value: "Indígena", checked: false },
+    { key: "color_race", value: "Parda", checked: false },
+    { key: "color_race", value: "Preta", checked: false },
+  ]);
+  const [dayData, setDayData] = useState([]);
+  const [yearData, setYearData] = useState([]);
+  const [needData, setNeedData] = useState([]);
+  const [genderData, setGenderData] = useState([]);
 
-  let dataDay = {},
-    dataDays = [],
-    obj2 = {},
-    dataYears = [],
-    filters = [
-      { key: "gender", value: "Masculino" },
-      { key: "gender", value: "Feminino" },
-      { key: "gender", value: "Outro" },
-    ],
-    keys = filters.map((f) => {
-      return f.value;
+  const toggleFilter = (f, i: number) => {
+    setFilters((prevState) => {
+      return prevState.map((item) => {
+        return item.value === f.value
+          ? { ...item, checked: !item.checked }
+          : item;
+      });
     });
+  };
 
-  const options = {
+  const clearFilters = () => {
+    setFilters((prevState) => {
+      return prevState.map((i) => {
+        return { ...i, checked: false };
+      });
+    });
+  };
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      const defaultFilters = [
+        { key: "gender", value: "Masculino" },
+        { key: "gender", value: "Feminino" },
+        { key: "gender", value: "Outro" },
+      ];
+      const res = await fetch(
+        `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(defaultFilters),
+        }
+      );
+      const { data } = await res.json();
+      return data;
+    };
+
+    fetchInitialData().then((data) => {
+      setDayData(data.dayAggregate);
+      setYearData(data.yearAggregate);
+      setNeedData(data.needAggregate);
+      console.log(needData);
+      setGenderData(data.genderCount);
+    });
+  }, []);
+
+  const applyFilters = async () => {
+    const res = await fetch(
+      `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(filters.filter((f) => f.checked)),
+      }
+    );
+    const { data } = await res.json();
+    setDayData(data.dayAggregate);
+    setYearData(data.yearAggregate);
+    setNeedData(data.needAggregate);
+  };
+
+  const dayOptions = {
     chart: {
-      type: "bar"
+      type: "bar",
     },
     title: {
-      text: 'Quantos dias da semana costuma utilizar a bicicleta como meio de transporte'
+      text:
+        "Quantos dias da semana costuma utilizar a bicicleta como meio de transporte",
     },
     xAxis: {
-      categories: ["1","2","3","4","5","6","7"]
+      type: "category",
     },
-    series: cyclistProfiles.dayAggregate
-  }
-
-  function filterByField(data, filters) {
-    const groupedByField = data.reduce((result, item) => {
-      const itemKeys = Object.keys(item.data);
-      const {
-        days_usage: { total: groupBy },
-      } = item.data;
-
-      filters.forEach((filter) => {
-        const { key, value } = filter;
-
-        if (!result[groupBy]) {
-          result[groupBy] = {};
-        }
-        if (itemKeys.includes(key) && item.data[key] === value) {
-          if (!result[groupBy][value]) {
-            result[groupBy][value] = 1;
-          } else {
-            result[groupBy][value] = result[groupBy][value] + 1;
-          }
-        }
-      });
-
-      return result;
-    }, {});
-
-    return Object.keys(groupedByField).reduce((result, key) => {
-      const obj = { day: parseInt(key) };
-
-      Object.keys(groupedByField[key]).forEach((field) => {
-        obj[field] = groupedByField[key][field];
-      });
-
-      result.push(obj);
-      return result;
-    }, []);
-  }
-
-
-  // dataDays = Object.values(dataDay);
-  dataDays = [
-    {
-      day: 1,
-      Masculino: 180,
-      Feminino: 200,
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
     },
-    {
-      day: 2,
-      Masculino: 88,
-      Feminino: 66,
-      Outro: 50,
+    series: dayData,
+
+    credits: {
+      enabled: false,
     },
-    {
-      day: 3,
-      Masculino: 37,
-      Feminino: 250,
+  };
+
+  const yearOptions = {
+    chart: {
+      type: "bar",
     },
-    {
-      day: 4,
-      Masculino: 57,
-      Feminino: 156,
-      Outro: 50,
+    title: {
+      text: "Há quanto tempo utiliza a bicicleta como meio de transporte",
     },
-    {
-      day: 5,
-      Masculino: 77,
-      Feminino: 136,
-      Outro: 70,
+    xAxis: {
+      type: "category",
     },
-    {
-      day: 6,
-      Masculino: 92,
-      Feminino: 211,
-      Outro: 50,
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
     },
-    {
-      day: 7,
-      Masculino: 66,
-      Feminino: 277,
-      Outro: 101,
-      Preto: 350,
-      Branco: 288,
+    series: yearData,
+
+    credits: {
+      enabled: false,
     },
-  ];
-  dataYears = Object.values(obj2);
+  };
+
+  const needOptions = {
+    chart: {
+      type: "bar",
+    },
+    title: {
+      text: "O que faria você pedalar mais?",
+    },
+    xAxis: {
+      type: "category",
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+    },
+    series: needData,
+
+    credits: {
+      enabled: false,
+    },
+  };
+
+  const genderOptions = {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: "pie",
+    },
+    title: {
+      text: "Gênero",
+    },
+    series: [
+      {
+        name: "Quantidade",
+        colorByPoint: true,
+        data: genderData,
+      },
+    ],
+    credits: {
+      enabled: false,
+    },
+  };
 
   return (
     <Layout>
@@ -177,109 +229,101 @@ const Perfil = ({ cyclistProfiles }) => {
 
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
-        <div className="flex">
-          <div className="border-gray-200 border p-8 grid grid-cols-3 max-w-xl">
-            <div className="flex flex-col items-center space-y-2">
-              <h3 className="font-bold text-xl mt-5">Gênero</h3>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Masculino
-                </div>
-              </label>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Feminino
-                </div>
-              </label>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Outro
-                </div>
-              </label>
-            </div>
-            <div className="flex flex-col items-center space-y-2">
-              <h3 className="font-bold text-xl mt-5">Cor/Raça</h3>
-              <button className="rounded-3xl bg-transparent border w-32 flex items-center justify-center text-gray-800 h-10 focus:bg-ameciclo focus:text-white outline-none focus:outline-none">
-                Amarelo
-              </button>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Branco
-                </div>
-              </label>
-              <button className="rounded-3xl bg-transparent border w-32 flex items-center justify-center text-gray-800 h-10 focus:bg-ameciclo focus:text-white outline-none focus:outline-none">
-                Indígena
-              </button>
-              <button className="rounded-3xl bg-transparent border w-32 flex items-center justify-center text-gray-800 h-10 focus:bg-ameciclo focus:text-white outline-none focus:outline-none">
-                Pardo
-              </button>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Preto
-                </div>
-              </label>
-            </div>
-            <div className="flex flex-col items-center space-y-2">
-              <h3 className="font-bold text-xl mt-5">Área</h3>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Área 1
-                </div>
-              </label>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Área 2
-                </div>
-              </label>
-              <label>
-                <input className="hidden" type="checkbox" />
-                <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                  Área 3
-                </div>
-              </label>
-            </div>
+        <div className="border-gray-200 border p-8 grid grid-cols-3">
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="font-bold text-xl mt-5">Gênero</h3>
+            {filters
+              .filter((f) => f.key === "gender")
+              .map((f, i) => {
+                return (
+                  <label key={f.value}>
+                    <input
+                      className="hidden"
+                      type="checkbox"
+                      onChange={() => toggleFilter(f, i)}
+                      checked={f.checked}
+                    />
+                    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
+                      {f.value}
+                    </div>
+                  </label>
+                );
+              })}
           </div>
+          <div className="flex flex-col items-center space-y-4">
+            <h3 className="font-bold text-xl mt-5">Cor/Raça</h3>
+            {filters
+              .filter((f) => f.key === "color_race")
+              .map((f, i) => {
+                return (
+                  <label key={f.value}>
+                    <input
+                      className="hidden"
+                      type="checkbox"
+                      onChange={() => toggleFilter(f, i)}
+                      checked={f.checked}
+                    />
+                    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
+                      {f.value}
+                    </div>
+                  </label>
+                );
+              })}
+          </div>
+          {/*<div className="flex flex-col items-center space-y-4">*/}
+          {/*  <h3 className="font-bold text-xl mt-5">Área</h3>*/}
+          {/*  <label>*/}
+          {/*    <input className="hidden" type="checkbox" />*/}
+          {/*    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">*/}
+          {/*      Área 1*/}
+          {/*    </div>*/}
+          {/*  </label>*/}
+          {/*  <label>*/}
+          {/*    <input className="hidden" type="checkbox" />*/}
+          {/*    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">*/}
+          {/*      Área 2*/}
+          {/*    </div>*/}
+          {/*  </label>*/}
+          {/*  <label>*/}
+          {/*    <input className="hidden" type="checkbox" />*/}
+          {/*    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">*/}
+          {/*      Área 3*/}
+          {/*    </div>*/}
+          {/*  </label>*/}
+          {/*</div>*/}
+        </div>
+        <div className="flex flex-row justify-center items-center mt-8 space-x-4">
+          <button
+            onClick={() => applyFilters()}
+            className="toggle-btn border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2 outline-none focus:outline-none"
+          >
+            Aplicar Filtros
+          </button>
+          <button
+            onClick={() => clearFilters()}
+            className="toggle-btn border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2 outline-none focus:outline-none"
+          >
+            Limpar Filtros
+          </button>
         </div>
       </section>
 
       <section className="container mx-auto grid grid-cols-2 auto-rows-auto gap-10 my-10">
-        <div
-          className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
-        >
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={options}
-          />
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={dayOptions} />
         </div>
-        <div
-          className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
-        >
-          <h2 className="text-gray-600 text-3xl">
-            Há quanto tempo utiliza a bicicleta como meio de transporte.
-          </h2>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={options}
-          />
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={yearOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={genderOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={needOptions} />
         </div>
       </section>
     </Layout>
   );
 };
-
-export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:8000/v1/cyclist-profile/summary/`);
-
-  const cyclistProfiles = await res.json();
-
-  return { props: { cyclistProfiles: cyclistProfiles.data } };
-}
 
 export default Perfil;
