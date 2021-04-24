@@ -4,6 +4,15 @@ import Head from "next/head";
 import Breadcrumb from "../components/Breadcrumb";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import HighchartsExporting from "highcharts/modules/exporting";
+import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
+import HighchartsMore from "highcharts/highcharts-more";
+
+if (typeof Highcharts === "object") {
+  HighchartsExporting(Highcharts);
+  HighchartsHistogram(Highcharts);
+  HighchartsMore(Highcharts);
+}
 
 const Perfil = () => {
   const [isSearching, setIsSearching] = useState(false);
@@ -23,9 +32,62 @@ const Perfil = () => {
   const [startData, setStartData] = useState([]);
   const [continueData, setContinueData] = useState([]);
   const [issueData, setIssueData] = useState([]);
-  const [distanceData, setDistanceData] = useState([]);
+  const [distanceOptions, setDistanceOptions] = useState({
+    title: {
+      text: "Quanto tempo você leva?",
+    },
+
+    subtitle: {
+      text: "Histograma de agrupamento de distâncias em minutos",
+    },
+
+    xAxis: [
+      {
+        title: { text: "" },
+        alignTicks: false,
+      },
+      {
+        title: { text: "Distância em minutos" },
+        alignTicks: false,
+        opposite: false,
+      },
+    ],
+
+    yAxis: [
+      {
+        title: { text: "" },
+      },
+      {
+        title: { text: "Quantidade" },
+        opposite: false,
+      },
+    ],
+
+    series: [
+      {
+        name: "Total",
+        type: "histogram",
+        xAxis: 1,
+        yAxis: 1,
+        baseSeries: "s1",
+        zIndex: 2,
+      },
+      {
+        name: "",
+        type: "scatter",
+        data: [],
+        visible: false,
+        id: "s1",
+        marker: {
+          radius: 1.5,
+        },
+      },
+    ],
+    credits: {
+      enabled: false,
+    },
+  });
   const [collisionData, setCollisionData] = useState([]);
-  const [genderData, setGenderData] = useState([]);
 
   const toggleFilter = (f, i: number) => {
     setFilters((prevState) => {
@@ -73,10 +135,30 @@ const Perfil = () => {
       setStartData(data.startAggregate);
       setContinueData(data.continueAggregate);
       setIssueData(data.issueAggregate);
-      setDistanceData(data.distanceAggregate);
+      setDistanceOptions((prevState) => ({
+        ...prevState,
+        series: [
+          {
+            name: "Total",
+            type: "histogram",
+            xAxis: 1,
+            yAxis: 1,
+            baseSeries: "s1",
+            zIndex: 2,
+          },
+          {
+            name: "",
+            type: "scatter",
+            data: data.distances,
+            visible: false,
+            id: "s1",
+            marker: {
+              radius: 1.5,
+            },
+          },
+        ],
+      }));
       setCollisionData(data.collisionAggregate);
-      setGenderData(data.genderCount);
-      console.log(data.collisionData);
     });
   }, []);
 
@@ -98,7 +180,6 @@ const Perfil = () => {
     setStartData(data.needAggregate);
     setContinueData(data.needAggregate);
     setIssueData(data.issueAggregate);
-    setDistanceData(data.distanceAggregate);
     setCollisionData(data.collisionAggregate);
   };
 
@@ -257,28 +338,6 @@ const Perfil = () => {
     },
   };
 
-  const genderOptions = {
-    chart: {
-      plotBackgroundColor: null,
-      plotBorderWidth: null,
-      plotShadow: false,
-      type: "pie",
-    },
-    title: {
-      text: "Gênero",
-    },
-    series: [
-      {
-        name: "Quantidade",
-        colorByPoint: true,
-        data: genderData,
-      },
-    ],
-    credits: {
-      enabled: false,
-    },
-  };
-
   return (
     <Layout>
       <Head>
@@ -419,9 +478,6 @@ const Perfil = () => {
           <HighchartsReact highcharts={Highcharts} options={yearOptions} />
         </div>
         <div className="shadow-2xl rounded p-10 text-center">
-          <HighchartsReact highcharts={Highcharts} options={genderOptions} />
-        </div>
-        <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={needOptions} />
         </div>
         <div className="shadow-2xl rounded p-10 text-center">
@@ -435,6 +491,9 @@ const Perfil = () => {
         </div>
         <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={collisionOptions} />
+        </div>
+        <div className="shadow-2xl rounded p-10 text-center">
+          <HighchartsReact highcharts={Highcharts} options={distanceOptions} />
         </div>
       </section>
     </Layout>
