@@ -1,4 +1,4 @@
-FROM node:lts AS builder
+FROM node:16.0-buster-slim AS builder
 WORKDIR /usr/src/contagem
 COPY package*.json ./
 RUN npm ci
@@ -6,7 +6,7 @@ COPY tsconfig*.json ./
 COPY src src
 RUN npm run build
 
-FROM node:lts
+FROM node:16.0-buster-slim
 ENV NODE_ENV=production
 WORKDIR /contagem
 COPY package*.json ./
