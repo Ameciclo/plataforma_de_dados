@@ -25,7 +25,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-highlighter": "^0.4.3",
-    "react-map-gl": "^5.2.10",
+    "react-map-gl": "^5.3.12",
     "react-select": "^3.1.1",
     "react-table": "^7.6.2",
     "react-transition-group": "^4.4.1",
