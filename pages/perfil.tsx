@@ -177,8 +177,8 @@ const Perfil = () => {
     setDayData(data.dayAggregate);
     setYearData(data.yearAggregate);
     setNeedData(data.needAggregate);
-    setStartData(data.needAggregate);
-    setContinueData(data.needAggregate);
+    setStartData(data.startAggregate);
+    setContinueData(data.continueAggregate);
     setIssueData(data.issueAggregate);
     setCollisionData(data.collisionAggregate);
   };
