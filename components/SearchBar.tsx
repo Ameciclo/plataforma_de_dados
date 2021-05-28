@@ -26,15 +26,16 @@ export const SearchBar = () => {
           setResults(res.data);
         } else {
           const res = await axios.get(
-            "https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/",
+            "https://api.contagem.ameciclo.org/v1/cyclist-count/",
             {
               params: {
                 q: q,
               },
             }
           );
+          console.log(res)
           setIsSearching(false);
-          setResults(res.data);
+          setResults(res.data.data);
         }
       } catch (e) {
         setIsSearching(false);

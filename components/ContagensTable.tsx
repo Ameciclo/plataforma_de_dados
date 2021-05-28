@@ -67,7 +67,7 @@ const ContagensTable = ({ data }) => {
             </Link>
             <span> | </span>
             <Link
-              href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${row.original._id}`}
+              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
             >
               <a className="text-ameciclo">JSON</a>
             </Link>
