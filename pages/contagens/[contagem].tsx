@@ -168,7 +168,7 @@ const Contagem = ({ count }) => {
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
               <a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>
-              <a href={`https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
+              <a href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
             </div>
           </div>
         </div>
@@ -339,12 +339,12 @@ const Contagem = ({ count }) => {
 
 export async function getStaticPaths() {
   const res = await fetch(
-    "https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count"
+    "https://api.contagem.ameciclo.org/v1/cyclist-count/"
   );
   const cyclistCount = await res.json();
 
   // Get the paths we want to pre-render based on posts
-  const paths = cyclistCount.map((c) => ({
+  const paths = cyclistCount.data.map((c) => ({
     params: { contagem: c._id },
   }));
 
@@ -353,12 +353,12 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const res = await fetch(
-    `https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count/${params.contagem}`
+    `https://api.contagem.ameciclo.org/v1/cyclist-count/${params.contagem}`
   );
-  const count = await res.json();
+  const {cyclistCount} = await res.json();
   return {
     props: {
-      count: count,
+      count: cyclistCount,
     },
     revalidate: 1,
   };

@@ -23,7 +23,7 @@ const GridCard = ({ title, text, icon, url = "#" }) => {
 };
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
-  function groupBy(xs, f) {
+  const groupBy = (xs, f) => {
     return xs.reduce(
       (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
       {}
@@ -312,17 +312,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
 
 export async function getServerSideProps() {
   const globalSummaryRes = await fetch(
-    `https://api.plataforma.ameciclo.org/contagens/v1/`
+    `https://api.contagem.ameciclo.org/v1/cyclist-count/metadata`
   );
 
   const res = await fetch(
-    `https://api.plataforma.ameciclo.org/contagens/v1/cyclist-count`
+    `https://api.contagem.ameciclo.org/v1/cyclist-count/`
   );
 
   const cyclistCounts = await res.json();
   const globalSummary = await globalSummaryRes.json();
 
-  return { props: { cyclistCounts, globalSummary } };
+  return { props: { cyclistCounts: cyclistCounts.data, globalSummary: globalSummary.data } };
 }
 
 export default Contagens;
