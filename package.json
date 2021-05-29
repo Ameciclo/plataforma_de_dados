@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "export": "next export"
+
   },
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",
