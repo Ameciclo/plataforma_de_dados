@@ -470,7 +470,7 @@ const Perfil = () => {
         </div>
       </section>
 
-      <section className="container mx-auto grid grid-cols-2 auto-rows-auto gap-10 my-10">
+      <section className="container mx-auto grid grid-cols-1 sm:grid-cols-2 auto-rows-auto gap-10 my-10">
         <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={dayOptions} />
         </div>

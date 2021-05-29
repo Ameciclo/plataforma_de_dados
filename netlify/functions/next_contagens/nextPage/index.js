@@ -1,1 +1,0 @@
-module.exports = require("./pages/contagens.js")
