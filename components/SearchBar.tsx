@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Highlight from "react-highlighter";
+import Highlighter from "react-highlight-words";
 import axios from "axios";
 import useDebounce from "../hooks/useDebounce";
 
@@ -33,7 +33,6 @@ export const SearchBar = () => {
               },
             }
           );
-          console.log(res)
           setIsSearching(false);
           setResults(res.data.data);
         }
@@ -78,7 +77,7 @@ export const SearchBar = () => {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
           <input
@@ -123,45 +122,58 @@ export const SearchBar = () => {
                       href={result.url}
                     >
                       <label>Protocolo: </label>
-                      <Highlight search={searchTerm}>
-                        {result.protocolo}
-                      </Highlight>
+                      <Highlighter
+                        searchWords={[searchTerm]}
+                        autoEscape={true}
+                        textToHighlight={result.protocolo}
+                      />
+                      <Highlighter
+                        searchWords={[searchTerm]}
+                        autoEscape={true}
+                        textToHighlight={result.protocolo}
+                      />
                       <span className="block font-normal text-sm my-1">
-                        <Highlight search={searchTerm}>
-                          {result.pergunta}
-                        </Highlight>
+                        <Highlighter
+                          searchWords={[searchTerm]}
+                          autoEscape={true}
+                          textToHighlight={result.pergunta}
+                        />
                       </span>
                     </a>
                   );
                 })}
               </>
             ) : (
-                <>
-                  {results.map((result) => {
-                    return (
-                      <a
-                        className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
-                        key={result._id}
-                        href={`/contagens/${result._id}`}
-                      >
-                        <Highlight search={searchTerm}>{result.name}</Highlight>
-                        <div>
-                          <span className="block font-normal text-sm my-1">
-                            {`Data: ${result.date
-                              .substr(0, 10)
-                              .split("-")
-                              .reverse()
-                              .join("/")}`}
-                          </span>
-                          <span className="block font-normal text-sm my-1">
-                            {`Total: ${result.summary.total}`}
-                          </span>
-                        </div>
-                      </a>
-                    );
-                  })}
-                </>
-              )}
+              <>
+                {results.map((result) => {
+                  return (
+                    <a
+                      className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
+                      key={result._id}
+                      href={`/contagens/${result._id}`}
+                    >
+                      <Highlighter
+                        searchWords={[searchTerm]}
+                        autoEscape={true}
+                        textToHighlight={result.name}
+                      />
+                      <div>
+                        <span className="block font-normal text-sm my-1">
+                          {`Data: ${result.date
+                            .substr(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("/")}`}
+                        </span>
+                        <span className="block font-normal text-sm my-1">
+                          {`Total: ${result.summary.total}`}
+                        </span>
+                      </div>
+                    </a>
+                  );
+                })}
+              </>
+            )}
 
             {results.length === 0 && (
               <div className="font-normal w-full border-b cursor-pointer p-4">

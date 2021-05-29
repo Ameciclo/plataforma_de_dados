@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
-import { HourlyBarChart } from "../../components/HourlyBarChart";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
 import FlowContainer from "../../components/FlowChart/FlowContainer";
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts";
 
 const Contagem = ({ count }) => {
   const [popupInfo, setPopupInfo] = useState(null);
@@ -63,46 +64,19 @@ const Contagem = ({ count }) => {
     }
   }
 
-  let hourlyMen = [],
-    hourlyWomen = [],
-    hourlyChildren = [],
-    keyMap = new Map([
-      ["men", { name: "Homens" }],
-      ["women", { name: "Mulheres" }],
+  let keyMap = new Map([
       ["child", { name: "Crianças" }],
+      ["women", { name: "Mulheres" }],
+      ["men", { name: "Homens" }],
     ]),
     hourlyBarKeysOriginal = ["men", "women", "child"],
-    hourlyBarKeys = ["Homens", "Mulheres", "Crianças"],
-    hourlyBarData = [],
+    series= [],
     hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
     summary = count.summary;
 
-  hours.forEach((h) => {
-    hourlyMen.push({ x: h, y: count.data.qualitative.men.count_per_hour[h] });
-    hourlyWomen.push({
-      x: h,
-      y: count.data.qualitative.women.count_per_hour[h],
-    });
-    hourlyChildren.push({
-      x: h,
-      y: count.data.qualitative.child.count_per_hour[h],
-    });
-    let hourObject = {
-      hour: h.toString(),
-    };
-    hourlyBarKeysOriginal.forEach((k) => {
-      hourObject[keyMap.get(k).name] =
-        count.data.qualitative[k].count_per_hour[h];
-    });
-    hourlyBarData.push(hourObject);
-  });
-
-  const sumCountPerHour = (flowCount: object): number => {
-    return Object.values(flowCount["count_per_hour"]).reduce(
-      (a: number, b: number) => a + b,
-      0
-    ) as number;
-  };
+  hourlyBarKeysOriginal.forEach((hk) => {
+    series.push({name: keyMap.get(hk).name, data: Object.values(count.data.qualitative[hk].count_per_hour)})
+  })
 
   let flowData = {};
 
@@ -112,14 +86,47 @@ const Contagem = ({ count }) => {
     }
   });
 
-  // let flowData = {
-  //   north: {
-  //     north_east: sumCountPerHour(count.data.quantitative.north_east),
-  //     north_west: sumCountPerHour(count.data.quantitative.north_west),
-  //     north_south: sumCountPerHour(count.data.quantitative.north_west),
-  //     total: 0,
-  //   },
-  // };
+  const dayOptions = {
+    chart: {
+      type: "column",
+    },
+    plotOptions: {
+      column: {
+        stacking: 'normal',
+        dataLabels: {
+          enabled: true
+        }
+      }
+    },
+    tooltip: {
+      headerFormat: '<b>{point.x}:00h</b><br/>',
+      pointFormat: '{series.name}: {point.y}<br/>'
+    },
+    title: {
+      text:
+          "Quantos dias da semana costuma utilizar a bicicleta como meio de transporte",
+    },
+    xAxis: {
+      type: "category",
+      categories: hours,
+      title: {
+        text: "Hora"
+      },
+    },
+    yAxis: {
+      title: {
+        text: "Quantidade",
+      },
+      scrollbar: {
+        enabled: true
+      },
+    },
+    series,
+
+    credits: {
+      enabled: false,
+    },
+  };
 
   return (
     <Layout>
@@ -324,12 +331,13 @@ const Contagem = ({ count }) => {
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
             className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
-            style={{ height: "700px" }}
           >
-            <h2 className="text-gray-600 text-3xl">
-              Quantidade de ciclistas por hora
-            </h2>
-            <HourlyBarChart data={hourlyBarData} keys={hourlyBarKeys} />
+            <div style={{minWidth: "500px"}}>
+              <h2 className="text-gray-600 text-3xl">
+                Quantidade de ciclistas por hora
+              </h2>
+            <HighchartsReact highcharts={Highcharts} options={dayOptions} />
+            </div>
           </div>
         </section>
       </main>
