@@ -32,3 +32,14 @@ a {
     max-width: 100px;
   }
 }
+
+
+.toggle-btn {
+  cursor: pointer;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .toggle-btn {
+  background-color: #028083;
+  color: #ffffff;
+}

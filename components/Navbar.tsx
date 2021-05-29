@@ -11,9 +11,18 @@ const linksArray = [
   { name: "Documentos", url: "/documentos" },
   { name: "Contagens", url: "/contagens" },
   { name: "Ideciclo", url: "/ideciclo" },
+  { name: "Pesquisa Perfil", url: "/perfil" },
 ];
 
-const ButtonContainer = styled.div`
+interface ButtonContainerProps {
+  readonly open: boolean;
+}
+
+interface MenuContainerProps {
+  readonly open: boolean;
+}
+
+const ButtonContainer = styled.div<ButtonContainerProps>`
   @media (min-width: 820px) {
     display: none;
   }
@@ -49,7 +58,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Container = styled.div`
+const Container = styled.div<MenuContainerProps>`
   @media (min-width: 820px) {
     display: none;
   }
@@ -78,13 +87,14 @@ const LinkListUl = styled.ul`
   padding-top: 60px;
   padding-right: 25px;
   padding-left: 25px;
+
   li {
     list-style-type: none;
     text-transform: uppercase;
-    margin: 0;
-    margin-bottom: 30px;
+    margin: 0 0 30px;
     border-bottom: 2px solid white;
     padding: 3px;
+
     a {
       text-decoration: none;
       color: white;
@@ -128,7 +138,10 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full" style={{zIndex: 501}}>
+    <nav
+      className="lg:px-16 px-6 bg-ameciclo text-white flex flex-wrap items-center lg:py-0 py-2 fixed z-10 w-full"
+      style={{ zIndex: 501 }}
+    >
       <div className="flex-1 flex justify-between items-center container mx-auto">
         <Link href="/">
           <a>

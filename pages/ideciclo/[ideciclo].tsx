@@ -2,9 +2,17 @@ import React from "react";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
-import { ResponsiveRadar } from "@nivo/radar";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import HighchartsReact from "highcharts-react-official";
+import Highcharts from "highcharts";
+import HighchartsExporting from "highcharts/modules/exporting";
+import HighchartsMore from "highcharts/highcharts-more";
+
+if (typeof Highcharts === "object") {
+  HighchartsExporting(Highcharts);
+  HighchartsMore(Highcharts);
+}
 
 const Ideciclo = ({ structure }) => {
   let data = [];
@@ -28,6 +36,83 @@ const Ideciclo = ({ structure }) => {
     ["pavement_condition_rating", { name: "Condição do pavimento" }],
     ["obstacles_rating", { name: "Obstaculos" }],
   ]);
+
+  let series = structure.reviews.map((sr) => {
+    const data = Object.keys(sr)
+      .filter(
+        (f) =>
+          ![
+            "id",
+            "reviewer",
+            "reviewed_at",
+            "adequacy_rating",
+            "average_rating",
+            "comfort_rating",
+            "safety_rating",
+          ].includes(f)
+      )
+      .map((f) => {
+        return { name: keyMap.get(f).name, y: sr[f] };
+      });
+    const reviewLabel = sr.reviewed_at
+      .substr(0, 10)
+      .split("-")
+      .reverse()
+      .join("/");
+    return {
+      type: "line",
+      name: reviewLabel,
+      data: data,
+    };
+  });
+
+  let radarOptions = {
+    chart: {
+      polar: true,
+    },
+    credits: {
+      enabled: false,
+    },
+    title: {
+      text: "Avaliações",
+    },
+    pane: {
+      size: "90%",
+    },
+    xAxis: {
+      categories: [
+        "Largura Média",
+        "Bidirecionalidade",
+        "Sin. Horizontal em Cruzamentos",
+        "Condição da Sin. Horizontal",
+        "Sin. Horizontal",
+        "Obstaculos",
+        "Pintura",
+        "Condição do pavimento",
+        "Proteção",
+        "Risco",
+        "Sombreamento",
+        "Sinuosidade",
+        "Controle de Velocidade",
+        "Tipo de pavimento",
+        "Sin. Vertical em Cruzamentos",
+        "Sin. Vertical",
+      ],
+      tickmarkPlacement: "on",
+    },
+    yAxis: {
+      gridLineInterpolation: "polygon",
+      min: 0,
+      max: 10,
+    },
+
+    tooltip: {
+      shared: true,
+      pointFormat:
+        '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
+    },
+    series: series,
+  };
 
   structure.reviews.forEach((review) => {
     let reviewLabel = review.reviewed_at
@@ -118,55 +203,8 @@ const Ideciclo = ({ structure }) => {
         </div>
       </section>
       <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-        <div className="shadow-md rounded p-10 text-center overflow-x-scroll h-96">
-          <h2 className="text-gray-600 text-3xl">Avaliações</h2>
-          <ResponsiveRadar
-            data={data}
-            keys={dates}
-            indexBy="key"
-            maxValue="auto"
-            margin={{ top: 70, right: 40, bottom: 70, left: 40 }}
-            curve="linearClosed"
-            borderWidth={2}
-            borderColor={{ from: "color" }}
-            gridLevels={5}
-            gridShape="circular"
-            gridLabelOffset={36}
-            enableDots={true}
-            dotSize={10}
-            dotColor={{ theme: "background" }}
-            dotBorderWidth={2}
-            dotBorderColor={{ from: "color" }}
-            enableDotLabel={true}
-            dotLabel="value"
-            dotLabelYOffset={-12}
-            colors={{ scheme: "nivo" }}
-            fillOpacity={0.25}
-            blendMode="multiply"
-            animate={true}
-            isInteractive={true}
-            legends={[
-              {
-                anchor: "top-left",
-                direction: "column",
-                translateX: 300,
-                translateY: -40,
-                itemWidth: 80,
-                itemHeight: 20,
-                itemTextColor: "#999",
-                symbolSize: 12,
-                symbolShape: "circle",
-                effects: [
-                  {
-                    on: "hover",
-                    style: {
-                      itemTextColor: "#000",
-                    },
-                  },
-                ],
-              },
-            ]}
-          />
+        <div className="shadow-md rounded text-center">
+          <HighchartsReact highcharts={Highcharts} options={radarOptions} />
         </div>
       </section>
       <section className="container my-10 mx-auto grid grid-cols-3 md:grid-cols-8 sm:gap-4">
