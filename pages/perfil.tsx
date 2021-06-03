@@ -399,7 +399,7 @@ const Perfil = () => {
 
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
-        <div className="border-gray-200 border p-8 grid grid-cols-3">
+        <div className="border-gray-200 border p-8 grid grid-cols-1 sm:grid-cols-3">
           <div className="flex flex-col items-center space-y-4">
             <h3 className="font-bold text-xl mt-5">Gênero</h3>
             {filters
