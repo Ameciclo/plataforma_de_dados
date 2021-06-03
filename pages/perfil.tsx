@@ -89,6 +89,14 @@ const Perfil = () => {
   });
   const [collisionData, setCollisionData] = useState([]);
 
+  useEffect(() => {
+    Highcharts.charts.forEach((c) => {
+      if (c !== undefined) {
+        setTimeout(() => c.reflow(), 300);
+      }
+    });
+  }, []);
+
   const toggleFilter = (f, i: number) => {
     setFilters((prevState) => {
       return prevState.map((item) => {
