@@ -16,7 +16,7 @@ export default function Home() {
       </Head>
 
       <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
-        <div className="container mx-auto mt-20">
+        <div className="container mx-auto mt-32 sm:mt-20">
           <SearchBar />
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function Home() {
           <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
             Navegue e visualize os dados
           </h3>
-          <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-5 sm:grid-rows-2 gap-8 grid-flow-row">
+          <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
             <GridCard
               title="Contagens"
               text="Contagens das viagens de bicicleta e suas caracteristicas observaveis"
@@ -68,13 +68,13 @@ export default function Home() {
               icon="relatorio"
               url="/documentos"
             />
-            {/*
+
             <GridCard
               title="Perfil"
               text="Dados socio-economicos dos ciclistas e suas percepções"
               icon="perfil"
+              url="/perfil"
             />
-            */}
           </div>
         </div>
       </section>
