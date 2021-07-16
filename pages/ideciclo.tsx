@@ -5,8 +5,18 @@ import Breadcrumb from "../components/Breadcrumb";
 import Select from "react-select";
 import Link from "next/link";
 import { useTable } from "react-table";
+import citys from "../public/IDECICLO - IDECICLO - Cities and Reviews.json.json"
+import CityCard from "../components/CityCard"
+import IdecicloTable from "../components/IdecicloTable"
 
 const Ideciclo = ({ cities, structures }) => {
+
+  let cidades = citys
+  cidades.forEach((c) => c.city_reviews = c.city_reviews.sort((a,b) => a.year > b.year ? -1: 1))
+  cidades = cidades.filter((c) => c.city_reviews.length > 0)
+  console.log(JSON.stringify(cidades))
+
+
   const [selectedCity, setCity] = useState({
     label: "Recife",
     value: "Recife",
@@ -97,7 +107,7 @@ const Ideciclo = ({ cities, structures }) => {
         className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
         style={{ height: "25vh" }}
       >
-        <h1 className="text-4xl font-bold">Ideciclo</h1>
+        <h1 className="text-4xl font-bold">Índice de Desenvolvimento Cicloviário</h1>
       </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
@@ -109,47 +119,20 @@ const Ideciclo = ({ cities, structures }) => {
         </div>
       </div>
       <div className="mx-auto container">
-        {cityData && (
-          <div className="mx-auto text-center my-24">
-            <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
-            <h3 className="text-4xl font-bold my-8">{selectedCity.label}</h3>
-            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"Nota Atual"}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.currentReview}
-                </h3>
-              </div>
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"Nota anterior"}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.previousReview}
-                </h3>
-              </div>
-              {cityData.extension && (
-                <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                  <h3>{"Extensão"}</h3>
-                  <h3 className="text-5xl font-bold mt-2">
-                    {cityData.extension.toFixed(1)}
-                  </h3>
-                </div>
-              )}
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"Avaliações"}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.reviewCount}
-                </h3>
-              </div>
-            </div>
-          </div>
-        )}
-        <Select
-          options={options}
-          onChange={setCity}
-          defaultValue={{ label: "Recife", value: "Recife" }}
-        />
-      </div>
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+      <div className="mx-auto text-center my-24">
+        <h1 className="text-6xl font-bold">Ranking de cidades</h1>
+        <section className="container mx-auto grid grid-cols-5 md:grid-cols-1 md:grid-cols-5 auto-rows-auto gap-10 my-10">
+          {cidades.sort((a, b) => {
+            if (a.city_reviews.length > 0 && b.city_reviews.length > 0) {
+              return (a.city_reviews[0].ideciclo > b.city_reviews[0].ideciclo ? -1 : 1)
+            } else {
+              return -1
+            }
+          }).map((city) => (
+              <CityCard data={city} key={city.id} />
+            ))}
+        </section>
+        <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <div className="flex flex-col sm:flex-row justify-between">
           <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
             <h1 className="text-4xl font-bold mb-2">O que é?</h1>
@@ -184,54 +167,46 @@ const Ideciclo = ({ cities, structures }) => {
           </div>
         </div>
       </section>
+      </div>
+        {cityData && (
+          <div className="mx-auto text-center my-24">
+            <h1 className="text-6xl font-bold">{selectedCity.label}</h1>
+            <h3 className="text-4xl font-bold my-8">Estatísticas Gerais</h3>
+            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                <h3>{"IDECICLO 2021 "}</h3>
+                <h3 className="text-5xl font-bold mt-2">
+                  {cityData.currentReview}
+                </h3>
+              </div>
+              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                <h3>{"IDECICLO 2018"}</h3>
+                <h3 className="text-5xl font-bold mt-2">
+                  {cityData.previousReview}
+                </h3>
+              </div>
+              {cityData.extension && (
+                <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                  <h3>{"Extensão"}</h3>
+                  <h3 className="text-5xl font-bold mt-2">
+                    {cityData.extension.toFixed(1)}
+                  </h3>
+                </div>
+              )}
+              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                <h3>{"Avaliações"}</h3>
+                <h3 className="text-5xl font-bold mt-2">
+                  {cityData.reviewCount}
+                </h3>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <h2 className="text-gray-600 text-3xl">Veja a nota de cada via</h2>
+        <h2 className="text-gray-600 text-3xl">Avaliações de cada via</h2>
         <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
-          <table
-            className="table-auto shadow min-w-full divide-y divide-gray-200"
-            {...getTableProps()}
-          >
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr
-                  {...headerGroup.getHeaderGroupProps()}
-                  className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
-                >
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
-                    >
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody
-              {...getTableBodyProps()}
-              className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
-            >
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="hover:bg-gray-100 border-b border-gray-200 py-10"
-                  >
-                    {row.cells.map((cell) => (
-                      <td
-                        {...cell.getCellProps()}
-                        className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm"
-                      >
-                        {cell.render("Cell")}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <IdecicloTable data={data}/>
         </div>
       </section>
     </Layout>
