@@ -56,18 +56,26 @@ const IdecicloTable = ({ data }) => {
       {
         Header: "Extensão (km)",
         accessor: "extension",
-        Cell: ({ value }) => (
-            <span>{value.toFixed(2)}</span>
-          ),
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{value.toFixed(2)}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
         Filter: NumberRangeColumnFilter,
         filter: 'between',
     },
       {
         Header: "Nota",
         accessor: "average_rating",
-        Cell: ({ value }) => (
-            <span>{value.toFixed(1)}</span>
-          ),
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{value.toFixed(1)}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
         Filter: NumberRangeColumnFilter,
         filter: 'between',
     },

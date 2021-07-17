@@ -6,12 +6,12 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { AnimatePresence, motion } from "framer-motion";
 
 const linksArray = [
-  { name: "Página Principal", url: "http://www.ameciclo.org" },
-  { name: "Plataforma de Dados", url: "/" },
+  { name: "Página inicial", url: "/" },
   { name: "Documentos", url: "/documentos" },
   { name: "Contagens", url: "/contagens" },
   { name: "Ideciclo", url: "/ideciclo" },
   { name: "Pesquisa Perfil", url: "/perfil" },
+  { name: "Site da Ameciclo", url: "http://www.ameciclo.org" },
 ];
 
 interface ButtonContainerProps {
@@ -145,7 +145,7 @@ const Navbar = () => {
       <div className="flex-1 flex justify-between items-center container mx-auto">
         <Link href="/">
           <a>
-            <AnimatePresence>
+          <AnimatePresence>
               {isHeaderScrolled ? (
                 <div>
                   <svg
@@ -173,7 +173,7 @@ const Navbar = () => {
                   className="flex items-center flex-shrink-0 mr-6 absolute z-10 border-white border-4"
                 >
                   <svg
-                    className="w-32 h-32 text-ameciclo bg-white"
+                    className="w-20 h-20 sm:w-32 sm:h-32 text-ameciclo bg-white"
                     fill="currentColor"
                     viewBox="0 0 400 400"
                   >

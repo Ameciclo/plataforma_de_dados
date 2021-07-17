@@ -5,22 +5,23 @@ import Breadcrumb from "../components/Breadcrumb";
 import Select from "react-select";
 import Link from "next/link";
 import { useTable } from "react-table";
-import citys from "../public/IDECICLO - IDECICLO - Cities and Reviews.json.json"
+import city_json from "../public/IDECICLO - IDECICLO - Cities and Reviews.json.json"
 import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
 
 const Ideciclo = ({ cities, structures }) => {
 
-  let cidades = citys
+  let cidades = city_json
   cidades.forEach((c) => c.city_reviews = c.city_reviews.sort((a,b) => a.year > b.year ? -1: 1))
   cidades = cidades.filter((c) => c.city_reviews.length > 0)
-  console.log(JSON.stringify(cidades))
 
+  const [selectedCity, setCity] = useState("Recife");
 
-  const [selectedCity, setCity] = useState({
-    label: "Recife",
-    value: "Recife",
-  });
+  const changeCity = (name) => {
+    setCity(name)
+    window.location.replace("#maisinfo")
+  }
+
   const [cityData, setCityData] = useState(null);
   const [cityStructure, setCityStructure] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -50,52 +51,12 @@ const Ideciclo = ({ cities, structures }) => {
         console.log(e);
       }
     };
-    fetchCity(selectedCity.value);
-    fetchStructures(selectedCity.value);
+    fetchCity(selectedCity);
+    fetchStructures(selectedCity);
   }, [selectedCity]);
-
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Nome",
-        accessor: "street",
-        Cell: ({ row }) => (
-          <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
-            <a className="text-ameciclo">{row.original.street}</a>
-          </Link>
-        ),
-      },
-      {
-        Header: "Tipo",
-        accessor: "structure_type.name",
-      },
-      {
-        Header: "Extensão",
-        accessor: "extension",
-      },
-      {
-        Header: "Média",
-        accessor: "average_rating",
-      },
-    ],
-    []
-  );
 
   const data = React.useMemo(() => cityStructure, [cityStructure]);
 
-  const tableInstance = useTable({ columns, data });
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = tableInstance;
-
-  let options = cities.map((c) => {
-    return { value: c.city, label: c.city };
-  });
   return (
     <Layout>
       <Head>
@@ -120,7 +81,7 @@ const Ideciclo = ({ cities, structures }) => {
       </div>
       <div className="mx-auto container">
       <div className="mx-auto text-center my-24">
-        <h1 className="text-6xl font-bold">Ranking de cidades</h1>
+        <h1 className="text-6xl font-bold">Ranking das cidades</h1>
         <section className="container mx-auto grid grid-cols-5 md:grid-cols-1 md:grid-cols-5 auto-rows-auto gap-10 my-10">
           {cidades.sort((a, b) => {
             if (a.city_reviews.length > 0 && b.city_reviews.length > 0) {
@@ -129,7 +90,7 @@ const Ideciclo = ({ cities, structures }) => {
               return -1
             }
           }).map((city) => (
-              <CityCard data={city} key={city.id} />
+              <CityCard data={city} selected={city.name==selectedCity} key={city.id} changeCity={changeCity}/>
             ))}
         </section>
         <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
@@ -168,40 +129,44 @@ const Ideciclo = ({ cities, structures }) => {
         </div>
       </section>
       </div>
-        {cityData && (
+      <section id={'maisinfo'}>
+      {cityData && (
           <div className="mx-auto text-center my-24">
-            <h1 className="text-6xl font-bold">{selectedCity.label}</h1>
-            <h3 className="text-4xl font-bold my-8">Estatísticas Gerais</h3>
-            <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"IDECICLO 2021 "}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.currentReview}
-                </h3>
-              </div>
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"IDECICLO 2018"}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.previousReview}
-                </h3>
-              </div>
-              {cityData.extension && (
+              <h1 className="text-6xl font-bold">{selectedCity}</h1>
+              <h3 className="text-4xl font-bold my-8">Estatísticas Gerais</h3>
+              <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+              {cityData.currentReview && (
                 <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                  <h3>{"Extensão"}</h3>
+                  <h3>{"IDECICLO 2021"}</h3>
                   <h3 className="text-5xl font-bold mt-2">
-                    {cityData.extension.toFixed(1)}
+                    {cityData.currentReview}
+                  </h3>
+                </div>)}
+                {cityData.previousReview && (
+                <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                  <h3>{"IDECICLO 2018"}</h3>
+                  <h3 className="text-5xl font-bold mt-2">
+                    {cityData.previousReview}
+                  </h3>
+                </div>)}
+                {cityData.extension && (
+                  <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                    <h3>{"Extensão"}</h3>
+                    <h3 className="text-5xl font-bold mt-2">
+                      {cityData.extension.toFixed(1)}
+                    </h3>
+                  </div>
+                )}
+                <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                  <h3>{"Avaliações"}</h3>
+                  <h3 className="text-5xl font-bold mt-2">
+                    {cityData.reviewCount}
                   </h3>
                 </div>
-              )}
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"Avaliações"}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {cityData.reviewCount}
-                </h3>
               </div>
             </div>
-          </div>
         )}
+          </section>
       </div>
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <h2 className="text-gray-600 text-3xl">Avaliações de cada via</h2>

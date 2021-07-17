@@ -172,8 +172,8 @@ const Ideciclo = ({ structure }) => {
       </div>
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
-          <h3 className="text-4xl font-bold my-8">{structure.street}</h3>
+          <h1 className="text-6xl font-bold">{structure.street}</h1>
+          <h3 className="text-4xl font-bold my-8">Notas da estrutura</h3>
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Média</h3>
@@ -182,19 +182,19 @@ const Ideciclo = ({ structure }) => {
               </h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Velocidade máxima</h3>
+              <h3>Qualidade do projeto</h3>
               <h3 className="text-5xl font-bold mt-2">{structure.max_speed}</h3>
             </div>
             {structure.extension && (
               <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>Extensão</h3>
+                <h3>Segurança Viária</h3>
                 <h3 className="text-5xl font-bold mt-2">
                   {structure.extension.toFixed(1)}
                 </h3>
               </div>
             )}
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Avaliações</h3>
+              <h3>Manutenção e urbanidade</h3>
               <h3 className="text-5xl font-bold mt-2">
                 {structure.reviews.length}
               </h3>
