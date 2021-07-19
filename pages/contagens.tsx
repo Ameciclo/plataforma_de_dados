@@ -64,13 +64,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         <title>Contagens | Plataforma de Dados</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Contagens</h1>
-      </div>
+        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
+        style={{
+          width: "100%",
+          height: "52vh",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundImage: `url('/contagem.png')`,
+        }}
+      />
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb

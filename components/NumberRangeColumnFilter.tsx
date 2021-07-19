@@ -26,12 +26,12 @@ function NumberRangeColumnFilter({
           onChange={e => {
             let val = e.target.value
             setFilter((old = []) => {
-              if(parseFloat(val) < min) val = min
-              if(parseFloat(val) > max) val = max
+              if(parseFloat(val) < min) val = ""+ min
+              if(parseFloat(val) > max) val = ""+ max
                return [val ? parseFloat(val) : undefined, old[1]]
               })
           }}
-          placeholder={`Mín(${min})`}
+          placeholder={`Mín(${min.toFixed(1)})`}
           style={{
             width: '70px',
             marginRight: '0.5rem',
@@ -45,12 +45,12 @@ function NumberRangeColumnFilter({
           onChange={e => {
             let val = e.target.value
             setFilter((old = []) => {
-              if(parseFloat(val) < min) val = min
-              if(parseFloat(val) > max) val = max
+              if(parseFloat(val) < min) val = ""+ min
+              if(parseFloat(val) > max) val = ""+ max
                return [old[0], val ? parseFloat(val) : undefined]
               })
           }}
-          placeholder={`Máx(${max})`}
+          placeholder={`Máx(${max.toFixed(1)})`}
           style={{
             width: '70px',
             marginLeft: '0.5rem',

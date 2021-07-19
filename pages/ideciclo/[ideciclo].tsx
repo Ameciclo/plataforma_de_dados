@@ -8,6 +8,7 @@ import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsMore from "highcharts/highcharts-more";
+import Structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -15,6 +16,7 @@ if (typeof Highcharts === "object") {
 }
 
 const Ideciclo = ({ structure }) => {
+  console.log(structure)
   let data = [];
   let dates = [];
 
@@ -257,7 +259,7 @@ const Ideciclo = ({ structure }) => {
           <img src={`/icons/sin_vertical_cruzamentos.png`} className="h-32" />
         </div>
         <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/padrão_pintura.png`} className="h-32" />
+          <img src={`/icons/padrao_pintura.png`} className="h-32" />
         </div>
         <div className="h-32 w-32 rounded shadow-md">
           <img src={`/icons/sit_pavimento.png`} className="h-32" />
@@ -268,11 +270,12 @@ const Ideciclo = ({ structure }) => {
 };
 
 export async function getStaticPaths() {
-  const res = await fetch(
+/**  const res = await fetch(
     "https://api.ideciclo.ameciclo.org/api/v1/structures"
   );
   const structures = await res.json();
-
+*/
+  const structures = Structures
   const paths = structures.map((s) => ({
     params: { ideciclo: s.id.toString() },
   }));
@@ -281,10 +284,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(
+  /**const res = await fetch(
     `https://api.ideciclo.ameciclo.org/api/v1/structures/${params.ideciclo}`
-  );
-  const structure = await res.json();
+  );*/
+  const structure = Structures[params.ideciclo]//await res.json();
   return {
     props: {
       structure: structure,

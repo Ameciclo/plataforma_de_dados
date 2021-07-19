@@ -40,25 +40,25 @@ const IdecicloTable = ({ data }) => {
     () => [
       {
         Header: "Rua",
-        accessor: "street",
+        accessor: "logradouro",
         Cell: ({ row }) => (
             <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
-                <a className="text-ameciclo">{row.original.street}</a>
+                <a className="text-ameciclo">{row.original.logradouro}</a>
             </Link>
         ),
         Filter: ColumnFilter,
       },
       {
         Header: "Tipo",
-        accessor: "structure_type.name",
+        accessor: "tipologia",
         Filter: SelectColumnFilter,
       },
       {
         Header: "Extensão (km)",
-        accessor: "extension",
+        accessor: "ultimo_comprimento",
         Cell: ({ value }) => {
           if (value) {
-          return <span>{value.toFixed(2)}</span>
+          return <span>{(""+(value/1000).toFixed(2)).replace(".",",")}</span>
         } else {
           return  <span>{"N/A"}</span>
         }
@@ -68,10 +68,10 @@ const IdecicloTable = ({ data }) => {
     },
       {
         Header: "Nota",
-        accessor: "average_rating",
+        accessor: "ultima_nota",
         Cell: ({ value }) => {
           if (value) {
-          return <span>{value.toFixed(1)}</span>
+          return <span>{(value.toFixed(1)).replace(".",",")}</span>
         } else {
           return  <span>{"N/A"}</span>
         }
@@ -123,7 +123,7 @@ const IdecicloTable = ({ data }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 5 },
+      initialState: { pageIndex: 0, pageSize: 10 },
       filterTypes,
 
     },
@@ -138,6 +138,7 @@ const IdecicloTable = ({ data }) => {
   const pagesButtons = (numPages) => {
     var pages = []
     for (let i = 1; i <= numPages; i++) {
+      if(numPages < 6) {
         if (i - 1 != pageIndex) {
             pages.push(
                 <button
@@ -163,6 +164,39 @@ const IdecicloTable = ({ data }) => {
             )
     
         }
+      }/* else {
+        if(
+          i == 1 
+          ||  i == numPages  
+          || ((i <= pageIndex+2) && (i >= pageIndex-1))
+          ){
+          if (i - 1 != pageIndex) {
+            pages.push(
+                <button
+                    className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
+                    onClick={() => gotoPage(i-1)}
+                >
+                    {i}
+                </button>
+            )
+    
+        } else {
+            pages.push(
+                <button
+                    className="bg-red-500 border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
+                    onClick={() => gotoPage(i-1)}
+                >
+                    {i}
+                </button>
+            )
+    
+        }
+        }
+      }*/
     }
     return pages
 }
@@ -254,8 +288,9 @@ const IdecicloTable = ({ data }) => {
              </button> 
           )}
           
-          {pageOptions.length > 0 && (pagesButtons(pageOptions.length))}
-
+          <div className="p-1">
+            {(pageOptions.length > 0) && (pagesButtons(pageOptions.length))}
+          </div>
           {canNextPage ? (
             <button
               className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none mb-2 mx-1"

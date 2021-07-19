@@ -6,7 +6,7 @@ const CityCard = ({ data, selected, changeCity}) => {
   let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3})}`
   const label = data.name
   return (
-    <button onClick={() => changeCity(data.name)}
+    <button onClick={() => changeCity(data.id)}
     className={`${
       selected
         ? "bg-ameciclo text-white"
