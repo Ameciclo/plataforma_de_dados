@@ -22,6 +22,11 @@ const GridCard = ({ title, text, icon, url = "#" }) => {
   );
 };
 
+const navControlStyle= {
+  right: 10,
+  top: 10
+};
+
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   const groupBy = (xs, f) => {
     return xs.reduce(
@@ -214,7 +219,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               padding: '10px',
               zIndex: 500
             }}>
-              <FullscreenControl />
+              <FullscreenControl style={navControlStyle}/>
             </div>
 
             <div style={{
@@ -224,7 +229,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               padding: '10px',
               zIndex: 500
             }}>
-              <NavigationControl />
+              <NavigationControl style={navControlStyle}/>
             </div>
 
             {cyclistCounts.map((c) => (

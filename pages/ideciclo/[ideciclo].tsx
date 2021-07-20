@@ -9,6 +9,7 @@ import Highcharts from "highcharts";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsMore from "highcharts/highcharts-more";
 import Structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
+import Ratings from "../../public/IDECICLO - Recife - 2021 - structures.json"
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -16,11 +17,10 @@ if (typeof Highcharts === "object") {
 }
 
 const Ideciclo = ({ structure }) => {
-  console.log(structure)
   let data = [];
   let dates = [];
 
-  let keyMap = new Map([
+/**  let keyMap = new Map([
     ["protection_rating", { name: "Proteção", text: null }],
     ["speed_control_rating", { name: "Controle de Velocidade" }],
     ["hor_cross_sign_rating", { name: "Sin. Horizontal em Cruzamentos" }],
@@ -45,12 +45,9 @@ const Ideciclo = ({ structure }) => {
         (f) =>
           ![
             "id",
-            "reviewer",
-            "reviewed_at",
-            "adequacy_rating",
-            "average_rating",
-            "comfort_rating",
-            "safety_rating",
+            "year",
+            "nota",
+            "comprimento",
           ].includes(f)
       )
       .map((f) => {
@@ -148,7 +145,7 @@ const Ideciclo = ({ structure }) => {
         }
       });
   });
-
+*/
   return (
     <Layout>
       <Head>
@@ -160,13 +157,13 @@ const Ideciclo = ({ structure }) => {
         style={{ height: "25vh" }}
       >
         <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{structure.street}</h1>
+          <h1 className="text-4xl font-bold truncate">{structure.logradouro}</h1>
         </div>
       </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
         <div className="container mx-auto">
           <Breadcrumb
-            label={structure.street}
+            label={structure.logradouro}
             slug={structure.id.toString()}
             routes={["/", "/ideciclo", structure.id]}
           />
@@ -174,36 +171,34 @@ const Ideciclo = ({ structure }) => {
       </div>
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">{structure.street}</h1>
-          <h3 className="text-4xl font-bold my-8">Notas da estrutura</h3>
+          <h1 className="text-6xl font-bold">{structure.logradouro}</h1>
+          <h3 className="text-4xl font-bold my-8">Visão geral</h3>
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Média</h3>
+              <h3>Nota geral</h3>
               <h3 className="text-5xl font-bold mt-2">
-                {structure.average_rating}
+                {(""+structure.ultima_nota.toFixed(1)).replace(".",",")}
               </h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Qualidade do projeto</h3>
-              <h3 className="text-5xl font-bold mt-2">{structure.max_speed}</h3>
+              <h3>Extensão (km)</h3>
+              <h3 className="text-5xl font-bold mt-2">{((structure.ultimo_comprimento/1000).toFixed(2)).replace(".",",")}</h3>
             </div>
-            {structure.extension && (
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>Segurança Viária</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {structure.extension.toFixed(1)}
-                </h3>
-              </div>
-            )}
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Manutenção e urbanidade</h3>
+              <h3>Avaliações</h3>
               <h3 className="text-5xl font-bold mt-2">
                 {structure.reviews.length}
               </h3>
+              </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"Dados"}</h3>
+                {/*<a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>*/}
+                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
             </div>
           </div>
         </div>
       </section>
+      {/*
       <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
         <div className="shadow-md rounded text-center">
           <HighchartsReact highcharts={Highcharts} options={radarOptions} />
@@ -265,6 +260,7 @@ const Ideciclo = ({ structure }) => {
           <img src={`/icons/sit_pavimento.png`} className="h-32" />
         </div>
       </section>
+      */}
     </Layout>
   );
 };
