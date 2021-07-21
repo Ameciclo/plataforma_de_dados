@@ -55,7 +55,7 @@ const Ideciclo = () => {
     const [viewport, setViewport] = useState({
       latitude: -8.0584364,
       longitude: -34.945277,
-      zoom: 10,
+      zoom: 11,
       bearing: 0,
       pitch: 0,
     });
@@ -168,23 +168,23 @@ const Ideciclo = () => {
                   <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
                     <h3>{"IDECICLO " + selectedCity.city_reviews[0].year}</h3>
                     <h3 className="text-5xl font-bold mt-2">
-                      {selectedCity.city_reviews[0].ideciclo.toFixed(3)}
+                      {(""+selectedCity.city_reviews[0].ideciclo.toFixed(3)).replace(".",",")}
                     </h3>
                   </div>)}
                   {selectedCity.city_reviews.length > 1 && (
                   <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
                     <h3>{"IDECICLO " + selectedCity.city_reviews[1].year}</h3>
                     <h3 className="text-5xl font-bold mt-2">
-                      {selectedCity.city_reviews[1].ideciclo.toFixed(3)}
+                      {(""+selectedCity.city_reviews[1].ideciclo.toFixed(3)).replace(".",",")}
                     </h3>
                   </div>)}
                   {selectedCity.city_reviews.length  && (
                     <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
                       <h3>{"Extensão(km)"}</h3>
                       <h3 className="text-5xl font-bold mt-2">
-                        {((selectedCity.city_reviews[0].city_network.cycle_length.road + 
+                        {(""+((selectedCity.city_reviews[0].city_network.cycle_length.road + 
                         selectedCity.city_reviews[0].city_network.cycle_length.street + 
-                        selectedCity.city_reviews[0].city_network.cycle_length.local)/(1000)).toFixed(1)}
+                        selectedCity.city_reviews[0].city_network.cycle_length.local)/(1000)).toFixed(1)).replace(".",",")}
                       </h3>
                     </div>
                   )}

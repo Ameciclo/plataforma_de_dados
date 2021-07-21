@@ -1,69 +1,122 @@
-import React from "react";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
+
+import InfoCard from "../../components/InfoCardNumber";
+
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import HighchartsReact from "highcharts-react-official";
+
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsMore from "highcharts/highcharts-more";
-import Structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
-import Ratings from "../../public/IDECICLO - Recife - 2021 - structures.json"
+
+import React, { useEffect, useState } from "react";
+import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
+
+import structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
+import ratings from "../../public/IDECICLO - Recife - 2021 - ratings_compact.json"
+import map from "../../public/malhacicloviariapermanente_mar2021.json"
+import descriptions from "../../public/IDECICLO - Recife - 2021 - ciclo_description.json"
+import headers from "../../public/IDECICLO - Recife - 2021 - form_headers.json"
+
+const malha = {
+  'type': 'geojson',
+  'data': map
+}
+
+const layers = {
+  ciclovia: {
+    id: 'ciclovias',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 1.5,
+    },
+    filter: ['==', 'Tipo', 'Ciclovia']
+  },
+  ciclofaixa: {
+    id: 'ciclofaixas',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 1.5,
+      'line-dasharray': [2,.5],
+    },
+    filter: ['==', 'Tipo', 'Ciclofaixa']
+  },
+  ciclorrota: {
+    id: 'ciclorrota',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 2,
+      'line-dasharray': [1,2.5],
+    },
+    filter: ['==', 'Tipo', 'Ciclorrota']
+  },
+};
+  const navControlStyle= {
+    right: 10,
+    top: 10
+  };
+
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
   HighchartsMore(Highcharts);
 }
 
+function getAllData (structure) {
+
+  let s = structure
+  s.reviews = s.reviews.sort((a,b) => a.year > b.year)
+  const d = descriptions.filter(d => d.form_id == s.reviews[0].segments[0].form_id)[0]
+  const r = ratings.filter(r => r.form_id == s.reviews[0].segments[0].form_id)[0]
+  const h = headers.filter(h => h.form_id == s.reviews[0].segments[0].form_id)[0]
+  const m = {
+    "type": "FeatureCollection",
+    "name": s.name,
+    "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+    "features": []
+  }
+  s.reviews[0].segments.forEach(seg => {
+    m.features.push(
+      map.features.filter(m => m.properties.idunido == seg.geo_id)[0]
+      )})
+      
+      console.log(JSON.stringify(r))
+  return [
+    s,
+    r,
+    m,
+    d,
+    h,
+  ]
+}
+
 const Ideciclo = ({ structure }) => {
-  let data = [];
-  let dates = [];
-
-/**  let keyMap = new Map([
-    ["protection_rating", { name: "Proteção", text: null }],
-    ["speed_control_rating", { name: "Controle de Velocidade" }],
-    ["hor_cross_sign_rating", { name: "Sin. Horizontal em Cruzamentos" }],
-    ["avg_structure_width", { name: "Largura Média" }],
-    ["hor_sign_rating", { name: "Sin. Horizontal" }],
-    ["ver_sign_rating", { name: "Sin. Vertical" }],
-    ["ver_cross_sign_rating", { name: "Sin. Vertical em Cruzamentos" }],
-    ["pattern_paint_rating", { name: "Pintura" }],
-    ["hor_sign_condition_rating", { name: "Condição da Sin. Horizontal" }],
-    ["risk_rating", { name: "Risco" }],
-    ["sinuosity_rating", { name: "Sinuosidade" }],
-    ["bidirectionality_rating", { name: "Bidirecionalidade" }],
-    ["shading_rating", { name: "Sombreamento" }],
-    ["type_pavement_rating", { name: "Tipo de pavimento" }],
-    ["pavement_condition_rating", { name: "Condição do pavimento" }],
-    ["obstacles_rating", { name: "Obstaculos" }],
-  ]);
-
-  let series = structure.reviews.map((sr) => {
-    const data = Object.keys(sr)
-      .filter(
-        (f) =>
-          ![
-            "id",
-            "year",
-            "nota",
-            "comprimento",
-          ].includes(f)
-      )
-      .map((f) => {
-        return { name: keyMap.get(f).name, y: sr[f] };
-      });
-    const reviewLabel = sr.reviewed_at
-      .substr(0, 10)
-      .split("-")
-      .reverse()
-      .join("/");
-    return {
-      type: "line",
-      name: reviewLabel,
-      data: data,
-    };
+  let [s, r, m, d, h] = getAllData(structure)
+  const [viewport, setViewport] = useState({
+    latitude: -8.0584364,
+    longitude: -34.945277,
+    zoom: 10,
+    bearing: 0,
+    pitch: 0,
   });
+
+  const [settings, setsettings] = useState({
+    dragPan: true,
+    dragRotate: true,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    boxZoom: true,
+    doubleClickZoom: true
+  });
+
 
   let radarOptions = {
     chart: {
@@ -73,29 +126,21 @@ const Ideciclo = ({ structure }) => {
       enabled: false,
     },
     title: {
-      text: "Avaliações",
+      text: "EVOLUÇÃO DA NOTA",
+    },
+    subtitle: {
+      text: 'Notas que compõem a média'
     },
     pane: {
-      size: "90%",
+      size: "70%",
+//      startAngle: 0,
+ //     endAngle: 120
     },
     xAxis: {
       categories: [
-        "Largura Média",
-        "Bidirecionalidade",
-        "Sin. Horizontal em Cruzamentos",
-        "Condição da Sin. Horizontal",
-        "Sin. Horizontal",
-        "Obstaculos",
-        "Pintura",
-        "Condição do pavimento",
-        "Proteção",
-        "Risco",
-        "Sombreamento",
-        "Sinuosidade",
-        "Controle de Velocidade",
-        "Tipo de pavimento",
-        "Sin. Vertical em Cruzamentos",
-        "Sin. Vertical",
+        "Qualidade do projeto",
+        "Segurança viária",
+        "Manutenção e urbanidade",
       ],
       tickmarkPlacement: "on",
     },
@@ -104,48 +149,27 @@ const Ideciclo = ({ structure }) => {
       min: 0,
       max: 10,
     },
-
     tooltip: {
       shared: true,
       pointFormat:
         '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
     },
-    series: series,
+    colors: ['#008080', '#E02F31', '#000000', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
+    series: [{
+      type: 'area',
+      name: '2021',
+      data: [8, 2, 3],
+      }, {
+      type: 'line',
+      name: '2018',
+      data: [1, 5, 3]
+      }, {
+      type: 'line',
+      name: '2016',
+      data: [1, 8, 2]
+      }],
   };
-
-  structure.reviews.forEach((review) => {
-    let reviewLabel = review.reviewed_at
-      .substr(0, 10)
-      .split("-")
-      .reverse()
-      .join("/");
-    dates.push(reviewLabel);
-    Object.keys(review)
-      .filter(
-        (f) =>
-          ![
-            "id",
-            "reviewer",
-            "reviewed_at",
-            "adequacy_rating",
-            "average_rating",
-            "comfort_rating",
-            "safety_rating",
-          ].includes(f)
-      )
-      .forEach((k) => {
-        let obj = { key: keyMap.get(k).name };
-        keyMap.get(k).text = `${obj.key}: ${reviewLabel} - ${review[k]}`;
-        obj[reviewLabel] = review[k];
-        let foundObject = data.find((el) => el.key === keyMap.get(k).name);
-        if (foundObject) {
-          foundObject[reviewLabel] = review[k];
-        } else {
-          data.push(obj);
-        }
-      });
-  });
-*/
+  
   return (
     <Layout>
       <Head>
@@ -173,94 +197,185 @@ const Ideciclo = ({ structure }) => {
         <div className="mx-auto text-center my-24">
           <h1 className="text-6xl font-bold">{structure.logradouro}</h1>
           <h3 className="text-4xl font-bold my-8">Visão geral</h3>
-          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Nota geral</h3>
               <h3 className="text-5xl font-bold mt-2">
-                {(""+structure.ultima_nota.toFixed(1)).replace(".",",")}
+                {(""+s.reviews[0].nota.toFixed(1)).replace(".",",")}
               </h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Extensão (km)</h3>
-              <h3 className="text-5xl font-bold mt-2">{((structure.ultimo_comprimento/1000).toFixed(2)).replace(".",",")}</h3>
+              <h3 className="text-5xl font-bold mt-2">{((s.reviews[0].comprimento/1000).toFixed(2)).replace(".",",")}</h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Avaliações</h3>
               <h3 className="text-5xl font-bold mt-2">
-                {structure.reviews.length}
+                {s.reviews.length}
+              </h3>
+              </div>
+          </div>
+        </div>
+      </section>
+      <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center w-full p-6 text-center tracking-widest">
+              <h3>DESCRIÇÃO</h3>
+              <h3 className="text-2xl mt-2">
+                <strong>{d.tipologia.toUpperCase()}</strong>
+                , <strong>{d.fluxo.toUpperCase()}</strong>
+                , com piso de <strong>{d.pavimento.replace(","," e").toUpperCase()}</strong>
+                {(d.tipologia != "ciclorrota") && (<>, localizada <strong>{d.localizacao.toUpperCase()}</strong></>)}
+                
+              </h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center tracking-widest">
+              <h3>LARGURA</h3>
+              {(d.largura_transitavel >= 0) ? (
+              <h3 className="text-3xl  mt-2">
+                <strong>{(""+d.largura_total).replace(".",",")}m</strong>
+                , onde <strong>{(""+d.largura_transitavel).replace(".",",")}m </strong>são transitáveis
+              </h3>
+              ):(
+                <h3 className="text-3xl font-bold mt-2">
+                  N/A
+                </h3>
+                )}
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>Última avaliação</h3>
+              <h3 className="text-3xl font-bold mt-2">
+                {h.data.substring(0,10)}
+              </h3>
+              </div>
+          </div>
+        </div>
+        <div className="bg-green-200 rounded shadow-2xl">
+          <ReactMapGL
+            {...viewport}
+            {...settings}
+            onViewportChange={(nextViewport) => setViewport(nextViewport)}
+            width="100%"
+            height="100%"
+            mapStyle="mapbox://styles/mapbox/light-v10"
+            mapboxApiAccessToken={
+              "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
+            }
+          >
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <FullscreenControl  style={navControlStyle}/>
+            </div>
+
+            <div style={{
+              position: 'absolute',
+              top: 40,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <NavigationControl  style={navControlStyle}/>
+            </div>
+            <Source id="malha" type={malha.type} data={m}>
+                <Layer {...layers.ciclovia} />
+                <Layer {...layers.ciclofaixa} />
+                <Layer {...layers.ciclorrota} />
+            </Source>
+          </ReactMapGL>
+        </div>
+        <div className="rounded shadow-2xl">
+        <div className="flex flex-col justify-center w-full p-6 pt-12 text-center tracking-widest">
+            <HighchartsReact highcharts={Highcharts} options={radarOptions} />
+          </div>
+        </div>
+      </section>
+      <section className="container mx-auto">
+        <div className="mx-auto text-center my-24">
+          <h3 className="text-4xl font-bold my-8">Detalhamento das notas</h3>
+          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>Qualidade do projeto</h3>
+              <h3 className="text-5xl font-bold mt-2">
+                {(""+r.projeto.media.toFixed(1)).replace(".",",")}
+              </h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>Segurança viária</h3>
+              <h3 className="text-5xl font-bold mt-2">
+              {(""+r.seguranca.media.toFixed(1)).replace(".",",")}
+                </h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>Manutenção e urbanidade</h3>
+              <h3 className="text-5xl font-bold mt-2">
+              {(""+r.manutencao_e_urbanidade.media.toFixed(1)).replace(".",",")}
               </h3>
               </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
                 {/*<a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>*/}
-                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
+                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Formulário</a>
+                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Notas</a>
             </div>
           </div>
         </div>
       </section>
-      {/*
-      <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-        <div className="shadow-md rounded text-center">
-          <HighchartsReact highcharts={Highcharts} options={radarOptions} />
+      <section className="container mx-auto">
+        <div className="mx-auto text-center my-24">
+          <h3 className="text-4xl font-bold my-8">Composição das notas</h3>
+      <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Qualidade do projeto</h3>
+            </div>
+            {r.projeto.parametros.map(n => {
+             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              <h3>{n.titulo}</h3>
+              <h3 className="text-4xl font-bold mt-2">
+                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
+              </h3>
+            </div>)
+            })}
+          </div>
         </div>
-      </section>
-      <section className="container my-10 mx-auto grid grid-cols-3 md:grid-cols-8 sm:gap-4">
-        <div className="h-32 w-32 rounded shadow-md">
-          <Tippy content={keyMap.get("shading_rating").text}>
-            <img src={`/icons/sombreamento.png`} className="h-32" />
-          </Tippy>
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Segurança viária</h3>
+            </div>
+            {r.seguranca.parametros.map(n => {
+             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              <h3>{n.titulo}</h3>
+              <h3 className="text-4xl font-bold mt-2">
+                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
+              </h3>
+            </div>)
+            })}
+          </div>
         </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <Tippy
-            content={<span>{`${keyMap.get("sinuosity_rating").text}`}</span>}
-          >
-            <img src={`/icons/sinuosidade.png`} className="h-32" />
-          </Tippy>
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Manutenção e urbanidade</h3>
+            </div>
+            {r.manutencao_e_urbanidade.parametros.map(n => {
+             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              <h3>{n.titulo}</h3>
+              <h3 className="text-4xl font-bold mt-2">
+                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
+              </h3>
+            </div>)
+            })}
+          </div>
         </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/pavimento.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/risco.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/obstaculo.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/declividade.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/proteção.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/controle_de_velocidade.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/cont_sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/cond_sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_vertical.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/largura.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_vertical_cruzamentos.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/padrao_pintura.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sit_pavimento.png`} className="h-32" />
-        </div>
-      </section>
-      */}
+      </section></div></section>      
     </Layout>
   );
 };
@@ -271,8 +386,8 @@ export async function getStaticPaths() {
   );
   const structures = await res.json();
 */
-  const structures = Structures
-  const paths = structures.map((s) => ({
+  const allStructures = structures
+  const paths = allStructures.map((s) => ({
     params: { ideciclo: s.id.toString() },
   }));
 
@@ -283,7 +398,7 @@ export async function getStaticProps({ params }) {
   /**const res = await fetch(
     `https://api.ideciclo.ameciclo.org/api/v1/structures/${params.ideciclo}`
   );*/
-  const structure = Structures[params.ideciclo]//await res.json();
+  const structure = structures[params.ideciclo]//await res.json();
   return {
     props: {
       structure: structure,
