@@ -16,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
 
 import structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
-import ratings from "../../public/IDECICLO - Recife - 2021 - ratings_compact.json"
+import ratings from "../../public/IDECICLO - Recife - 2021 - ratings.json"
 import map from "../../public/malhacicloviariapermanente_mar2021.json"
 import descriptions from "../../public/IDECICLO - Recife - 2021 - ciclo_description.json"
 import headers from "../../public/IDECICLO - Recife - 2021 - form_headers.json"
@@ -299,24 +299,14 @@ const Ideciclo = ({ structure }) => {
         <div className="mx-auto text-center my-24">
           <h3 className="text-4xl font-bold my-8">Detalhamento das notas</h3>
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Qualidade do projeto</h3>
-              <h3 className="text-5xl font-bold mt-2">
-                {(""+r.projeto.media.toFixed(1)).replace(".",",")}
-              </h3>
-            </div>
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Segurança viária</h3>
-              <h3 className="text-5xl font-bold mt-2">
-              {(""+r.seguranca.media.toFixed(1)).replace(".",",")}
-                </h3>
-            </div>
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Manutenção e urbanidade</h3>
-              <h3 className="text-5xl font-bold mt-2">
-              {(""+r.manutencao_e_urbanidade.media.toFixed(1)).replace(".",",")}
-              </h3>
-              </div>
+            {r.parametros.map(n => {
+                return (<div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+                  <h3>{n.titulo}</h3>
+                  <h3 className="text-5xl font-bold mt-2">
+                    {(""+n.media.toFixed(1)).replace(".",",")}
+                  </h3>
+                </div>
+                )})}
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
                 {/*<a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>*/}
@@ -329,52 +319,29 @@ const Ideciclo = ({ structure }) => {
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
           <h3 className="text-4xl font-bold my-8">Composição das notas</h3>
-      <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
-        <div className="rounded shadow-2xl">
-          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
-              <h3>Qualidade do projeto</h3>
-            </div>
-            {r.projeto.parametros.map(n => {
-             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
-              <h3>{n.titulo}</h3>
-              <h3 className="text-4xl font-bold mt-2">
-                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
-              </h3>
-            </div>)
-            })}
-          </div>
-        </div>
-        <div className="rounded shadow-2xl">
-          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
-              <h3>Segurança viária</h3>
-            </div>
-            {r.seguranca.parametros.map(n => {
-             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
-              <h3>{n.titulo}</h3>
-              <h3 className="text-4xl font-bold mt-2">
-                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
-              </h3>
-            </div>)
-            })}
-          </div>
-        </div>
-        <div className="rounded shadow-2xl">
-          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
-              <h3>Manutenção e urbanidade</h3>
-            </div>
-            {r.manutencao_e_urbanidade.parametros.map(n => {
-             return (<div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
-              <h3>{n.titulo}</h3>
-              <h3 className="text-4xl font-bold mt-2">
-                {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
-              </h3>
-            </div>)
-            })}
-          </div>
-        </div>
+        <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+            {r.parametros.map(m => {
+              return (
+                <div className="rounded shadow-2xl">
+                  <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+                    <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+                      <h3>{m.titulo}</h3>
+                    </div>
+                    {m.parametros.map(n => {
+                      return (
+                      //<Tippy content={n.descricao}>
+                        <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+                          <h3>{n.titulo}</h3>
+                          <h3 className="text-4xl font-bold mt-2">
+                            {n.media >= 0 ? ((""+n.media.toFixed(1)).replace(".",",")) : ("N/A")}  
+                          </h3>
+                        </div>
+                      //</Tippy>
+                      )})
+                    }
+                  </div>
+                </div>
+                )})}
       </section></div></section>      
     </Layout>
   );
