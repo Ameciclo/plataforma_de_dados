@@ -2,9 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const CityCard = ({ data, selected, changeCity}) => {
-  let ideciclo = data.city_reviews.length > 0 ? (data.city_reviews[0].ideciclo) : ('100')
-  let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3})}`
-  const label = data.name
+  let ideciclo = data.reviews.length > 0 ? (data.reviews[0].ideciclo) : ('100')
+  //console.log(data.name + " " + ideciclo)
+  let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
+  const label = data.name.replace('/', ' ')
   return (
     <button onClick={() => changeCity(data.id)}
     className={`${
@@ -20,7 +21,7 @@ const CityCard = ({ data, selected, changeCity}) => {
             {text}
           </h3>
         </div>
-        <div className="p-3">
+        <div className="p-2">
           <h3 className="hidden sm:block">{label}</h3>
         </div>
         {/*<img src={`/icons/${icon}.svg`} className="h-20 fill-current" />*/}

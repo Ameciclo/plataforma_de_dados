@@ -15,11 +15,11 @@ import HighchartsMore from "highcharts/highcharts-more";
 import React, { useEffect, useState } from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
 
-import structures from "../../public/IDECICLO - Recife - 2021 - structures.json"
-import ratings from "../../public/IDECICLO - Recife - 2021 - ratings.json"
+import structures from "../../public/ideciclo/IDECICLO - all_structures - public.json"
+import ratings from "../../public/ideciclo/IDECICLO - all_rates - public.json"
 import map from "../../public/malhacicloviariapermanente_mar2021.json"
-import descriptions from "../../public/IDECICLO - Recife - 2021 - ciclo_description.json"
-import headers from "../../public/IDECICLO - Recife - 2021 - form_headers.json"
+//import descriptions from "../../public/ideciclo/ratestitles/"
+//import headers from "../../public/ideciclo/"
 
 const malha = {
   'type': 'geojson',
@@ -85,8 +85,6 @@ function getAllData (structure) {
     m.features.push(
       map.features.filter(m => m.properties.idunido == seg.geo_id)[0]
       )})
-      
-      console.log(JSON.stringify(r))
   return [
     s,
     r,

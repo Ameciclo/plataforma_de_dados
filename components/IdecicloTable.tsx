@@ -11,7 +11,6 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
 
-
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
@@ -55,10 +54,10 @@ const IdecicloTable = ({ data }) => {
       },
       {
         Header: "Extensão (km)",
-        accessor: "ultimo_comprimento",
+        accessor: "comprimento",
         Cell: ({ value }) => {
           if (value) {
-          return <span>{(""+(value/1000).toFixed(2)).replace(".",",")}</span>
+          return <span>{(""+(value).toFixed(2)).replace(".",",")}</span>
         } else {
           return  <span>{"N/A"}</span>
         }
@@ -68,10 +67,10 @@ const IdecicloTable = ({ data }) => {
     },
       {
         Header: "Nota",
-        accessor: "ultima_nota",
+        accessor: "nota",
         Cell: ({ value }) => {
           if (value) {
-          return <span>{(value.toFixed(1)).replace(".",",")}</span>
+          return <span>{((value).toFixed(1)).replace(".",",")}</span>
         } else {
           return  <span>{"N/A"}</span>
         }
@@ -265,6 +264,7 @@ const IdecicloTable = ({ data }) => {
       </table>
 
       <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
+        Exibindo X de {data.length} estruturas
         <div className="inline-flex mt-2 xs:mt-0">
           {canPreviousPage ? (
             <button
