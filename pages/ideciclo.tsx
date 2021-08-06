@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../components/Breadcrumb";
 import city_json from "../public/ideciclo/IDECICLO - reviews - public.json"
-import streets_json from "../public/ideciclo/IDECICLO - all_structures - public.json"
+import streets_json from "../public/ideciclo/IDECICLO - structures - public.json"
 import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
@@ -125,12 +125,11 @@ const Ideciclo = () => {
 
   useEffect(() => {
     if (selectedCity) {
-      let city_segs = streets_json.filter((s) => {
-        if(s.city_id === selectedCity.id) console.log(s)
+      let city_structures = streets_json.filter((s) => {
         return s.city_id === selectedCity.id
-      })[0].segments
+      })
       let segs = []
-      city_segs.forEach(d => {
+      city_structures.forEach(d => {
         segs.push(
           { id: d.id,
             logradouro: d.logradouro,
@@ -292,8 +291,8 @@ const Ideciclo = () => {
             } else {
               return -1
             }
-          }).map((city) => (
-              <CityCard data={city} selected={city.id==selectedCity.id} key={city.id} changeCity={changeCity}/>
+          }).map((city, index) => (
+              <CityCard data={city} selected={city.id==selectedCity.id} key={city.id} changeCity={changeCity} position={index}/>
             ))}
         </section>
         {(filteredCityData.length > 0) && (

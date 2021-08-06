@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CityCard = ({ data, selected, changeCity}) => {
+const CityCard = ({ data, selected, changeCity, position}) => {
   let ideciclo = data.reviews.length > 0 ? (data.reviews[0].ideciclo) : ('100')
   //console.log(data.name + " " + ideciclo)
   let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
@@ -12,7 +12,7 @@ const CityCard = ({ data, selected, changeCity}) => {
       selected
         ? "bg-ameciclo text-white"
         : "bg-white text-gray-800"
-      } h-32 hover:bg-red-600 hover:text-white`}>
+      } h-42 hover:bg-red-600 hover:text-white`}>
       <div
         className={`h-full rounded shadow-2xl p-3 uppercase tracking-widest flex justify-between flex-col`}
       >
@@ -22,6 +22,7 @@ const CityCard = ({ data, selected, changeCity}) => {
           </h3>
         </div>
         <div className="p-2">
+        {/*<  <h3 className="hidden sm:block">{(position+1) + "ª"}</h3>*/}
           <h3 className="hidden sm:block">{label}</h3>
         </div>
         {/*<img src={`/icons/${icon}.svg`} className="h-20 fill-current" />*/}
