@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../components/Breadcrumb";
-import city_json from "../public/ideciclo/IDECICLO - reviews - public.json"
-import streets_json from "../public/ideciclo/IDECICLO - structures - public.json"
 import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
 import ideciclo_malha from "../public/malhacicloviariapermanente_mar2021.json"
 
-///////////////////
+//////////////////////
+// INÍCIO DO RENDER //
+///////////////////////
+
+const Ideciclo = ({ideciclo, structures}) => {
+
+  ///////////////////
 // CONFIGURAÇÕES //
 ///////////////////
 
-let cidades = city_json
+let cidades = ideciclo
 cidades.forEach((c) => c.reviews = c.reviews.sort((a,b) => a.year > b.year ? -1: 1))
 cidades = cidades.filter((c) => c.reviews.length > 0)
 
@@ -75,13 +79,6 @@ const layers = {
     right: 10,
     top: 10
   };
-
-//////////////////////
-// INÍCIO DO RENDER //
-///////////////////////
-
-const Ideciclo = () => {
-
 ////////////////////////////////
 // MAIS CONFIGURAÇÕES DO MAPA //
 ////////////////////////////////
@@ -125,7 +122,7 @@ const Ideciclo = () => {
 
   useEffect(() => {
     if (selectedCity) {
-      let city_structures = streets_json.filter((s) => {
+      let city_structures = structures.filter((s) => {
         return s.city_id === selectedCity.id
       })
       let segs = []
@@ -144,7 +141,7 @@ const Ideciclo = () => {
     }
     if (cityState || cityPop) {
       setFilteredCity(
-        city_json.filter((c) => {
+        ideciclo.filter((c) => {
           let city_size = "med"
           if (c.population < 100000) city_size = "peq"
           if (c.population > 500000) city_size = "grd"
@@ -160,7 +157,7 @@ const Ideciclo = () => {
         })
       );
     } else {
-      setFilteredCity(city_json);
+      setFilteredCity(ideciclo);
     }
   }, [selectedCity, cityState, cityPop]);
 
@@ -378,5 +375,22 @@ const Ideciclo = () => {
     </Layout>
   );
 };
+
+
+export async function getServerSideProps() {
+  const idecicloRes = await fetch(
+    `http://localhost:2999/reviews`
+  );
+
+  const res = await fetch(
+    `http://localhost:2999/structures`
+  );
+
+  const structures = await res.json();
+  const ideciclo = await idecicloRes.json();
+
+  return { props: { ideciclo: ideciclo, structures: structures } };
+}
+
 
 export default Ideciclo
