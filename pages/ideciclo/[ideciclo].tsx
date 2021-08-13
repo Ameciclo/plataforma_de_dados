@@ -273,7 +273,11 @@ export async function getStaticProps({ params }) {
   );
 
   let structure = await res.json();
-  //structure.bbb = structure.reviews.sort((a,b) => a.year > b.year)
+    // iterar sobre reviews
+    // map ou foreach
+    // cada review 
+
+    /// COLOCAR EM REVIEW NO Back
   const new_review_form_id = structure.reviews[structure.reviews.length - 1].segments[0].form_id
  
   const rateres = await fetch(
