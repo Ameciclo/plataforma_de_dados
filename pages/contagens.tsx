@@ -22,6 +22,11 @@ const GridCard = ({ title, text, icon, url = "#" }) => {
   );
 };
 
+const navControlStyle= {
+  right: 10,
+  top: 10
+};
+
 const Contagens = ({ cyclistCounts, globalSummary }) => {
   const groupBy = (xs, f) => {
     return xs.reduce(
@@ -64,13 +69,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         <title>Contagens | Plataforma de Dados</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Contagens</h1>
-      </div>
+        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
+        style={{
+          width: "100%",
+          height: "52vh",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundImage: `url('/contagem.png')`,
+        }}
+      />
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb
@@ -210,7 +219,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               padding: '10px',
               zIndex: 500
             }}>
-              <FullscreenControl />
+              <FullscreenControl style={navControlStyle}/>
             </div>
 
             <div style={{
@@ -220,7 +229,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
               padding: '10px',
               zIndex: 500
             }}>
-              <NavigationControl />
+              <NavigationControl style={navControlStyle}/>
             </div>
 
             {cyclistCounts.map((c) => (

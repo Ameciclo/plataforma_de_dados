@@ -145,7 +145,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromDirection("north")}
           </text>
           <g>
-            <rect x="98" y="0" width="121" height="19" fill="#008081" />
+            <rect x="98" y="0" width="121" height="19" fill="#008080" />
             <text
               fill="#fff"
               fontFamily="Helvetica"
@@ -160,7 +160,7 @@ function FlowContainer({ count, flowData }) {
             </text>
           </g>
           <g>
-            <rect x="98" y="299" width="121" height="19" fill="#008081" />
+            <rect x="98" y="299" width="121" height="19" fill="#008080" />
             <text
               fill="#fff"
               fontFamily="Helvetica"
@@ -176,7 +176,7 @@ function FlowContainer({ count, flowData }) {
           </g>
 
           <g>
-            <rect x="300" y="99" width="19" height="121" fill="#008081" />
+            <rect x="300" y="99" width="19" height="121" fill="#008080" />
             <text
               textAnchor="start"
               fill="#fff"
@@ -189,7 +189,7 @@ function FlowContainer({ count, flowData }) {
             </text>
           </g>
           <g clipPath="url(#clip-path)">
-            <path fill="#008081" d="M0 98.946H18.811V219.49099999999999H0z" />
+            <path fill="#008080" d="M0 98.946H18.811V219.49099999999999H0z" />
           </g>
           <text
             fill="#fff"
@@ -201,7 +201,7 @@ function FlowContainer({ count, flowData }) {
             {count.west.name}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -210,7 +210,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("west_south")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.09em"
@@ -219,7 +219,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("west_east")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.09em"
@@ -228,7 +228,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("west_north")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -237,7 +237,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("east_north")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -246,7 +246,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("east_west")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -255,7 +255,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("east_south")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -264,7 +264,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("south_west")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -273,7 +273,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("south_north")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -282,7 +282,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("south_east")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -291,7 +291,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("north_west")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"
@@ -300,7 +300,7 @@ function FlowContainer({ count, flowData }) {
             {getTotalCountFromFlow("north_south")}
           </text>
           <text
-            fill="#008081"
+            fill="#008080"
             fontFamily="Helvetica"
             fontSize="14.173"
             letterSpacing="-.03em"

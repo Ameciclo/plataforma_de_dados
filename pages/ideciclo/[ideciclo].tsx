@@ -1,150 +1,115 @@
-import React from "react";
 import Layout from "../../components/Layout";
 import Head from "next/head";
 import Breadcrumb from "../../components/Breadcrumb";
-import Tippy from "@tippyjs/react";
-import "tippy.js/dist/tippy.css";
-import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsMore from "highcharts/highcharts-more";
+import React, { useEffect, useState } from "react";
+import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl, LinearInterpolator, WebMercatorViewport } from "react-map-gl";
+import MAP_STYLE from '../../styles/ideciclo_mapstyle';
+import RADAR_STYLE from '../../styles/ideciclo_radarstyle';
+import rates_organization from '../../styles/ideciclo_rates';
+import map from "../../public/malhacicloviariapermanente_mar2021.json";
+import bbox from '@turf/bbox';
+import { server } from "../../config";
+
+// comentário
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
   HighchartsMore(Highcharts);
 }
 
-const Ideciclo = ({ structure }) => {
-  let data = [];
-  let dates = [];
+/**
+function getViewport(feature, viewport) {
+  // calculate the bounding box of the feature
+  const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+  // construct a viewport instance from the current state
+  const vp = new WebMercatorViewport(viewport);
+  const {longitude, latitude, zoom} = vp.fitBounds(
+    [
+      [minLng, minLat],
+      [maxLng, maxLat]
+    ],
+    {
+      padding: 40
+    }
+  );
 
-  let keyMap = new Map([
-    ["protection_rating", { name: "Proteção", text: null }],
-    ["speed_control_rating", { name: "Controle de Velocidade" }],
-    ["hor_cross_sign_rating", { name: "Sin. Horizontal em Cruzamentos" }],
-    ["avg_structure_width", { name: "Largura Média" }],
-    ["hor_sign_rating", { name: "Sin. Horizontal" }],
-    ["ver_sign_rating", { name: "Sin. Vertical" }],
-    ["ver_cross_sign_rating", { name: "Sin. Vertical em Cruzamentos" }],
-    ["pattern_paint_rating", { name: "Pintura" }],
-    ["hor_sign_condition_rating", { name: "Condição da Sin. Horizontal" }],
-    ["risk_rating", { name: "Risco" }],
-    ["sinuosity_rating", { name: "Sinuosidade" }],
-    ["bidirectionality_rating", { name: "Bidirecionalidade" }],
-    ["shading_rating", { name: "Sombreamento" }],
-    ["type_pavement_rating", { name: "Tipo de pavimento" }],
-    ["pavement_condition_rating", { name: "Condição do pavimento" }],
-    ["obstacles_rating", { name: "Obstaculos" }],
-  ]);
+  return {
+    ...viewport,
+    longitude,
+    latitude,
+    zoom,
+  }
+}
+*/
 
-  let series = structure.reviews.map((sr) => {
-    const data = Object.keys(sr)
-      .filter(
-        (f) =>
-          ![
-            "id",
-            "reviewer",
-            "reviewed_at",
-            "adequacy_rating",
-            "average_rating",
-            "comfort_rating",
-            "safety_rating",
-          ].includes(f)
-      )
-      .map((f) => {
-        return { name: keyMap.get(f).name, y: sr[f] };
-      });
-    const reviewLabel = sr.reviewed_at
-      .substr(0, 10)
-      .split("-")
-      .reverse()
-      .join("/");
-    return {
-      type: "line",
-      name: reviewLabel,
-      data: data,
-    };
+function get_map_data(structure) {
+    // TRABALHA O MAPA
+    const geoJsonMap = {
+      "type": "FeatureCollection",
+      "name": structure.street,
+      "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+      "features": []
+    }
+  
+    structure.reviews[structure.reviews.length-1].segments.forEach(seg => {
+      geoJsonMap.features.push(
+        map.features.filter(m => m.properties.idunido == seg.geo_id)[0]
+        )})
+
+    return geoJsonMap
+}
+
+
+  const Ideciclo = ({ structure, forms }) => {
+
+
+  let info = rates_organization(structure, forms)
+  info.map =  get_map_data(structure)
+  
+
+  const [minLng, minLat, maxLng, maxLat] = bbox(info.map);
+  const vp = new WebMercatorViewport({
+    width: 400,
+    height: 600,
+    longitude: -122.45,
+    latitude: 37.78,
+    zoom: 12,
+    pitch: 30,
+    bearing: 15
   });
+  const {longitude, latitude, zoom} = vp.fitBounds(
+    [
+      [minLng, minLat],
+      [maxLng, maxLat]
+    ],
+    {
+      padding: 40
+    }
+  );
 
-  let radarOptions = {
-    chart: {
-      polar: true,
-    },
-    credits: {
-      enabled: false,
-    },
-    title: {
-      text: "Avaliações",
-    },
-    pane: {
-      size: "90%",
-    },
-    xAxis: {
-      categories: [
-        "Largura Média",
-        "Bidirecionalidade",
-        "Sin. Horizontal em Cruzamentos",
-        "Condição da Sin. Horizontal",
-        "Sin. Horizontal",
-        "Obstaculos",
-        "Pintura",
-        "Condição do pavimento",
-        "Proteção",
-        "Risco",
-        "Sombreamento",
-        "Sinuosidade",
-        "Controle de Velocidade",
-        "Tipo de pavimento",
-        "Sin. Vertical em Cruzamentos",
-        "Sin. Vertical",
-      ],
-      tickmarkPlacement: "on",
-    },
-    yAxis: {
-      gridLineInterpolation: "polygon",
-      min: 0,
-      max: 10,
-    },
+ const [viewport, setViewport] = useState({
+  latitude: latitude,
+  longitude: longitude,
+  zoom: zoom,
+  bearing: 0,
+  pitch: 0,
+});
+//  var line = turf.lineString([[-74, 40], [-78, 42], [-82, 35]]);
+//  setViewport(getViewport(info.map, viewport))
 
-    tooltip: {
-      shared: true,
-      pointFormat:
-        '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>',
-    },
-    series: series,
-  };
-
-  structure.reviews.forEach((review) => {
-    let reviewLabel = review.reviewed_at
-      .substr(0, 10)
-      .split("-")
-      .reverse()
-      .join("/");
-    dates.push(reviewLabel);
-    Object.keys(review)
-      .filter(
-        (f) =>
-          ![
-            "id",
-            "reviewer",
-            "reviewed_at",
-            "adequacy_rating",
-            "average_rating",
-            "comfort_rating",
-            "safety_rating",
-          ].includes(f)
-      )
-      .forEach((k) => {
-        let obj = { key: keyMap.get(k).name };
-        keyMap.get(k).text = `${obj.key}: ${reviewLabel} - ${review[k]}`;
-        obj[reviewLabel] = review[k];
-        let foundObject = data.find((el) => el.key === keyMap.get(k).name);
-        if (foundObject) {
-          foundObject[reviewLabel] = review[k];
-        } else {
-          data.push(obj);
-        }
-      });
+  const [settings, setsettings] = useState({
+    dragPan: true,
+    dragRotate: true,
+    scrollZoom: false,
+    touchZoom: true,
+    touchRotate: true,
+    keyboard: true,
+    boxZoom: true,
+    doubleClickZoom: true
   });
 
   return (
@@ -172,133 +137,201 @@ const Ideciclo = ({ structure }) => {
       </div>
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
-          <h3 className="text-4xl font-bold my-8">{structure.street}</h3>
-          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
+          <h1 className="text-6xl font-bold">{structure.street}</h1>
+          <h3 className="text-4xl font-bold my-8">Visão geral</h3>
+          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Média</h3>
+              <h3>Nota geral</h3>
               <h3 className="text-5xl font-bold mt-2">
-                {structure.average_rating}
+                {(""+info.nota.toFixed(1)).replace(".",",")}
               </h3>
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Velocidade máxima</h3>
-              <h3 className="text-5xl font-bold mt-2">{structure.max_speed}</h3>
+              <h3>Extensão (km)</h3>
+              <h3 className="text-5xl font-bold mt-2">{((info.comprimento/1000).toFixed(2)).replace(".",",")}</h3>
             </div>
-            {structure.extension && (
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>Extensão</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {structure.extension.toFixed(1)}
-                </h3>
-              </div>
-            )}
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Avaliações</h3>
               <h3 className="text-5xl font-bold mt-2">
-                {structure.reviews.length}
+                {info.avaliacoes}
               </h3>
             </div>
+            {<div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>{"Dados"}</h3>
+                <a href={`${server}/forms/${forms.id}`} target="_blank" className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Formulário</a>
+            </div>}
           </div>
         </div>
       </section>
-      <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-        <div className="shadow-md rounded text-center">
-          <HighchartsReact highcharts={Highcharts} options={radarOptions} />
+      <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center w-full p-6 text-center tracking-widest">
+              <h3>DESCRIÇÃO</h3>
+              <h3 className="text-2xl mt-2">
+                <strong>{info.tipologia.toUpperCase()}</strong>
+                , <strong>{info.fluxo.toUpperCase()}</strong>{(info.pavimento != null) && 
+                (<>, com piso de <strong>{info.pavimento.replace(","," e").toUpperCase()}</strong></>)}
+                {(info.tipologia.toUpperCase() != "CICLORROTA") && (<>, localizada <strong>{info.localizacao.toUpperCase()}</strong></>)}
+                
+              </h3>
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center tracking-widest">
+              <h3>LARGURA</h3>
+              {(info.largura_transitavel >= 0) ? (
+              <h3 className="text-3xl  mt-2">
+                <strong>{(""+info.largura_total).replace(".",",")}m</strong>
+                , onde <strong>{(""+info.largura_transitavel).replace(".",",")}m </strong>são transitáveis
+              </h3>
+              ):(
+                <h3 className="text-3xl font-bold mt-2">
+                  N/A
+                </h3>
+                )}
+            </div>
+            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+              <h3>Última avaliação</h3>
+              <h3 className="text-3xl font-bold mt-2">
+                {info.data}
+              </h3>
+              </div>
+          </div>
         </div>
-      </section>
-      <section className="container my-10 mx-auto grid grid-cols-3 md:grid-cols-8 sm:gap-4">
-        <div className="h-32 w-32 rounded shadow-md">
-          <Tippy content={keyMap.get("shading_rating").text}>
-            <img src={`/icons/sombreamento.png`} className="h-32" />
-          </Tippy>
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <Tippy
-            content={<span>{`${keyMap.get("sinuosity_rating").text}`}</span>}
+        <div className="bg-green-200 rounded shadow-2xl">
+          <ReactMapGL
+            {...viewport}
+            {...settings}
+            onViewportChange={(nextViewport) => setViewport(nextViewport)}
+            width="100%"
+            height="100%"
+            mapStyle="mapbox://styles/mapbox/light-v10"
+            mapboxApiAccessToken={
+              "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
+            }
           >
-            <img src={`/icons/sinuosidade.png`} className="h-32" />
-          </Tippy>
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <FullscreenControl  style={MAP_STYLE.navControlStyle}/>
+            </div>
+            <div style={{
+              position: 'absolute',
+              top: 40,
+              right: 0,
+              padding: '10px',
+              zIndex: 500
+            }}>
+              <NavigationControl  style={MAP_STYLE.navControlStyle}/>
+            </div>
+            <Source id="malha" type='geojson' data={info.map}>
+                <Layer {...MAP_STYLE.layers.ciclovia} />
+                <Layer {...MAP_STYLE.layers.ciclofaixa} />
+                <Layer {...MAP_STYLE.layers.ciclorrota} />
+            </Source>
+          </ReactMapGL>
         </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/pavimento.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/risco.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/obstaculo.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/declividade.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/proteção.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/controle_de_velocidade.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/cont_sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/cond_sin_horizontal.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_vertical.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/largura.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sin_vertical_cruzamentos.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/padrão_pintura.png`} className="h-32" />
-        </div>
-        <div className="h-32 w-32 rounded shadow-md">
-          <img src={`/icons/sit_pavimento.png`} className="h-32" />
+        <div className="rounded shadow-2xl">
+        <div className="flex flex-col justify-center w-full p-6 pt-12 text-center tracking-widest">
+            <HighchartsReact highcharts={Highcharts} options={RADAR_STYLE(info.series, info.categories)} />
+          </div>
         </div>
       </section>
+      <section className="container mx-auto">
+        <div className="mx-auto text-center my-24">
+          <h3 className="text-4xl font-bold my-8">Detalhamento e composição das notas</h3>
+        <section className="container mx-auto mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+            {info.parametros.map(out_param => {
+              return (
+                <div className="rounded shadow-2xl">
+                  <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+                    <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest" style={{ background: out_param.color}}>
+                      <h3>{out_param.titulo}</h3>
+                      <h3 className="text-5xl font-bold mt-2">
+                        {out_param.media && (""+out_param.media.toFixed(1)).replace(".",",")}
+                      </h3>
+                    </div>
+                    {out_param.parametros.map(inner_param => {
+                      return (
+                      //<Tippy content={n.descricao}>
+                        <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+                          <h3>{inner_param.titulo}</h3>
+                          <h3 className="text-4xl font-bold mt-2">
+                            {inner_param.media !== null && inner_param.media >= 0 ? ((""+inner_param.media.toFixed(1)).replace(".",",")+""+(inner_param.different ? (inner_param.bigger ? ("🔺"):("🔻")):(""))) : ("N/A")}  
+                          </h3>
+                        </div>
+                      //</Tippy>
+                      )})
+                    }
+                  </div>
+                </div>
+                )})}
+      </section>
+      {/*<section>
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Situações de risco</h3>
+            </div>
+            <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              {info.situacoes}.
+            </div>
+          </div>
+        </div>
+      </section>*/}
+      </div></section>      
     </Layout>
   );
 };
 
 export async function getStaticPaths() {
   const res = await fetch(
-    "https://api.ideciclo.ameciclo.org/api/v1/structures"
+    `${server}/structures`
   );
-  const structures = await res.json();
+  const allstructs = await res.json();
 
-  const paths = structures.map((s) => ({
-    params: { ideciclo: s.id.toString() },
+  // Get the paths we want to pre-render based on posts
+  const paths = allstructs.map((s) => ({
+    params: { ideciclo: s.id },
   }));
 
   return { paths, fallback: false };
 }
 
+
 export async function getStaticProps({ params }) {
   const res = await fetch(
-    `https://api.ideciclo.ameciclo.org/api/v1/structures/${params.ideciclo}`
+    `${server}/structures/${params.ideciclo}`
   );
-  const structure = await res.json();
+
+  let structure = await res.json();
+    // iterar sobre reviews
+    // map ou foreach
+    // cada review 
+
+    /// COLOCAR EM REVIEW NO Back
+  const new_review_form_id = structure.reviews[structure.reviews.length - 1].segments[0].form_id
+ 
+
+  const formres = await fetch(
+    `${server}/forms/${new_review_form_id}`
+  );
+
+  const forms = await formres.json();
+ 
+  let last_review_form_id = null
+  if (structure.reviews.length > 1) last_review_form_id = structure.reviews[structure.reviews.length - 2].segments[0].form_id
+
   return {
     props: {
       structure: structure,
+      forms: forms,
     },
     revalidate: 1,
   };
 }
-
-const ToolTipContent = ({ title }) => {
-  return (
-    <>
-      <span>{title}</span>
-    </>
-  );
-};
 
 export default Ideciclo;

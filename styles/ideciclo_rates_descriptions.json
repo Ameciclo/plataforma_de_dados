@@ -1,0 +1,373 @@
+{
+    "average": {
+        "title":"Nota geral",
+        "description":"Nota da avaliação do trecho da estrutura"},"project": {
+        "title":"Qualidade do projeto",
+        "description":"Nota sobre as características de implantação do projeto original",
+        "fathers":["average"]
+    },
+    "project_choices": {
+        "title":"Escolhas iniciais de projeto",
+        "description":"Qualidade dos parâmetros iniciais de escolha no projeto",
+        "fathers":["average",
+        "project"]
+    },
+    "project_conception": {
+        "title":"Concepção do projeto",
+        "description":"Escolhas de localização, tipologia e direção da estrutura",
+        "fathers":["average",
+        "safety",
+        "cross_conflict"]
+    },
+    "project_risks": {
+        "title":"Situações de riscos da estrutura",
+        "description":"Riscos de colisão com veículo motorizado que fatores estruturais colocam ciclistas.",
+        "fathers":["average",
+        "project",
+        "project_choices"]
+    },
+    "horizonta_pattern": {
+        "title":"Padrão de Sinalização Horizontal",
+        "description":"Padrão escolhido na pintura para a área de circulação da estrutura.",
+        "fathers":["average",
+        "project",
+        "project_choices"]
+    },
+    "protection": {
+        "title":"Proteção contra a invasão",
+        "description":"Situação e tipo de proteção da estrutura contra a invasão de veículos motorizados.",
+        "fathers":["average",
+        "safety",
+        "conflicts"]
+    },
+    "protection_conditions": {
+        "title":"Situação da proteção",
+        "description":"Facilidade de invasão de veículos motorizados à estrutura sem transpor elementos segregatórios.",
+        "fathers":["average",
+        "safety",
+        "conflicts",
+        "protection"]
+    },
+    "segregation": {
+        "title":"Segregação",
+        "description":"Capacidade de manter veículos motorizados longe da estrutura e incapaz de invadi-la.",
+        "fathers":["average",
+        "safety",
+        "conflicts",
+        "protection"]
+    },
+    "segregator_type": {
+        "title":"Tipo de segregador",
+        "description":"Qual foi o elemento físico escolhido para segregar a estrutura",
+        "fathers":["average",
+        "project",
+        "protection",
+        "segregation"]
+    },
+    "buffer": {
+        "title":"Faixa de amortecimento",
+        "description":"Largura da faixa que segrega a estrutura do fluxo motorizado.",
+        "fathers":["average",
+        "project",
+        "protection",
+        "segregation"]
+    },
+    "signs": {
+        "title":"Sinalização",
+        "description":"Escolhas de sinalização vertical e horizontal.",
+        "fathers":["average",
+        "project"]
+    },
+    "all_vert_signs": {
+        "title":"Sinalização vertical",
+        "description":"Todas as sinalizações verticais previstas para a estrutura.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance",
+        "signs_conditions"]
+    },
+    "vert_signs": {
+        "title":"Sinalização vertical regulamentadora",
+        "description":"Quantidade de placas de sinalização horizontal regulamentadora R-34.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_vert_signs"]
+    },
+    "start_signs": {
+        "title":"Sinalização de início.",
+        "description":"Presença ou ausência da sinalização de início da estrutura, quando necessária.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_vert_signs"]
+    },
+    "end_signs": {
+        "title":"Sinalização de fim.",
+        "description":"Presença ou ausência da sinalização de fim da estrutura, quando necessária.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_vert_signs"]
+    },
+    "cross_vert_signs": {
+        "title":"Sinalização vertical nas travessias",
+        "description":"Relação entre a presença de sinalização vertical nas travessias e o total de travessias.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_vert_signs"]
+    },
+    "all_hor_signs": {
+        "title":"Sinalização horizontal",
+        "description":"Presença e qualidade da sinalização da horizontal da estrutura.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict"]
+    },
+    "picto_signs": {
+        "title":"Pictogramas",
+        "description":"Quantidade de pictogramas por metro da estrutura.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_hor_signs"]
+    },
+    "arrow_signs": {
+        "title":"Setas",
+        "description":"Quantidade de setas por metro da estrutura.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_hor_signs"]
+    },
+    "cross_hor_signs": {
+        "title":"Sinalização horizontal nos cruzamentos",
+        "description":"Qualidade de manutenção e presença da sinalização horizontal nos cruzamentos.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict",
+        "all_hor_signs"]
+    },
+    "comfort": {
+        "title":"Conforto da esturutra",
+        "description":"Condições de conforto ao pedalar na estrutura.",
+        "fathers":["average",
+        "project"]
+    },
+    "access": {
+        "title":"Acesso da estrutura",
+        "description":"Facilidade de acessar e sair da estrutura cicloviária",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "urbanity"]
+    },
+    "seg_access": {
+        "title":"Acessibilidade dos segregadores",
+        "description":"Dificuldade do acesso por meio dos segregadores.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "urbanity",
+        "access"]
+    },
+    "qty_access": {
+        "title":"Acessos à estrutura",
+        "description":"Razão entre a quantidade de acessos e o total de vias a se acessar",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "urbanity",
+        "access"]
+    },
+    "pavement": {
+        "title":"Tipo de pavimento",
+        "description":"Tipo do material usado no piso da estrutura",
+        "fathers":["average",
+        "project",
+        "comfort"]
+    },
+    "sinuosity": {
+        "title":"Sinuosidade",
+        "description":"Estrutura tem curvas desnecessárias no trajeto",
+        "fathers":["average",
+        "project",
+        "comfort"]
+    },
+    "width": {
+        "title":"Largura transitável",
+        "description":"Largura transitável da estrutura cicloviária",
+        "fathers":["average",
+        "safety",
+        "cyclists_conflicts"]
+    },
+    "levels": {
+        "title":"Desníveis",
+        "description":"Existência de desníveis na estrutura",
+        "fathers":["average",
+        "project",
+        "comfort"]
+    },
+    "two_way": {
+        "title":"Bidirecionalidade",
+        "description":"Fluxo da estrutura.",
+        "fathers":["average",
+        "safety",
+        "cyclists_conflicts"]
+    },
+    "safety": {
+        "title":"Segurança viária",
+        "description":"Segurança geral viária de se transitar na via e na estrutura.",
+        "fathers":["average"]
+    },
+    "speed_control": {
+        "title":"Controle de velocidade",
+        "description":"Elementos de controle de velocidade presentes na via.",
+        "fathers":["average",
+        "safety"]
+    },
+    "electronic_control": {
+        "title":"Controle eletrônico",
+        "description":"Presença de controle eletrônico de velocidade",
+        "fathers":["average",
+        "safety",
+        "speed_control"]
+    },
+    "level_control": {
+        "title":"Controle em nível",
+        "description":"Controles de velocidade no nível da via.",
+        "fathers":["average",
+        "safety",
+        "speed_control"]
+    },
+    "square_size": {
+        "title":"Tamanho da quadra",
+        "description":"Tamanho médio de quadra.",
+        "fathers":["average",
+        "safety",
+        "speed_control",
+        "level_control"]
+    },
+    "mix_transit_lane_size": {
+        "title":"Largura de faixa",
+        "description":"Largura média das faixas de rolamento para automóveis.",
+        "fathers":["average",
+        "safety",
+        "speed_control",
+        "level_control"]
+    },
+    "other_controls": {
+        "title":"Outros controles de velocidade",
+        "description":"Outros elementos de controle de velocidade possíveis.",
+        "fathers":["average",
+        "safety",
+        "speed_control",
+        "level_control"]
+    },
+    "unlevel_control": {
+        "title":"Controles em desnível",
+        "description":"Controles de velocidade em desnível.",
+        "fathers":["average",
+        "safety",
+        "speed_control"]
+    },
+    "conflicts": {
+        "title":"Conflitos ao longo",
+        "description":"Condições de conflitos com veículos motorizados ao longo da estrutura.",
+        "fathers":["average",
+        "safety"]
+    },
+    "on_the_way_risks": {
+        "title":"Riscos ao longo da esturutra",
+        "description":"Condições de riscos ao longo da estrutura",
+        "fathers":["average",
+        "safety",
+        "conflicts"]
+    },
+    "cross_conflict": {
+        "title":"Conflitos nos cruzamentos",
+        "description":"Condições de conflitos nos cruzamentos.",
+        "fathers":["average",
+        "safety"]
+    },
+    "cross_risks": {
+        "title":"Riscos nos cruzamentos",
+        "description":"Situações de risco nos cruzamentos.",
+        "fathers":["average",
+        "safety",
+        "cross_conflict"]
+    },
+    "cyclists_conflicts": {
+        "title":"Conflitos com ciclistas",
+        "description":"Como a estrutura pode ampliar as chances de colisão entre ciclistas",
+        "fathers":["average",
+        "safety"]
+    },
+    "maintenance_and_urbanity": {
+        "title":"Manutenção e Urbanidade",
+        "description":"A manutenção da estrutura e as condições de urbanidade",
+        "fathers":["average"]
+    },
+    "maintenance": {
+        "title":"Manutenção",
+        "description":"Manutenção da estrutura",
+        "fathers":["average",
+        "maintenance_and_urbanity"]
+    },
+    "paviment_condition": {
+        "title":"Situação do piso",
+        "description":"Qualidade de conservação do piso",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance"]
+    },
+    "obstacles": {
+        "title":"Obstáculos",
+        "description":"Quantidade de obstáculos ao longo da estrutura",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance"]
+    },
+    "signs_conditions": {
+        "title":"Condição da sinalização",
+        "description":"Condição de conservação da sinalização da estrutura.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance"]
+    },
+    "hor_sign_conditions": {
+        "title":"Condição da sinalização horizontal",
+        "description":"Condição de conservação da sinalização horizontal.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance",
+        "signs_conditions"]
+    },
+    "vert_signs_existence": {
+        "title":"Existência da sinalização vertical",
+        "description":"Existência da sinalização vertical ao longo e nos cruzamentos da estrutura.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance",
+        "signs_conditions"]
+    },
+
+    "urbanity": {
+        "title":"Urbanidade",
+        "description":"Questões urbanas gerais que interferem na estrutura cicloviária.",
+        "fathers":["average",
+        "maintenance_and_urbanity"]
+    },
+    "shading": {
+        "title":"Sombreamento",
+        "description":"Presença arbórea ao longo da estrutura",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "urbanity"]
+    },
+    "lighting": {
+        "title":"Iluminação",
+        "description":"Qualidade da iluminação da via e da estrutura.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "urbanity"]
+    }
+}

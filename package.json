@@ -12,6 +12,7 @@
     "@n8tb1t/use-scroll-position": "^2.0.3",
     "@svgr/webpack": "^5.5.0",
     "@tippyjs/react": "^4.2.0",
+    "@turf/bbox": "^6.5.0",
     "axios": "^0.21.1",
     "framer-motion": "^2.9.4",
     "highcharts": "^9.0.1",
