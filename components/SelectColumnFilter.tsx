@@ -11,7 +11,7 @@ function SelectColumnFilter({
       preFilteredRows.forEach(row => {
         options.add(row.values[id])
       })
-      return [...options.values()]
+      return Array.from(options.values())
     }, [id, preFilteredRows])
   
     // Render a multi-select box
@@ -24,7 +24,7 @@ function SelectColumnFilter({
         }}
       >
         <option value="">Todos tipos</option>
-        {options.map((option, i) => (
+        {options.map((option: string, i) => (
           <option key={i} value={option}>
             {option}
           </option>

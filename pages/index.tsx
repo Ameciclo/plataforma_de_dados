@@ -2,10 +2,7 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
-import ContagemIcon from "../public/icons/contagem.svg";
 import React from "react";
-import Img from "../components/Img";
-import FlowContainer from "../components/FlowChart/FlowContainer";
 
 export default function Home() {
   return (
