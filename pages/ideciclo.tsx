@@ -112,7 +112,7 @@ const layers = {
   const [filteredCity, setFilteredCity] = useState([]);
   const [filteredCityData, setFilteredCityData] = useState([]);
   const [selectedCity, setCity] = useState(filterByName(cidades, "Recife"));
-  const [cityState, setCityState] = useState("");
+  const [cityState, setCityState] = useState("PE");
   const [cityPop, setCityPop] = useState("");
 
   const changeCity = (id) => {
@@ -129,10 +129,13 @@ const layers = {
       city_structures.forEach(d => {
         segs.push(
           { id: d.id,
-            logradouro: d.logradouro,
-            tipologia: d.tipologia,
-            comprimento: d.reviews[0].comprimento/1000,
-            nota: d.reviews[0].nota,
+            logradouro: d.street,
+            tipologia: d.typology,
+            comprimento: d.reviews[d.reviews.length-1].length/1000,
+            nota: d.reviews[d.reviews.length-1].rates.average,
+            projeto: d.reviews[d.reviews.length-1].rates.project,
+            manutencao: d.reviews[d.reviews.length-1].rates.maintenance_and_urbanity,
+            seguranca: d.reviews[d.reviews.length-1].rates.safety,
           })
         })
       setFilteredCityData(segs)
@@ -194,12 +197,8 @@ const layers = {
                                               (cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.road),0) +
                                               cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.street),0) +
                                               cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.local),0)
-                                              )/(1000)).toFixed(0)).replace(".",",")}, 
-                {title: "Vias avaliadas", value: (""+(
-                                                cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_structures.road),0) +
-                                                cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_structures.street),0) +
-                                                cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_structures.local),0)
-                                                ))}, 
+                                              )/(1000)).toFixed(1)).replace(".",",")}, 
+                {title: "Vias avaliadas", value: (""+structures.length)}, 
               ].map((m) => (
               <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
                 <h3>{m.title}</h3>
@@ -324,7 +323,7 @@ const layers = {
           </section>)}
           </div>
       </section>
-      {(selectedCity.name === "Recife" ) && (
+      {/*(selectedCity.name === "Recife" ) && (
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
           <ReactMapGL
@@ -364,7 +363,7 @@ const layers = {
             </Source>
           </ReactMapGL>
         </div>
-      </section>)}
+          </section>)*/}
       {(filteredCityData.length > 0) && (
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <h2 className="text-gray-600 text-3xl">Avaliações de cada via</h2>

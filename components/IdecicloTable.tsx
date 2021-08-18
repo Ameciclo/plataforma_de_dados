@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect }  from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import ColumnFilter from "./ColumnFilter";
 import SelectColumnFilter from "./SelectColumnFilter";
+import SelectColumn from "./SelectColumn";
 import NumberRangeColumnFilter from "./NumberRangeColumnFilter";
 import {GlobalFilter} from "./GlobalFilter";
 
@@ -34,7 +35,79 @@ const IdecicloTable = ({ data }) => {
     }),
     []
   );
+/*
 
+  const ratedColumns = [
+        {
+          Header: "Qualidade do Projeto",
+          accessor: "projeto",
+          Cell: ({ value }) => {
+            if (value) {
+            return <span>{((value).toFixed(1)).replace(".",",")}</span>
+          } else {
+            return  <span>{"N/A"}</span>
+          }
+          },
+          Filter: NumberRangeColumnFilter,
+          filter: 'between',
+    
+      },
+      {
+        Header: "Segurança Viária",
+        accessor: "seguranca",
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{((value).toFixed(1)).replace(".",",")}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
+        Filter: NumberRangeColumnFilter,
+        filter: 'between',
+  
+    },
+    {
+      Header: "Manutenção e Urbanidade",
+      accessor: "manutencao",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+
+    },{
+      Header: "Nota Geral",
+      accessor: "nota",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+      }
+    ]
+
+  const [filteredCol, setFilteredCol] = useState(ratedColumns[3]);
+
+  const [rateColumn, setRateColumn] = useState("nota");
+  
+  useEffect(() => {
+    if (rateColumn) {
+      setFilteredCol(
+        ratedColumns.filter((col) => { return col.accessor === rateColumn;})[0]
+      );
+    } else {
+      setFilteredCol(ratedColumns[3]);
+    }
+  }, [status, ratedColumns]);
+*/
   const columns = React.useMemo(
     () => [
       {
@@ -65,36 +138,19 @@ const IdecicloTable = ({ data }) => {
         Filter: NumberRangeColumnFilter,
         filter: 'between',
     },
-      {
-        Header: "Nota",
-        accessor: "nota",
-        Cell: ({ value }) => {
-          if (value) {
-          return <span>{((value).toFixed(1)).replace(".",",")}</span>
-        } else {
-          return  <span>{"N/A"}</span>
-        }
-        },
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    },
-      /*{
-        Header: "Dados da avaliação",
-        Cell: ({ row }) => (
-          <span>
-            <Link href={row.original.summary.download_xlsx_url}>
-              <a className="text-ameciclo">XLSX</a>
-            </Link>
-            <span> | </span>
-            <Link
-              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
-            >
-              <a className="text-ameciclo">JSON</a>
-            </Link>
-          </span>
-        ),
-        disableFilters: true,
-      },*/
+    ,{
+      Header: "Nota Geral",
+      accessor: "nota",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+      },
     ],
     []
   );
@@ -103,6 +159,7 @@ const IdecicloTable = ({ data }) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    rows,
     page,
     prepareRow,
     state,
@@ -264,7 +321,7 @@ const IdecicloTable = ({ data }) => {
       </table>
 
       <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-        Exibindo X de {data.length} estruturas
+        Exibindo {rows.length} de {data.length} estruturas
         <div className="inline-flex mt-2 xs:mt-0">
           {canPreviousPage ? (
             <button
@@ -313,7 +370,23 @@ const IdecicloTable = ({ data }) => {
             </button>
           )}
         </div>
-      </div>
+        {/*
+        <div className="inline-block relative w-64">
+            <label htmlFor="status">Veja outras notas:</label>
+            <select
+              value={rateColumn}
+              name="rateColumn"
+              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+              onChange={(e) => setRateColumn(e.target.value)}
+              onBlur={(e) => e}
+            >
+              <option value="nota">Nota Geral</option>
+              <option value="projeto">Qualidade do Projeto</option>
+              <option value="seguranca">Segurança Viária</option>
+              <option value="manutencao">Manutenção e Urbanidade</option>
+            </select>
+          </div>*/}
+        </div>
     </div>
   );
 };

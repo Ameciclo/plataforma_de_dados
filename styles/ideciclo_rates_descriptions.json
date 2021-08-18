@@ -7,8 +7,8 @@
         "fathers":["average"]
     },
     "project_choices": {
-        "title":"Escolhas básicas de projeto",
-        "description":"Qualidade dos parâmetros básicos de escolha no projeto",
+        "title":"Escolhas iniciais de projeto",
+        "description":"Qualidade dos parâmetros iniciais de escolha no projeto",
         "fathers":["average",
         "project"]
     },
@@ -86,7 +86,7 @@
         "maintenance",
         "signs_conditions"]
     },
-    "vet_signs": {
+    "vert_signs": {
         "title":"Sinalização vertical regulamentadora",
         "description":"Quantidade de placas de sinalização horizontal regulamentadora R-34.",
         "fathers":["average",
@@ -102,7 +102,7 @@
         "cross_conflict",
         "all_vert_signs"]
     },
-    "finish_signs": {
+    "end_signs": {
         "title":"Sinalização de fim.",
         "description":"Presença ou ausência da sinalização de fim da estrutura, quando necessária.",
         "fathers":["average",
@@ -178,7 +178,7 @@
         "urbanity",
         "access"]
     },
-    "paviment": {
+    "pavement": {
         "title":"Tipo de pavimento",
         "description":"Tipo do material usado no piso da estrutura",
         "fathers":["average",
@@ -333,7 +333,7 @@
         "maintenance_and_urbanity",
         "maintenance"]
     },
-    "vert_sign_conditions": {
+    "hor_sign_conditions": {
         "title":"Condição da sinalização horizontal",
         "description":"Condição de conservação da sinalização horizontal.",
         "fathers":["average",
@@ -341,13 +341,22 @@
         "maintenance",
         "signs_conditions"]
     },
+    "vert_signs_existence": {
+        "title":"Existência da sinalização vertical",
+        "description":"Existência da sinalização vertical ao longo e nos cruzamentos da estrutura.",
+        "fathers":["average",
+        "maintenance_and_urbanity",
+        "maintenance",
+        "signs_conditions"]
+    },
+
     "urbanity": {
         "title":"Urbanidade",
         "description":"Questões urbanas gerais que interferem na estrutura cicloviária.",
         "fathers":["average",
         "maintenance_and_urbanity"]
     },
-    "shadow": {
+    "shading": {
         "title":"Sombreamento",
         "description":"Presença arbórea ao longo da estrutura",
         "fathers":["average",

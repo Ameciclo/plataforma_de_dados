@@ -6,12 +6,13 @@ import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsMore from "highcharts/highcharts-more";
 import React, { useEffect, useState } from "react";
-import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl, WebMercatorViewport } from "react-map-gl";
+import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl, LinearInterpolator, WebMercatorViewport } from "react-map-gl";
 import MAP_STYLE from '../../styles/ideciclo_mapstyle';
 import RADAR_STYLE from '../../styles/ideciclo_radarstyle';
 import rates_organization from '../../styles/ideciclo_rates';
 import map from "../../public/malhacicloviariapermanente_mar2021.json";
 import bbox from '@turf/bbox';
+const server = `http://localhost:2999`
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -47,12 +48,12 @@ function get_map_data(structure) {
     // TRABALHA O MAPA
     const geoJsonMap = {
       "type": "FeatureCollection",
-      "name": structure.name,
+      "name": structure.street,
       "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
       "features": []
     }
   
-    structure.reviews[0].segments.forEach(seg => {
+    structure.reviews[structure.reviews.length-1].segments.forEach(seg => {
       geoJsonMap.features.push(
         map.features.filter(m => m.properties.idunido == seg.geo_id)[0]
         )})
@@ -60,21 +61,41 @@ function get_map_data(structure) {
     return geoJsonMap
 }
 
-  const Ideciclo = ({ structure, forms, rates }) => {
+
+  const Ideciclo = ({ structure, forms }) => {
 
 
-  let info = rates_organization(structure, forms, rates)
-
+  let info = rates_organization(structure, forms)
   info.map =  get_map_data(structure)
+  
 
-  const [viewport, setViewport] = useState({
-    latitude: -8.0584364,
-    longitude: -34.945277,
-    zoom: 10,
-    bearing: 0,
-    pitch: 0,
+  const [minLng, minLat, maxLng, maxLat] = bbox(info.map);
+  const vp = new WebMercatorViewport({
+    width: 400,
+    height: 600,
+    longitude: -122.45,
+    latitude: 37.78,
+    zoom: 12,
+    pitch: 30,
+    bearing: 15
   });
+  const {longitude, latitude, zoom} = vp.fitBounds(
+    [
+      [minLng, minLat],
+      [maxLng, maxLat]
+    ],
+    {
+      padding: 40
+    }
+  );
 
+ const [viewport, setViewport] = useState({
+  latitude: latitude,
+  longitude: longitude,
+  zoom: zoom,
+  bearing: 0,
+  pitch: 0,
+});
 //  var line = turf.lineString([[-74, 40], [-78, 42], [-82, 35]]);
 //  setViewport(getViewport(info.map, viewport))
 
@@ -88,7 +109,7 @@ function get_map_data(structure) {
     boxZoom: true,
     doubleClickZoom: true
   });
-  
+
   return (
     <Layout>
       <Head>
@@ -100,13 +121,13 @@ function get_map_data(structure) {
         style={{ height: "25vh" }}
       >
         <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{structure.logradouro}</h1>
+          <h1 className="text-4xl font-bold truncate">{structure.street}</h1>
         </div>
       </div>
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
         <div className="container mx-auto">
           <Breadcrumb
-            label={structure.logradouro}
+            label={structure.street}
             slug={structure.id.toString()}
             routes={["/", "/ideciclo", structure.id]}
           />
@@ -114,7 +135,7 @@ function get_map_data(structure) {
       </div>
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">{structure.logradouro}</h1>
+          <h1 className="text-6xl font-bold">{structure.street}</h1>
           <h3 className="text-4xl font-bold my-8">Visão geral</h3>
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
@@ -133,11 +154,10 @@ function get_map_data(structure) {
                 {info.avaliacoes}
               </h3>
             </div>
-            {/*<div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
+            {<div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
-                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Formulário</a>
-                <a href={`https://api.contagem.ameciclo.org/v1/structure/${structure._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Notas</a>
-            </div>*/}
+                <a href={`${server}/forms/${forms.id}`} target="_blank" className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">Formulário</a>
+            </div>}
           </div>
         </div>
       </section>
@@ -148,9 +168,9 @@ function get_map_data(structure) {
               <h3>DESCRIÇÃO</h3>
               <h3 className="text-2xl mt-2">
                 <strong>{info.tipologia.toUpperCase()}</strong>
-                , <strong>{info.fluxo.toUpperCase()}</strong>
-                , com piso de <strong>{info.pavimento.replace(","," e").toUpperCase()}</strong>
-                {(info.tipologia != "ciclorrota") && (<>, localizada <strong>{info.localizacao.toUpperCase()}</strong></>)}
+                , <strong>{info.fluxo.toUpperCase()}</strong>{(info.pavimento != null) && 
+                (<>, com piso de <strong>{info.pavimento.replace(","," e").toUpperCase()}</strong></>)}
+                {(info.tipologia.toUpperCase() != "CICLORROTA") && (<>, localizada <strong>{info.localizacao.toUpperCase()}</strong></>)}
                 
               </h3>
             </div>
@@ -170,7 +190,7 @@ function get_map_data(structure) {
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>Última avaliação</h3>
               <h3 className="text-3xl font-bold mt-2">
-                {info.data.substring(0,10)}
+                {info.data}
               </h3>
               </div>
           </div>
@@ -221,7 +241,7 @@ function get_map_data(structure) {
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
           <h3 className="text-4xl font-bold my-8">Detalhamento e composição das notas</h3>
-        <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
             {info.parametros.map(out_param => {
               return (
                 <div className="rounded shadow-2xl">
@@ -238,7 +258,7 @@ function get_map_data(structure) {
                         <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
                           <h3>{inner_param.titulo}</h3>
                           <h3 className="text-4xl font-bold mt-2">
-                            {inner_param.media !== null && inner_param.media >= 0 ? ((""+inner_param.media.toFixed(1)).replace(".",",")) : ("N/A")}  
+                            {inner_param.media !== null && inner_param.media >= 0 ? ((""+inner_param.media.toFixed(1)).replace(".",",")+""+(inner_param.different ? (inner_param.bigger ? ("🔺"):("🔻")):(""))) : ("N/A")}  
                           </h3>
                         </div>
                       //</Tippy>
@@ -247,14 +267,27 @@ function get_map_data(structure) {
                   </div>
                 </div>
                 )})}
-      </section></div></section>      
+      </section>
+      {/*<section>
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Situações de risco</h3>
+            </div>
+            <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              {info.situacoes}.
+            </div>
+          </div>
+        </div>
+      </section>*/}
+      </div></section>      
     </Layout>
   );
 };
 
 export async function getStaticPaths() {
   const res = await fetch(
-    "http://localhost:2999/structures"
+    `${server}/structures`
   );
   const allstructs = await res.json();
 
@@ -269,7 +302,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const res = await fetch(
-    `http://localhost:2999/structures/${params.ideciclo}`
+    `${server}/structures/${params.ideciclo}`
   );
 
   let structure = await res.json();
@@ -280,37 +313,20 @@ export async function getStaticProps({ params }) {
     /// COLOCAR EM REVIEW NO Back
   const new_review_form_id = structure.reviews[structure.reviews.length - 1].segments[0].form_id
  
-  const rateres = await fetch(
-    `http://localhost:2999/rates/${new_review_form_id}`
-  );
 
   const formres = await fetch(
-    `http://localhost:2999/forms/${new_review_form_id}`
+    `${server}/forms/${new_review_form_id}`
   );
 
   const forms = await formres.json();
-  const rates = await rateres.json();
  
   let last_review_form_id = null
   if (structure.reviews.length > 1) last_review_form_id = structure.reviews[structure.reviews.length - 2].segments[0].form_id
-
-  const oldrateres = await fetch(
-    `http://localhost:2999/rates/${last_review_form_id}`
-  );
-
-  const oldrates = await oldrateres.json();
-
-  let return_rates = [rates]
-  if (oldrates) return_rates.push(oldrates)
-
-  //const formstructure = forms.filter(f => f.id === segm_zero_id)[0]
-  //const ratestructure = rates.filter(r => r.id === segm_zero_id)[0]
 
   return {
     props: {
       structure: structure,
       forms: forms,
-      rates: return_rates,
     },
     revalidate: 1,
   };
