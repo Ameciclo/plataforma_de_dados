@@ -6,6 +6,7 @@ import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
 import ideciclo_malha from "../public/malhacicloviariapermanente_mar2021.json"
+import { server } from "../config";
 
 //////////////////////
 // INÍCIO DO RENDER //
@@ -378,11 +379,11 @@ const layers = {
 
 export async function getServerSideProps() {
   const idecicloRes = await fetch(
-    `http://localhost:2999/reviews`
+    `${server}/reviews`
   );
 
   const res = await fetch(
-    `http://localhost:2999/structures`
+    `${server}/structures`
   );
 
   const structures = await res.json();
