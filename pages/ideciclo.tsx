@@ -130,6 +130,7 @@ const layers = {
       city_structures.forEach(d => {
         segs.push(
           { id: d.id,
+            cidade: d.city_id,
             logradouro: d.street,
             tipologia: d.typology,
             comprimento: d.reviews[d.reviews.length-1].length/1000,
