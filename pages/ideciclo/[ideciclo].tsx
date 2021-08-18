@@ -12,7 +12,9 @@ import RADAR_STYLE from '../../styles/ideciclo_radarstyle';
 import rates_organization from '../../styles/ideciclo_rates';
 import map from "../../public/malhacicloviariapermanente_mar2021.json";
 import bbox from '@turf/bbox';
-import { server } from "../config";
+import { server } from "../../config";
+
+// comentário
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
