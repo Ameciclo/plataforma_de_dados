@@ -71,23 +71,30 @@ function get_map_data(structure) {
     );
   });
 
+  if(geoJsonMap.features[0] == undefined){
+    geoJsonMap.features = map.features
+  }
+
   return geoJsonMap;
 }
 
 const Ideciclo = ({ structure, forms }) => {
   let info = rates_organization(structure, forms);
-  info.map = get_map_data(structure);
+
+  info.map = get_map_data(structure)
 
   const [minLng, minLat, maxLng, maxLat] = bbox(info.map);
+
   const vp = new WebMercatorViewport({
     width: 400,
     height: 600,
-    longitude: -122.45,
-    latitude: 37.78,
-    zoom: 12,
+    longitude: -48,
+    latitude: -10,
+    zoom: 1,
     pitch: 30,
     bearing: 15,
   });
+
   const { longitude, latitude, zoom } = vp.fitBounds(
     [
       [minLng, minLat],
@@ -310,8 +317,8 @@ const Ideciclo = ({ structure, forms }) => {
                                 "" +
                                 (inner_param.different
                                   ? inner_param.bigger
-                                    ? "🔺"
-                                    : "🔻"
+                                    ? ""
+                                    : ""
                                   : "")
                               : "N/A"}
                           </h3>
@@ -345,9 +352,9 @@ const Ideciclo = ({ structure, forms }) => {
 export async function getStaticPaths() {
   const res = await fetch(`${server}/structures`);
   const allstructs = await res.json();
-
+  const rec_structs = allstructs.filter(s => s.city_id === 1)
   // Get the paths we want to pre-render based on posts
-  const paths = allstructs.map((s) => ({
+  const paths = rec_structs.map((s) => ({
     params: { ideciclo: s.id },
   }));
 
