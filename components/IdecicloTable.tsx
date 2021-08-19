@@ -115,7 +115,9 @@ const IdecicloTable = ({ data }) => {
         accessor: "logradouro",
         Cell: ({ row }) => (
             <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
-                <a className="text-ameciclo">{row.original.logradouro}</a>
+                {row.original.cidade == 1 ? 
+                (<a className="text-ameciclo">{row.original.logradouro}</a>) :
+                (<>{row.original.logradouro}</>)}
             </Link>
         ),
         Filter: ColumnFilter,

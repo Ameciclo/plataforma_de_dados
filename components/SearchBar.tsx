@@ -39,7 +39,6 @@ export const SearchBar = () => {
       } catch (e) {
         setIsSearching(false);
         setResults([]);
-        console.log(e);
         throw new Error("Erro na requisição");
       }
     };
