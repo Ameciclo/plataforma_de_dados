@@ -12,10 +12,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
-        <div className="container mx-auto mt-32 sm:mt-20">
-          <SearchBar />
-        </div>
+      <div
+        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
+        style={{ height: "25vh" }}
+      >
+        <h1 className="text-4xl font-bold">Plataforma de Dados</h1>
       </div>
 
       <section>
