@@ -35,6 +35,7 @@ const Documentos = ({ documents }) => {
       >
         <h1 className="text-4xl font-bold">Documentos e Estudos</h1>
       </div>
+      
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb
