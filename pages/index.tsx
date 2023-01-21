@@ -1,4 +1,4 @@
-import Head from "next/head";
+import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import ResarchIcon from "../public/icons/research.svg";
 import React from "react";
@@ -6,10 +6,7 @@ import React from "react";
 export default function Home() {
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Ameciclo</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO title="Plataforma de Dados | Ameciclo" />
 
       <div
         className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"

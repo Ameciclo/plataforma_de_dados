@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import Head from "next/head";
+import SEO from "../components/SEO";
 import ContagensTable from "../components/ContagensTable";
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import Breadcrumb from "../components/Breadcrumb";
@@ -65,10 +65,8 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Contagens | Plataforma de Dados</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO title="Contagens | Ameciclo" />
+      
       <div
         className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
         style={{

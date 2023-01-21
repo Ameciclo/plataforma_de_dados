@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
-import Head from "next/head";
+import SEO from "../components/SEO";
 
 //import SEO from "../components/SEO";
 import Breadcrumb from "../components/Breadcrumb";
@@ -24,10 +24,7 @@ const Documentos = ({ documents }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Documentos | Plataforma de Dados</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO title="Documentos | Ameciclo" />
 
       <div
         className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"

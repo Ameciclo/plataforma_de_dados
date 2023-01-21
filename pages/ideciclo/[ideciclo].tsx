@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import Head from "next/head";
+import SEO from "../../components/SEO";
 import Breadcrumb from "../../components/Breadcrumb";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -128,10 +128,8 @@ const Ideciclo = ({ structure, forms }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Ideciclo</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO title="Ideciclo | Ameciclo" />
+
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
         style={{ height: "25vh" }}

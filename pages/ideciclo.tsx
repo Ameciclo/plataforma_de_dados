@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import Head from "next/head";
+import SEO from "../components/SEO";
 import Breadcrumb from "../components/Breadcrumb";
 import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
@@ -168,10 +168,8 @@ const layers = {
 
   return (
     <Layout>
-      <Head>
-        <title>Ideciclo | Plataforma de Dados</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      
+      <SEO title="Ideciclo | Ameciclo" />
 
       <div
         className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"

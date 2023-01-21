@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
 import Layout from "../../components/Layout";
-import Head from "next/head";
+import SEO from "../../components/SEO";
 import Breadcrumb from "../../components/Breadcrumb";
 import InfoCard from "../../components/InfoCard";
 import FlowContainer from "../../components/FlowChart/FlowContainer";
@@ -130,10 +130,7 @@ const Contagem = ({ count }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Contagens</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO title="Contagens | Ameciclo" />>
 
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
