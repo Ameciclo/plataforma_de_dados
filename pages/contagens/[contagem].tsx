@@ -130,7 +130,7 @@ const Contagem = ({ count }) => {
 
   return (
     <Layout>
-      <SEO title="Contagens | Ameciclo" />>
+      <SEO title="Contagens | Ameciclo" />
 
       <div
         className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
