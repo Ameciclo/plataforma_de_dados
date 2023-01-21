@@ -1,6 +1,5 @@
 import Head from "next/head";
 import Layout from "../components/Layout";
-import { SearchBar } from "../components/SearchBar";
 import ResarchIcon from "../public/icons/research.svg";
 import React from "react";
 
