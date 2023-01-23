@@ -1,7 +1,7 @@
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
-
+import ImageTextBar from "../components/ImageTextBar";
 
 import React from "react";
 import ResarchIcon from "../public/icons/research.svg";
@@ -13,27 +13,16 @@ export default function Home() {
     cover_image_url: "",   
   }
 
+  const imagetextbar = {
+    image: "/icons/research.svg",
+    text:"Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis."
+  }
+
   return (
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-
-      <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
-          <div className="w-1/4 justify-center flex items-center hidden md:block">
-            <ResarchIcon className="h-32 fill-current" />
-          </div>
-          <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">
-            <p className="text-lg">
-              Aqui divulgamos nossos dados de mobilidade ativa, facilitando a
-              visualização para estudantes, jornalistas, cicloativistas,
-              pesquisadoras(es) e outras(os). Nossas informações são abertas
-              para uso de todas as pessoas que desejam uma cidade mais humanas,
-              democráticas e sustentáveis.
-            </p>
-          </div>
-        </div>
-      </section>
+      <ImageTextBar image={imagetextbar.image} text={imagetextbar.text}/>
       <section>
         <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
