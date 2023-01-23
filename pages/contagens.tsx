@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useState } from "react";
@@ -33,6 +34,15 @@ const navControlStyle= {
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
 
+  const groupBy = (xs, f) => {
+    return xs.reduce(
+      (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
+      {}
+    );
+  }
+  let countsGroupedByLocation = groupBy(cyclistCounts, (count) => count.name);
+  let countsGroupedArray = Object.entries(countsGroupedByLocation);
+
     const page_data = {
       title: "Contagens de ciclistas",
       cover_image_url: "/contagem.png",
@@ -59,25 +69,22 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         Ameciclo as utiliza como ferramentas para incidir no planejamento
         e tem seus dados abertos para serem usados pela mídia, academia ou
         quaisquer pessoa que assim deseje.`
-      }   
+      },
+      StatisticsBox:{
+        title: "Estatísticas Gerais",
+        boxes: [
+        {title: "Total de ciclistas", value: globalSummary[0].totalAmount},
+        {title: "Contagens Realizadas", value: globalSummary[0].numberOfCounts},
+        {title: "Pontos Monitorados", value: countsGroupedArray.length},
+        {title: "Máximo em um ponto", value: globalSummary[0].MaximumValue},
+        ]}
     }
-
-
-  const groupBy = (xs, f) => {
-    return xs.reduce(
-      (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
-      {}
-    );
-  }
 
   const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
 
   const SIZE = 20;
-
-  let countsGroupedByLocation = groupBy(cyclistCounts, (count) => count.name);
-  let countsGroupedArray = Object.entries(countsGroupedByLocation);
 
   const [viewport, setViewport] = useState({
     latitude: -8.0584364,
@@ -103,37 +110,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-
-      <div className="mx-auto text-center my-24">
-        <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
-        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Total de ciclistas"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {globalSummary[0].totalAmount}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Contagens Realizadas"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {globalSummary[0].numberOfCounts}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Pontos Monitorados"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {countsGroupedArray.length}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Máximo em um ponto"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {globalSummary[0].MaximumValue}
-            </h3>
-          </div>
-        </div>
-      </div>
-
+      <StatisticsBox title={page_data.StatisticsBox.title} boxes={page_data.StatisticsBox.boxes}/>
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
       <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
