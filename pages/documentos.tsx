@@ -2,9 +2,11 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useState, useEffect } from "react";
 import { DocumentCard } from "../components/DocumentCard";
+import { title } from "process";
 
 const Documentos = ({ documents }) => {
 
@@ -15,7 +17,23 @@ const Documentos = ({ documents }) => {
       label:"Documentos",
       slug:"/documentos",
       routes:["/", "/documentos"],
-    }  
+    },
+    ExplanationBox: {
+      title_1: "O que são?",
+      text_1: `A Ameciclo realizou e realiza diversas pesquisas ao longo de sua
+      história e documentamos todas elas nessa sessão. São estudos, pesquisas, 
+      documentos técnicos e livros acerca do perfil de quem pedala e de quem 
+      não pedala no dia a dia, da qualidade da estrutura cicloviária, de contagem 
+      de ciclistas e de análise da gestão pública com relação à mobilidade.`,
+      title_2: "... e tem mais!",
+      text_2: `Também guardamos aqui as pesquisas nas quais a Ameciclo contribuiu para
+      serem realizadas, seja com o fornecimento de dados, seja por ser 
+      o objeto de pesquisa de estudantes nas universidades. É um orgulho
+      conseguir contribuir com a ciência e alavancar a ciclomobilidade.
+
+      Se você deseja ver nossos livros de histórias lúdicas, busque na sessão
+      biblioteca (em breve).`
+    }
   }
 
   const [filteredDocuments, setFilteredDocuments] = useState([]);
@@ -38,33 +56,7 @@ const Documentos = ({ documents }) => {
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <div className="flex flex-col sm:flex-row justify-between">
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">O que são?</h1>
-            <p>
-              A Ameciclo realizou e realiza diversas pesquisas ao longo de sua
-              história e documentamos todas elas nessa sessão. São estudos, pesquisas, 
-              documentos técnicos e livros acerca do perfil de quem pedala e de quem 
-              não pedala no dia a dia, da qualidade da estrutura cicloviária, de contagem 
-              de ciclistas e de análise da gestão pública com relação à mobilidade.
-            </p>
-          </div>
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">... e tem mais!</h1>
-            <p>
-              Também guardamos aqui as pesquisas nas quais a Ameciclo contribuiu para
-              serem realizadas, seja com o fornecimento de dados, seja por ser 
-              o objeto de pesquisa de estudantes nas universidades. É um orgulho
-              conseguir contribuir com a ciência e alavancar a ciclomobilidade.
-
-              Se você deseja ver nossos livros de histórias lúdicas, busque na sessão
-              biblioteca (em breve).
-            </p>
-          </div>
-        </div>
-      </section>
+      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
       <section className="container my-12 mx-auto">
         <div className="mt-5 mx-3">
