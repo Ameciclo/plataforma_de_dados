@@ -34,6 +34,35 @@ const navControlStyle= {
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
 
+  const page_data = {
+    title: "Contagens de ciclistas",
+    cover_image_url: "/contagem.png",
+    Breadcrumb: {
+      label:"Contagens",
+      slug:"/contagens",
+      routes:["/", "/contagens"],
+    },
+    ExplanationBox: {
+      title_1: "O que é?",
+      text_1: `Registramos as pessoas que passam de bicicleta durante 14 horas em
+      um pré-escolhido cruzamento da cidade do Recife. As nossas
+      contagens são registradas manualmente através da observação das
+      pessoas voluntárias na contagem, registrando a direção do
+      deslocamento e fatores qualitativos. Dentre esses fatores estão o
+      gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
+      se são crianças se estão à serviço e comportamentos como contramão
+      e pedalada na calçada. Ainda são registrados outros fatores
+      qualitativos que podem ser especificidades de cada local.`,
+      title_2: "Para que serve?",
+      text_2: `As contagens de ciclistas são importantes instrumentos de
+      planejamento urbano. Elas permitem identificar os pontos de maior
+      demanda por estruturas cicláveis, além das tendências futuras. A
+      Ameciclo as utiliza como ferramentas para incidir no planejamento
+      e tem seus dados abertos para serem usados pela mídia, academia ou
+      quaisquer pessoa que assim deseje.`
+    }
+  }
+
   const groupBy = (xs, f) => {
     return xs.reduce(
       (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
@@ -42,44 +71,17 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
   }
   let countsGroupedByLocation = groupBy(cyclistCounts, (count) => count.name);
   let countsGroupedArray = Object.entries(countsGroupedByLocation);
-
-    const page_data = {
-      title: "Contagens de ciclistas",
-      cover_image_url: "/contagem.png",
-      Breadcrumb: {
-        label:"Contagens",
-        slug:"/contagens",
-        routes:["/", "/contagens"],
-      },
-      ExplanationBox: {
-        title_1: "O que é?",
-        text_1: `Registramos as pessoas que passam de bicicleta durante 14 horas em
-        um pré-escolhido cruzamento da cidade do Recife. As nossas
-        contagens são registradas manualmente através da observação das
-        pessoas voluntárias na contagem, registrando a direção do
-        deslocamento e fatores qualitativos. Dentre esses fatores estão o
-        gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
-        se são crianças se estão à serviço e comportamentos como contramão
-        e pedalada na calçada. Ainda são registrados outros fatores
-        qualitativos que podem ser especificidades de cada local.`,
-        title_2: "Para que serve?",
-        text_2: `As contagens de ciclistas são importantes instrumentos de
-        planejamento urbano. Elas permitem identificar os pontos de maior
-        demanda por estruturas cicláveis, além das tendências futuras. A
-        Ameciclo as utiliza como ferramentas para incidir no planejamento
-        e tem seus dados abertos para serem usados pela mídia, academia ou
-        quaisquer pessoa que assim deseje.`
-      },
-      StatisticsBox:{
-        title: "Estatísticas Gerais",
-        boxes: [
-        {title: "Total de ciclistas", value: globalSummary[0].totalAmount},
-        {title: "Contagens Realizadas", value: globalSummary[0].numberOfCounts},
-        {title: "Pontos Monitorados", value: countsGroupedArray.length},
-        {title: "Máximo em um ponto", value: globalSummary[0].MaximumValue},
-        ]}
-    }
-
+  
+  const GeneralStatistics = {
+    title: "Estatísticas Gerais",
+    subtitle: "",
+    boxes: [
+    {title: "Total de ciclistas", value: globalSummary[0].totalAmount},
+    {title: "Contagens Realizadas", value: globalSummary[0].numberOfCounts},
+    {title: "Pontos Monitorados", value: countsGroupedArray.length},
+    {title: "Máximo em um ponto", value: globalSummary[0].MaximumValue},
+    ] 
+  }
   const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
@@ -110,7 +112,8 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-      <StatisticsBox title={page_data.StatisticsBox.title} boxes={page_data.StatisticsBox.boxes}/>
+      <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
+
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
       <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">

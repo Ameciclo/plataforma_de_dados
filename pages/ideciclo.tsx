@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useEffect, useState } from "react";
@@ -50,16 +51,28 @@ const Ideciclo = ({ideciclo, structures}) => {
       com a metodologia de 2016 (o que revelou aumento aquém do
       projetado e desejável), obtendo consistência independente dos
       avaliadores.`
-    }   
+    }
   }
 
-  ///////////////////
-// CONFIGURAÇÕES //
-///////////////////
-
+/////////////////////////
+// ESTATÍSTICAS GERAIS //
+/////////////////////////
 let cidades = ideciclo
 cidades.forEach((c) => c.reviews = c.reviews.sort((a,b) => a.year > b.year ? -1: 1))
 cidades = cidades.filter((c) => c.reviews.length > 0)
+const GeneralStatistics = {
+  title: "Estatísticas Gerais",
+  subtitle: "",
+  boxes: [
+      {title: "Cidades avaliadas", value: cidades.length}, 
+      {title: "Em quantos estados", value: getTotalCityStates(cidades).count},
+      {title: "Extensão avaliada (km)", value: (""+(
+                                      (cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.road),0) +
+                                      cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.street),0) +
+                                      cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.local),0)
+                                      )/(1000)).toFixed(1)).replace(".",",")}, 
+        {title: "Vias avaliadas", value: (""+structures.length)}, 
+  ]}
 
 function getTotalCityStates(input) {
   var arr = input, obj = {}, count = 0, st_arr = [];
@@ -160,6 +173,24 @@ const layers = {
     //window.location.replace("#maisinfo")
   }
 
+  const CityStatistics = {
+    title: selectedCity.name,
+    subtitle: "Estatísticas Gerais",
+    boxes:   [
+      selectedCity.reviews.length > 0 && 
+      ({title: "IDECICLO " + selectedCity.reviews[0].year, value: (""+selectedCity.reviews[0].ideciclo.toFixed(3)).replace(".",",")}),
+      selectedCity.reviews.length > 1 && 
+      ({title: "IDECICLO " + selectedCity.reviews[1].year, value: (""+selectedCity.reviews[1].ideciclo.toFixed(3)).replace(".",",")}  ),
+      selectedCity.reviews.length  && 
+      ({title: "Extensão avaliada (km)", value: (""+((selectedCity.reviews[0].city_network.cycle_length.road + 
+                                                    selectedCity.reviews[0].city_network.cycle_length.street + 
+                                                    selectedCity.reviews[0].city_network.cycle_length.local)/(1000)).toFixed(1)).replace(".",",")}), 
+      {title: "Vias avaliadas", value: (""+((selectedCity.reviews[0].city_network.cycle_structures.road + 
+                                                    selectedCity.reviews[0].city_network.cycle_structures.street + 
+                                                    selectedCity.reviews[0].city_network.cycle_structures.local)))}
+        ].filter(e => e)
+  }
+  
   useEffect(() => {
     if (selectedCity) {
       let city_structures = structures.filter((s) => {
@@ -209,37 +240,10 @@ const layers = {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-
-      <section className="mx-auto container">
-        <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
-          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-            {[
-              {title: "Cidades avaliadas", value: cidades.length}, 
-              {title: "Em quantos estados", value: getTotalCityStates(cidades).count},
-              {title: "Extensão avaliada (km)", value: (""+(
-                                              (cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.road),0) +
-                                              cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.street),0) +
-                                              cidades.reduce((acc, cur) => (acc + cur.reviews[0].city_network.cycle_length.local),0)
-                                              )/(1000)).toFixed(1)).replace(".",",")}, 
-                {title: "Vias avaliadas", value: (""+structures.length)}, 
-              ].map((m) => (
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{m.title}</h3>
-                <h3 className="text-5xl font-bold mt-2">
-                  {m.value}
-                </h3>
-             </div>
-            ))}
-          </div>
-        </div>
-        </section>
-      <div className="mx-auto text-center my-24">
- 
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/> 
+      <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
-      </div>
       <section className="mx-auto container">
       <div className="mx-auto text-center my-24">
         <h1 className="text-6xl font-bold pb-5">Ranking das cidades</h1>
@@ -284,37 +288,10 @@ const layers = {
               <CityCard data={city} selected={city.id==selectedCity.id} key={city.id} changeCity={changeCity} position={index}/>
             ))}
         </section>
-        {(filteredCityData.length > 0) && (
-        <section>
-            <div className="mx-auto text-center my-24">
-                <h1 className="text-6xl font-bold">{selectedCity.name}</h1>
-                <h3 className="text-4xl font-bold my-8">Estatísticas Gerais</h3>
-                <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-                {[
-                selectedCity.reviews.length > 0 && 
-                ({title: "IDECICLO " + selectedCity.reviews[0].year, value: (""+selectedCity.reviews[0].ideciclo.toFixed(3)).replace(".",",")}),
-                selectedCity.reviews.length > 1 && 
-                ({title: "IDECICLO " + selectedCity.reviews[1].year, value: (""+selectedCity.reviews[1].ideciclo.toFixed(3)).replace(".",",")}  ),
-                selectedCity.reviews.length  && 
-                ({title: "Extensão avaliada (km)", value: (""+((selectedCity.reviews[0].city_network.cycle_length.road + 
-                                                              selectedCity.reviews[0].city_network.cycle_length.street + 
-                                                              selectedCity.reviews[0].city_network.cycle_length.local)/(1000)).toFixed(1)).replace(".",",")}), 
-                {title: "Vias avaliadas", value: (""+((selectedCity.reviews[0].city_network.cycle_structures.road + 
-                                                              selectedCity.reviews[0].city_network.cycle_structures.street + 
-                                                              selectedCity.reviews[0].city_network.cycle_structures.local)))}
-                  ].filter(e => e)
-                  .map((m) => (
-                  <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                    <h3>{m.title}</h3>
-                    <h3 className="text-5xl font-bold mt-2">
-                      {m.value}
-                    </h3>
-                  </div>
-                 ))}
-                </div>
-              </div>
-          </section>)}
-          </div>
+          {(filteredCityData.length > 0) && (
+            <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+            )}
+        </div>
       </section>
       {/*(selectedCity.name === "Recife" ) && (
       <section className="container mx-auto my-10">
