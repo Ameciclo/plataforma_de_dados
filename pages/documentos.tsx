@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
-
-//import SEO from "../components/SEO";
+import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+
+import React, { useState, useEffect } from "react";
 import { DocumentCard } from "../components/DocumentCard";
 
 const Documentos = ({ documents }) => {
+
+  const page_data = {
+    title: "Documentos e Estudos",
+    cover_image_url: "",   
+  }
+
   const [filteredDocuments, setFilteredDocuments] = useState([]);
   const [docType, setDocType] = useState("");
 
@@ -24,14 +30,8 @@ const Documentos = ({ documents }) => {
 
   return (
     <Layout>
-      <SEO title="Documentos | Ameciclo" />
-
-      <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Documentos e Estudos</h1>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">

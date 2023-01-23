@@ -1,8 +1,10 @@
-import SEO from "../components/SEO";
 import Layout from "../components/Layout";
-import ResarchIcon from "../public/icons/research.svg";
-import React from "react";
+import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
+
+
+import React from "react";
+import ResarchIcon from "../public/icons/research.svg";
 
 export default function Home() {
 

@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
+import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+
+import React, { useEffect, useState } from "react";
+
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
@@ -15,6 +18,12 @@ if (typeof Highcharts === "object") {
 }
 
 const Perfil = () => {
+
+  const page_data = {
+    title: "Pesquisa Perfil Ciclista",
+    cover_image_url: "",   
+  }
+
   const [isSearching, setIsSearching] = useState(false);
   const [filters, setFilters] = useState([
     { key: "gender", value: "Masculino", checked: true },
@@ -348,15 +357,9 @@ const Perfil = () => {
 
   return (
     <Layout>
-
-      <SEO title="Perfil Ciclista | Ameciclo" />
-
-      <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Perfil Ciclista</h1>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb label="Perfil" slug="/perfil" routes={["/", "/perfil"]} />

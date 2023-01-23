@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
+import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+
+import React, { useEffect, useState } from "react";
+
 import CityCard from "../components/CityCard"
 import IdecicloTable from "../components/IdecicloTable"
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
@@ -13,6 +16,11 @@ import { server } from "../config";
 ///////////////////////
 
 const Ideciclo = ({ideciclo, structures}) => {
+
+  const page_data = {
+    title: "Índice de Desenvolvimento Cicloviário",
+    cover_image_url: "",   
+  }
 
   ///////////////////
 // CONFIGURAÇÕES //
@@ -168,14 +176,9 @@ const layers = {
 
   return (
     <Layout>
-      <SEO title="Ideciclo | Ameciclo" />
-
-      <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Índice de Desenvolvimento Cicloviário</h1>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb

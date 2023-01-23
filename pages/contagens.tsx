@@ -1,10 +1,13 @@
-import React, { useState } from "react";
 import Layout from "../components/Layout";
 import SEO from "../components/SEO";
-import ContagensTable from "../components/ContagensTable";
-import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
+import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+
+import React, { useState } from "react";
+
+import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import InfoCard from "../components/InfoCard";
+import ContagensTable from "../components/ContagensTable";
 
 const GridCard = ({ title, text, icon, url = "#" }) => {
   return (
@@ -28,6 +31,13 @@ const navControlStyle= {
 };
 
 const Contagens = ({ cyclistCounts, globalSummary }) => {
+
+    const page_data = {
+      title: "Contagens de ciclistas",
+      cover_image_url: "/contagem.png",   
+    }
+
+
   const groupBy = (xs, f) => {
     return xs.reduce(
       (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
@@ -65,19 +75,9 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
 
   return (
     <Layout>
-      <SEO title="Contagens | Ameciclo" />
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       
-      <div
-        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
-        style={{
-          width: "100%",
-          height: "52vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundImage: `url('/contagem.png')`,
-        }}
-      />
       <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
         <div className="container mx-auto">
           <Breadcrumb
