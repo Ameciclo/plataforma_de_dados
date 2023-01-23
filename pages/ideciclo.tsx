@@ -168,7 +168,6 @@ const layers = {
 
   return (
     <Layout>
-      
       <SEO title="Ideciclo | Ameciclo" />
 
       <div

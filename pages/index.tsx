@@ -2,18 +2,19 @@ import SEO from "../components/SEO";
 import Layout from "../components/Layout";
 import ResarchIcon from "../public/icons/research.svg";
 import React from "react";
+import TitleBar from "../components/TitleBar";
 
 export default function Home() {
+
+  const page_data = {
+    title: "Plataforma de Dados",
+    cover_image_url: "",   
+  }
+
   return (
     <Layout>
-      <SEO title="Plataforma de Dados | Ameciclo" />
-
-      <div
-        className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-        style={{ height: "25vh" }}
-      >
-        <h1 className="text-4xl font-bold">Plataforma de Dados</h1>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
 
       <section>
         <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
