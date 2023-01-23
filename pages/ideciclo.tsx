@@ -19,7 +19,12 @@ const Ideciclo = ({ideciclo, structures}) => {
 
   const page_data = {
     title: "Índice de Desenvolvimento Cicloviário",
-    cover_image_url: "",   
+    cover_image_url: "",
+    Breadcrumb: {
+      label:"IDECICLO",
+      slug:"/ideciclo",
+      routes:["/", "/ideciclo"],
+    }  
   }
 
   ///////////////////
@@ -178,16 +183,8 @@ const layers = {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label="Ideciclo"
-            slug="/ideciclo"
-            routes={["/", "/ideciclo"]}
-          />
-        </div>
-      </div>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+
       <section className="mx-auto container">
         <div className="mx-auto text-center my-24">
           <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>

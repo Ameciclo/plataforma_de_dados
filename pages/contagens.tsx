@@ -34,7 +34,12 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
 
     const page_data = {
       title: "Contagens de ciclistas",
-      cover_image_url: "/contagem.png",   
+      cover_image_url: "/contagem.png",
+      Breadcrumb: {
+        label:"Contagens",
+        slug:"/contagens",
+        routes:["/", "/contagens"],
+      }  
     }
 
 
@@ -77,16 +82,8 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label="Contagens"
-            slug="/contagens"
-            routes={["/", "/contagens"]}
-          />
-        </div>
-      </div>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+
       <div className="mx-auto text-center my-24">
         <h1 className="text-6xl font-bold">Estatísticas Gerais</h1>
         <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">

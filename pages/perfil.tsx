@@ -21,7 +21,12 @@ const Perfil = () => {
 
   const page_data = {
     title: "Pesquisa Perfil Ciclista",
-    cover_image_url: "",   
+    cover_image_url: "",
+    Breadcrumb: {
+      label:"Perfil Ciclista",
+      slug:"/perfil",
+      routes:["/", "/perfil"],
+    }  
   }
 
   const [isSearching, setIsSearching] = useState(false);
@@ -359,12 +364,8 @@ const Perfil = () => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
-        <div className="container mx-auto">
-          <Breadcrumb label="Perfil" slug="/perfil" routes={["/", "/perfil"]} />
-        </div>
-      </div>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <div className="flex flex-col sm:flex-row justify-between">
           <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
