@@ -10,7 +10,12 @@ const Documentos = ({ documents }) => {
 
   const page_data = {
     title: "Documentos e Estudos",
-    cover_image_url: "",   
+    cover_image_url: "",
+    Breadcrumb: {
+      label:"Documentos",
+      slug:"/documentos",
+      routes:{["/", "/Documentos"]},
+    }  
   }
 
   const [filteredDocuments, setFilteredDocuments] = useState([]);
@@ -32,16 +37,7 @@ const Documentos = ({ documents }) => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label="Documentos"
-            slug="/documentos"
-            routes={["/", "/Documentos"]}
-          />
-        </div>
-      </div>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.label} routes={page_data.Breadcrumb.routes}/>
 
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <div className="flex flex-col sm:flex-row justify-between">
