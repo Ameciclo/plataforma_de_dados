@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useEffect, useState } from "react";
 
@@ -24,7 +25,32 @@ const Ideciclo = ({ideciclo, structures}) => {
       label:"IDECICLO",
       slug:"/ideciclo",
       routes:["/", "/ideciclo"],
-    }  
+    },
+    ExplanationBox: {
+      title_1: "O que é?",
+      text_1: `O Ideciclo é o resultado da análise de uma estrutura cicloviária,
+      levando em consideração critérios relativos à cobertura da malha,
+      velocidades máximas das vias, segurança e conforto de ciclistas. O
+      índice pode ser utilizado para comparar quantitativa e
+      qualitativamente, a situação de uma mesma malha ao longo do tempo
+      e em diferentes cidades. A metodologia de cálculo inclui O
+      Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
+      com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
+      BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
+      Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
+      que permitem avaliar diversas tipologias cicloviárias.`,
+      title_2: "Para que serve?",
+      text_2: `O Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
+      com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
+      BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
+      Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
+      que permitem avaliar diversas tipologias cicloviárias. A
+      metodologia completa foi aplicada em 3 cidades da Região
+      Metropolitana do Recife, possibilitando a comparação da capital
+      com a metodologia de 2016 (o que revelou aumento aquém do
+      projetado e desejável), obtendo consistência independente dos
+      avaliadores.`
+    }   
   }
 
   ///////////////////
@@ -210,41 +236,9 @@ const layers = {
         </div>
         </section>
       <div className="mx-auto text-center my-24">
-        <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-          <div className="flex flex-col sm:flex-row justify-between">
-            <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-              <h1 className="text-4xl font-bold mb-2">O que é?</h1>
-              <p>
-                O Ideciclo é o resultado da análise de uma estrutura cicloviária,
-                levando em consideração critérios relativos à cobertura da malha,
-                velocidades máximas das vias, segurança e conforto de ciclistas. O
-                índice pode ser utilizado para comparar quantitativa e
-                qualitativamente, a situação de uma mesma malha ao longo do tempo
-                e em diferentes cidades. A metodologia de cálculo inclui O
-                Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
-                com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
-                BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
-                Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
-                que permitem avaliar diversas tipologias cicloviárias.
-              </p>
-            </div>
-            <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-              <h1 className="text-4xl font-bold mb-2">Para que serve?</h1>
-              <p>
-                O Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
-                com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
-                BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
-                Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
-                que permitem avaliar diversas tipologias cicloviárias. A
-                metodologia completa foi aplicada em 3 cidades da Região
-                Metropolitana do Recife, possibilitando a comparação da capital
-                com a metodologia de 2016 (o que revelou aumento aquém do
-                projetado e desejável), obtendo consistência independente dos
-                avaliadores.
-              </p>
-            </div>
-          </div>
-        </section>
+ 
+      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
+
       </div>
       <section className="mx-auto container">
       <div className="mx-auto text-center my-24">

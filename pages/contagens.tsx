@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useState } from "react";
 
@@ -39,7 +40,26 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
         label:"Contagens",
         slug:"/contagens",
         routes:["/", "/contagens"],
-      }  
+      },
+      ExplanationBox: {
+        title_1: "O que é?",
+        text_1: `Registramos as pessoas que passam de bicicleta durante 14 horas em
+        um pré-escolhido cruzamento da cidade do Recife. As nossas
+        contagens são registradas manualmente através da observação das
+        pessoas voluntárias na contagem, registrando a direção do
+        deslocamento e fatores qualitativos. Dentre esses fatores estão o
+        gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
+        se são crianças se estão à serviço e comportamentos como contramão
+        e pedalada na calçada. Ainda são registrados outros fatores
+        qualitativos que podem ser especificidades de cada local.`,
+        title_2: "Para que serve?",
+        text_2: `As contagens de ciclistas são importantes instrumentos de
+        planejamento urbano. Elas permitem identificar os pontos de maior
+        demanda por estruturas cicláveis, além das tendências futuras. A
+        Ameciclo as utiliza como ferramentas para incidir no planejamento
+        e tem seus dados abertos para serem usados pela mídia, academia ou
+        quaisquer pessoa que assim deseje.`
+      }   
     }
 
 
@@ -113,53 +133,8 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
           </div>
         </div>
       </div>
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        {/*<div className="container mx-auto grid grid-cols-1 md:grid-cols-4 auto-rows-auto gap-10 my-10">*/}
-        {/*  <InfoCard*/}
-        {/*    data={globalSummary[0].totalAmount}*/}
-        {/*    label={"N.º de ciclistas contados"}*/}
-        {/*  />*/}
-        {/*  <InfoCard*/}
-        {/*    data={globalSummary[0].numberOfCounts}*/}
-        {/*    label={"Contagens Realizadas"}*/}
-        {/*  />*/}
-        {/*  <InfoCard*/}
-        {/*    data={countsGroupedArray.length}*/}
-        {/*    label={"Pontos Monitorados"}*/}
-        {/*  />*/}
-        {/*  <InfoCard*/}
-        {/*    data={globalSummary[0].MaximumValue}*/}
-        {/*    label={"N.º máximo contado"}*/}
-        {/*  />*/}
-        {/*</div>*/}
-        <div className="flex flex-col sm:flex-row justify-between">
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">O que é?</h1>
-            <p>
-              Registramos as pessoas que passam de bicicleta durante 14 horas em
-              um pré-escolhido cruzamento da cidade do Recife. As nossas
-              contagens são registradas manualmente através da observação das
-              pessoas voluntárias na contagem, registrando a direção do
-              deslocamento e fatores qualitativos. Dentre esses fatores estão o
-              gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
-              se são crianças se estão à serviço e comportamentos como contramão
-              e pedalada na calçada. Ainda são registrados outros fatores
-              qualitativos que podem ser especificidades de cada local.
-            </p>
-          </div>
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">Para que serve?</h1>
-            <p>
-              As contagens de ciclistas são importantes instrumentos de
-              planejamento urbano. Elas permitem identificar os pontos de maior
-              demanda por estruturas cicláveis, além das tendências futuras. A
-              Ameciclo as utiliza como ferramentas para incidir no planejamento
-              e tem seus dados abertos para serem usados pela mídia, academia ou
-              quaisquer pessoa que assim deseje.
-            </p>
-          </div>
-        </div>
-      </section>
+
+      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
       <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
         <InfoCard

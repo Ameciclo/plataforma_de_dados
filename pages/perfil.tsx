@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
+import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useEffect, useState } from "react";
 
@@ -26,7 +27,29 @@ const Perfil = () => {
       label:"Perfil Ciclista",
       slug:"/perfil",
       routes:["/", "/perfil"],
-    }  
+    },
+    ExplanationBox: {
+      title_1: "O que é?",
+      text_1: `A pesquisa foi organizada pela Transporte Ativo e pelo
+      LABMOB-UFRJ, e contou com uma extensa rede de organizações
+      colaboradoras que levaram a campo, entre setembro de 2017 e abril
+      de 2018 mais de 140 pesquisadores para realizar 7.644entrevistas.
+      Devido a abrangência e a complexidade da pesquisa, a sua
+      concretização só foi possível através da participação e
+      engajamento de todos envolvidos, fruto de um grande esforço de
+      ação coletivae voluntária.`,
+      title_2: "Para que serve?",
+      text_2: `Os resultados sintéticos apresentados aqui revelam as principais
+      tendências do deslocamento por bicicleta em várias cidades
+      brasileiras.Cabe ressaltar que não é possível uma comparação
+      direta com a primeira edição da pesquisa – realizada em 2015
+      –poisagoraadotamos outro método de amostragem, mais refinado e que
+      resultou, em muitos casos, em amostras com tamanhos distintos. Os
+      dados coletados e analisados nesta pesquisa fornecem subsídios
+      para que gestores públicos, urbanistas e todos os envolvidoscom o
+      tema, formulem uma agenda mais precisa e robusta de políticas
+      públicas e ações de promoção do transporte cicloviário.`
+    }   
   }
 
   const [isSearching, setIsSearching] = useState(false);
@@ -366,38 +389,7 @@ const Perfil = () => {
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
 
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <div className="flex flex-col sm:flex-row justify-between">
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">O que é?</h1>
-            <p>
-              A pesquisa foi organizada pela Transporte Ativo e pelo
-              LABMOB-UFRJ, e contou com uma extensa rede de organizações
-              colaboradoras que levaram a campo, entre setembro de 2017 e abril
-              de 2018 mais de 140 pesquisadores para realizar 7.644entrevistas.
-              Devido a abrangência e a complexidade da pesquisa, a sua
-              concretização só foi possível através da participação e
-              engajamento de todos envolvidos, fruto de um grande esforço de
-              ação coletivae voluntária.
-            </p>
-          </div>
-          <div className="text-justify text-gray-800 sm:w-2/3 p-6 sm:max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">Para que serve?</h1>
-            <p>
-              Os resultados sintéticos apresentados aqui revelam as principais
-              tendências do deslocamento por bicicleta em várias cidades
-              brasileiras.Cabe ressaltar que não é possível uma comparação
-              direta com a primeira edição da pesquisa – realizada em 2015
-              –poisagoraadotamos outro método de amostragem, mais refinado e que
-              resultou, em muitos casos, em amostras com tamanhos distintos. Os
-              dados coletados e analisados nesta pesquisa fornecem subsídios
-              para que gestores públicos, urbanistas e todos os envolvidoscom o
-              tema, formulem uma agenda mais precisa e robusta de políticas
-              públicas e ações de promoção do transporte cicloviário.
-            </p>
-          </div>
-        </div>
-      </section>
+      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
 
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
