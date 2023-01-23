@@ -14,7 +14,7 @@ const Documentos = ({ documents }) => {
     Breadcrumb: {
       label:"Documentos",
       slug:"/documentos",
-      routes:{["/", "/Documentos"]},
+      routes:["/", "/documentos"],
     }  
   }
 
@@ -37,7 +37,7 @@ const Documentos = ({ documents }) => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.label} routes={page_data.Breadcrumb.routes}/>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
 
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <div className="flex flex-col sm:flex-row justify-between">
