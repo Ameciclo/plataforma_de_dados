@@ -1,14 +1,28 @@
-import React, { useState } from "react";
-import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
 import Layout from "../../components/Layout";
 import SEO from "../../components/SEO";
+import TitleBar from "../../components/TitleBar";
 import Breadcrumb from "../../components/Breadcrumb";
+
+import React, { useState } from "react";
+import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
+
 import InfoCard from "../../components/InfoCard";
 import FlowContainer from "../../components/FlowChart/FlowContainer";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 
 const Contagem = ({ count }) => {
+
+  const page_data = {
+    title: count.name,
+    cover_image_url: "",
+    Breadcrumb: {
+      label:count.name,
+      slug:count._id,
+      routes:["/", "/contagens", count._id],
+    }  
+  }
+
   const [popupInfo, setPopupInfo] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
@@ -130,25 +144,9 @@ const Contagem = ({ count }) => {
 
   return (
     <Layout>
-      <SEO title="Contagens | Ameciclo" />
-
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ height: "25vh" }}
-      >
-        <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{count.name}</h1>
-        </div>
-      </div>
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label={count.name}
-            slug={count._id}
-            routes={["/", "/contagens", count._id]}
-          />
-        </div>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
 
       <main className="flex-auto">
         <div className="mx-auto text-center my-24">

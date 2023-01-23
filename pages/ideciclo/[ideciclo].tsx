@@ -1,6 +1,8 @@
 import Layout from "../../components/Layout";
 import SEO from "../../components/SEO";
+import TitleBar from "../../components/TitleBar";
 import Breadcrumb from "../../components/Breadcrumb";
+
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
@@ -79,6 +81,17 @@ function get_map_data(structure) {
 }
 
 const Ideciclo = ({ structure, forms }) => {
+
+  const page_data = {
+    title: "IDECICLO",
+    cover_image_url: "",
+    Breadcrumb: {
+      label:structure.street,
+      slug:structure.id.toString(),
+      routes:["/", "/ideciclo", structure.id],
+    }  
+  }
+
   let info = rates_organization(structure, forms);
 
   info.map = get_map_data(structure)
@@ -128,25 +141,10 @@ const Ideciclo = ({ structure, forms }) => {
 
   return (
     <Layout>
-      <SEO title="Ideciclo | Ameciclo" />
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
 
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ height: "25vh" }}
-      >
-        <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{structure.street}</h1>
-        </div>
-      </div>
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label={structure.street}
-            slug={structure.id.toString()}
-            routes={["/", "/ideciclo", structure.id]}
-          />
-        </div>
-      </div>
       <section className="container mx-auto">
         <div className="mx-auto text-center my-24">
           <h1 className="text-6xl font-bold">{structure.street}</h1>
