@@ -101,12 +101,8 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
       <CardsSession cards={cards} />
       <CountingMap cyclistCounts={cyclistCounts} />
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <ContagensTable data={cyclistCounts} />
-      </section>
-
+      <ContagensTable data={cyclistCounts} />
       <GridSession title={documents.title} grids={documents.grids} />
-      
     </Layout>
   );
 };
