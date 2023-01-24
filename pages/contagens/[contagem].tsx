@@ -2,11 +2,11 @@ import Layout from "../../components/Layout";
 import SEO from "../../components/SEO";
 import TitleBar from "../../components/TitleBar";
 import Breadcrumb from "../../components/Breadcrumb";
+import CardsSession from "../../components/CardsSession";
 
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
 
-import InfoCard from "../../components/InfoCard";
 import FlowContainer from "../../components/FlowChart/FlowContainer";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
@@ -141,6 +141,16 @@ const Contagem = ({ count }) => {
       enabled: false,
     },
   };
+
+  const cards = [
+    {label: "Mulheres", icon: "women", data: summary.women_percent},
+    {label: "Crianças e Adolescentes", icon: "children", data: summary.children_percent},
+    {label: "Capacete", icon: "helmet", data: summary.helmet_percent},
+    {label: "Serviço", icon: "service", data: summary.service_percent},
+    {label: "Cargueira", icon: "cargo", data: summary.cargo_percent},
+    {label: "Contramão", icon: "wrong_way", data: summary.wrong_way_percent},
+    {label: "Calçada", icon: "sidewalk", data: summary.sidewalk_percent}
+  ]
 
   return (
     <Layout>
@@ -286,43 +296,9 @@ const Contagem = ({ count }) => {
             <FlowContainer count={count} flowData={flowData} />
           </div>
         </section>
-        <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={summary.women_percent}
-            label={"Mulheres"}
-            icon="women"
-          />
-          <InfoCard
-            data={summary.children_percent}
-            label={"Crianças e Adolescentes"}
-            icon="children"
-          />
-          <InfoCard
-            data={summary.helmet_percent}
-            label={"Capacete"}
-            icon="helmet"
-          />
-          <InfoCard
-            data={summary.service_percent}
-            label={"Serviço"}
-            icon="service"
-          />
-          <InfoCard
-            data={summary.cargo_percent}
-            label={"Cargueira"}
-            icon="cargo"
-          />
-          <InfoCard
-            data={summary.wrong_way_percent}
-            label={"Contramão"}
-            icon="wrong_way"
-          />
-          <InfoCard
-            data={summary.sidewalk_percent}
-            label={"Calçada"}
-            icon="sidewalk"
-          />
-        </section>
+
+        <CardsSession cards={cards} />
+
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
             className="shadow-2xl rounded p-10 text-center overflow-x-scroll"
