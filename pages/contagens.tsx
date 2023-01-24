@@ -124,6 +124,15 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     doubleClickZoom: true
   });
 
+  const cards = [
+    {label: , icon: , data: },
+    {label: , icon: , data: },
+    {label: , icon: , data: },
+    {label: , icon: , data: },
+    {label: , icon: , data: },
+    {label: , icon: , data: },
+  ]
+
   return (
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
