@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import ContagensTable from "../components/ContagensTable";
 import GridSession from "../components/GridSession";
+import CountingMap from "../components/CountingMap";
 
 const navControlStyle= {
   right: 10,
@@ -68,7 +69,6 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     ] 
   }
 
-
   const documents = {
     title: "Documentos para realizar contagens de ciclistas.",
     grids: [
@@ -82,31 +82,6 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       {title: "Manual do ITDP", icon: "", url: "http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf", text: "Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."},
     ]
   }
-
-  const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
-  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
-  C20.1,15.8,20.2,15.8,20.2,15.7z`;
-
-  const SIZE = 20;
-
-  const [viewport, setViewport] = useState({
-    latitude: -8.0584364,
-    longitude: -34.945277,
-    zoom: 10,
-    bearing: 0,
-    pitch: 0,
-  });
-
-  const [settings, setsettings] = useState({
-    dragPan: true,
-    dragRotate: true,
-    scrollZoom: false,
-    touchZoom: true,
-    touchRotate: true,
-    keyboard: true,
-    boxZoom: true,
-    doubleClickZoom: true
-  });
 
   const cards = [
     {label: "Mulheres", icon: "women", data: globalSummary[0].totalWomenPercentile},
@@ -123,67 +98,9 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
-
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
-
       <CardsSession cards={cards} />
-      
-      <section className="container mx-auto my-10">
-        <div className="bg-green-200 rounded shadow-2xl">
-          <ReactMapGL
-            {...viewport}
-            {...settings}
-            onViewportChange={(nextViewport) => setViewport(nextViewport)}
-            width="100%"
-            height="500px"
-            mapStyle="mapbox://styles/mapbox/light-v10"
-            mapboxApiAccessToken={
-              "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
-            }
-          >
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              padding: '10px',
-              zIndex: 500
-            }}>
-              <FullscreenControl style={navControlStyle}/>
-            </div>
-
-            <div style={{
-              position: 'absolute',
-              top: 40,
-              right: 0,
-              padding: '10px',
-              zIndex: 500
-            }}>
-              <NavigationControl style={navControlStyle}/>
-            </div>
-
-            {cyclistCounts.map((c) => (
-              <Marker
-                key={c._id}
-                longitude={c.location.coordinates[1]}
-                latitude={c.location.coordinates[0]}
-              >
-                <svg
-                  height={SIZE}
-                  viewBox="0 0 24 24"
-                  style={{
-                    cursor: "pointer",
-                    fill: "#028083",
-                    stroke: "none",
-                    transform: `translate(${-SIZE / 2}px,${-SIZE}px)`,
-                  }}
-                >
-                  <path d={ICON} />
-                </svg>
-              </Marker>
-            ))}
-          </ReactMapGL>
-        </div>
-      </section>
+      <CountingMap cyclistCounts={cyclistCounts} />
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <ContagensTable data={cyclistCounts} />
       </section>
