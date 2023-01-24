@@ -12,22 +12,6 @@ import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-
 import ContagensTable from "../components/ContagensTable";
 import GridSession from "../components/GridSession";
 
-const GridCard = ({ title, text, icon, url = "#" }) => {
-  return (
-    <a href={url}>
-      <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-8">
-        <div className="flex flex-col text-center">
-          {/*<img src={`/icons/${icon}.svg`} className="h-12 fill-current" />*/}
-          <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
-            {title}
-          </h2>
-          <p className="text-base font-medium">{text}</p>
-        </div>
-      </div>
-    </a>
-  );
-};
-
 const navControlStyle= {
   right: 10,
   top: 10
