@@ -28,7 +28,6 @@ const GridSession = ({title, grids}) => {
                           text={grid.text}
                           icon={grid.icon}
                           url={grid.url}
-                          no_images={no_images}
                           />
                       ))}
                 </div> 
