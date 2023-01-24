@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 import InfoCard from "../components/InfoCard";
 import ContagensTable from "../components/ContagensTable";
+import GridSession from "../components/GridSession";
 
 const GridCard = ({ title, text, icon, url = "#" }) => {
   return (
@@ -82,6 +83,22 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     {title: "Máximo em um ponto", value: globalSummary[0].MaximumValue},
     ] 
   }
+
+
+  const documents = {
+    title: "Documentos para realizar contagens de ciclistas.",
+    grids: [
+      {title: "Planilha de Contagem", icon: "", url: "https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP", text: "Planilha que faz as contagens de fluxos e características de ciclistas"},
+      {title: "Planilha Auxiliar", icon: "", url: "https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT", text: "Planilha com os dados qualitativos para auxiliar na contagem."},
+      {title: "Planilha Eletrônica", icon: "", url: "https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011", text: "Planilha para compilar todos os dados e chegar às conclusões."},
+      {title: "Modelo de Relatório", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
+      {title: "Panfleto de instruções", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA", text: "Panfleto informativo que mostra como as informações devem ser marcadas."},
+      {title: "Instruções gerais", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV", text: "Mais informações acerca de como nossa contagem é realizada."},
+      {title: "Manual da Transporte Ativo", icon: "", url: "http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf", text: "Manual de contagens fotográficas que baseou muitas das contagens no Brasil."},
+      {title: "Manual do ITDP", icon: "", url: "http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf", text: "Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."},
+    ]
+  }
+
   const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3
   c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9
   C20.1,15.8,20.2,15.8,20.2,15.7z`;
@@ -208,63 +225,9 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <ContagensTable data={cyclistCounts} />
       </section>
-      <section>
-        <div className="flex-1 container mx-auto p-10 text-center">
-          <h3 className="font-bold text-3xl text-ameciclo py-8 w-2/3 mx-auto">
-            Documentos para realizar contagens de ciclistas.
-          </h3>
-          <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-5 sm:grid-rows-1 gap-8 grid-flow-row">
-            <GridCard
-              title="Planilha de Contagem"
-              text="Planilha que faz as contagens de fluxos e características de ciclistas"
-              icon="ideciclo"
-              url="https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP"
-            />
-            <GridCard
-              title="Planilha Auxiliar"
-              text="Planilha com os dados qualitativos para auxiliar na contagem."
-              icon="relatorio"
-              url="https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT"
-            />
-            <GridCard
-              title="Planilha Eletrônica"
-              text="Planilha para compilar todos os dados e chegar às conclusões."
-              icon="relatorio"
-              url="https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011"
-            />
-            <GridCard
-              title="Modelo de Relatório"
-              text="Relatório modelo para cada contagem de ciclistas."
-              icon="relatorio"
-              url="https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing"
-            />
-            <GridCard
-              title="Panfleto de instruções"
-              text="Panfleto informativo que mostra como as informações devem ser marcadas."
-              icon="contagem"
-              url="https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA"
-            />
-            <GridCard
-              title="Instruções gerais"
-              text="Mais informações acerca de como nossa contagem é realizada."
-              icon="contagem"
-              url="https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV"
-            />
-            <GridCard
-              title="Manual da Transporte Ativo"
-              text="Manual de contagens fotográficas que baseou muitas das contagens no Brasil."
-              icon="ideciclo"
-              url="http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf"
-            />
-            <GridCard
-              title="Manual do ITDP"
-              text="Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."
-              icon="relatorio"
-              url="http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf"
-            />
-          </div>
-        </div>
-      </section>
+
+      <GridSession title={documents.title} grids={documents.grids} />
+      
     </Layout>
   );
 };
