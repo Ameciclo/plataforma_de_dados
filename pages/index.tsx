@@ -30,16 +30,6 @@ export default function Home() {
     ]
   }
 
-  const other_portals = {
-    title: "Mais dados em parceria",
-    grids: [
-      {title: "Contagens", icon: "contagem", url: "/contagens", text: "Contagens das viagens de bicicleta e suas caracteristicas observaveis"},
-      {title: "Ideciclo", icon: "ideciclo", url: "/ideciclo", text: "Índice que mede a malha e qualidade da estrutura cicloviaria"},
-      {title: "Estudos e Pesquisas", icon: "relatorio", url: "/documentos", text: "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."},
-      {title: "Perfil", icon: "perfil", url: "/perfil", text: "Dados socio-economicos dos ciclistas e suas percepções"},
-    ]
-  }
-
   const images_grid = {
     title: "Mais dados em parceria",
     grids: [
