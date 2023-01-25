@@ -5,13 +5,13 @@ import Breadcrumb from "../components/Breadcrumb";
 import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 import CardsSession from "../components/CardsSession";
+import CountingMap from "../components/CountingMap";
+import ContagensTable from "../components/ContagensTable";
+import GridSession from "../components/GridSession";
 
 import React, { useState } from "react";
 
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
-import ContagensTable from "../components/ContagensTable";
-import GridSession from "../components/GridSession";
-import CountingMap from "../components/CountingMap";
 
 const navControlStyle= {
   right: 10,
