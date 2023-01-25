@@ -1,5 +1,77 @@
 import React from "react";
+import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
+import ideciclo_malha from "../public/malhacicloviariapermanente_mar2021.json"
 
+/**
+ * 
+ * 
+///////////////////////////
+// CONFIGURAÇÕES DO MAPA //
+///////////////////////////
+
+const malha = {
+  'type': 'geojson',
+  'data': ideciclo_malha
+}
+
+const layers = {
+  ciclovia: {
+    id: 'ciclovias',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 1.5,
+    },
+    filter: ['==', 'Tipo', 'Ciclovia']
+  },
+  ciclofaixa: {
+    id: 'ciclofaixas',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 1.5,
+      'line-dasharray': [2,.5],
+    },
+    filter: ['==', 'Tipo', 'Ciclofaixa']
+  },
+  ciclorrota: {
+    id: 'ciclorrota',
+    type: 'line',
+    paint: {
+      'line-color': "#E02F31",
+      'line-width': 2,
+      'line-dasharray': [1,2.5],
+    },
+    filter: ['==', 'Tipo', 'Ciclorrota']
+  },
+};
+  const navControlStyle= {
+    right: 10,
+    top: 10
+  };
+////////////////////////////////
+// MAIS CONFIGURAÇÕES DO MAPA //
+////////////////////////////////
+
+    const [viewport, setViewport] = useState({
+      latitude: -8.0584364,
+      longitude: -34.945277,
+      zoom: 11,
+      bearing: 0,
+      pitch: 0,
+    });
+  
+    const [settings, setsettings] = useState({
+      dragPan: true,
+      dragRotate: true,
+      scrollZoom: false,
+      touchZoom: true,
+      touchRotate: true,
+      keyboard: true,
+      boxZoom: true,
+      doubleClickZoom: true
+    });
+ */
 
 /*(selectedCity.name === "Recife" ) && (
       <section className="container mx-auto my-10">
