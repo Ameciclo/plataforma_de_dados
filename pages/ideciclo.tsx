@@ -282,12 +282,8 @@ const layers = {
       )}   
  
       {(filteredCityData.length > 0) && (
-      <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-        <h2 className="text-gray-600 text-3xl">Avaliações de cada via</h2>
-        <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
-        <IdecicloTable data={filteredCityData}/>
-        </div>
-      </section>)}
+        <IdecicloTable title={"Avaliações de cada via"} data={filteredCityData}/>
+        )}
     </Layout>
   );
 };
