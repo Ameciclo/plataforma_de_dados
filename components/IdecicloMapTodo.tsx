@@ -73,6 +73,14 @@ const layers = {
     });
  */
 
+
+const StructureMap = ({ title, data }) => {
+  return ( 
+    <></>
+    );
+  };
+  
+  export default StructureMap;
 /*(selectedCity.name === "Recife" ) && (
       <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">

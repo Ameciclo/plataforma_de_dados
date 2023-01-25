@@ -55,9 +55,10 @@ const Ideciclo = ({ideciclo, structures}) => {
 /////////////////////////
 // ESTATÍSTICAS GERAIS //
 /////////////////////////
-let cidades = ideciclo
-cidades.forEach((c) => c.reviews = c.reviews.sort((a,b) => a.year > b.year ? -1: 1))
-cidades = cidades.filter((c) => c.reviews.length > 0)
+//let cidades = ideciclo
+//cidades.forEach((c) => c.reviews = c.reviews.sort((a,b) => a.year > b.year ? -1: 1))
+const cidades = ideciclo.filter((c) => c.reviews.length > 0)
+
 const GeneralStatistics = {
   title: "Estatísticas Gerais",
   subtitle: "",
@@ -166,14 +167,22 @@ function getTotalCityStates(input) {
     }
   }, [selectedCity, cityState, cityPop]);
 
-  const cards_city = (chosenCity)=> {
-    return chosenCity.filter(f => f.reviews[0].ideciclo > 0).sort((a, b) => {
-    if (a.reviews.length > 0 && b.reviews.length > 0) {
-      return (a.reviews[0].ideciclo > b.reviews[0].ideciclo ? -1 : 1)
-    } else {
-      return -1
-    }
-    })}
+  const cards_city = (chosenCities)=> {
+    const orderedCities = chosenCities.filter(f => f.reviews[0].ideciclo > 0).sort((a, b) => {
+      if (a.reviews.length > 0 && b.reviews.length > 0) {
+        return (a.reviews[0].ideciclo > b.reviews[0].ideciclo ? -1 : 1)
+      } else {
+        return -1
+      }    
+    })
+    return orderedCities.map((c)=>(
+      {
+        id: c.id,
+        label: c.name,
+        value: c.reviews[0].ideciclo// `${data.value.toLocaleString("pt-BR", {maximumFractionDigits: {maxDig}, minimumFractionDigits: {minDig}})}
+      }
+    ))
+  }
 
   const CitiesRanking = {
     title: "Ranking das Cidades",

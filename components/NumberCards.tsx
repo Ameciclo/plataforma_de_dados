@@ -2,7 +2,7 @@
 import React from "react";
 import CityCard from "./CityCard";
 
-const NumberCards = ({ title, data, selected, changeFunction, filters }) => {
+const NumberCards = ({ title, data, selected, changeFunction, filters = []}) => {
   return (
       <section className="mx-auto container">
       <div className="mx-auto text-center my-24">

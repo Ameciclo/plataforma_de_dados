@@ -2,10 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const CityCard = ({ data, selected, changeFunction, position}) => {
-  let ideciclo = data.reviews.length > 0 ? (data.reviews[0].ideciclo) : ('100')
   //console.log(data.name + " " + ideciclo)
-  let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
-  const label = data.name.replace('/', ' ')
+  let value = data.value
+  let value_text = "NaN"
+  if (value < 1) {
+    value = Math.round(value * 1000) / 1000
+    value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
+     } else {
+      value = Math.round(value * 10)/10
+      value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 1, minimumFractionDigits: 1})}`
+     }
+
+  const label = data.label.replace('/', ' ')
   return (
     <button onClick={() => changeFunction(data.id)}
     className={`${
@@ -18,7 +26,7 @@ const CityCard = ({ data, selected, changeFunction, position}) => {
       >
         <div>
           <h3 className="text-center sm:text-center text-base sm:text-5xl font-bold">
-            {text}
+            {value_text}
           </h3>
         </div>
         <div className="p-2">
