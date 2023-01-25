@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CityCard = ({ data, selected, changeCity, position}) => {
+const CityCard = ({ data, selected, changeFunction, position}) => {
   let ideciclo = data.reviews.length > 0 ? (data.reviews[0].ideciclo) : ('100')
   //console.log(data.name + " " + ideciclo)
   let text = `${ideciclo.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
   const label = data.name.replace('/', ' ')
   return (
-    <button onClick={() => changeCity(data.id)}
+    <button onClick={() => changeFunction(data.id)}
     className={`${
       selected
         ? "bg-ameciclo text-white"

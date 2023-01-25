@@ -3,9 +3,9 @@ import SEO from "../components/SEO";
 import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
 import ExplanationBox from "../components/ExplanationBox";
+import StatisticsBox from "../components/StatisticsBox";
 
 import React, { useState, useEffect } from "react";
-import { DocumentCard } from "../components/DocumentCard";
 
 const Observatorio = ({ documents }) => {
 
@@ -32,6 +32,18 @@ const Observatorio = ({ documents }) => {
     }
   }
 
+  const statistics = {
+    title: "Execução do PDC",
+    subtitle: "",
+    boxes: [
+        {title: "km projetados", value: "600"},
+        {title: "km executados", value: "200"},
+        {title: "completado", value: "18%"},
+        {title: "cidade mais avançada", value: "Recife"}
+    ]
+
+  }
+
   const [filteredDocuments, setFilteredDocuments] = useState([]);
   const [docType, setDocType] = useState("");
 
@@ -52,9 +64,14 @@ const Observatorio = ({ documents }) => {
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+      <StatisticsBox title={statistics.title} subtitle={statistics.subtitle} boxes={statistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
-
-    </Layout>
+      {/** kms por cidade (seleção de cidade dá zoom no mapa e mostra como tá por lá)*/}
+      {/** mapa projetado + executado*/}
+      {/** evolução de implantação */}
+      {/** tabela de estruturas executadas, km e tipologia projetada e km e tipologia executados*/}
+      {/** documentos do pdc */}
+      </Layout>
   );
 };
 

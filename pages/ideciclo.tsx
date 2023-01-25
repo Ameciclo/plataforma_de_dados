@@ -4,12 +4,13 @@ import TitleBar from "../components/TitleBar";
 import Breadcrumb from "../components/Breadcrumb";
 import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
+import NumberCards from "../components/NumberCards";
+import IdecicloTable from "../components/IdecicloTable"
+import CityCard from "../components/CityCard"
 
 import React, { useEffect, useState } from "react";
-
-import CityCard from "../components/CityCard"
-import IdecicloTable from "../components/IdecicloTable"
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
+
 import ideciclo_malha from "../public/malhacicloviariapermanente_mar2021.json"
 import { server } from "../config";
 
@@ -236,6 +237,38 @@ const layers = {
     }
   }, [selectedCity, cityState, cityPop]);
 
+  const cards_city = (chosenCity)=> {
+    return chosenCity.filter(f => f.reviews[0].ideciclo > 0).sort((a, b) => {
+    if (a.reviews.length > 0 && b.reviews.length > 0) {
+      return (a.reviews[0].ideciclo > b.reviews[0].ideciclo ? -1 : 1)
+    } else {
+      return -1
+    }
+    })}
+
+  const CitiesRanking = {
+    title: "Ranking das Cidades",
+    filters: [
+      { 
+        title: "por estado:",
+        value: cityState,
+        name: "cityState",
+        onChange: (e) => setCityState(e.target.value), 
+        onBlur: (e) => e,
+        items: [{value:"", label: "Todas"}].concat((getTotalCityStates(cidades).states).map((s) => ({value:s, label:s}))),
+      },
+      {
+        title: "por população", 
+        value: cityPop,
+        name: "city_pop",
+        onChange: (e) => setCityPop(e.target.value), 
+        onBlur: (e) => e,
+        items: [{value:"", label: "Todas"}, {value:"peq", label: "até 100 mil hab"}, {value:"med", label: "de 100 a 500 mil hab"}, {value:"grd", label: "acima de 500 mil hab"}]
+      }
+    ],
+    data: []
+  }
+
   return (
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
@@ -243,97 +276,11 @@ const layers = {
       <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/> 
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
-
-      <section className="mx-auto container">
-      <div className="mx-auto text-center my-24">
-        <h1 className="text-6xl font-bold pb-5">Ranking das cidades</h1>
-          <div className="inline-block relative w-64 px-4">
-            <label htmlFor="docType">por estado:</label>
-            <select
-              value={cityState}
-              name="cityState"
-              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setCityState(e.target.value)}
-              onBlur={(e) => e}
-            >
-            <option value="">Todos</option>
-            {(getTotalCityStates(cidades).states).map((s) => <option value={s}>{s}</option>)}
-            </select>
-          </div>
-
-          <div className="inline-block relative w-64 px-4">
-            <label htmlFor="docType">por população:</label>
-            <select
-              value={cityPop}
-              name="city_pop"
-              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              onChange={(e) => setCityPop(e.target.value)}
-              onBlur={(e) => e}
-            >
-            <option value="">Todas</option>
-            <option value="peq">até 100 mil hab</option>
-            <option value="med">de 100 a 500 mil hab</option>
-            <option value="grd">acima de 500 mil hab</option>
-            </select>
-          </div>
-
-        <section className="container mx-auto grid grid-cols-6 md:grid-cols-1 md:grid-cols-6 auto-rows-auto gap-10 my-10">
-          {filteredCity.filter(f => f.reviews[0].ideciclo > 0).sort((a, b) => {
-            if (a.reviews.length > 0 && b.reviews.length > 0) {
-              return (a.reviews[0].ideciclo > b.reviews[0].ideciclo ? -1 : 1)
-            } else {
-              return -1
-            }
-          }).map((city, index) => (
-              <CityCard data={city} selected={city.id==selectedCity.id} key={city.id} changeCity={changeCity} position={index}/>
-            ))}
-        </section>
-          {(filteredCityData.length > 0) && (
-            <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
-            )}
-        </div>
-      </section>
-      {/*(selectedCity.name === "Recife" ) && (
-      <section className="container mx-auto my-10">
-        <div className="bg-green-200 rounded shadow-2xl">
-          <ReactMapGL
-            {...viewport}
-            {...settings}
-            onViewportChange={(nextViewport) => setViewport(nextViewport)}
-            width="100%"
-            height="500px"
-            mapStyle="mapbox://styles/mapbox/light-v10"
-            mapboxApiAccessToken={
-              "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
-            }
-          >
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              padding: '10px',
-              zIndex: 500
-            }}>
-              <FullscreenControl  style={navControlStyle}/>
-            </div>
-
-            <div style={{
-              position: 'absolute',
-              top: 40,
-              right: 0,
-              padding: '10px',
-              zIndex: 500
-            }}>
-              <NavigationControl  style={navControlStyle}/>
-            </div>
-            <Source id="malha" type={malha.type} data={malha.data}>
-                <Layer {...layers.ciclovia} />
-                <Layer {...layers.ciclofaixa} />
-                <Layer {...layers.ciclorrota} />
-            </Source>
-          </ReactMapGL>
-        </div>
-          </section>)*/}
+      <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} />
+      {(filteredCityData.length > 0) && (
+        <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+      )}   
+ 
       {(filteredCityData.length > 0) && (
       <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
         <h2 className="text-gray-600 text-3xl">Avaliações de cada via</h2>
