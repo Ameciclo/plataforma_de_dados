@@ -2,7 +2,7 @@ import React from "react";
 import { useTable, usePagination, useFilters, useSortBy } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
-import ColumnFilter from "./ColumnFilter";
+import {ColumnFilter} from "./TableFilters";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
