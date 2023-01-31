@@ -10,10 +10,17 @@ import Maps from "../components/Maps";
 //import ObservatorioTable from
 import GridSession from "../components/GridSession";
 
-import React, { useEffect, useState } from "react";
+import calcs from "../pdc/calcs"
 
+import React, { useEffect, useState } from "react";
+import StructureMap from "../components/StructureMap";
+
+const data = calcs()
 
 const Observatorio = ({ }) => {
+
+  const ciclos = data.map
+  console.log(data.kms)
 
   const page_data = {
     title: "Observatório Cicloviário",
@@ -44,32 +51,30 @@ const Observatorio = ({ }) => {
     title: "Execução Cicloviária RMR",
     subtitle: "",
     boxes: [
-        {title: "km projetados", value: "600"},
-        {title: "km executados", value: "200"},
-        {title: "completado", value: "18%"},
-        {title: "cidade mais avançada", value: "Recife"}
+        {title: "km de estruturas cicloviárias", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
+        {title: "km executados do PDC", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
+        {title: "km projetados no PDC", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
+        {title: "completado do pdc", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ]
+  }   
 
-  }
+  const cities = data.kms.municipios.map((m, index) => (
+    { id: index, 
+      name: m.name, 
+      km_projected: m.pdc_feito + data.kms.out_pdc, 
+      km_completed: m.pdc_feito, 
+      percentil: m.pdc_feito/data.kms.pdc_total
+    })).sort((a,b) => b.km_completed >= a.km_completed ? 1 : -1)
 
-  const cities = [
-    {id: 0, name: "Recife", km_projected: 250, km_completed: 70.3623, percentil: 0.2},
-    {id: 1, name: "Jaboatão", km_projected: 250, km_completed: 54.21, percentil: 0.2},
-    {id: 2, name: "Olinda", km_projected: 250, km_completed: 10.2, percentil: 0.2},
-    {id: 3, name: "Paulista", km_projected: 250, km_completed: 70, percentil: 0.2},
-    {id: 4, name: "Cabo de Santo Agostinho", km_projected: 250, km_completed: 70, percentil: 0.2},
-    {id: 5, name: "Itamaracá", km_projected: 250, km_completed: 70, percentil: 0.2}
-  ]
-
-  const documents = {
+    const documents = {
     title: "Documentos e links importantes para o PDC.",
     grids: [
-      {title: "Plano Diretor Cicloviário da RMR - vol 1", icon: "", url: "https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP", text: "Planilha que faz as contagens de fluxos e características de ciclistas"},
-      {title: "Plano Diretor Cicloviário da RMR - vol 2", icon: "", url: "https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT", text: "Planilha com os dados qualitativos para auxiliar na contagem."},
-      {title: "Ciclomapa", icon: "", url: "https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011", text: "Planilha para compilar todos os dados e chegar às conclusões."},
-      {title: "Ações de desaniversário", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
-      {title: "Ações de desaniversário", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
-      {title: "Ações de desaniversário", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
+      {title: "Plano Diretor Cicloviário da RMR - vol 1", icon: "", url: "https://drive.google.com/file/d/0BxR5Ri6g5X_ZaldIY2tZS1pYRUU/view?usp=share_link&resourcekey=0-qVT9rlnlNOAdE-cs1-fn9A", text: "Documento lançado em 2014, parte principal que contém o estudo."},
+      {title: "Plano Diretor Cicloviário da RMR - vol 2", icon: "", url: "https://drive.google.com/file/d/0BxR5Ri6g5X_ZaVlpckJQVS1CTlU/view?usp=share_link&resourcekey=0-PjUIH1c2ObtbdTUGuLn28g", text: "Parte 2 do documento, apenas com os mapas."},
+      {title: "Pasta do PDC", icon: "", url: "https://pdc.ameciclo.org", text: "Pasta em nosso drive com o plano, o processo de construção e a nossa ação civil-pública para a implantação."},
+      {title: "Ciclomapa", icon: "", url: "https://ciclomapa.org.br/", text: "Mapa colaborativo que monitora as ciclovias de diversas cidades, inclusive a nossa."},
+      {title: "Ações de desaniversário", icon: "", url: "", text: "Compilado de nossas ações de desaniversário, quando comemoramos a infeliz não execução do PDC."},
+      {title: "Oficina do PDC", icon: "", url: "", text: "Oficina que ministramos com ameciclistas para informar sobre o PDC e sua importância."},
      ]
   }
 
@@ -87,6 +92,39 @@ const Observatorio = ({ }) => {
     function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
     const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
     const changeCity = (id) => {setCity(filterById(cities, id))}
+      
+    const PDCLayer = {
+        id: 'PDC_undone',
+        type: 'line',
+        paint: {
+          'line-color': "#000000",
+          'line-opacity':0.5, 
+          'line-width': 2,
+        },
+        filter: ['==', 'STATUS', 'Projeto'] }
+
+    const PDCDoneLayer = {
+            id: 'PDCDoneLayer',
+            type: 'line',
+            paint: {
+              'line-color': "#008080",
+              'line-width': 3,
+            },
+            filter: ['==', 'STATUS', 'Realizada']
+          }
+
+    const NotPDC = {
+        id: 'NotPDC',
+        type: 'line',
+        paint: {
+          'line-color': "#E02F31",
+          'line-width': 1.5,
+          'line-opacity':.8, 
+//          'line-dasharray': [2,.5],
+        },
+        filter: ['==', 'STATUS', 'NotPDC']
+      }
+    const layers = [PDCLayer, PDCDoneLayer, NotPDC]
 
   return (
     <Layout>
@@ -95,8 +133,9 @@ const Observatorio = ({ }) => {
         <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
         <StatisticsBox title={statistics.title} subtitle={statistics.subtitle} boxes={statistics.boxes} />
         <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
-        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities)} changeFunction={changeCity} selected={selectedCity.id} /> 
-        <Maps />
+        <StructureMap map={ciclos} layers={layers}/>
+        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities)} changeFunction={changeCity} selected={selectedCity.id} maxDigs={1} /> 
+
         {/** <EvolutionGraph e /> evolução de implantação */}
         {/** <ObservatorioTable /> tabela de estruturas executadas, km e tipologia projetada e km e tipologia executados*/}
         <GridSession title={documents.title} grids={documents.grids} />

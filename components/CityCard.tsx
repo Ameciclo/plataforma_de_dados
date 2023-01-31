@@ -1,17 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CityCard = ({ data, selected, changeFunction, position}) => {
+const CityCard = ({ data, selected, changeFunction, position, maxDigs}) => {
   //console.log(data.name + " " + ideciclo)
   let value = data.value
   let value_text = "NaN"
-  if (value < 1) {
-    value = Math.round(value * 1000) / 1000
-    value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
-     } else {
+  if(maxDigs == 1) {
+    value = Math.round(value * 10) / 10
+    value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 1, minimumFractionDigits: 1})}`
+  } else{
+    if (value < 1) {
+      value = Math.round(value * 1000) / 1000
+      value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 3, minimumFractionDigits: 3})}`
+      } else {
       value = Math.round(value * 10)/10
       value_text = `${value.toLocaleString("pt-BR", {maximumFractionDigits: 1, minimumFractionDigits: 1})}`
-     }
+     }    
+  }
+
 
   const label = data.label.replace('/', ' ')
   return (

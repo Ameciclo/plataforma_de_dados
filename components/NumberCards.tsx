@@ -2,7 +2,7 @@
 import React from "react";
 import CityCard from "./CityCard";
 
-const NumberCards = ({ title, data, selected, changeFunction, filters = []}) => {
+const NumberCards = ({ title, data, selected, changeFunction, filters = [], maxDigs=3}) => {
   return (
       <section className="mx-auto container">
       <div className="mx-auto text-center my-24">
@@ -25,7 +25,7 @@ const NumberCards = ({ title, data, selected, changeFunction, filters = []}) => 
         )   }
         <section className="container mx-auto grid grid-cols-6 md:grid-cols-1 md:grid-cols-6 auto-rows-auto gap-10 my-10">
           {data.map((city, index) => (
-              <CityCard data={city} selected={city.id==selected} key={city.id} changeFunction={changeFunction} position={index}/>
+              <CityCard data={city} selected={city.id==selected} key={city.id} changeFunction={changeFunction} position={index} maxDigs={maxDigs}/>
             ))}
         </section>
         </div>
