@@ -8,16 +8,16 @@ import ImagesGrid from "../components/ImagesGrid";
 import React from "react";
 import ResarchIcon from "../public/icons/research.svg";
 
+const imagetextbar = {
+  image: "/icons/research.svg",
+  text:"Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis."
+}
+
 export default function Home() {
 
   const page_data = {
     title: "Plataforma de Dados",
     cover_image_url: "",   
-  }
-
-  const imagetextbar = {
-    image: "/icons/research.svg",
-    text:"Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis."
   }
 
   const site_pages_data = {

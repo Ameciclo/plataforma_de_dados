@@ -18,17 +18,13 @@ if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
 }
 
-const Perfil = () => {
-
+//////
+/// esses consts irão para o BD
+//////
   const page_data = {
     title: "Pesquisa Perfil Ciclista",
     cover_image_url: "",
-    Breadcrumb: {
-      label:"Perfil Ciclista",
-      slug:"/perfil",
-      routes:["/", "/perfil"],
-    },
-    ExplanationBox: {
+    ExplanationBoxData: {
       title_1: "O que é?",
       text_1: `A pesquisa foi organizada pela Transporte Ativo e pelo
       LABMOB-UFRJ, e contou com uma extensa rede de organizações
@@ -49,8 +45,17 @@ const Perfil = () => {
       para que gestores públicos, urbanistas e todos os envolvidoscom o
       tema, formulem uma agenda mais precisa e robusta de políticas
       públicas e ações de promoção do transporte cicloviário.`
-    }   
-  }
+      },
+  }    
+
+const Perfil = () => {
+  
+  const BreadcrumbConf = {
+      label:"Perfil Ciclista",
+      slug:"/perfil",
+      routes:["/", "/perfil"],
+    }
+
 
   const [isSearching, setIsSearching] = useState(false);
   const [filters, setFilters] = useState([
@@ -387,9 +392,9 @@ const Perfil = () => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
 
-      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
+      <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
 
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
