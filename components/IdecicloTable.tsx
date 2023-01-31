@@ -2,11 +2,7 @@ import React, { useState, useEffect }  from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
-import ColumnFilter from "./ColumnFilter";
-import SelectColumnFilter from "./SelectColumnFilter";
-import SelectColumn from "./SelectColumn";
-import NumberRangeColumnFilter from "./NumberRangeColumnFilter";
-import {GlobalFilter} from "./GlobalFilter";
+import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter, GlobalFilter} from "./TableFilters";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });

@@ -6,14 +6,17 @@ import ExplanationBox from "../components/ExplanationBox";
 import StatisticsBox from "../components/StatisticsBox";
 import StructureMap from "../components/StructureMap";
 import NumberCards from "../components/NumberCards";
-import ObservatorioTable from "../components/ObservatorioTable";
+import Table from "../components/Table";
+import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../components/TableFilters";
 //import EvalolutionGraph from 
-//import ObservatorioTable from
 import GridSession from "../components/GridSession";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
 import calcs from "../pdc/calcs"
 
-import React, { useEffect, useState } from "react";
+
 
 //////
 /// esses consts irão para o BD
@@ -152,6 +155,56 @@ const Observatorio = ({ }) => {
     }
   }, [selectedCity]);
 
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Rua",
+        accessor: "logradouro",
+        Cell: ({ row }) => (
+            <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
+                {row.original.cidade == 1 ? 
+                (<a className="text-ameciclo">{row.original.logradouro}</a>) :
+                (<>{row.original.logradouro}</>)}
+            </Link>
+        ),
+        Filter: ColumnFilter,
+      },
+      {
+        Header: "Tipo",
+        accessor: "tipologia",
+        Filter: SelectColumnFilter,
+      },
+      {
+        Header: "Extensão (km)",
+        accessor: "comprimento",
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{(""+(value).toFixed(2)).replace(".",",")}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
+        Filter: NumberRangeColumnFilter,
+        filter: 'between',
+    },
+    ,{
+      Header: "Nota Geral",
+      accessor: "nota",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+      },
+    ],
+    []
+  );
+
+
   return (
     <Layout>
         <SEO title={page_data.title + " | Ameciclo"} />
@@ -165,7 +218,7 @@ const Observatorio = ({ }) => {
           <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
         )}   
         {(filteredCityData.length > 0) && (
-          <ObservatorioTable title={"Estruturas previstas no PDC"} data={filteredCityData}/>
+          <Table title={"Estruturas previstas no PDC"} data={filteredCityData} columns={columns}/>
         )}
         {/** <EvolutionGraph e /> evolução de implantação */}
         <GridSession title={documents.title} grids={documents.grids} />
