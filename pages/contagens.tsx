@@ -9,26 +9,30 @@ import CountingMap from "../components/CountingMap";
 import ContagensTable from "../components/ContagensTable";
 import GridSession from "../components/GridSession";
 
-import React, { useState } from "react";
+import React from "react";
 
-import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
+//////
+/// esses consts irão para o BD
+//////
 
-const navControlStyle= {
-  right: 10,
-  top: 10
-};
+const documents = {
+  title: "Documentos para realizar contagens de ciclistas.",
+  grids: [
+    {title: "Planilha de Contagem", icon: "", url: "https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP", text: "Planilha que faz as contagens de fluxos e características de ciclistas"},
+    {title: "Planilha Auxiliar", icon: "", url: "https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT", text: "Planilha com os dados qualitativos para auxiliar na contagem."},
+    {title: "Planilha Eletrônica", icon: "", url: "https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011", text: "Planilha para compilar todos os dados e chegar às conclusões."},
+    {title: "Modelo de Relatório", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
+    {title: "Panfleto de instruções", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA", text: "Panfleto informativo que mostra como as informações devem ser marcadas."},
+    {title: "Instruções gerais", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV", text: "Mais informações acerca de como nossa contagem é realizada."},
+    {title: "Manual da Transporte Ativo", icon: "", url: "http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf", text: "Manual de contagens fotográficas que baseou muitas das contagens no Brasil."},
+    {title: "Manual do ITDP", icon: "", url: "http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf", text: "Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."},
+  ]
+}
 
-const Contagens = ({ cyclistCounts, globalSummary }) => {
-
-  const page_data = {
-    title: "Contagens de ciclistas",
-    cover_image_url: "/contagem.png",
-    Breadcrumb: {
-      label:"Contagens",
-      slug:"/contagens",
-      routes:["/", "/contagens"],
-    },
-    ExplanationBox: {
+const page_data = {
+  title: "Contagens de ciclistas",
+  cover_image_url: "/contagem.png",
+  ExplanationBoxData: {
       title_1: "O que é?",
       text_1: `Registramos as pessoas que passam de bicicleta durante 14 horas em
       um pré-escolhido cruzamento da cidade do Recife. As nossas
@@ -49,6 +53,13 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     }
   }
 
+const Contagens = ({ cyclistCounts, globalSummary }) => {
+
+  const BreadcrumbConf = {
+      label:"Contagens",
+      slug:"/contagens",
+      routes:["/", "/contagens"]
+  }
   const groupBy = (xs, f) => {
     return xs.reduce(
       (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
@@ -69,20 +80,6 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     ] 
   }
 
-  const documents = {
-    title: "Documentos para realizar contagens de ciclistas.",
-    grids: [
-      {title: "Planilha de Contagem", icon: "", url: "https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP", text: "Planilha que faz as contagens de fluxos e características de ciclistas"},
-      {title: "Planilha Auxiliar", icon: "", url: "https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT", text: "Planilha com os dados qualitativos para auxiliar na contagem."},
-      {title: "Planilha Eletrônica", icon: "", url: "https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011", text: "Planilha para compilar todos os dados e chegar às conclusões."},
-      {title: "Modelo de Relatório", icon: "", url: "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing", text: "Relatório modelo para cada contagem de ciclistas."},
-      {title: "Panfleto de instruções", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA", text: "Panfleto informativo que mostra como as informações devem ser marcadas."},
-      {title: "Instruções gerais", icon: "", url: "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV", text: "Mais informações acerca de como nossa contagem é realizada."},
-      {title: "Manual da Transporte Ativo", icon: "", url: "http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf", text: "Manual de contagens fotográficas que baseou muitas das contagens no Brasil."},
-      {title: "Manual do ITDP", icon: "", url: "http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf", text: "Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclsitas."},
-    ]
-  }
-
   const cards = [
     {label: "Mulheres", icon: "women", data: globalSummary[0].totalWomenPercentile},
     {label: "Crianças e Adolescentes", icon: "children", data: globalSummary[0].totalChildrenPercentile},
@@ -96,9 +93,9 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
-      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
+      <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
       <CardsSession cards={cards} />
       <CountingMap cyclistCounts={cyclistCounts} />
       <ContagensTable data={cyclistCounts} />

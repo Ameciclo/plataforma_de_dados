@@ -6,19 +6,11 @@ import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useState, useEffect } from "react";
 import { DocumentCard } from "../components/DocumentCard";
-import { title } from "process";
-
-const Documentos = ({ documents }) => {
 
   const page_data = {
     title: "Documentos e Estudos",
     cover_image_url: "",
-    Breadcrumb: {
-      label:"Documentos",
-      slug:"/documentos",
-      routes:["/", "/documentos"],
-    },
-    ExplanationBox: {
+    ExplanationBoxData: {
       title_1: "O que são?",
       text_1: `A Ameciclo realizou e realiza diversas pesquisas ao longo de sua
       história e documentamos todas elas nessa sessão. São estudos, pesquisas, 
@@ -35,6 +27,14 @@ const Documentos = ({ documents }) => {
       biblioteca (em breve).`
     }
   }
+
+const Documentos = ({ documents }) => {
+
+  const BreadcrumbConf = {
+      label:"Documentos",
+      slug:"/documentos",
+      routes:["/", "/documentos"],
+    }
 
   const [filteredDocuments, setFilteredDocuments] = useState([]);
   const [docType, setDocType] = useState("");
@@ -55,8 +55,8 @@ const Documentos = ({ documents }) => {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
+      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
+      <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
 
       <section className="container my-12 mx-auto">
         <div className="mt-5 mx-3">

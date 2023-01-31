@@ -11,46 +11,46 @@ import React, { useEffect, useState } from "react";
 
 import { server } from "../config";
 
-//////////////////////
-// INÍCIO DO RENDER //
-///////////////////////
+//////
+/// esses consts irão para o BD
+//////
+const page_data = {
+  title: "Índice de Desenvolvimento Cicloviário",
+  cover_image_url: "",
+  ExplanationBoxData: {
+    title_1: "O que é?",
+    text_1: `O Ideciclo é o resultado da análise de uma estrutura cicloviária,
+    levando em consideração critérios relativos à cobertura da malha,
+    velocidades máximas das vias, segurança e conforto de ciclistas. O
+    índice pode ser utilizado para comparar quantitativa e
+    qualitativamente, a situação de uma mesma malha ao longo do tempo
+    e em diferentes cidades. A metodologia de cálculo inclui O
+    Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
+    com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
+    BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
+    Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
+    que permitem avaliar diversas tipologias cicloviárias.`,
+    title_2: "Para que serve?",
+    text_2: `O Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
+    com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
+    BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
+    Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
+    que permitem avaliar diversas tipologias cicloviárias. A
+    metodologia completa foi aplicada em 3 cidades da Região
+    Metropolitana do Recife, possibilitando a comparação da capital
+    com a metodologia de 2016 (o que revelou aumento aquém do
+    projetado e desejável), obtendo consistência independente dos
+    avaliadores.`
+  }
+}
 
 const Ideciclo = ({ideciclo, structures}) => {
 
-  const page_data = {
-    title: "Índice de Desenvolvimento Cicloviário",
-    cover_image_url: "",
-    Breadcrumb: {
+  const BreadcrumbConf = {
       label:"IDECICLO",
       slug:"/ideciclo",
       routes:["/", "/ideciclo"],
-    },
-    ExplanationBox: {
-      title_1: "O que é?",
-      text_1: `O Ideciclo é o resultado da análise de uma estrutura cicloviária,
-      levando em consideração critérios relativos à cobertura da malha,
-      velocidades máximas das vias, segurança e conforto de ciclistas. O
-      índice pode ser utilizado para comparar quantitativa e
-      qualitativamente, a situação de uma mesma malha ao longo do tempo
-      e em diferentes cidades. A metodologia de cálculo inclui O
-      Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
-      com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
-      BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
-      Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
-      que permitem avaliar diversas tipologias cicloviárias.`,
-      title_2: "Para que serve?",
-      text_2: `O Ideciclo foi desenvolvido pela Ameciclo e aprimorado em parceria
-      com as organizações Ciclocidade (São Paulo/SP), Rodas da Paz (DF),
-      BH em Ciclo (Belo Horizonte/MG) e Bicileta nos Planos (Campo
-      Grande/MS) que aplicaram em suas respectivas cidades. parâmetros
-      que permitem avaliar diversas tipologias cicloviárias. A
-      metodologia completa foi aplicada em 3 cidades da Região
-      Metropolitana do Recife, possibilitando a comparação da capital
-      com a metodologia de 2016 (o que revelou aumento aquém do
-      projetado e desejável), obtendo consistência independente dos
-      avaliadores.`
     }
-  }
 
 /////////////////////////
 // ESTATÍSTICAS GERAIS //
@@ -211,9 +211,9 @@ function getTotalCityStates(input) {
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
       <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/> 
+      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
-      <ExplanationBox title_1={page_data.ExplanationBox.title_1} text_1={page_data.ExplanationBox.text_1} title_2={page_data.ExplanationBox.title_2} text_2={page_data.ExplanationBox.text_2}/>
+      <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
       <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} />
       {(filteredCityData.length > 0) && (
         <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
