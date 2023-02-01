@@ -27,6 +27,7 @@ export default function Home() {
       {title: "Ideciclo", icon: "ideciclo", url: "/ideciclo", text: "Índice que mede a malha e qualidade da estrutura cicloviaria"},
       {title: "Estudos e Pesquisas", icon: "relatorio", url: "/documentos", text: "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."},
       {title: "Perfil", icon: "perfil", url: "/perfil", text: "Dados socio-economicos dos ciclistas e suas percepções"},
+      {title: "Observatório", icon: "perfil", url: "/observatorio", text: "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."},
     ]
   }
 

@@ -106,6 +106,7 @@ function calcs() {
         features: output.concat(more_output)
       } 
 
+
       return {
         map: all_ciclos,
         kms: kms

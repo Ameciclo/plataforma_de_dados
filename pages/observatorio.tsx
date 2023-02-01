@@ -12,17 +12,13 @@ import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../comp
 import GridSession from "../components/GridSession";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import calcs from "../pdc/calcs"
-import utils from "../utils"
+
+import data from "../pdc/observatorio-data.json"
 
 
 //////
 /// esses consts irão para o BD
 //////
-
-const data = calcs()
-const cities_datas = data.kms.municipios
 
 const documents = {
 title: "Documentos e links importantes para o PDC.",
@@ -146,18 +142,7 @@ const Observatorio = ({ }) => {
       {title: "completado do pdc", value: selectedCity.percentil.toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ].filter(e => e)
   }
-/**
-  useEffect(() => {
-    if (selectedCity) {
-      const city_structures = cities_datas[selectedCity]
-      let segs = utils.group_by(city_structures, "PDC")
-      setFilteredCityData(segs)
-    } else {
-      setFilteredCityData([])
-    }
-  }, [selectedCity]);
 
- */
   const columns = React.useMemo(
     () => [
       {
@@ -190,7 +175,6 @@ const Observatorio = ({ }) => {
     ],
     []
   );
-
 
   return (
     <Layout>
