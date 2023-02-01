@@ -27,8 +27,8 @@ grids: [
   {title: "Plano Diretor Cicloviário da RMR - vol 2", icon: "", url: "https://drive.google.com/file/d/0BxR5Ri6g5X_ZaVlpckJQVS1CTlU/view?usp=share_link&resourcekey=0-PjUIH1c2ObtbdTUGuLn28g", text: "Parte 2 do documento, apenas com os mapas."},
   {title: "Pasta do PDC", icon: "", url: "https://pdc.ameciclo.org", text: "Pasta em nosso drive com o plano, o processo de construção e a nossa ação civil-pública para a implantação."},
   {title: "Ciclomapa", icon: "", url: "https://ciclomapa.org.br/", text: "Mapa colaborativo que monitora as ciclovias de diversas cidades, inclusive a nossa."},
-  {title: "Ações de desaniversário", icon: "", url: "", text: "Compilado de nossas ações de desaniversário, quando comemoramos a infeliz não execução do PDC."},
-  {title: "Oficina do PDC", icon: "", url: "", text: "Oficina que ministramos com ameciclistas para informar sobre o PDC e sua importância."},
+  //{title: "Ações de desaniversário", icon: "", url: "", text: "Compilado de nossas ações de desaniversário, quando comemoramos a infeliz não execução do PDC."},
+  {title: "O que é o PDC?", icon: "", url: "https://www.youtube.com/watch?v=LEQlGK-FWnI", text: "Episódio de nosso podcast sobre o Plano Diretor Cicloviário."},
   ]
 }
 
