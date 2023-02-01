@@ -110,7 +110,7 @@ const Observatorio = ({ }) => {
       km_projected: m.pdc_total, 
       km_completed: m.pdc_feito,
       km_ciclos: m.out_pdc+m.pdc_feito,
-      percentil: m.pdc_feito/m.pdc_total,
+      percentil: (m.pdc_feito/m.pdc_total)*100,
       ways: m.vias
     }))
 
@@ -151,7 +151,7 @@ const Observatorio = ({ }) => {
       {title: "km de estruturas cicloviárias", value: selectedCity.km_ciclos.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
       {title: "km projetados no PDC", value: selectedCity.km_projected.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
       {title: "km executados do PDC", value: selectedCity.km_completed.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
-      {title: "completado do pdc", value: selectedCity.percentil.toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
+      {title: "completado do pdc", value: (selectedCity.percentil/100).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ].filter(e => e)
   }
 
