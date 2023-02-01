@@ -112,26 +112,38 @@ const Observatorio = ({ }) => {
       km_ciclos: m.out_pdc+m.pdc_feito,
       percentil: m.pdc_feito/m.pdc_total,
       ways: m.vias
-    })).sort((a,b) => b.percentil >= a.percentil ? 1 : -1)
+    }))
 
-  const numcards = (data) =>{
+  const numcards = (data, order) =>{
     return data.map((d)=>(
         {
             id: d.id,
             label: d.name,
-            value: d.percentil*100
+            value: d[order]
         }
-    ))
+    )).sort((a,b) => b.value >= a.value ? 1 : -1)
   }
-
 
   function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
   function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
-  const [filteredCityData, setFilteredCityData] = useState([]);
   const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
   const changeCity = (id) => {setCity(filterById(cities, id))}
-  
-  console.log(selectedCity)
+  const [city_sort, sortCity] = useState("km_completed");
+
+  const sort_cities =  [
+      { 
+        title: "Ordene as cidades: ",
+        value: city_sort,
+        name: "city-sort",
+        onChange: (e) => sortCity(e.target.value), 
+        onBlur: (e) => e,
+        items: [
+          {value:"percentil", label: "% completo do PDC"}, 
+          {value:"km_completed", label: "kms feitos do PDC"}, 
+          {value:"km_projected", label: "kms totais do PDC"}, 
+          {value:"km_ciclos", label: "kms de cicloestrutura na cidade"}]
+      }]
+
   const CityStatistics = {
     title: selectedCity.name,
     subtitle: "Estatísticas Gerais",
@@ -184,7 +196,7 @@ const Observatorio = ({ }) => {
         <StatisticsBox title={statistics.title} subtitle={statistics.subtitle} boxes={statistics.boxes} />
         <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
         <StructureMap map={ciclos} layers={layers}/>
-        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities)} changeFunction={changeCity} selected={selectedCity.id} maxDigs={1} /> 
+        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities, city_sort)} changeFunction={changeCity} selected={selectedCity.id} maxDigs={1} filters={sort_cities}/> 
         <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
         <Table title={"Estruturas do PDC para " + selectedCity.name} data={selectedCity.ways} columns={columns}/>
         {/** <EvolutionGraph e /> evolução de implantação */}

@@ -8,17 +8,17 @@ const NumberCards = ({ title, data, selected, changeFunction, filters = [], maxD
       <div className="mx-auto text-center my-24">
         <h1 className="text-6xl font-bold pb-5">{title}</h1>
           {(filters.length > 0) && (
-            filters.map(options => (
+            filters.map(filter => (
                 <div className="inline-block relative w-64 px-4">
-                    <label htmlFor="docType">{options.title}</label>
+                    <label htmlFor="docType">{filter.title}</label>
                     <select
-                    value={options.value}
-                    name={options.name}
+                    value={filter.value}
+                    name={filter.name}
                     className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                    onChange={options.onChange}
-                    onBlur={options.onBlur}
+                    onChange={filter.onChange}
+                    onBlur={filter.onBlur}
                     >
-                    {options.items.map((s) => <option value={s.value}>{s.label}</option>)}
+                    {filter.items.map((s) => <option value={s.value}>{s.label}</option>)}
                     </select>
                 </div>                
                 ))
