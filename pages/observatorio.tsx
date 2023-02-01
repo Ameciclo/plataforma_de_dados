@@ -13,9 +13,8 @@ import GridSession from "../components/GridSession";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
 import calcs from "../pdc/calcs"
-
+import utils from "../utils"
 
 
 //////
@@ -23,6 +22,7 @@ import calcs from "../pdc/calcs"
 //////
 
 const data = calcs()
+const cities_datas = data.kms.municipios
 
 const documents = {
 title: "Documentos e links importantes para o PDC.",
@@ -69,8 +69,8 @@ const Observatorio = ({ }) => {
     subtitle: "",
     boxes: [
         {title: "km de estruturas cicloviárias", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
-        {title: "km executados do PDC", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
         {title: "km projetados no PDC", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
+        {title: "km executados do PDC", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
         {title: "completado do pdc", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ]
   } 
@@ -111,17 +111,19 @@ const Observatorio = ({ }) => {
   const cities = data.kms.municipios.map((m, index) => (
     { id: index, 
       name: m.name, 
-      km_projected: m.pdc_feito + data.kms.out_pdc, 
-      km_completed: m.pdc_feito, 
-      percentil: m.pdc_feito/data.kms.pdc_total
-    })).sort((a,b) => b.km_completed >= a.km_completed ? 1 : -1)
+      km_projected: m.pdc_total, 
+      km_completed: m.pdc_feito,
+      km_ciclos: m.out_pdc+m.pdc_feito,
+      percentil: m.pdc_feito/m.pdc_total,
+      ways: m.vias
+    })).sort((a,b) => b.percentil >= a.percentil ? 1 : -1)
 
   const numcards = (data) =>{
     return data.map((d)=>(
         {
             id: d.id,
             label: d.name,
-            value: d.km_completed
+            value: d.percentil*100
         }
     ))
   }
@@ -133,73 +135,58 @@ const Observatorio = ({ }) => {
   const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
   const changeCity = (id) => {setCity(filterById(cities, id))}
   
+  console.log(selectedCity)
   const CityStatistics = {
     title: selectedCity.name,
     subtitle: "Estatísticas Gerais",
     boxes:   [
-      {title: "km de estruturas cicloviárias", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
-      {title: "km executados do PDC", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
-      {title: "km projetados no PDC", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
-      {title: "completado do pdc", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
+      {title: "km de estruturas cicloviárias", value: selectedCity.km_ciclos.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
+      {title: "km projetados no PDC", value: selectedCity.km_projected.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
+      {title: "km executados do PDC", value: selectedCity.km_completed.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
+      {title: "completado do pdc", value: selectedCity.percentil.toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ].filter(e => e)
   }
-
+/**
   useEffect(() => {
-    console.log(selectedCity)
     if (selectedCity) {
-      let city_structures = data.kms.municipios.filter((s) => {
-        return s.name == selectedCity.name
-      })
+      const city_structures = cities_datas[selectedCity]
+      let segs = utils.group_by(city_structures, "PDC")
+      setFilteredCityData(segs)
     } else {
       setFilteredCityData([])
     }
   }, [selectedCity]);
 
+ */
   const columns = React.useMemo(
     () => [
       {
-        Header: "Rua",
-        accessor: "logradouro",
-        Cell: ({ row }) => (
-            <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
-                {row.original.cidade == 1 ? 
-                (<a className="text-ameciclo">{row.original.logradouro}</a>) :
-                (<>{row.original.logradouro}</>)}
-            </Link>
-        ),
+        Header: "Estrutura",
+        accessor: "name",
         Filter: ColumnFilter,
       },
       {
-        Header: "Tipo",
-        accessor: "tipologia",
+        Header: "Tipologia prevista",
+        accessor: "pdc_tipos",
         Filter: SelectColumnFilter,
       },
       {
-        Header: "Extensão (km)",
-        accessor: "comprimento",
-        Cell: ({ value }) => {
-          if (value) {
-          return <span>{(""+(value).toFixed(2)).replace(".",",")}</span>
-        } else {
-          return  <span>{"N/A"}</span>
-        }
-        },
-        Filter: NumberRangeColumnFilter,
-        filter: 'between',
-    },
-    ,{
-      Header: "Nota Geral",
-      accessor: "nota",
-      Cell: ({ value }) => {
-        if (value) {
-        return <span>{((value).toFixed(1)).replace(".",",")}</span>
-      } else {
-        return  <span>{"N/A"}</span>
-      }
+        Header: "Extensão prevista (km)",
+        accessor: "pdc_kms",
+        Cell:  ({ value }) => (value ? <span>{(""+(value).toFixed(2)).replace(".",",")}</span> : <span>{"N/A"}</span> ),
+        Filter: false,
+      }, 
+      {
+        Header: "Tipologia executada",
+        accessor: "ciclo_tipos",
+        Filter: SelectColumnFilter,
       },
-      Filter: NumberRangeColumnFilter,
-      filter: 'between',
-      },
+      {
+        Header: "Extensão executada (km)",
+        accessor: "ciclo_kms",
+        Cell: ({ value }) =>  (value ? <span>{(""+(value).toFixed(2)).replace(".",",")}</span> : <span>{"N/A"}</span>) ,
+        Filter: false,
+      }, 
     ],
     []
   );
@@ -214,12 +201,8 @@ const Observatorio = ({ }) => {
         <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
         <StructureMap map={ciclos} layers={layers}/>
         <NumberCards title={"Estrutura nas cidades"} data={numcards(cities)} changeFunction={changeCity} selected={selectedCity.id} maxDigs={1} /> 
-        {(filteredCityData.length > 0) && (
-          <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
-        )}   
-        {(filteredCityData.length > 0) && (
-          <Table title={"Estruturas previstas no PDC"} data={filteredCityData} columns={columns}/>
-        )}
+        <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+        <Table title={"Estruturas do PDC para " + selectedCity.name} data={selectedCity.ways} columns={columns}/>
         {/** <EvolutionGraph e /> evolução de implantação */}
         <GridSession title={documents.title} grids={documents.grids} />
     </Layout>

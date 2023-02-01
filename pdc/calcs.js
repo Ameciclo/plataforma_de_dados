@@ -1,5 +1,6 @@
 import pdc from "./PDC-2021.07.19.json"
 import ciclomapa from "./ciclomapa.json"
+import utils from "../utils"
 
 const MUNICIPIOS = ['Jaboatão dos Guararapes', 'Olinda', 'Paulista', 'Igarassu', 'Abreu e Lima', 'Camaragibe', 'Cabo de Santo Agostinho', 'São Lourenço da Mata', 'Araçoiaba', 'Ilha de Itamaracá', 'Ipojuca', 'Moreno', 'Itapissuma', 'Recife']
 
@@ -8,25 +9,26 @@ function calcs() {
     let ciclos = ciclomapa.features.filter(f => f.properties["ciclomapa:considered"] == "true")
     
     let output = pdc.features.map((f) => {
-                                        return {
-                                            type: f.type,
-                                            properties: {
-                                                osm_id: "way/"+f.properties.osm_id,
-                                                QGIS_km: (f.properties.compriment)/1000,
-                                                PDC: f.properties.PDC,
-                                                PDC_TIPOLOGIA: f.properties.PDC_TIPOLOGIA,
-                                                PDC_VIA: f.properties.PDC_VIA,
-                                                PDC_MUNICIPIO: f.properties.PDC_MUNICIPIO,
-                                                STATUS: f.properties.has_cycle == "z_no_cycle" ? "Projeto" : "Realizada",
-                                                TIPOLOGIA: "N/A",
-                                                UNIDIRECIONAL: "N/A",
-                                                PDC_PISTADUPLA: f.properties.PDC_PISTADUPLA,
-                                                KM: 0
-                                            },
-                                            geometry: f.geometry
-                                        }
-                                    })
-                                    
+        return {
+            type: f.type,
+            id: f.properties.PDC,
+            properties: {
+                osm_id: "way/"+f.properties.osm_id,
+                QGIS_km: (f.properties.compriment)/1000,
+                PDC: f.properties.PDC,
+                PDC_TIPOLOGIA: f.properties.PDC_TIPOLOGIA,
+                PDC_VIA: f.properties.PDC_VIA,
+                PDC_MUNICIPIO: f.properties.PDC_MUNICIPIO,
+                STATUS: f.properties.has_cycle == "z_no_cycle" ? "Projeto" : "Realizada",
+                TIPOLOGIA: "N/A",
+                UNIDIRECIONAL: "N/A",
+                PDC_PISTADUPLA: f.properties.PDC_PISTADUPLA,
+                KM: 0
+            },
+            geometry: f.geometry
+        }
+    })
+
     const ciclos_ids = ciclos.map(c => c.id)
 
     output.forEach(feature => {
@@ -45,6 +47,7 @@ function calcs() {
     const more_output = not_pdc_ciclos.map((f) => (
          {
             type: f.type,
+            id: "NOTPDC" + f.properties.id,
             properties: {
                 osm_id: f.properties.id,
                 QGIS_km: "N/A",
@@ -61,44 +64,47 @@ function calcs() {
             }
         ))
 
+    const kms_municipios = MUNICIPIOS.map(m => {
+        const pdc_total = output.filter(o => o.properties.PDC_MUNICIPIO == m).filter(o => o.properties.STATUS != "NotPDC")
+        const pdc_done = pdc_total.filter(o => o.properties.STATUS == "Realizada")
+        const out_pdc = more_output.filter(o => o.properties.PDC_MUNICIPIO == m)
+        const city_by_PDC = utils.group_by(pdc_total, "id")
+        let ways = []
+        Object.keys(city_by_PDC).forEach(pdc_id => {
+            const p = city_by_PDC[pdc_id]
+            let pdc_tipo = p[0].properties.PDC_TIPOLOGIA
+            if (pdc_tipo == "CICLOMETRO") pdc_tipo = "CICLOVIA"
+            let ciclo_tipo = p[0].properties.TIPOLOGIA.toUpperCase()
+            ways.push({
+                name: "(" + pdc_id + ") " + p[0].properties.PDC_VIA,
+                pdc_tipos: pdc_tipo,
+                ciclo_tipos: ciclo_tipo,
+                pdc_kms: p.reduce((acc,crr) => acc + crr.properties.QGIS_km, 0),
+                ciclo_kms: p.reduce((acc,crr) => acc + crr.properties.KM, 0),
+            })
+        })
+        return {
+            name: m,
+            vias: ways,
+            pdc_total: pdc_total.reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),
+            pdc_feito: pdc_done.reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),    
+            out_pdc: out_pdc.reduce((acc,crr) => acc + crr.properties.KM, 0)
+        }
+    })
+
+    const kms = {
+        pdc_total: kms_municipios.reduce((acc,crr) => acc + crr.pdc_total, 0),
+        pdc_feito: kms_municipios.reduce((acc,crr) => acc + crr.pdc_feito, 0),    
+        out_pdc: kms_municipios.reduce((acc,crr) => acc + crr.out_pdc, 0),
+        municipios: kms_municipios
+    }
+
     const all_ciclos = {
         "type": "FeatureCollection",
         "name": "PDC+CICLOMAPA",
         "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
         features: output.concat(more_output)
-      }
-
-    const kms_municipios = MUNICIPIOS.map(m => {
-        return {
-            name: m,
-            pdc_total: output.filter(o => o.properties.PDC_MUNICIPIO == m).reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),
-            pdc_feito: output.filter(o => o.properties.PDC_MUNICIPIO == m).filter(o => o.properties.STATUS == "Realizada").reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),    
-            out_pdc: more_output.filter(o => o.properties.PDC_MUNICIPIO == m).reduce((acc,crr) => acc + crr.properties.KM, 0)
-        }
-    })
-
-    const kms = {
-        pdc_total: output.reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),
-        pdc_feito: output.filter(o => o.properties.STATUS == "Realizada").reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),    
-        out_pdc: more_output.reduce((acc,crr) => acc + crr.properties.KM, 0),
-        municipios: kms_municipios
-    }
-
-
-/**
-function exportToJsonFile(jsonData) {
-    let dataStr = JSON.stringify(jsonData);
-    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-    let exportFileDefaultName = 'data.json';
-
-    let linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
-      exportToJsonFile(all_ciclos) */
+      } 
 
       return {
         map: all_ciclos,
@@ -107,5 +113,3 @@ function exportToJsonFile(jsonData) {
 }
 
 export default calcs
-
-

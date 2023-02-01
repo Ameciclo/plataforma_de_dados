@@ -108,10 +108,7 @@ const Table = ({ title, data, columns }) => {
     <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
       <h2 className="text-gray-600 text-3xl">{title}</h2>
         <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
-          <table
-            {...getTableProps()}
-            className="table-auto shadow min-w-full divide-y divide-gray-200"
-          >
+          <table {...getTableProps()} className="table-auto shadow min-w-full divide-y divide-gray-200">
             <thead>
               {headerGroups.map((headerGroup) => (
                 <tr
@@ -142,23 +139,14 @@ const Table = ({ title, data, columns }) => {
                 </tr>
               ))}
             </thead>
-            <tbody
-              {...getTableBodyProps()}
-              className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
-            >
+            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700">
               {page.map((row, i) => {
                 prepareRow(row);
                 return (
-                  <tr
-                    {...row.getRowProps()}
-                    className="hover:bg-gray-100 border-b border-gray-200 py-10"
-                  >
+                  <tr {...row.getRowProps()} className="hover:bg-gray-100 border-b border-gray-200 py-10">
                     {row.cells.map((cell) => {
                       return (
-                        <td
-                          {...cell.getCellProps()}
-                          className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm"
-                        >
+                        <td {...cell.getCellProps()} className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm" >
                           {cell.render("Cell")}
                         </td>
                       );
