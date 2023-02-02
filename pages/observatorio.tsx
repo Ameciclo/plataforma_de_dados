@@ -11,8 +11,8 @@ import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../comp
 //import EvalolutionGraph from 
 import GridSession from "../components/GridSession";
 
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useRef } from "react";
+import utils from "../utils"
 import data from "../pdc/observatorio-data.json"
 
 
@@ -37,21 +37,14 @@ grids: [
     cover_image_url: "",
     ExplanationBoxData: {
       title_1: "O que é?",
-      text_1: `O Observatório Cicloviário se propõe a monitorar o caminhar da estrutura
-      cicloviária projetada, frente a estrutura executada. Em 4 de fevereiro de 2014
-      o Governo do Estado, junto com as prefeituras da RMR, lançou o Plano Diretor
-      Cicloviário (PDC). Desde então nós cobranos a execução dessa promessa e de outras
-      que possam surgir.`,
+      text_1: `O Observatório Cicloviário é uma central de monitoramento que acompanha a evolução da estrutura cicloviária da Região Metropolitana do Recife, comparando a estrutura projetada pelo Plano Diretor Cicloviário frente à estrutura executada.`,
       title_2: "Por que o PDC?",
-      text_2: `O Plano Diretor Cicloviário integra os diversos municípios da RMR com uma
-      rede cicloviária, priorizando as principais avenidas e pontos de conexões das cidades.
-      Seu projeto teve participação não só dos entes públicos, mas também da sociedade civil,
-      como nós, da Ameciclo. É melhor um plano na mão do que dois voando.`
-    } 
+      text_2: `Em 4 de fevereiro de 2014 o Governo do Estado de Pernambuco, junto com as prefeituras da Região Metropolitana do Recife, lançou o Plano Diretor Cicloviário (PDC). 
+      O Plano integra os diversos municípios da RMR com uma ampla rede cicloviária, priorizando as principais avenidas e pontos de conexão das cidades. Sua construção teve participação não só dos entes públicos, mas também da sociedade civil, como nós, da Ameciclo. 
+      Com metas estipuladas em fases,  o PDC precisa ser concluído em 2024.`} 
   }
 
 const Observatorio = ({ }) => {
-
   const ciclos = data.map
 
   const BreadcrumbConf = {
@@ -61,8 +54,8 @@ const Observatorio = ({ }) => {
     }
 
   const statistics = {
-    title: "Execução Cicloviária RMR",
-    subtitle: "",
+    title: "Execução Cicloviária",
+    subtitle: "da Região Metropolitana do Recife",
     boxes: [
         {title: "km de estruturas cicloviárias", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
         {title: "km projetados no PDC", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
@@ -124,11 +117,10 @@ const Observatorio = ({ }) => {
     )).sort((a,b) => b.value >= a.value ? 1 : -1)
   }
 
-  function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
-  function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
-  const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
-  const changeCity = (id) => {setCity(filterById(cities, id))}
+  const [selectedCity, setCity] = useState(utils.filterByName(cities, "Recife"));
   const [city_sort, sortCity] = useState("km_completed");
+
+  const changeCity = (id) => {setCity(utils.filterById(cities, id))}
 
   const sort_cities =  [
       { 
@@ -139,9 +131,9 @@ const Observatorio = ({ }) => {
         onBlur: (e) => e,
         items: [
           {value:"percentil", label: "% completo do PDC"}, 
-          {value:"km_completed", label: "kms feitos do PDC"}, 
-          {value:"km_projected", label: "kms totais do PDC"}, 
-          {value:"km_ciclos", label: "kms de cicloestrutura na cidade"}]
+          {value:"km_completed", label: "km feitos do PDC"}, 
+          {value:"km_projected", label: "km projetados do PDC"}, 
+          {value:"km_ciclos", label: "km de estruturas cicloviárias"}]
       }]
 
   const CityStatistics = {
@@ -158,7 +150,7 @@ const Observatorio = ({ }) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Estrutura",
+        Header: "(COD) Nome da Via",
         accessor: "name",
         Filter: ColumnFilter,
       },
@@ -187,7 +179,8 @@ const Observatorio = ({ }) => {
     ],
     []
   );
-
+  const ref = useRef(null)
+  const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
   return (
     <Layout>
         <SEO title={page_data.title + " | Ameciclo"} />
@@ -196,8 +189,9 @@ const Observatorio = ({ }) => {
         <StatisticsBox title={statistics.title} subtitle={statistics.subtitle} boxes={statistics.boxes} />
         <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
         <StructureMap map={ciclos} layers={layers}/>
-        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities, city_sort)} changeFunction={changeCity} selected={selectedCity.id} maxDigs={1} filters={sort_cities}/> 
-        <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+        <NumberCards title={"Estrutura nas cidades"} data={numcards(cities, city_sort)} changeFunction={changeCity} onClickFnc={handleClick} selected={selectedCity.id} maxDigs={1} filters={sort_cities}/> 
+        <div ref={ref} >""</div>
+        <StatisticsBox  title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
         <Table title={"Estruturas do PDC para " + selectedCity.name} data={selectedCity.ways} columns={columns}/>
         {/** <EvolutionGraph e /> evolução de implantação */}
         <GridSession title={documents.title} grids={documents.grids} />

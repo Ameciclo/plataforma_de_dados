@@ -158,7 +158,7 @@ const Table = ({ title, data, columns }) => {
           </table>
 
           <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-            Exibindo {rows.length} de {data.length} estruturas
+            Filtro seleciona {rows.length} de {data.length} estruturas
             <div className="inline-flex mt-2 xs:mt-0">
               {canPreviousPage ? (
                 <button

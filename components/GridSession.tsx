@@ -2,7 +2,7 @@ import React from "react";
 
 const GridCard = ({ title, text, icon = "", url = "#" }) => {
     return (
-      <a href={url}>
+      <a href={url} target="_blank">
         <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
           <div className="flex flex-col text-center">
             {icon != "" && <img src={`/icons/${icon}.svg`} className="h-32 fill-current" />}

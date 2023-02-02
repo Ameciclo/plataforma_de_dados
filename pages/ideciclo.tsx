@@ -7,7 +7,7 @@ import ExplanationBox from "../components/ExplanationBox";
 import NumberCards from "../components/NumberCards";
 import IdecicloTable from "../components/IdecicloTable"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import { server } from "../config";
 
@@ -207,6 +207,10 @@ function getTotalCityStates(input) {
     data: []
   }
 
+  const ref = useRef(null)
+  const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
+
+
   return (
     <Layout>
       <SEO title={page_data.title + " | Ameciclo"} />
@@ -214,7 +218,8 @@ function getTotalCityStates(input) {
       <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
-      <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} />
+      <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} onClickFnc={handleClick} />
+      <div ref={ref} >""</div>
       {(filteredCityData.length > 0) && (
         <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
       )}   

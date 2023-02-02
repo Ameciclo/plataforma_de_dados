@@ -7,6 +7,10 @@ function group_by(objetoArray, propriedade) {
     }, {});
   }
 
+  function filterByElement(jsonObject, element_value, element) {return jsonObject.filter(function(jsonObject) {return (jsonObject[element] == element_value);})[0];}
+  function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
+  function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
+
 /** 
 function exportToJsonFile(jsonData, name) {
     let dataStr = JSON.stringify(jsonData);
@@ -33,5 +37,5 @@ exportToJsonFile(data, "observatorio-data")
 
 
 */
-export default {group_by}
+export default {group_by, filterByElement, filterById, filterByName}
 

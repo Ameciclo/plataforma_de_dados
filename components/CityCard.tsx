@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CityCard = ({ data, selected, changeFunction, position, maxDigs}) => {
+const CityCard = ({ data, selected, changeFunction, position, maxDigs, onClickFnc}) => {
   //console.log(data.name + " " + ideciclo)
   let value = data.value
   let value_text = "NaN"
@@ -21,7 +21,10 @@ const CityCard = ({ data, selected, changeFunction, position, maxDigs}) => {
 
   const label = data.label.replace('/', ' ')
   return (
-    <button onClick={() => changeFunction(data.id)}
+    <button onClick={() => {
+      changeFunction(data.id)
+      onClickFnc()
+    }}
     className={`${
       selected
         ? "bg-ameciclo text-white"

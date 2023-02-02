@@ -10,7 +10,7 @@ import ResarchIcon from "../public/icons/research.svg";
 
 const imagetextbar = {
   image: "/icons/research.svg",
-  text:"Aqui divulgamos nossos dados de mobilidade ativa, facilitando a visualização para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e outras(os). Nossas informações são abertas para uso de todas as pessoas que desejam uma cidade mais humanas, democráticas e sustentáveis."
+  text:"Nesta plataforma você encontra dados sobre mobilidade ativa, produzidos por nós ou pelo poder público, com visualização facilitada para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e pessoas interessadas. As informações são abertas para uso de todas as pessoas que desejam uma cidade mais humana, democrática e sustentável."
 }
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
       {title: "Ideciclo", icon: "ideciclo", url: "/ideciclo", text: "Índice que mede a malha e qualidade da estrutura cicloviaria"},
       {title: "Estudos e Pesquisas", icon: "relatorio", url: "/documentos", text: "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."},
       {title: "Perfil", icon: "perfil", url: "/perfil", text: "Dados socio-economicos dos ciclistas e suas percepções"},
-      {title: "Observatório", icon: "perfil", url: "/observatorio", text: "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."},
+      {title: "Observatório", icon: "mapa", url: "/observatorio", text: "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."},
     ]
   }
 
