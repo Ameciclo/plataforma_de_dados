@@ -9,7 +9,7 @@ const StructureMap = ({ map, layers = [] }) => {
 
     const navControlStyle= {
       right: 10,
-      top: 10
+      top: 10,
     };
 
     const [viewport, setViewport] = useState({
@@ -31,6 +31,19 @@ const StructureMap = ({ map, layers = [] }) => {
       doubleClickZoom: true
     });
 
+  const handleClick = () => {
+    setsettings({
+      dragPan: true,
+      dragRotate: true,
+      scrollZoom: settings.scrollZoom ? false : true,
+      touchZoom: true,
+      touchRotate: true,
+      keyboard: true,
+      boxZoom: true,
+      doubleClickZoom: true
+    })
+  } 
+  
   return ( 
     <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
@@ -45,7 +58,9 @@ const StructureMap = ({ map, layers = [] }) => {
             >
 
             <div style={{position: 'absolute', top: 0, right: 0, padding: '10px', zIndex: 500 }}>
+              <button onClick={handleClick}>
               <FullscreenControl  style={navControlStyle}/>
+              </button>
             </div>
 
             <div style={{position: 'absolute', top: 40, right: 0, padding: '10px', zIndex: 500 }}>

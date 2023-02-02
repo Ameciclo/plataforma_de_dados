@@ -47,26 +47,7 @@ const Maps = ({points = []}) => {
                 "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
             }
             >
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                padding: '10px',
-                zIndex: 500
-            }}>
-                <FullscreenControl style={navControlStyle}/>
-            </div>
-
-            <div style={{
-                position: 'absolute',
-                top: 40,
-                right: 0,
-                padding: '10px',
-                zIndex: 500
-            }}>
-                <NavigationControl style={navControlStyle}/>
-            </div>
-
+ 
             {points.map((c) => (
                 <Marker
                 key={c._id}
