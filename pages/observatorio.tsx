@@ -58,10 +58,10 @@ const Observatorio = ({ }) => {
     title: "Execução Cicloviária",
     subtitle: "da Região Metropolitana do Recife",
     boxes: [
-        {title: "km de estruturas cicloviárias", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
-        {title: "km projetados no PDC", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
-        {title: "km executados do PDC", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
-        {title: "completado do pdc", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
+        {title: "estrutura cicloviárias", unit: "km", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
+        {title: "projetada no plano cicloviário", unit: "km", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
+        {title: "implantados no plplano cicloviário", unit: "km", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
+        {title: "cobertos do plano cicloviário", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ]
   } 
       
@@ -131,20 +131,20 @@ const Observatorio = ({ }) => {
         onChange: (e) => sortCity(e.target.value), 
         onBlur: (e) => e,
         items: [
-          {value:"percentil", label: "% completo do PDC"}, 
-          {value:"km_completed", label: "km feitos do PDC"}, 
-          {value:"km_projected", label: "km projetados do PDC"}, 
-          {value:"km_ciclos", label: "km de estruturas cicloviárias"}]
+          {value:"percentil", unit:"%", label: "% completo do PDC"}, 
+          {value:"km_completed", unit:"km", label: "km feitos do PDC"}, 
+          {value:"km_projected", unit:"km", label: "km projetados do PDC"}, 
+          {value:"km_ciclos", unit:"km", label: "km de estruturas cicloviárias"}]
       }]
 
   const CityStatistics = {
     title: selectedCity.name,
     subtitle: "Estatísticas Gerais",
     boxes:   [
-      {title: "km de estruturas cicloviárias", value: selectedCity.km_ciclos.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
-      {title: "km projetados no PDC", value: selectedCity.km_projected.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
-      {title: "km executados do PDC", value: selectedCity.km_completed.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
-      {title: "completado do pdc", value: (selectedCity.percentil/100).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
+      {title: "estrutura cicloviárias", unit: "km",value: selectedCity.km_ciclos.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
+      {title: "projetada no plano cicloviário", unit: "km", value: selectedCity.km_projected.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
+      {title: "implantados no plano cicloviário", unit: "km", value: selectedCity.km_completed.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
+      {title: "cobertos do plano cicloviário", value: (selectedCity.percentil/100).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ].filter(e => e)
   }
 

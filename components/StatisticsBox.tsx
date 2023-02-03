@@ -11,6 +11,7 @@ const StatisticsBox = ({title, boxes, subtitle = ""}) => {
               <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
                   <h3>{box.title}</h3>
                   <h3 className="text-5xl font-bold mt-2">{box.value}</h3>
+                  {box.unit != undefined && (<p>km</p>)}
               </div>
           ))}
         </div>
