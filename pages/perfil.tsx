@@ -23,7 +23,7 @@ if (typeof Highcharts === "object") {
 //////
   const page_data = {
     title: "Pesquisa Perfil Ciclista",
-    cover_image_url: "",
+    cover_image_url: "/pesquisaperfil.png",
     ExplanationBoxData: {
       title_1: "O que é?",
       text_1: `A pesquisa foi organizada pela Transporte Ativo e pelo

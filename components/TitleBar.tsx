@@ -19,7 +19,7 @@ const TitleBar = ({title, image_url = ""}) => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          backgroundImage: `url('/contagem.png')`,
+          backgroundImage: `url('${image_url}')`,
         }}
       />
     )}

@@ -9,7 +9,7 @@ import { DocumentCard } from "../components/DocumentCard";
 
   const page_data = {
     title: "Documentos e Estudos",
-    cover_image_url: "",
+    cover_image_url: "/documentos.png",
     ExplanationBoxData: {
       title_1: "O que são?",
       text_1: `A Ameciclo realizou e realiza diversas pesquisas ao longo de sua

@@ -17,7 +17,7 @@ export default function Home() {
 
   const page_data = {
     title: "Plataforma de Dados",
-    cover_image_url: "",   
+    cover_image_url: "/plataforma.png",   
   }
 
   const site_pages_data = {

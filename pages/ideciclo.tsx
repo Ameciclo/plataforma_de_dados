@@ -16,7 +16,7 @@ import { server } from "../config";
 //////
 const page_data = {
   title: "Índice de Desenvolvimento Cicloviário",
-  cover_image_url: "",
+  cover_image_url: "/ideciclo.png",
   ExplanationBoxData: {
     title_1: "O que é?",
     text_1: `O Ideciclo é o resultado da análise de uma estrutura cicloviária,
