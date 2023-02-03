@@ -7,11 +7,11 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const linksArray = [
   { name: "Inicial", url: "/" },
-  { name: "Documentos", url: "/documentos" },
   { name: "Contagens", url: "/contagens" },
+  { name: "Documentos", url: "/documentos" },
   { name: "Ideciclo", url: "/ideciclo" },
-  { name: "Perfil", url: "/perfil" },
   { name: "Observatório", url: "/observatorio" },
+  { name: "Perfil", url: "/perfil" },
   { name: "Ameciclo", url: "http://www.ameciclo.org" },
 ];
 
