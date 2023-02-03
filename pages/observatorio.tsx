@@ -60,7 +60,7 @@ const Observatorio = ({ }) => {
     boxes: [
         {title: "estrutura cicloviárias", unit: "km", value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1})},
         {title: "projetada no plano cicloviário", unit: "km", value: data.kms.pdc_total.toLocaleString('pt-BR', { minimumFractionDigits: 1,   maximumFractionDigits: 1})},
-        {title: "implantados no plplano cicloviário", unit: "km", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
+        {title: "implantados no plano cicloviário", unit: "km", value: data.kms.pdc_feito.toLocaleString('pt-BR', { minimumFractionDigits: 1,  maximumFractionDigits: 1})},
         {title: "cobertos do plano cicloviário", value: (data.kms.pdc_feito/data.kms.pdc_total).toLocaleString('pt-BR', { style:'percent',  minimumFractionDigits: 1, maximumFractionDigits: 1})}
     ]
   } 
@@ -109,10 +109,17 @@ const Observatorio = ({ }) => {
     }))
 
   const numcards = (data, order) =>{
+    const units = {
+     "percentil":"%",
+      "km_completed":"km",
+      "km_projected":"km", 
+      "km_ciclos":"km"      
+    }
     return data.map((d)=>(
         {
             id: d.id,
             label: d.name,
+            unit: units[order],
             value: d[order]
         }
     )).sort((a,b) => b.value >= a.value ? 1 : -1)
@@ -131,10 +138,10 @@ const Observatorio = ({ }) => {
         onChange: (e) => sortCity(e.target.value), 
         onBlur: (e) => e,
         items: [
-          {value:"percentil", unit:"%", label: "% completo do PDC"}, 
-          {value:"km_completed", unit:"km", label: "km feitos do PDC"}, 
-          {value:"km_projected", unit:"km", label: "km projetados do PDC"}, 
-          {value:"km_ciclos", unit:"km", label: "km de estruturas cicloviárias"}]
+          {value:"percentil", label: "cobertos do plano cicloviário"}, 
+          {value:"km_completed", label: "implantados no plano cicloviário"}, 
+          {value:"km_projected", label: "projetada no plano cicloviário"}, 
+          {value:"km_ciclos", label: "estrutura cicloviárias"}]
       }]
 
   const CityStatistics = {

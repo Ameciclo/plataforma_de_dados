@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 const CityCard = ({ data, selected, changeFunction, position, maxDigs, onClickFnc}) => {
   //console.log(data.name + " " + ideciclo)
   let value = data.value
+  let unit = data.unit
   let value_text = "NaN"
   if(maxDigs == 1) {
     value = Math.round(value * 10) / 10
@@ -37,6 +38,7 @@ const CityCard = ({ data, selected, changeFunction, position, maxDigs, onClickFn
           <h3 className="text-center sm:text-center text-base sm:text-5xl font-bold">
             {value_text}
           </h3>
+          {unit != undefined && (<p>{unit}</p>)}
         </div>
         <div className="p-2">
         {/*<  <h3 className="hidden sm:block">{(position+1) + "ª"}</h3>*/}
