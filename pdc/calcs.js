@@ -1,5 +1,6 @@
-import pdc from "./PDC-2021.07.19.json"
-import ciclomapa from "./ciclomapa.json"
+import pdc from "./PDC-2023.02.01.json"
+//import ciclomapa from "./ciclomapa.json"
+import ciclomapa from "./new_ciclomapa.json"
 import utils from "../utils"
 
 const MUNICIPIOS = ['Jaboatão dos Guararapes', 'Olinda', 'Paulista', 'Igarassu', 'Abreu e Lima', 'Camaragibe', 'Cabo de Santo Agostinho', 'São Lourenço da Mata', 'Araçoiaba', 'Ilha de Itamaracá', 'Ipojuca', 'Moreno', 'Itapissuma', 'Recife']
@@ -23,14 +24,14 @@ function calcs() {
                 TIPOLOGIA: "N/A",
                 UNIDIRECIONAL: "N/A",
                 PDC_PISTADUPLA: f.properties.PDC_PISTADUPLA,
-                KM: 0
+                KM: (f.properties.compriment)/1000
             },
             geometry: f.geometry
         }
     })
 
-    const ciclos_ids = ciclos.map(c => c.id)
-
+  //  const ciclos_ids = ciclos.map(c => c.id)
+/**
     output.forEach(feature => {
         const ciclo_index = ciclos_ids.indexOf(feature.properties.osm_id)
         if(ciclo_index > 0) {
@@ -39,11 +40,12 @@ function calcs() {
             const ciclo = ciclos[ciclo_index]
             feature.properties.TIPOLOGIA = ciclo.properties.type
             feature.properties.UNIDIRECIONAL = ciclo.properties.oneway
-            feature.properties.KM = ciclo.properties["ciclomapa:segment_length"]
+            //feature.properties.KM = ciclo.properties["ciclomapa:segment_length"]
         } 
     })
-
-    const not_pdc_ciclos = ciclos.filter(c => c.properties.id != "DELETE")
+ */
+    const not_pdc_ciclos = ciclos//.filter(c => c.properties.id != "DELETE")
+    console.log(not_pdc_ciclos)
     const more_output = not_pdc_ciclos.map((f) => (
          {
             type: f.type,
@@ -58,7 +60,7 @@ function calcs() {
                 STATUS: "NotPDC",
                 TIPOLOGIA: f.properties.type,
                 UNIDIRECIONAL: f.properties.oneway,
-                KM: f.properties["ciclomapa:segment_length"]
+                KM: f.properties['ciclomapa:segment_length']
             },
             geometry: f.geometry
             }
@@ -105,7 +107,6 @@ function calcs() {
         "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
         features: output.concat(more_output)
       } 
-
 
       return {
         map: all_ciclos,

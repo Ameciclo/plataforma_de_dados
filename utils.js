@@ -11,12 +11,13 @@ function group_by(objetoArray, propriedade) {
   function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
   function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
 
-/** 
+
 function exportToJsonFile(jsonData, name) {
     let dataStr = JSON.stringify(jsonData);
     let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-    let exportFileDefaultName = name + '.json';
+    return dataUri
+}
+/**     let exportFileDefaultName = name + '.json';
 
     let document = new Document
     let linkElement = document.createElement('a');
@@ -33,9 +34,9 @@ function exportToJsonFile(jsonData, name) {
 }
 
 exportToJsonFile(data, "observatorio-data")
-
-
-
 */
-export default {group_by, filterByElement, filterById, filterByName}
+
+
+
+export default {group_by, filterByElement, filterById, filterByName, exportToJsonFile}
 
