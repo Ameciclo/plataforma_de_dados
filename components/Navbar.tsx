@@ -5,16 +5,6 @@ import { CSSTransition } from "react-transition-group";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { AnimatePresence, motion } from "framer-motion";
 
-const linksArray = [
-  { name: "Inicial", url: "/" },
-  { name: "Contagens", url: "/contagens" },
-  { name: "Documentos", url: "/documentos" },
-  { name: "Ideciclo", url: "/ideciclo" },
-  { name: "Observatório", url: "/observatorio" },
-  { name: "Perfil", url: "/perfil" },
-  { name: "Ameciclo", url: "http://www.ameciclo.org" },
-];
-
 interface ButtonContainerProps {
   readonly open: boolean;
 }
@@ -104,8 +94,8 @@ const LinkListUl = styled.ul`
   }
 `;
 
-const linkList = () => {
-  return linksArray.map((link) => {
+const linkList = ({ pages }) => {
+  return pages.map((link) => {
     return (
       <li key={link.name}>
         <Link href={link.url}>
@@ -118,8 +108,8 @@ const linkList = () => {
   });
 };
 
-const responsiveLinkList = () => {
-  return linksArray.map((link) => {
+const responsiveLinkList = ({ pages }) => {
+  return pages.map((link) => {
     return (
       <li className="link" key={link.name}>
         <Link href={link.url}>{link.name}</Link>
@@ -128,7 +118,7 @@ const responsiveLinkList = () => {
   });
 };
 
-const Navbar = () => {
+const Navbar = ({ pages }) => {
   const [isMenuOpen, toggleMenu] = useState(false);
   const [isHeaderScrolled, toggleHeaderScrolled] = useState(false);
 
@@ -209,7 +199,7 @@ const Navbar = () => {
               classNames="fade"
             >
               <LinksContainer>
-                <LinkListUl>{responsiveLinkList()}</LinkListUl>
+                <LinkListUl>{responsiveLinkList({ pages })}</LinkListUl>
               </LinksContainer>
             </CSSTransition>
           )}
@@ -220,7 +210,7 @@ const Navbar = () => {
         >
           <nav>
             <ul className="lg:flex items-center justify-between text-base pt-4 lg:pt-0 uppercase">
-              {linkList()}
+              {linkList({ pages })}
             </ul>
           </nav>
         </div>

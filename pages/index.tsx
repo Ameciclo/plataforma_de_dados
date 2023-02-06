@@ -41,9 +41,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
-      <SEO title={page_data.title + " | Ameciclo"} />
-      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+    <Layout pageTitle = {page_data.title} coverUrl={page_data.cover_image_url}>
       <ImageTextBar image={imagetextbar.image} text={imagetextbar.text} />
       <GridSession title={site_pages_data.title} grids={site_pages_data.grids} />
       <ImagesGrid title={images_grid.title} grids={images_grid.grids} />

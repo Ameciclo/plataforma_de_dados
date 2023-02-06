@@ -1,13 +1,13 @@
 import React from "react";
 import Link from "next/link";
 
-const Breadcrumb = ({ label, slug, routes }) => {
+const Breadcrumb = ({ conf }) => {
   return (
     <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
      <div className="container mx-auto">
         <nav className="bg-grey-light rounded font-sans w-full">
           <ol className="list-none p-0 inline-flex max-w-full">
-            {routes.map((route, i) => {
+            {conf.routes.map((route, i) => {
               if (route === "/") {
                 return (
                   <BreadcrumbItem
@@ -18,11 +18,11 @@ const Breadcrumb = ({ label, slug, routes }) => {
                   />
                 );
               }
-              if (i === routes.length - 1) {
+              if (i === conf.routes.length - 1) {
                 return (
                   <BreadcrumbItem
-                    slug={slug}
-                    label={label}
+                    slug={conf.slug}
+                    label={conf.label}
                     lastItem={true}
                     key={i}
                   />

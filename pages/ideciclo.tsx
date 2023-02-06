@@ -212,10 +212,7 @@ function getTotalCityStates(input) {
 
 
   return (
-    <Layout>
-      <SEO title={page_data.title + " | Ameciclo"} />
-      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
+    <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
       <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} onClickFnc={handleClick} />
