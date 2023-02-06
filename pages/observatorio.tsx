@@ -188,10 +188,10 @@ const Observatorio = ({ }) => {
     []
   );
   const ref = useRef(null)
-  const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
+  const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "center"})
  
- // const uri = utils.exportToJsonFile(calcs(), "PDC")
-   //     <a href={uri} target={"_blank "}>BAIXAR</a>
+  //const uri = utils.exportToJsonFile(calcs(), "PDC")
+    //   <a href={uri} target={"_blank "}>BAIXAR</a>
 
   return (
     <Layout>
@@ -202,8 +202,9 @@ const Observatorio = ({ }) => {
         <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
         <StructureMap map={ciclos} layers={layers}/>
         <NumberCards title={"Estrutura nas cidades"} data={numcards(cities, city_sort)} changeFunction={changeCity} onClickFnc={handleClick} selected={selectedCity.id} maxDigs={1} filters={sort_cities}/> 
-        <div ref={ref} >""</div>
-        <StatisticsBox  title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+        <div ref={ref}>
+          <StatisticsBox  title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />
+        </div>
         <Table title={"Estruturas do PDC para " + selectedCity.name} data={selectedCity.ways} columns={columns}/>
         {/** <EvolutionGraph e /> evolução de implantação */}
         <GridSession title={documents.title} grids={documents.grids} />

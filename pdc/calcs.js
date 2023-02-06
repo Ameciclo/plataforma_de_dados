@@ -15,16 +15,15 @@ function calcs() {
             id: f.properties.PDC,
             properties: {
                 osm_id: "way/"+f.properties.osm_id,
-                QGIS_km: (f.properties.compriment)/1000,
+                QGIS_km:  f.properties.PDC_PISTADUPLA == "TRUE" ?  (f.properties.compriment)/2000 : (f.properties.compriment)/1000,
                 PDC: f.properties.PDC,
                 PDC_TIPOLOGIA: f.properties.PDC_TIPOLOGIA,
                 PDC_VIA: f.properties.PDC_VIA,
                 PDC_MUNICIPIO: f.properties.PDC_MUNICIPIO,
                 STATUS: f.properties.has_cycle == "z_no_cycle" ? "Projeto" : "Realizada",
-                TIPOLOGIA: "N/A",
-                UNIDIRECIONAL: "N/A",
+                TIPOLOGIA: f.properties.has_cycle == "z_no_cycle" ? "SEM ESTRUTURA" : f.properties.has_cycle.split("-")[0],
                 PDC_PISTADUPLA: f.properties.PDC_PISTADUPLA,
-                KM: (f.properties.compriment)/1000
+                KM: f.properties.has_cycle == "z_no_cycle" ? 0 : f.properties.PDC_PISTADUPLA == "TRUE" ? (f.properties.compriment)/2000 : (f.properties.compriment)/1000 
             },
             geometry: f.geometry
         }
@@ -45,7 +44,6 @@ function calcs() {
     })
  */
     const not_pdc_ciclos = ciclos//.filter(c => c.properties.id != "DELETE")
-    console.log(not_pdc_ciclos)
     const more_output = not_pdc_ciclos.map((f) => (
          {
             type: f.type,
@@ -59,7 +57,6 @@ function calcs() {
                 PDC_MUNICIPIO: "Recife",
                 STATUS: "NotPDC",
                 TIPOLOGIA: f.properties.type,
-                UNIDIRECIONAL: f.properties.oneway,
                 KM: f.properties['ciclomapa:segment_length']
             },
             geometry: f.geometry
@@ -70,26 +67,28 @@ function calcs() {
         const pdc_total = output.filter(o => o.properties.PDC_MUNICIPIO == m).filter(o => o.properties.STATUS != "NotPDC")
         const pdc_done = pdc_total.filter(o => o.properties.STATUS == "Realizada")
         const out_pdc = more_output.filter(o => o.properties.PDC_MUNICIPIO == m)
-        const city_by_PDC = utils.group_by(pdc_total, "id")
+        const struc_by_id = utils.group_by(pdc_total, "id")
         let ways = []
-        Object.keys(city_by_PDC).forEach(pdc_id => {
-            const p = city_by_PDC[pdc_id]
-            let pdc_tipo = p[0].properties.PDC_TIPOLOGIA
-            if (pdc_tipo == "CICLOMETRO") pdc_tipo = "CICLOVIA"
-            let ciclo_tipo = p[0].properties.TIPOLOGIA.toUpperCase()
-            ways.push({
-                name: "(" + pdc_id + ") " + p[0].properties.PDC_VIA,
-                pdc_tipos: pdc_tipo,
-                ciclo_tipos: ciclo_tipo,
-                pdc_kms: p.reduce((acc,crr) => acc + crr.properties.QGIS_km, 0),
-                ciclo_kms: p.reduce((acc,crr) => acc + crr.properties.KM, 0),
+        Object.keys(struc_by_id).forEach(id => {
+            const struct = struc_by_id[id]
+            const struct_properties = struct.map(s => s.properties)
+            const struct_by_id_by_tipology = utils.group_by(struct_properties, "TIPOLOGIA")
+            Object.keys(struct_by_id_by_tipology).forEach(tipology_type => {
+                const tipology = struct_by_id_by_tipology[tipology_type]
+                ways.push({
+                    name: "(" + id + ") " + tipology[0].PDC_VIA,
+                    pdc_tipos: tipology[0].PDC_TIPOLOGIA == "CICLOMETRO" ? "CICLOVIA" : tipology[0].PDC_TIPOLOGIA,
+                    ciclo_tipos: tipology_type.toUpperCase(),
+                    pdc_kms: tipology.reduce((acc,crr) => acc + crr.QGIS_km, 0),
+                    ciclo_kms: tipology.reduce((acc,crr) => acc + crr.KM, 0),
+                })
             })
         })
         return {
             name: m,
             vias: ways,
-            pdc_total: pdc_total.reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),
-            pdc_feito: pdc_done.reduce((acc,crr) => crr.properties.PDC_PISTADUPLA == "FALSE" ? acc + crr.properties.QGIS_km : acc + crr.properties.QGIS_km/2, 0),    
+            pdc_total: pdc_total.reduce((acc,crr) => acc + crr.properties.QGIS_km, 0),
+            pdc_feito: pdc_done.reduce((acc,crr) =>  acc + crr.properties.QGIS_km , 0),    
             out_pdc: out_pdc.reduce((acc,crr) => acc + crr.properties.KM, 0)
         }
     })

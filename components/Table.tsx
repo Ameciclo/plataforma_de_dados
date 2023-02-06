@@ -156,9 +156,12 @@ const Table = ({ title, data, columns }) => {
               })}
             </tbody>
           </table>
-
+              {//console.log("PAGINA")
+              }
+              {//console.log(rows)
+              }
           <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-            Filtro seleciona {rows.length} de {data.length} estruturas
+            São {rows.length} estruturas e somam {Math.round(rows.reduce((a,c)=>a + c.values.ciclo_kms,0)*10)/10}km feitos de {Math.round(rows.reduce((a,c)=>a + c.values.pdc_kms,0)*10)/10}km projetados.
             <div className="inline-flex mt-2 xs:mt-0">
               {canPreviousPage ? (
                 <button
