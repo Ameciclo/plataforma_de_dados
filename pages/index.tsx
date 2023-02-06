@@ -1,12 +1,8 @@
 import Layout from "../components/Layout";
-import SEO from "../components/SEO";
-import TitleBar from "../components/TitleBar";
 import ImageTextBar from "../components/ImageTextBar";
 import GridSession from "../components/GridSession";
 import ImagesGrid from "../components/ImagesGrid";
-
 import React from "react";
-import ResarchIcon from "../public/icons/research.svg";
 
 const imagetextbar = {
   image: "/icons/research.svg",

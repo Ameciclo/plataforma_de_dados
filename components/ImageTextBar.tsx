@@ -1,12 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import ResarchIcon from "../public/icons/research.svg";
 
 const ImageTextBar = ({text, image, alt="", height="", width=""}) => {
   return (
       <section>
       <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
-        <div className="w-1/4 justify-center flex items-center hidden md:block">
+        <div className="w-1/4 justify-center items-center hidden md:block">
         <Image
             src={image}
             alt={alt!=""?alt:""}

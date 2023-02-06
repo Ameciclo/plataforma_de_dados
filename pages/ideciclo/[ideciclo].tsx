@@ -150,7 +150,7 @@ const Ideciclo = ({ structure, forms }) => {
     <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       
-      <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
         <div className="rounded shadow-2xl">
           <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
             <div className="flex flex-col justify-center w-full p-6 text-center tracking-widest">
@@ -252,7 +252,7 @@ const Ideciclo = ({ structure, forms }) => {
           <h3 className="text-4xl font-bold my-8">
             Detalhamento e composição das notas
           </h3>
-          <section className="container mx-auto mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+          <section className="container mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
             {info.parametros.map((out_param) => {
               return (
                 <div className="rounded shadow-2xl">
