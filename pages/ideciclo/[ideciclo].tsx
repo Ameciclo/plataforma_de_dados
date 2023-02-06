@@ -1,7 +1,4 @@
 import Layout from "../../components/Layout";
-import SEO from "../../components/SEO";
-import TitleBar from "../../components/TitleBar";
-import Breadcrumb from "../../components/Breadcrumb";
 import StatisticsBox from "../../components/StatisticsBox";
 
 import Highcharts from "highcharts";
@@ -86,13 +83,13 @@ const Ideciclo = ({ structure, forms }) => {
   const page_data = {
     title: structure.street,
     cover_image_url: "",
-    Breadcrumb: {
+
+  }
+  const BreadcrumbConf = {
       label:structure.street,
       slug:structure.id.toString(),
       routes:["/", "/ideciclo", structure.id],
     }  
-  }
-
   let info = rates_organization(structure, forms);
 
   info.map = get_map_data(structure)
@@ -150,10 +147,7 @@ const Ideciclo = ({ structure, forms }) => {
       ] 
   }
   return (
-    <Layout>
-      <SEO title={page_data.title + " | Ameciclo"} />
-      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+    <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       
       <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">

@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-const Breadcrumb = ({ conf }) => {
+const Breadcrumb = ({ conf, baseItem = null }) => {
   return (
     <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
      <div className="container mx-auto">
@@ -11,8 +11,8 @@ const Breadcrumb = ({ conf }) => {
               if (route === "/") {
                 return (
                   <BreadcrumbItem
-                    slug="/"
-                    label="Plataforma de Dados"
+                    slug={baseItem.slug}
+                    label={baseItem.label}
                     lastItem={false}
                     key={i}
                   />

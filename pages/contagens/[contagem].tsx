@@ -1,7 +1,4 @@
 import Layout from "../../components/Layout";
-import SEO from "../../components/SEO";
-import TitleBar from "../../components/TitleBar";
-import Breadcrumb from "../../components/Breadcrumb";
 import CardsSession from "../../components/CardsSession";
 
 import React, { useState } from "react";
@@ -16,12 +13,13 @@ const Contagem = ({ count }) => {
   const page_data = {
     title: count.name,
     cover_image_url: "",
-    Breadcrumb: {
+
+  }
+  const BreadcrumbConf = {
       label:count.name,
       slug:count._id,
       routes:["/", "/contagens", count._id],
-    }  
-  }
+    }
 
   const [popupInfo, setPopupInfo] = useState(null);
   const [viewport, setViewport] = useState({
@@ -153,11 +151,7 @@ const Contagem = ({ count }) => {
   ]
 
   return (
-    <Layout>
-      <SEO title={page_data.title + " | Ameciclo"} />
-      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
-
+    <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <main className="flex-auto">
         <div className="mx-auto text-center my-24">
           <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">

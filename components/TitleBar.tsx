@@ -11,7 +11,9 @@ const TitleBar = ({ title, imageUrl = "" }) => {
           </h1>
         </div>
       ) : (
-        <div className="bg-cover bg-center bg-no-repeat object-fill h-cover w-full px-10 py-24 text-white" style={{backgroundImage: `url('${imageUrl}')`}} />      
+        <div className="bg-cover bg-center bg-no-repeat object-fill h-cover w-full px-10 py-24 text-white" 
+             style={{backgroundImage: `url('${imageUrl}')`}} 
+        />      
         )}
     </>
   );
