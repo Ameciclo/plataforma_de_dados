@@ -389,10 +389,7 @@ const Perfil = () => {
   };
 
   return (
-    <Layout>
-      <SEO title={page_data.title + " | Ameciclo"} />
-      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
-      <Breadcrumb label={BreadcrumbConf.label} slug={BreadcrumbConf.slug} routes={BreadcrumbConf.routes}/>
+    <Layout pageTitle = "Teste" coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
 
       <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
 
