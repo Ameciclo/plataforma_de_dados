@@ -2,6 +2,10 @@ module.exports = {
   purge: ["./components/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      height: {
+        cover: '52vh',
+        'no-cover': '25vh'
+      },
       fontFamily: {
         custom: ["Open Sans"],
       },

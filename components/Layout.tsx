@@ -22,7 +22,7 @@ const Layout = ({ children, pageTitle = "", coverUrl = "", breadcrumbConf = null
         <Navbar pages={ navBarPages }/>
         <SEO title={pageTitle + " | Ameciclo"} />
         <main className="flex-1 w-full mx-auto main-padding-top">
-        {pageTitle != "" && (<TitleBar title={pageTitle} image_url={coverUrl}/>)}
+        {pageTitle != "" && (<TitleBar title={pageTitle} imageUrl={coverUrl}/>)}
         {breadcrumbConf && (<Breadcrumb conf={breadcrumbConf}/>)}
         {children}
         </main>

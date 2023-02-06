@@ -389,10 +389,8 @@ const Perfil = () => {
   };
 
   return (
-    <Layout pageTitle = "Teste" coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
-
+    <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
-
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
         <div className="border-gray-200 border p-8 grid grid-cols-1 sm:grid-cols-3">

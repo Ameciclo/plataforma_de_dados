@@ -1,28 +1,18 @@
 import React from "react";
 
-const TitleBar = ({title, image_url = ""}) => {
+const TitleBar = ({ title, imageUrl = "" }) => {
   return (
     <>
-    {image_url == "" ? (
-            <div
-                className="text-white text-center justify-center align-middle flex bg-ameciclo flex-col pt-24 md:pt-0"
-                style={{ height: "25vh" }}
-            >
-            <h1 className="text-4xl font-bold">{title}</h1>
-            </div>
-        ) : (
-      <div
-        className="bg-cover bg-center h-auto text-white py-24 px-10 object-fill"
-        style={{
-          width: "100%",
-          height: "52vh",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundImage: `url('${image_url}')`,
-        }}
-      />
-    )}
+    {imageUrl == "" ? (
+        <div className="flex flex-col align-middle h-no-cover pt-24 md:pt-0 bg-ameciclo text-white text-center justify-center">
+          <h1 className="text-4xl font-bold">
+          {/**no futuro aqui pode ter uma imagem padrão e o título ficar por cima*/}
+          {title}
+          </h1>
+        </div>
+      ) : (
+        <div className="bg-cover bg-center bg-no-repeat object-fill h-cover w-full px-10 py-24 text-white" style={{backgroundImage: `url('${imageUrl}')`}} />      
+        )}
     </>
   );
 };
