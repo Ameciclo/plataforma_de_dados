@@ -66,7 +66,7 @@ const Observatorio = ({ }) => {
   } 
       
   const PDCLayer = {
-      id: 'PDC_undone',
+      id: 'Não executado no PDC',
       type: 'line',
       paint: {
         'line-color': "#000000",
@@ -76,7 +76,7 @@ const Observatorio = ({ }) => {
       filter: ['==', 'STATUS', 'Projeto'] }
 
   const PDCDoneLayer = {
-          id: 'PDCDoneLayer',
+          id: 'Executados dentro do PDC',
           type: 'line',
           paint: {
             'line-color': "#008080",
@@ -86,7 +86,7 @@ const Observatorio = ({ }) => {
         }
 
   const NotPDC = {
-      id: 'NotPDC',
+      id: 'Executados fora do PDC',
       type: 'line',
       paint: {
         'line-color': "#E02F31",

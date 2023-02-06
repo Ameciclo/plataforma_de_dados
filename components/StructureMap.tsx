@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl } from "react-map-gl";
+import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl, Popup } from "react-map-gl";
 
 const MAPBOXTOKEN = "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
 
@@ -44,6 +44,11 @@ const StructureMap = ({ map, layers = [] }) => {
     })
   } 
   
+  const legenda = `Legenda
+  ___ Projetados no PDC
+  ___ Executados no PDC
+  ___ Existente, fora do PDC`
+
   return ( 
     <section className="container mx-auto my-10">
         <div className="bg-green-200 rounded shadow-2xl">
@@ -70,6 +75,10 @@ const StructureMap = ({ map, layers = [] }) => {
             <Source id="malha" type='geojson' data={map}>
               {layers.map(layer => <Layer {...layer} />)}
             </Source>
+            <Popup longitude={-34.80277} latitude={-8.058436} anchor={"bottom-left"} closeButton={false}>
+              <h3 style={{fontWeight:'bold'}}>Legenda</h3>
+              {layers.map(l => <p style={{color:l.paint['line-color']}}>{l.id}</p>)}
+              </Popup>
           </ReactMapGL>
         </div>
       </section>
