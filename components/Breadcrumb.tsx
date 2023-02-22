@@ -3,40 +3,44 @@ import Link from "next/link";
 
 const Breadcrumb = ({ label, slug, routes }) => {
   return (
-    <nav className="bg-grey-light rounded font-sans w-full">
-      <ol className="list-none p-0 inline-flex max-w-full">
-        {routes.map((route, i) => {
-          if (route === "/") {
-            return (
-              <BreadcrumbItem
-                slug="/"
-                label="Plataforma de Dados"
-                lastItem={false}
-                key={i}
-              />
-            );
-          }
-          if (i === routes.length - 1) {
-            return (
-              <BreadcrumbItem
-                slug={slug}
-                label={label}
-                lastItem={true}
-                key={i}
-              />
-            );
-          }
-          return (
-            <BreadcrumbItem
-              slug={route}
-              label={route}
-              lastItem={false}
-              key={i}
-            />
-          );
-        })}
-      </ol>
-    </nav>
+    <div className="bg-ameciclo text-white p-4 items-center uppercase flex">
+     <div className="container mx-auto">
+        <nav className="bg-grey-light rounded font-sans w-full">
+          <ol className="list-none p-0 inline-flex max-w-full">
+            {routes.map((route, i) => {
+              if (route === "/") {
+                return (
+                  <BreadcrumbItem
+                    slug="/"
+                    label="Plataforma de Dados"
+                    lastItem={false}
+                    key={i}
+                  />
+                );
+              }
+              if (i === routes.length - 1) {
+                return (
+                  <BreadcrumbItem
+                    slug={slug}
+                    label={label}
+                    lastItem={true}
+                    key={i}
+                  />
+                );
+              }
+              return (
+                <BreadcrumbItem
+                  slug={route}
+                  label={route}
+                  lastItem={false}
+                  key={i}
+                />
+              );
+            })}
+          </ol>
+        </nav>
+    </div>
+  </div>
   );
 };
 

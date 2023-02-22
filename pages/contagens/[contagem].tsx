@@ -1,14 +1,28 @@
+import Layout from "../../components/Layout";
+import SEO from "../../components/SEO";
+import TitleBar from "../../components/TitleBar";
+import Breadcrumb from "../../components/Breadcrumb";
+import CardsSession from "../../components/CardsSession";
+
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
-import Layout from "../../components/Layout";
-import Head from "next/head";
-import Breadcrumb from "../../components/Breadcrumb";
-import InfoCard from "../../components/InfoCard";
+
 import FlowContainer from "../../components/FlowChart/FlowContainer";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 
 const Contagem = ({ count }) => {
+
+  const page_data = {
+    title: count.name,
+    cover_image_url: "",
+    Breadcrumb: {
+      label:count.name,
+      slug:count._id,
+      routes:["/", "/contagens", count._id],
+    }  
+  }
+
   const [popupInfo, setPopupInfo] = useState(null);
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
@@ -128,30 +142,21 @@ const Contagem = ({ count }) => {
     },
   };
 
+  const cards = [
+    {label: "Mulheres", icon: "women", data: summary.women_percent},
+    {label: "Crianças e Adolescentes", icon: "children", data: summary.children_percent},
+    {label: "Capacete", icon: "helmet", data: summary.helmet_percent},
+    {label: "Serviço", icon: "service", data: summary.service_percent},
+    {label: "Cargueira", icon: "cargo", data: summary.cargo_percent},
+    {label: "Contramão", icon: "wrong_way", data: summary.wrong_way_percent},
+    {label: "Calçada", icon: "sidewalk", data: summary.sidewalk_percent}
+  ]
+
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Contagens</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ height: "25vh" }}
-      >
-        <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{count.name}</h1>
-        </div>
-      </div>
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label={count.name}
-            slug={count._id}
-            routes={["/", "/contagens", count._id]}
-          />
-        </div>
-      </div>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
 
       <main className="flex-auto">
         <div className="mx-auto text-center my-24">
@@ -291,43 +296,9 @@ const Contagem = ({ count }) => {
             <FlowContainer count={count} flowData={flowData} />
           </div>
         </section>
-        <section className="container mx-auto grid grid-cols-3 md:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
-          <InfoCard
-            data={summary.women_percent}
-            label={"Mulheres"}
-            icon="women"
-          />
-          <InfoCard
-            data={summary.children_percent}
-            label={"Crianças e Adolescentes"}
-            icon="children"
-          />
-          <InfoCard
-            data={summary.helmet_percent}
-            label={"Capacete"}
-            icon="helmet"
-          />
-          <InfoCard
-            data={summary.service_percent}
-            label={"Serviço"}
-            icon="service"
-          />
-          <InfoCard
-            data={summary.cargo_percent}
-            label={"Cargueira"}
-            icon="cargo"
-          />
-          <InfoCard
-            data={summary.wrong_way_percent}
-            label={"Contramão"}
-            icon="wrong_way"
-          />
-          <InfoCard
-            data={summary.sidewalk_percent}
-            label={"Calçada"}
-            icon="sidewalk"
-          />
-        </section>
+
+        <CardsSession cards={cards} />
+
         <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
           <div
             className="shadow-2xl rounded p-10 text-center overflow-x-scroll"

@@ -1,116 +1,52 @@
-import Head from "next/head";
 import Layout from "../components/Layout";
-import { SearchBar } from "../components/SearchBar";
-import ResarchIcon from "../public/icons/research.svg";
+import SEO from "../components/SEO";
+import TitleBar from "../components/TitleBar";
+import ImageTextBar from "../components/ImageTextBar";
+import GridSession from "../components/GridSession";
+import ImagesGrid from "../components/ImagesGrid";
+
 import React from "react";
+import ResarchIcon from "../public/icons/research.svg";
+
+const imagetextbar = {
+  image: "/icons/research.svg",
+  text:"Nesta plataforma você encontra dados sobre mobilidade ativa, produzidos por nós ou pelo poder público, com visualização facilitada para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e pessoas interessadas. As informações são abertas para uso de todas as pessoas que desejam uma cidade mais humana, democrática e sustentável."
+}
 
 export default function Home() {
+
+  const page_data = {
+    title: "Plataforma de Dados",
+    cover_image_url: "/plataforma.png",   
+  }
+
+  const site_pages_data = {
+    title: "Navegue e visualize os dados",
+    grids: [
+      {title: "Contagens", icon: "contagem", url: "/contagens", text: "Contagens das viagens de bicicleta e suas caracteristicas observaveis"},
+      {title: "Ideciclo", icon: "ideciclo", url: "/ideciclo", text: "Índice que mede a malha e qualidade da estrutura cicloviaria"},
+      {title: "Estudos e Pesquisas", icon: "relatorio", url: "/documentos", text: "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."},
+      {title: "Perfil", icon: "perfil", url: "/perfil", text: "Dados socio-economicos dos ciclistas e suas percepções"},
+      {title: "Observatório", icon: "mapa", url: "/observatorio", text: "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."},
+    ]
+  }
+
+  const images_grid = {
+    title: "Mais dados em parceria",
+    grids: [
+      {image: "/ciclomapa.webp", alt: "Ciclomapa", url: "http://ciclomapa.org.br"},
+      {image: "/observatorio.webp", alt: "Observatório da Bicicleta", url: "https://observatoriodabicicleta.org.br"},
+      {image: "/mobilidados.webp", alt: "Mobilidados", url: "https://mobilidados.org.br"}
+    ]
+  }
+
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Ameciclo</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <div className="p-4 sm:p-8 lg:p-16 xl:p-20 mx-auto ">
-        <div className="container mx-auto mt-32 sm:mt-20">
-          <SearchBar />
-        </div>
-      </div>
-
-      <section>
-        <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">
-          <div className="w-1/4 justify-center flex items-center hidden md:block">
-            <ResarchIcon className="h-32 fill-current" />
-          </div>
-          <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">
-            <p className="text-lg">
-              Aqui divulgamos nossos dados de mobilidade ativa, facilitando a
-              visualização para estudantes, jornalistas, cicloativistas,
-              pesquisadoras(es) e outras(os). Nossas informações são abertas
-              para uso de todas as pessoas que desejam uma cidade mais humanas,
-              democráticas e sustentáveis.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section>
-        <div className="flex-1 container mx-auto p-10 text-center">
-          <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto">
-            Navegue e visualize os dados
-          </h3>
-          <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
-            <GridCard
-              title="Contagens"
-              text="Contagens das viagens de bicicleta e suas caracteristicas observaveis"
-              icon="contagem"
-              url="/contagens"
-            />
-            {/*
-            <GridCard
-              title="Mapa"
-              text="Acompanhamento da execução do plano diretor cicloviario"
-              icon="mapa"
-            />
-            */}
-            <GridCard
-              title="Ideciclo"
-              text="Índice que mede a malha e qualidade da estrutura cicloviaria"
-              icon="ideciclo"
-              url="/ideciclo"
-            />
-            <GridCard
-              title="Estudos e Pesquisas"
-              text="Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
-              icon="relatorio"
-              url="/documentos"
-            />
-
-            <GridCard
-              title="Perfil"
-              text="Dados socio-economicos dos ciclistas e suas percepções"
-              icon="perfil"
-              url="/perfil"
-            />
-          </div>
-        </div>
-      </section>
-      <section className="bg-white">
-        <div className="flex-1 container mx-auto p-10 text-center">
-          <h3 className="font-bold text-3xl text-ameciclo py-8">
-            Mais dados em parceria
-          </h3>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4 grid-flow-row"
-            style={{ justifyItems: "center" }}
-          >
-            <div className="bg-white rounded-lg shadow-xl w-full">
-              <a href="http://ciclomapa.org.br">
-                <img
-                  src="/ciclomapa.webp"
-                  className="object-fill h-48 w-full"
-                />
-              </a>
-            </div>
-            <div className="bg-white rounded-lg shadow-xl w-full">
-              <a href="https://observatoriodabicicleta.org.br">
-                <img
-                  src="/observatorio.webp"
-                  className="object-contain h-48 w-full"
-                />
-              </a>
-            </div>
-            <div className="bg-white rounded-lg shadow-xl w-full">
-              <a href="https://mobilidados.org.br">
-                <img
-                  src="/mobilidados.webp"
-                  className="object-fill h-48 w-full"
-                />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      <ImageTextBar image={imagetextbar.image} text={imagetextbar.text} />
+      <GridSession title={site_pages_data.title} grids={site_pages_data.grids} />
+      <ImagesGrid title={images_grid.title} grids={images_grid.grids} />
       <section className="bg-ameciclo">
         <div className="flex-1 container mx-auto p-10 text-center">
           <h3 className="font-bold text-3xl text-white py-8">Realização</h3>
@@ -137,19 +73,3 @@ export default function Home() {
     </Layout>
   );
 }
-
-const GridCard = ({ title, text, icon, url = "#" }) => {
-  return (
-    <a href={url}>
-      <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
-        <div className="flex flex-col text-center">
-          <img src={`/icons/${icon}.svg`} className="h-32 fill-current" />
-          <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
-            {title}
-          </h2>
-          <p className="text-base font-medium">{text}</p>
-        </div>
-      </div>
-    </a>
-  );
-};
