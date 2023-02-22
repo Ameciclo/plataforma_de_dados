@@ -1,6 +1,9 @@
 import Layout from "../../components/Layout";
-import Head from "next/head";
+import SEO from "../../components/SEO";
+import TitleBar from "../../components/TitleBar";
 import Breadcrumb from "../../components/Breadcrumb";
+import StatisticsBox from "../../components/StatisticsBox";
+
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
@@ -79,6 +82,17 @@ function get_map_data(structure) {
 }
 
 const Ideciclo = ({ structure, forms }) => {
+
+  const page_data = {
+    title: structure.street,
+    cover_image_url: "",
+    Breadcrumb: {
+      label:structure.street,
+      slug:structure.id.toString(),
+      routes:["/", "/ideciclo", structure.id],
+    }  
+  }
+
   let info = rates_organization(structure, forms);
 
   info.map = get_map_data(structure)
@@ -126,65 +140,22 @@ const Ideciclo = ({ structure, forms }) => {
     doubleClickZoom: true,
   });
 
+  const GeneralStatistics = {
+    title:structure.street,
+    subtitle: "Visão geral",
+    boxes: [
+      {title: "Nota geral", value: ("" + info.nota.toFixed(1)).replace(".", ",")},
+      {title: "Extensão (km)", value: (info.comprimento / 1000).toFixed(2).replace(".", ",")},
+      {title: "Avaliações", value: info.avaliacoes},
+      ] 
+  }
   return (
     <Layout>
-      <Head>
-        <title>Plataforma de Dados | Ideciclo</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div
-        className="text-white text-center justify-center align-middle content-center flex w-full bg-ameciclo flex-col"
-        style={{ height: "25vh" }}
-      >
-        <div className="container mx-auto pt-24 md:pt-0">
-          <h1 className="text-4xl font-bold truncate">{structure.street}</h1>
-        </div>
-      </div>
-      <div className="bg-ameciclo text-white p-4 items-center uppercase flex text-xs md:text-base">
-        <div className="container mx-auto">
-          <Breadcrumb
-            label={structure.street}
-            slug={structure.id.toString()}
-            routes={["/", "/ideciclo", structure.id]}
-          />
-        </div>
-      </div>
-      <section className="container mx-auto">
-        <div className="mx-auto text-center my-24">
-          <h1 className="text-6xl font-bold">{structure.street}</h1>
-          <h3 className="text-4xl font-bold my-8">Visão geral</h3>
-          <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Nota geral</h3>
-              <h3 className="text-5xl font-bold mt-2">
-                {("" + info.nota.toFixed(1)).replace(".", ",")}
-              </h3>
-            </div>
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Extensão (km)</h3>
-              <h3 className="text-5xl font-bold mt-2">
-                {(info.comprimento / 1000).toFixed(2).replace(".", ",")}
-              </h3>
-            </div>
-            <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-              <h3>Avaliações</h3>
-              <h3 className="text-5xl font-bold mt-2">{info.avaliacoes}</h3>
-            </div>
-            {
-              <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-                <h3>{"Dados"}</h3>
-                <a
-                  href={`${server}/forms/${forms.id}`}
-                  target="_blank"
-                  className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2"
-                >
-                  Formulário
-                </a>
-              </div>
-            }
-          </div>
-        </div>
-      </section>
+      <SEO title={page_data.title + " | Ameciclo"} />
+      <TitleBar title={page_data.title} image_url={page_data.cover_image_url}/>
+      <Breadcrumb label={page_data.Breadcrumb.label} slug={page_data.Breadcrumb.slug} routes={page_data.Breadcrumb.routes}/>
+      <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
+      
       <section className="container mx-auto mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
         <div className="rounded shadow-2xl">
           <div className="flex flex-col bg-white mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">

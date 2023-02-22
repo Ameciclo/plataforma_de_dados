@@ -6,12 +6,13 @@ import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { AnimatePresence, motion } from "framer-motion";
 
 const linksArray = [
-  { name: "Página inicial", url: "/" },
-  { name: "Documentos", url: "/documentos" },
+  { name: "Inicial", url: "/" },
   { name: "Contagens", url: "/contagens" },
+  { name: "Documentos", url: "/documentos" },
   { name: "Ideciclo", url: "/ideciclo" },
-  { name: "Pesquisa Perfil", url: "/perfil" },
-  { name: "Site da Ameciclo", url: "http://www.ameciclo.org" },
+  { name: "Observatório", url: "/observatorio" },
+  { name: "Perfil", url: "/perfil" },
+  { name: "Ameciclo", url: "http://www.ameciclo.org" },
 ];
 
 interface ButtonContainerProps {
