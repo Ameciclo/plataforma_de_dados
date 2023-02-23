@@ -1,7 +1,4 @@
 import Layout from "../components/Layout";
-import SEO from "../components/SEO";
-import TitleBar from "../components/TitleBar";
-import Breadcrumb from "../components/Breadcrumb";
 import ExplanationBox from "../components/ExplanationBox";
 import StatisticsBox from "../components/StatisticsBox";
 import StructureMap from "../components/StructureMap";
