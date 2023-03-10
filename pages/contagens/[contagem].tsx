@@ -7,6 +7,7 @@ import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";
 import FlowContainer from "../../components/FlowChart/FlowContainer";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import Link from "next/link";
 
 const Contagem = ({ count }) => {
 
@@ -173,8 +174,8 @@ const Contagem = ({ count }) => {
             </div>
             <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
               <h3>{"Dados"}</h3>
-              <a href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</a>
-              <a href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</a>
+              <Link href={count.summary.download_xlsx_url} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">XLSX</Link>
+              <Link href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${count._id}`} className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2">JSON</Link>
             </div>
           </div>
         </div>

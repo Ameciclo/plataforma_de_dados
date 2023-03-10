@@ -1,5 +1,6 @@
 import React from "react"
 import Image from "next/image";
+import Link from "next/link";
 
 const SponsorsSession = ({ sponsors = []}) => {
     return (
@@ -9,9 +10,9 @@ const SponsorsSession = ({ sponsors = []}) => {
                     <h3 className="font-bold text-3xl text-white py-8">{s.title}</h3>
                         {s.orgs.map((o) => (
                             <div className="flex gap-4 items-center" >
-                                <a href={o.url}>
+                                <Link href={o.url}>
                                     <Image src={o.logo} alt={o.name} width={o.width ? o.width : 48} height={o.height ? o.height : 48} />
-                                </a>                    
+                                </Link>                    
                             </div>                            
                         ))}
                 </div>

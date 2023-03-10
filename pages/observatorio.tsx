@@ -188,7 +188,7 @@ const Observatorio = ({ }) => {
   const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "center"})
  
   //const uri = utils.exportToJsonFile(calcs(), "PDC")
-    //   <a href={uri} target={"_blank "}>BAIXAR</a>
+    //   <Link href={uri} target={"_blank "}>BAIXAR</Link>
 
   return (
     <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>

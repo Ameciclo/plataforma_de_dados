@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
 import useDebounce from "../hooks/useDebounce";
+import Link from "next/link";
 
 export const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -115,7 +116,7 @@ export const SearchBar = () => {
               <>
                 {results.map((result) => {
                   return (
-                    <a
+                    <Link
                       className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
                       key={result.protocolo}
                       href={result.url}
@@ -138,7 +139,7 @@ export const SearchBar = () => {
                           textToHighlight={result.pergunta}
                         />
                       </span>
-                    </a>
+                    </Link>
                   );
                 })}
               </>
@@ -146,7 +147,7 @@ export const SearchBar = () => {
               <>
                 {results.map((result) => {
                   return (
-                    <a
+                    <Link
                       className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
                       key={result._id}
                       href={`/contagens/${result._id}`}
@@ -168,7 +169,7 @@ export const SearchBar = () => {
                           {`Total: ${result.summary.total}`}
                         </span>
                       </div>
-                    </a>
+                    </Link>
                   );
                 })}
               </>

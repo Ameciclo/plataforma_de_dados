@@ -110,9 +110,9 @@ const IdecicloTable = ({ title, data }) => {
         Header: "Rua",
         accessor: "logradouro",
         Cell: ({ row }) => (
-            <Link href={`ideciclo/${row.original.id}`} key={row.original.id}>
+            <Link className="text-ameciclo" href={`ideciclo/${row.original.id}`} key={row.original.id}>
                 {row.original.cidade == 1 ? 
-                (<a className="text-ameciclo">{row.original.logradouro}</a>) :
+                (<> {row.original.logradouro}</>) :
                 (<>{row.original.logradouro}</>)}
             </Link>
         ),
