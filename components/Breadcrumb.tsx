@@ -74,10 +74,8 @@ const Breadcrumb = ({ conf, baseItem = null }) => {
 const Crumb = ({ slug, label, lastItem }) => {
   return (
     <li className={`flex items-center ${lastItem ? "last-breadcrumb" : ""}`}>
-      <Link href={slug}>
-        <a className="truncate">
+      <Link className="truncate" href={slug}>
           {label.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g, "")}
-        </a>
       </Link>
       {lastItem ? null : (
         <svg

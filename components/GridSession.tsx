@@ -1,9 +1,10 @@
+import Link from "next/link";
 import React from "react";
 
 const GridCard = ({ title, text, icon = "", url = "#" }) => {
     return (
-      <a href={url} target="_blank">
-        <div className="bg-white bg-customGrey w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
+      <Link href={url} target="_blank">
+        <div className="bg-white w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
           <div className="flex flex-col text-center">
             {icon != "" && <img src={`/icons/${icon}.svg`} className="h-32 fill-current" />}
             <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
@@ -12,7 +13,7 @@ const GridCard = ({ title, text, icon = "", url = "#" }) => {
             <p className="text-base font-medium">{text}</p>
           </div>
         </div>
-      </a>
+      </Link>
     );}
 
 const GridSession = ({title, grids}) => {

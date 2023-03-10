@@ -98,10 +98,8 @@ const linkList = ({ pages }) => {
   return pages.map((link) => {
     return (
       <li key={link.name}>
-        <Link href={link.url}>
-          <a className="lg:p-4 py-3 px-0 block border-b-2 border-transparent transition duration-500 ease-in-out hover:border-white">
+        <Link className="lg:p-4 py-3 px-0 block border-b-2 border-transparent transition duration-500 ease-in-out hover:border-white" href={link.url}>
             {link.name}
-          </a>
         </Link>
       </li>
     );
@@ -135,7 +133,6 @@ const Navbar = ({ pages }) => {
     >
       <div className="flex-1 flex justify-between items-center container mx-auto">
         <Link href="/">
-          <a>
           <AnimatePresence>
               {isHeaderScrolled ? (
                 <div>
@@ -179,7 +176,6 @@ const Navbar = ({ pages }) => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </a>
         </Link>
         <ButtonContainer
           open={isMenuOpen}

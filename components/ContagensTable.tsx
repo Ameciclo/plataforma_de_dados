@@ -38,8 +38,8 @@ const ContagensTable = ({ data }) => {
         Header: "Nome",
         accessor: "name",
         Cell: ({ row }) => (
-          <Link href={`contagens/${row.original._id}`} key={row.original._id}>
-            <a className="text-ameciclo">{row.original.name}</a>
+          <Link className="text-ameciclo" href={`contagens/${row.original._id}`} key={row.original._id}>
+            {row.original.name}
           </Link>
         ),
         Filter: ColumnFilter,
@@ -62,14 +62,12 @@ const ContagensTable = ({ data }) => {
         Header: "Dados",
         Cell: ({ row }) => (
           <span>
-            <Link href={row.original.summary.download_xlsx_url}>
-              <a className="text-ameciclo">XLSX</a>
+            <Link className="text-ameciclo" href={row.original.summary.download_xlsx_url}>
+              XLSX
             </Link>
             <span> | </span>
-            <Link
-              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
-            >
-              <a className="text-ameciclo">JSON</a>
+            <Link className="text-ameciclo" href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}>
+              JSON
             </Link>
           </span>
         ),

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const ImagesGrid = ({title, grids}) => {
@@ -12,13 +13,13 @@ const ImagesGrid = ({title, grids}) => {
             {
             grids.map((grid) => (
                 <div className="bg-white rounded-lg shadow-xl w-full">
-                    <a href={grid.url}>
+                    <Link href={grid.url}>
                     <img
                         src={grid.image}
                         alt={grid.alt}
                         className="object-fill h-48 w-full"
                     />
-                    </a>
+                    </Link>
                 </div>           
             ))
             }
