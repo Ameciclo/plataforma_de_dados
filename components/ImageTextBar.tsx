@@ -9,8 +9,8 @@ const ImageTextBar = ({text, image, alt="", height="", width=""}) => {
         <Image
             src={image}
             alt={alt!=""?alt:""}
-            height={height!=""?height:"100%"}
-            width={width!=""?width:"100%"}
+            height={100}
+            width={100}
         />
         </div>
         <div className="w-full text-center md:w-3/4 md:justify-center md:flex md:items-center">

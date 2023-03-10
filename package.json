@@ -1,5 +1,5 @@
 {
-  "name": "contagem_de_ciclistas",
+  "name": "plataforma_de_dados",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
     "@svgr/webpack": "^5.5.0",
     "@tippyjs/react": "^4.2.0",
     "@turf/bbox": "^6.5.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "eslint-config-next": "^13.2.3",
     "framer-motion": "^2.9.4",
     "highcharts": "^9.0.1",
