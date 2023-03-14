@@ -10,7 +10,7 @@ import GridSession from "../components/GridSession";
 
 import React, { useEffect, useState, useRef } from "react";
 import utils from "../utils"
-import data from "../pdc/observatorio-data.json"
+import data from "../public/temp_folder/observatorio-data.json"
 //import calcs from "../pdc/calcs"
 //const data = calcs()
 //////
