@@ -26,6 +26,11 @@ const generateBreadcrumbs = (router) => {
   return [{ href: "/", text: "Home" }, ...crumblist, router];
 }
 
+const baseBreadCrumbItem = {
+  label:"Plataforma de Dados",
+  slug:"/",
+  routes: ["/"]
+}
 
 export const Breadcrumb = ({ conf}) => {
 

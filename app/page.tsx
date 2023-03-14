@@ -46,12 +46,6 @@ const imagetextbar = {
   ]
 
 export default function Home() {
-
-  const page_data = {
-    title: "Plataforma de Dados",
-    cover_image_url: "/plataforma.png",   
-  }
-
   return (
     <>
       <ImageTextBar image={imagetextbar.image} text={imagetextbar.text} />

@@ -1,11 +1,8 @@
-import Head from "next/head";
 import React from "react";
 
-export const SEO = ({ title }) => {
+export const SEO = () => {
   return (
     <>
-      <Head>
-        <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
@@ -77,9 +74,6 @@ export const SEO = ({ title }) => {
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/manifest.json" />
-      </Head>
     </>
   );
 };
-
-export default SEO;
