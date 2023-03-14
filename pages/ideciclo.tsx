@@ -214,13 +214,23 @@ function getTotalCityStates(input) {
   }
 
   const ref = useRef(null)
-  const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
+  function handleClick(ref) {
+    return ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
+  }
+ 
 
   return (
     <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
       <StatisticsBox title={GeneralStatistics.title} subtitle={GeneralStatistics.subtitle} boxes={GeneralStatistics.boxes} />
       <ExplanationBox title_1={page_data.ExplanationBoxData.title_1} text_1={page_data.ExplanationBoxData.text_1} title_2={page_data.ExplanationBoxData.title_2} text_2={page_data.ExplanationBoxData.text_2}/>
-      <NumberCards title={CitiesRanking.title} data={cards_city(filteredCity)} changeFunction={changeCity} selected={selectedCity.id} filters={CitiesRanking.filters} onClickFnc={handleClick} />
+      <NumberCards props = {{
+          title:CitiesRanking.title,
+          data:cards_city(filteredCity), 
+          changeFunction:changeCity, 
+          selected:selectedCity.id,
+          filters:CitiesRanking.filters, 
+          onClickFnc: handleClick(ref)}
+        } />
       <div ref={ref} >""</div>
       {(filteredCityData.length > 0) && (
         <StatisticsBox title={CityStatistics.title} subtitle={CityStatistics.subtitle} boxes={CityStatistics.boxes} />

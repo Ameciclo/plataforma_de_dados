@@ -2,7 +2,8 @@
 import React from "react";
 import CityCard from "./CityCard";
 
-const NumberCards = ({ title, data, selected, changeFunction, filters = [], maxDigs=3, onClickFnc=()=>{}}) => {
+const NumberCards = ( props ) => {
+  const {title, data, selected, changeFunction, filters, maxDigs, onClickFnc} = props
   return (
       <section className="mx-auto container">
       <div className="mx-auto text-center my-24">

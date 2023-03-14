@@ -1,9 +1,20 @@
+import { detectContentType } from "next/dist/server/image-optimizer";
 import React, { useState } from "react";
 import ReactMapGL, { Source, Layer, NavigationControl, FullscreenControl, Popup } from "react-map-gl";
 
 const MAPBOXTOKEN = "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A"
 
-const StructureMap = ({ map, layers = [] }) => {
+type LayerType = {
+  id: string;
+  type: string;
+  paint: {
+      'line-color': string;
+      'line-width': number;
+  };
+  filter: string[];
+}
+
+const StructureMap = ( map, layers: LayerType[]  = []) => {
   
   const MAPBOXSTYLE = "mapbox://styles/mapbox/light-v10"
 

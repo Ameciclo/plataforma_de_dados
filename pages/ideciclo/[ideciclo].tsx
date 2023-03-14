@@ -53,9 +53,21 @@ function getViewport(feature, viewport) {
 }
 */
 
-function get_map_data(structure) {
+type geoJsonMap = {
+  type: string;
+  name: any;
+  crs: {
+      type: string;
+      properties: {
+          name: string;
+      };
+  };
+  features: any[];
+}
+
+function get_map_data(structure: any) {
   // TRABALHA O MAPA
-  const geoJsonMap = {
+  const geoJsonMap:geoJsonMap = {
     type: "FeatureCollection",
     name: structure.street,
     crs: {
@@ -65,9 +77,9 @@ function get_map_data(structure) {
     features: [],
   };
 
-  structure.reviews[structure.reviews.length - 1].segments.forEach((seg) => {
+  structure.reviews[structure.reviews.length - 1].segments.forEach((seg:any) => {
     geoJsonMap.features.push(
-      map.features.filter((m) => m.properties.idunido == seg.geo_id)[0]
+      map.features.filter((m:any) => m.properties.idunido == seg.geo_id)[0]
     );
   });
 
