@@ -1,9 +1,9 @@
 import React from "react";
-import {SEO} from "../app/SEO"
-import {Navbar} from "../app/Navbar";
-import {TitleBar} from "../app/TitleBar";
-import {Breadcrumb} from "../app/Breadcrumb";
-import {Footer} from "../app/Footer";
+import {SEO} from "../../app/SEO"
+import {Navbar} from "../../app/Navbar";
+import {TitleBar} from "../../app/TitleBar";
+import {Breadcrumb} from "../../app/Breadcrumb";
+import {Footer} from "../../app/Footer";
 
 
 const Layout = ({ children, pageTitle = "", coverUrl = "", breadcrumbConf}) => {

@@ -1,4 +1,4 @@
-import Layout from "../components/OldLayout";
+import Layout from "../components/OLD/OldLayout";
 import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useState, useEffect } from "react";

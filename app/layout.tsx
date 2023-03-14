@@ -35,7 +35,7 @@ export default function RootLayout({
         <div id="__next">
           <div className="flex flex-col min-h-screen">
             <p className="font-mono font-bold mx-10">CaARALHO</p>
-            <Navbar 
+            <Navbar
               pages={[
                 { name: "Inicial", url: "/" },
                 { name: "Contagens", url: "/contagens" },

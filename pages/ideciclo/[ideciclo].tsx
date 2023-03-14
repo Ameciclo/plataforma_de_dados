@@ -1,4 +1,4 @@
-import Layout from "../../components/OldLayout";
+import Layout from "../../components/OLD/OldLayout";
 import StatisticsBox from "../../components/StatisticsBox";
 
 import Highcharts from "highcharts";

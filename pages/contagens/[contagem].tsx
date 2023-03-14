@@ -1,4 +1,4 @@
-import Layout from "../../components/OldLayout";
+import Layout from "../../components/OLD/OldLayout";
 import CardsSession from "../../components/CardsSession";
 
 import React, { useState } from "react";
