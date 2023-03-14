@@ -1,16 +1,22 @@
-type footerColumnContent = {
+export type footerColumnContent = {
   label: string;
   url: string;
 };
 
-type footerColumn = {
+export type footerColumn = {
   title: string;
   content: footerColumnContent[];
   align: string;
 };
 
-type crumb = {
+export type crumb = {
   label: string;
   slug: string;
   routes: string[];
+};
+
+export type dataPartner = {
+  src: string;
+  alt: string;
+  url: string;
 };
