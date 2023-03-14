@@ -1,4 +1,4 @@
-import Layout from "../components/OLD/OldLayout";
+import {Layout} from "../components/OLD/OldLayout";
 import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 import NumberCards from "../components/NumberCards";

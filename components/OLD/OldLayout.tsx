@@ -9,7 +9,7 @@ export const Layout = ({
   children,
   pageTitle = "",
   coverUrl = "",
-  breadcrumbConf = null,
+  breadcrumbConf = {},
 }) => {
   const navBarPages = [
     { name: "Inicial", url: "/" },
