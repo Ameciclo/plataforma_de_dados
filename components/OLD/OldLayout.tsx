@@ -9,7 +9,11 @@ export const Layout = ({
   children,
   pageTitle = "",
   coverUrl = "",
-  breadcrumbConf = {},
+  breadcrumbConf  = {
+    label:"",
+    slug:"",
+    routes:[]
+  },
 }) => {
   const navBarPages = [
     { name: "Inicial", url: "/" },
@@ -60,7 +64,6 @@ export const Layout = ({
       ],
     },
   ];
-
   return (
     <>
       <div className="flex flex-col min-h-screen">
@@ -70,7 +73,7 @@ export const Layout = ({
           {pageTitle != "" && (
             <TitleBar title={pageTitle} imageUrl={coverUrl} />
           )}
-          {breadcrumbConf && <Breadcrumb conf={breadcrumbConf} />}
+          {breadcrumbConf.label != "" && <Breadcrumb conf={breadcrumbConf} />}
           {children}
         </main>
         <Footer cols={footerData} />
