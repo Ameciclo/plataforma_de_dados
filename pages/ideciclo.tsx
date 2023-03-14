@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../components/OldLayout";
 import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 import NumberCards from "../components/NumberCards";
@@ -7,6 +7,15 @@ import IdecicloTable from "../components/IdecicloTable"
 import React, { useEffect, useState, useRef } from "react";
 
 import { server } from "../config";
+
+type city = {
+  name: string;
+  population: number;
+  area: number;
+  id: number;
+  reviews: any[];
+}
+
 
 //////
 /// esses consts irão para o BD
@@ -71,8 +80,8 @@ const GeneralStatistics = {
   ]}
 
 function getTotalCityStates(input) {
-  var arr = input, obj = {}, count = 0, st_arr = [];
-  for (var i = 0; i < arr.length; i++) {
+  let arr = input, obj = {}, count = 0, st_arr : any[] = [];
+  for (let i = 0; i < arr.length; i++) {
     if (!obj[arr[i].state]) {
       obj[arr[i].state] = 1;
       count++
@@ -90,11 +99,11 @@ function getTotalCityStates(input) {
   function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
   function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
   
-  const [filteredCity, setFilteredCity] = useState([]);
-  const [filteredCityData, setFilteredCityData] = useState([]);
-  const [selectedCity, setCity] = useState(filterByName(cidades, "Recife"));
-  const [cityState, setCityState] = useState("PE");
-  const [cityPop, setCityPop] = useState("");
+  const [filteredCity, setFilteredCity] = useState<any[]>([]);
+  const [filteredCityData, setFilteredCityData] = useState<any[]>([]);
+  const [selectedCity, setCity] = useState<city>(filterByName(cidades, "Recife"));
+  const [cityState, setCityState] = useState<any>("PE");
+  const [cityPop, setCityPop] = useState<any>("");
 
   const changeCity = (id) => {
     setCity(filterById(cidades, id))
@@ -124,8 +133,8 @@ function getTotalCityStates(input) {
       let city_structures = structures.filter((s) => {
         return s.city_id === selectedCity.id
       })
-      let segs = []
-      city_structures.forEach(d => {
+      let segs : any[] = []
+      city_structures.forEach((d : any) => {
         segs.push(
           { id: d.id,
             cidade: d.city_id,
@@ -172,7 +181,7 @@ function getTotalCityStates(input) {
         return -1
       }    
     })
-    return orderedCities.map((c)=>(
+    return orderedCities.map((c : any)=>(
       {
         id: c.id,
         label: c.name,
@@ -190,7 +199,7 @@ function getTotalCityStates(input) {
         name: "cityState",
         onChange: (e) => setCityState(e.target.value), 
         onBlur: (e) => e,
-        items: [{value:"", label: "Todas"}].concat((getTotalCityStates(cidades).states).map((s) => ({value:s, label:s}))),
+        items: [{value:"", label: "Todas"}].concat((getTotalCityStates(cidades).states).map((s : any) => ({value:s, label:s}))),
       },
       {
         title: "por população", 
@@ -206,7 +215,6 @@ function getTotalCityStates(input) {
 
   const ref = useRef(null)
   const handleClick = () => ref.current?.scrollIntoView({behavior: 'smooth', block: "start"})
-
 
   return (
     <Layout pageTitle={page_data.title} coverUrl={page_data.cover_image_url} breadcrumbConf={BreadcrumbConf}>
