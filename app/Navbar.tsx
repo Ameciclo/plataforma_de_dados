@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -95,7 +97,7 @@ const LinkListUl = styled.ul`
 `;
 
 const linkList = ({ pages }) => {
-  return pages.map((link) => {
+  return pages.map((link : any) => {
     return (
       <li key={link.name}>
         <Link className="lg:p-4 py-3 px-0 block border-b-2 border-transparent transition duration-500 ease-in-out hover:border-white" href={link.url}>
@@ -107,7 +109,7 @@ const linkList = ({ pages }) => {
 };
 
 const responsiveLinkList = ({ pages }) => {
-  return pages.map((link) => {
+  return pages.map((link : any) => {
     return (
       <li className="link" key={link.name}>
         <Link href={link.url}>{link.name}</Link>
@@ -116,7 +118,7 @@ const responsiveLinkList = ({ pages }) => {
   });
 };
 
-const Navbar = ({ pages }) => {
+export const Navbar = ({ pages }) => {
   const [isMenuOpen, toggleMenu] = useState(false);
   const [isHeaderScrolled, toggleHeaderScrolled] = useState(false);
 

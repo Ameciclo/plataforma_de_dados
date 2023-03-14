@@ -2,17 +2,17 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const Footer = ( { cols }) => {
+export const Footer = ( { cols }) => {
   return (
     <>
       <footer className="bg-gray-100">
         <div className="container mx-auto px-6 pt-10 pb-6">
           <div className="flex flex-wrap">
-            {cols.map((col, i) => (
+            {cols.map((col : any, i) => (
               <div className={`w-full md:w-1/3 text-center md:text-${col.align ? col.align : 'center'}`}>
                 <h5 className="uppercase mb-6 font-bold">{col.title}</h5>
                 <ul className="mb-4">
-                  {col.content.map((col) => (
+                  {col.content.map((col : any) => (
                     <li className="mt-2">
                       <Link
                         href={col.url}
@@ -40,5 +40,3 @@ const Footer = ( { cols }) => {
     </>
   );
 };
-
-export default Footer;

@@ -8,7 +8,7 @@ const NumberCards = ({ title, data, selected, changeFunction, filters = [], maxD
       <div className="mx-auto text-center my-24">
         <h1 className="grid text-6xl font-bold pb-5">{title}</h1>
           {(filters.length > 0) && (
-            filters.map(filter => (
+            filters.map((filter : any) => (
                 <div className="inline-grid bg-ameciclo  text-white font-bold rounded relative w-70 px-4 pb-6 pt-2 mx-4">
                     <label htmlFor="docType">{filter.title}</label>
                     <select
@@ -18,13 +18,13 @@ const NumberCards = ({ title, data, selected, changeFunction, filters = [], maxD
                     onChange={filter.onChange}
                     onBlur={filter.onBlur}
                     >
-                    {filter.items.map((s) => <option value={s.value}>{s.label}</option>)}
+                    {filter.items.map((s : any) => <option value={s.value}>{s.label}</option>)}
                     </select>
                 </div>                
                 ))
         )   }
         <section className="container mx-auto grid grid-cols-6 md:grid-cols-1 md:grid-cols-6 auto-rows-auto gap-10 my-10">
-          {data.map((city, index) => (
+          {data.map((city : any, index) => (
               <CityCard data={city} selected={city.id==selected} key={city.id} changeFunction={changeFunction} position={index} maxDigs={maxDigs} onClickFnc={onClickFnc}/>
             ))}
         </section>

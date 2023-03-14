@@ -1,6 +1,6 @@
 import React from "react";
 
-const TitleBar = ({ title, imageUrl = "" }) => {
+export const TitleBar = ({ title, imageUrl = "" }) => {
   return (
     <>
     {imageUrl == "" ? (

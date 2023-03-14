@@ -73,11 +73,11 @@ const StructureMap = ({ map, layers = [] }) => {
             </div>
 
             <Source id="malha" type='geojson' data={map}>
-              {layers.map(layer => <Layer {...layer} />)}
+              {layers.map((layer : any) => <Layer {...layer} />)}
             </Source>
             <Popup longitude={-34.80277} latitude={-8.058436} anchor={"bottom-left"} closeButton={false}>
               <h3 style={{fontWeight:'bold'}}>Legenda</h3>
-              {layers.map(l => <p style={{color:l.paint['line-color']}}>{l.id}</p>)}
+              {layers.map((layer : any) => <p style={{color:layer.paint['line-color']}}>{layer.id}</p>)}
               </Popup>
           </ReactMapGL>
         </div>

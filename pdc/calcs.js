@@ -29,7 +29,7 @@ function calcs() {
         }
     })
 
-  //  const ciclos_ids = ciclos.map(c => c.id)
+  //  const ciclos_ids = ciclos.map((c) => c.id)
 /**
     output.forEach(feature => {
         const ciclo_index = ciclos_ids.indexOf(feature.properties.osm_id)
@@ -63,7 +63,7 @@ function calcs() {
             }
         ))
 
-    const kms_municipios = MUNICIPIOS.map(m => {
+    const kms_municipios = MUNICIPIOS.map((m) => {
         const pdc_total = output.filter(o => o.properties.PDC_MUNICIPIO == m).filter(o => o.properties.STATUS != "NotPDC")
         const pdc_done = pdc_total.filter(o => o.properties.STATUS == "Realizada")
         const out_pdc = more_output.filter(o => o.properties.PDC_MUNICIPIO == m)

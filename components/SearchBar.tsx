@@ -114,7 +114,7 @@ export const SearchBar = () => {
           <div className="flex flex-col">
             {selectedFilter === "protocolos" ? (
               <>
-                {results.map((result) => {
+                {results.map((result : any) => {
                   return (
                     <Link
                       className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"
@@ -145,7 +145,7 @@ export const SearchBar = () => {
               </>
             ) : (
               <>
-                {results.map((result) => {
+                {results.map((result : any) => {
                   return (
                     <Link
                       className="border-b border-gray-400 text-xl cursor-pointer p-4 hover:bg-blue-100"

@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../components/OldLayout";
 import ExplanationBox from "../components/ExplanationBox";
 import StatisticsBox from "../components/StatisticsBox";
 import StructureMap from "../components/StructureMap";
@@ -95,7 +95,7 @@ const Observatorio = ({ }) => {
     }
   const layers = [PDCLayer, PDCDoneLayer, NotPDC]
   
-  const cities = data.kms.municipios.map((m, index) => (
+  const cities = data.kms.municipios.map((m : any, index) => (
     { id: index, 
       name: m.name, 
       km_projected: m.pdc_total, 
@@ -112,14 +112,14 @@ const Observatorio = ({ }) => {
       "km_projected":"km", 
       "km_ciclos":"km"      
     }
-    return data.map((d)=>(
+    return data.map((d : any)=>(
         {
             id: d.id,
             label: d.name,
             unit: units[order],
             value: d[order]
         }
-    )).sort((a,b) => b.value >= a.value ? 1 : -1)
+    )).sort((a : any, b: any) => b.value >= a.value ? 1 : -1)
   }
 
   const [selectedCity, setCity] = useState(utils.filterByName(cities, "Recife"));

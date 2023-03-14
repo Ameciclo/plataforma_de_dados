@@ -67,7 +67,7 @@ const CountingMap = ({cyclistCounts}) => {
                 <NavigationControl style={navControlStyle}/>
             </div>
 
-            {cyclistCounts.map((c) => (
+            {cyclistCounts.map((c : any) => (
                 <Marker
                 key={c._id}
                 longitude={c.location.coordinates[1]}

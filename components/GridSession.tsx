@@ -23,7 +23,7 @@ const GridSession = ({title, grids}) => {
               <h3 className="font-bold text-3xl text-ameciclo py-8 w-1/2 mx-auto"> {title}</h3>
               {grids.length <= 6 ? (
                 <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
-                      {grids.map((grid) => (
+                      {grids.map((grid : any) => (
                           <GridCard
                           title={grid.title}
                           text={grid.text}
@@ -34,7 +34,7 @@ const GridSession = ({title, grids}) => {
                 </div> 
               ):(
                 <div className="grid grid-cols-1 lg:grid-cols-4 grid-rows-5 sm:grid-rows-1 gap-8 grid-flow-row">
-                    {grids.map((grid) => (
+                    {grids.map((grid : any) => (
                         <GridCard
                         title={grid.title}
                         text={grid.text}

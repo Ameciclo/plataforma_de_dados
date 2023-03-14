@@ -1,4 +1,4 @@
-import Layout from "../../components/Layout";
+import Layout from "../../components/OldLayout";
 import StatisticsBox from "../../components/StatisticsBox";
 
 import Highcharts from "highcharts";
@@ -253,7 +253,7 @@ const Ideciclo = ({ structure, forms }) => {
             Detalhamento e composição das notas
           </h3>
           <section className="container mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
-            {info.parametros.map((out_param) => {
+            {info.parametros.map((out_param : any) => {
               return (
                 <div className="rounded shadow-2xl">
                   <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
@@ -267,7 +267,7 @@ const Ideciclo = ({ structure, forms }) => {
                           ("" + out_param.media.toFixed(1)).replace(".", ",")}
                       </h3>
                     </div>
-                    {out_param.parametros.map((inner_param) => {
+                    {out_param.parametros.map((inner_param : any) => {
                       return (
                         //<Tippy content={n.descricao}>
                         <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
@@ -319,7 +319,7 @@ export async function getStaticPaths() {
   const allstructs = await res.json();
   const rec_structs = allstructs.filter(s => s.city_id === 1)
   // Get the paths we want to pre-render based on posts
-  const paths = rec_structs.map((s) => ({
+  const paths = rec_structs.map((s : any) => ({
     params: { ideciclo: s.id },
   }));
 

@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../components/OldLayout";
 import StatisticsBox from "../components/StatisticsBox";
 import ExplanationBox from "../components/ExplanationBox";
 import CardsSession from "../components/CardsSession";

@@ -48,7 +48,7 @@ const Maps = ({points = []}) => {
             }
             >
  
-            {points.map((c) => (
+            {points.map((c : any) => (
                 <Marker
                 key={c._id}
                 longitude={c.location.coordinates[1]}

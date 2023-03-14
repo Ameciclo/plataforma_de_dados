@@ -190,7 +190,7 @@ const IdecicloTable = ({ title, data }) => {
 
 
   const pagesButtons = (numPages) => {
-    var pages = []
+    const pages : React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>[] = []
     for (let i = 1; i <= numPages; i++) {
       if(numPages < 6) {
         if (i - 1 != pageIndex) {
@@ -264,12 +264,12 @@ const IdecicloTable = ({ title, data }) => {
             className="table-auto shadow min-w-full divide-y divide-gray-200"
           >
             <thead>
-              {headerGroups.map((headerGroup) => (
+              {headerGroups.map((headerGroup : any) => (
                 <tr
                   {...headerGroup.getHeaderGroupProps()}
                   className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
                 >
-                  {headerGroup.headers.map((column) => (
+                  {headerGroup.headers.map((column : any) => (
                     <th
                       {...column.getHeaderProps()}
                       className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
@@ -297,14 +297,14 @@ const IdecicloTable = ({ title, data }) => {
               {...getTableBodyProps()}
               className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
             >
-              {page.map((row, i) => {
+              {page.map((row : any, i) => {
                 prepareRow(row);
                 return (
                   <tr
                     {...row.getRowProps()}
                     className="hover:bg-gray-100 border-b border-gray-200 py-10"
                   >
-                    {row.cells.map((cell) => {
+                    {row.cells.map((cell : any) => {
                       return (
                         <td
                           {...cell.getCellProps()}

@@ -1,4 +1,4 @@
-import Layout from "../../components/Layout";
+import Layout from "../../components/OldLayout";
 import CardsSession from "../../components/CardsSession";
 
 import React, { useState } from "react";
@@ -22,7 +22,7 @@ const Contagem = ({ count }) => {
       routes:["/", "/contagens", count._id],
     }
 
-  const [popupInfo, setPopupInfo] = useState(null);
+  const [popupInfo, setPopupInfo] = useState("");
   const [viewport, setViewport] = useState({
     latitude: count.location.coordinates[0],
     longitude: count.location.coordinates[1],
@@ -75,20 +75,21 @@ const Contagem = ({ count }) => {
       case "west":
         return "⬅️";
     }
+    return ""
   }
 
-  let keyMap = new Map([
+  const keyMap = new Map([
       ["child", { name: "Crianças" }],
       ["women", { name: "Mulheres" }],
       ["men", { name: "Homens" }],
     ]),
     hourlyBarKeysOriginal = ["men", "women", "child"],
-    series= [],
+    series : any[] = [],
     hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
     summary = count.summary;
-
   hourlyBarKeysOriginal.forEach((hk) => {
-    series.push({name: keyMap.get(hk).name, data: Object.values(count.data.qualitative[hk].count_per_hour)})
+    const keymapname = keyMap.get(hk)?.name
+    series.push({name: keymapname, data: Object.values(count.data.qualitative[hk].count_per_hour)})
   })
 
   let flowData = {};
@@ -225,7 +226,7 @@ const Contagem = ({ count }) => {
                 </svg>
 
               </Marker>
-              {["north", "east", "west", "south"].map((d, i) => {
+              {["north", "east", "west", "south"].map((d : any, i) => {
                 return (
                   <Marker
                     latitude={count[d]?.location.coordinates[1]}
@@ -262,7 +263,7 @@ const Contagem = ({ count }) => {
                     longitude={count[popupInfo].location.coordinates[0]}
                     latitude={count[popupInfo].location.coordinates[1]}
                     closeOnClick={false}
-                    onClose={() => setPopupInfo(null)}
+                    onClose={() => setPopupInfo("")}
                   >
                     <span>
                       <b>{count[popupInfo].name}</b>
@@ -275,7 +276,7 @@ const Contagem = ({ count }) => {
                     </p>
 
                     {
-                      getFlowsFromDirection(popupInfo).map(flow => {
+                      getFlowsFromDirection(popupInfo).map((flow : any) => {
                         return (
                           <p>{getIconFor(flow.split("_")[1])} {count[flow.split("_")[1]].name}: {getTotalCountFromFlow(flow)} </p>
                         )
@@ -318,7 +319,7 @@ export async function getStaticPaths() {
   const cyclistCount = await res.json();
 
   // Get the paths we want to pre-render based on posts
-  const paths = cyclistCount.data.map((c) => ({
+  const paths = cyclistCount.data.map((c : any) => ({
     params: { contagem: c._id },
   }));
 

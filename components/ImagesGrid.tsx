@@ -11,7 +11,7 @@ const ImagesGrid = ({title, grids}) => {
             style={{ justifyItems: "center" }}
           >
             {
-            grids.map((grid) => (
+            grids.map((grid : any) => (
                 <div className="bg-white rounded-lg shadow-xl w-full">
                     <Link href={grid.url}>
                     <img

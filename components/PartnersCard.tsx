@@ -40,7 +40,7 @@ export const PartnersSession = ({ partners }) => {
             <div className="container flex justify-center pt-10 mx-4 border-gray-300 ">
                 {partners && partners.length > 0 && (
                     <div className="grid grid-cols-2 gap-2 md:grid-cols-5 md:gap-10">
-                        {partners.map((p) => (
+                        {partners.map((p : any) => (
                             <PartnerCard partner={p} key={p.id} />
                         ))}
                     </div>

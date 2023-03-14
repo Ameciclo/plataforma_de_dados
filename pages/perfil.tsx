@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../components/OldLayout";
 import ExplanationBox from "../components/ExplanationBox";
 
 import React, { useEffect, useState } from "react";
@@ -138,7 +138,7 @@ const Perfil = () => {
 
   const toggleFilter = (f, i: number) => {
     setFilters((prevState) => {
-      return prevState.map((item) => {
+      return prevState.map((item : any) => {
         return item.value === f.value
           ? { ...item, checked: !item.checked }
           : item;
@@ -148,7 +148,7 @@ const Perfil = () => {
 
   const clearFilters = () => {
     setFilters((prevState) => {
-      return prevState.map((i) => {
+      return prevState.map((i : any) => {
         return { ...i, checked: false };
       });
     });
@@ -395,7 +395,7 @@ const Perfil = () => {
             <h3 className="font-bold text-xl mt-5">Gênero</h3>
             {filters
               .filter((f) => f.key === "gender")
-              .map((f, i) => {
+              .map((f : any, i) => {
                 return (
                   <label key={f.value}>
                     <input
@@ -415,7 +415,7 @@ const Perfil = () => {
             <h3 className="font-bold text-xl mt-5">Cor/Raça</h3>
             {filters
               .filter((f) => f.key === "color_race")
-              .map((f, i) => {
+              .map((f : any, i) => {
                 return (
                   <label key={f.value}>
                     <input

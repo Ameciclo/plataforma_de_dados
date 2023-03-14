@@ -1,4 +1,5 @@
 module.exports = {
+  experimental: {appDir: true},
   future: {
     webpack5: true,
   },
