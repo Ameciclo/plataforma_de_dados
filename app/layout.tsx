@@ -1,3 +1,4 @@
+import "../styles/tailwind.scss";
 import React from "react";
 import { SEO } from "./SEO";
 import { Navbar } from "./Navbar";
@@ -34,7 +35,7 @@ export default function RootLayout({
               </main> */}
         <div id="__next">
           <div className="flex flex-col min-h-screen">
-            <p className="font-mono font-bold mx-10">CaARALHO</p>
+            <p className="font-bold bg-gray-900">CRALHO</p>
             <Navbar
               pages={[
                 { name: "Inicial", url: "/" },
