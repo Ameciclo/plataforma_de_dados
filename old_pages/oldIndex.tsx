@@ -1,6 +1,6 @@
 import { Layout } from "../components/OLD/OldLayout";
 import ImageTextBar from "../components/ImageTextBar";
-import GridSession from "../app/components/GridSession";
+import GridSession from "../app/components/CardsSession";
 import ImagesGrid from "../app/components/ImagesGrid";
 import { PartnersSession } from "../components/PartnersCard";
 

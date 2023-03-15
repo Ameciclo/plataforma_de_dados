@@ -1,6 +1,6 @@
 import React from "react";
 import ImageTextBar from "../components/ImageTextBar";
-import { CardSession } from "./components/GridSession";
+import { CardSession } from "./components/CardsSession";
 import { PartnersSession } from "../components/PartnersCard";
 import { DataPartners } from "./DataPartners";
 import {FeaturedPages} from "./FeaturedPages"

@@ -2,11 +2,6 @@ import Link from "next/link";
 import React from "react";
 import { FeaturedPage } from "../../typings";
 
-type PageProps = {
-  title: string;
-  grids: FeaturedPage[];
-};
-
 const Card = ({ title, text, icon = "", url = "#" }) => {
   return (
     <Link href={url} target="_blank">
@@ -25,7 +20,7 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
   );
 };
 
-export const CardSession = (props: PageProps) => {
+export const CardSession = (props) => {
   const { title, grids } = props;
   return (
     <section>
@@ -35,7 +30,7 @@ export const CardSession = (props: PageProps) => {
           {title}
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
-          {grids.map((grid: any) => (
+          {grids?.map((grid: any) => (
             <Card
               title={grid.title}
               text={grid.text}

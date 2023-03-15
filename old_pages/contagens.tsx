@@ -4,7 +4,7 @@ import ExplanationBox from "../components/ExplanationBox";
 import CardsSession from "../components/CardsSession";
 import CountingMap from "../components/CountingMap";
 import ContagensTable from "../components/ContagensTable";
-import {CardSession} from "../app/components/GridSession";
+import {CardSession} from "../app/components/CardsSession";
 
 import React from "react";
 

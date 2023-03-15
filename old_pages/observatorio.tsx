@@ -6,7 +6,7 @@ import NumberCards from "../components/NumberCards";
 import Table from "../components/Table";
 import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../components/TableFilters";
 //import EvalolutionGraph from 
-import GridSession from "../app/components/GridSession";
+import GridSession from "../app/components/CardsSession";
 
 import React, { useEffect, useState, useRef } from "react";
 import utils from "../utils"

@@ -1,5 +1,5 @@
 import React from "react";
-import { CardSession } from "./components/GridSession";
+import { CardSession } from "./components/CardsSession";
 import { FEATURED_PAGES } from "../servers";
 import { FeaturedPage } from "../typings";
 
@@ -11,7 +11,6 @@ const fetchFeaturedPages = async () => {
 
 export async function FeaturedPages() {
   const featuredPages = await fetchFeaturedPages();
-  console.log(featuredPages)
   return (
     <>
       <CardSession
