@@ -15,8 +15,15 @@ export type crumb = {
   routes: string[];
 };
 
-export type dataPartner = {
+export type ImageWithLink = {
   src: string;
   alt: string;
   url: string;
+};
+
+export type FeaturedPage = {
+  title: string;
+  icon: string;
+  url: string;
+  text: string;
 };
