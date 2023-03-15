@@ -2,7 +2,7 @@ import "../styles/tailwind.scss";
 import React from "react";
 import { SEO } from "./SEO";
 import { Navbar } from "./Navbar";
-import { TitleBar } from "./TitleBar";
+import { NavCover } from "./NavCover";
 import { Footer } from "./Footer";
 
 export const metadata = {
@@ -48,7 +48,7 @@ export default function RootLayout({
               ]}
             />
             <main className="flex-1 w-full mx-auto main-padding-top">
-              <TitleBar
+              <NavCover
                 title={page_data.title}
                 imageUrl={page_data.cover_image_url}
               />

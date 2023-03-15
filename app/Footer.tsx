@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import {footerColumn, footerColumnContent} from "../typings"
 
 const fetchFooterColumns = async () => {
   const res = await fetch("http://localhost:3300/footer")

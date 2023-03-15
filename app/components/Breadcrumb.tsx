@@ -47,7 +47,7 @@ export const Breadcrumb = ({ conf}) => {
       <nav className="bg-grey-light rounded font-sans w-full">
         <ol className="list-none p-0 inline-flex max-w-full">
           {conf.routes.map((route : any, i) => {
-            console.log(JSON.stringify(generateBreadcrumbs(router)))
+            //console.log(JSON.stringify(generateBreadcrumbs(router)))
             if (route === "/") {
               return (
                 <Crumb

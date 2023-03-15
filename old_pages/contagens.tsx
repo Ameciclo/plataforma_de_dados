@@ -4,7 +4,7 @@ import ExplanationBox from "../components/ExplanationBox";
 import CardsSession from "../components/CardsSession";
 import CountingMap from "../components/CountingMap";
 import ContagensTable from "../components/ContagensTable";
-import GridSession from "../components/GridSession";
+import {CardSession} from "../app/components/GridSession";
 
 import React from "react";
 
@@ -93,7 +93,7 @@ const Contagens = ({ cyclistCounts, globalSummary }) => {
       <CardsSession cards={cards} />
       <CountingMap cyclistCounts={cyclistCounts} />
       <ContagensTable data={cyclistCounts} />
-      <GridSession title={documents.title} grids={documents.grids} />
+      <CardSession title={documents.title} grids={documents.grids} />
     </Layout>
   );
 };

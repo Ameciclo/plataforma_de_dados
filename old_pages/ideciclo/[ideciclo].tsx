@@ -15,8 +15,8 @@ import ReactMapGL, {
   WebMercatorViewport,
 } from "react-map-gl";
 import MAP_STYLE from "../../public/temp_folder/ideciclo_mapstyle";
-import RADAR_STYLE from "../../styles/ideciclo_radarstyle";
-import rates_organization from "../../styles/ideciclo_rates";
+import RADAR_STYLE from "../../public/temp_folder/ideciclo_radarstyle";
+import rates_organization from "../../public/temp_folder/ideciclo_rates";
 import map from "../../public/malhacicloviariapermanente_mar2021.json";
 import bbox from "@turf/bbox";
 import { server } from "../../config";

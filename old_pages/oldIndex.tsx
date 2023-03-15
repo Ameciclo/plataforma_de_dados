@@ -1,7 +1,7 @@
 import { Layout } from "../components/OLD/OldLayout";
 import ImageTextBar from "../components/ImageTextBar";
-import GridSession from "../components/GridSession";
-import ImagesGrid from "../components/ImagesGrid";
+import GridSession from "../app/components/GridSession";
+import ImagesGrid from "../app/components/ImagesGrid";
 import { PartnersSession } from "../components/PartnersCard";
 
 import React from "react";

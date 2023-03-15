@@ -1,0 +1,104 @@
+{
+  "home": [
+    {
+      "cover_image": {
+        "url": "/plataforma.png"
+      }
+    }
+  ],
+  "data_partners": [
+    {
+      "src": "/ciclomapa.webp",
+      "alt": "Ciclomapa",
+      "url": "http://ciclomapa.org.br"
+    },
+    {
+      "src": "/observatorio.webp",
+      "alt": "Observatório da Bicicleta",
+      "url": "https://observatoriodabicicleta.org.br"
+    },
+    {
+      "src": "/mobilidados.webp",
+      "alt": "Mobilidados",
+      "url": "https://mobilidados.org.br"
+    }
+  ],
+  "footer": [
+    {
+      "title": "Ameciclo",
+      "align": "left",
+      "content": [
+        {
+          "label": "Associação de Metropolitana de Ciclistas do Recife",
+          "url": "https://www.ameciclo.org"
+        },
+        {
+          "label": "+55 (81) 93618 2947",
+          "url": "https://api.whatsapp.com/send?phone=5581936182947"
+        },
+        {
+          "label": "R. da Aurora, 529, loja 2 - Santo Amaro, Recife/PE, 50050-145",
+          "url": "https://bit.ly/2C01AhY"
+        },
+        {
+          "label": "contato@ameciclo.org",
+          "url": "mailto:contato@ameciclo.org"
+        }
+      ]
+    },
+    {
+      "title": "Links",
+      "align": "",
+      "content": [
+        { "label": "Contagens", "url": "/contagens" },
+        { "label": "Contato", "url": "http://www.ameciclo.org/contato" }
+      ]
+    },
+    {
+      "title": "Social",
+      "align": "",
+      "content": [
+        { "label": "Facebook", "url": "https://facebook.com/ameciclo" },
+        { "label": "Instagram", "url": "https://instagram.com/ameciclo" },
+        { "label": "Twitter", "url": "https://twitter.com/ameciclo" },
+        { "label": "Telegram", "url": "https://t.me/s/ameciclo" },
+        { "label": "Youtube", "url": "https://www.youtube.com/user/ameciclo" }
+      ]
+    }
+  ],
+  "featured_pages" : [
+    {
+      "title": "Contagens",
+      "icon": "contagem",
+      "url": "/contagens",
+      "text":
+        "Contagens das viagens de bicicleta e suas caracteristicas observaveis"
+    },
+    {
+      "title": "Ideciclo",
+      "icon": "ideciclo",
+      "url": "/ideciclo",
+      "text": "Índice que mede a malha e qualidade da estrutura cicloviaria"
+    },
+    {
+      "title": "Estudos e Pesquisas",
+      "icon": "relatorio",
+      "url": "/documentos",
+      "text":
+        "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
+    },
+    {
+      "title": "Perfil",
+      "icon": "perfil",
+      "url": "/perfil",
+      "text": "Dados socio-economicos dos ciclistas e suas percepções"
+    },
+    {
+      "title": "Observatório",
+      "icon": "mapa",
+      "url": "/observatorio",
+      "text":
+        "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."
+    }
+  ]
+}
