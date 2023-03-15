@@ -8,17 +8,17 @@
   ],
   "data_partners": [
     {
-      "src": "/ciclomapa.webp",
+      "src": "/public/data_partners_logos/ciclomapa.webp",
       "alt": "Ciclomapa",
       "url": "http://ciclomapa.org.br"
     },
     {
-      "src": "/observatorio.webp",
+      "src": "/public/data_partners_logos/observatorio.webp",
       "alt": "Observatório da Bicicleta",
       "url": "https://observatoriodabicicleta.org.br"
     },
     {
-      "src": "/mobilidados.webp",
+      "src": "/public/data_partners_logos/mobilidados.webp",
       "alt": "Mobilidados",
       "url": "https://mobilidados.org.br"
     }
