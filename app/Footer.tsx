@@ -41,7 +41,7 @@ export const Footer = async () => {
           </div>
           <div className="container text-center mt-2">
             <Link href=" https://vercel.com/?utm_source=ameciclo&utm_campaign=oss" target="_blank" rel="noopener noreferrer" >
-              <Image src="/vercel-logo.svg" alt="Vercel Logo" width={212} height={44} />
+              <Image src="/vercel_logo/vercel-logo.svg" alt="Vercel Logo" width={212} height={44} />
             </Link>
           </div> 
         </div>

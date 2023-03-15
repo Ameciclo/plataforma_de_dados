@@ -8,17 +8,17 @@
   ],
   "data_partners": [
     {
-      "src": "/public/data_partners_logos/ciclomapa.webp",
+      "src": "/data_partners_logos/ciclomapa.webp",
       "alt": "Ciclomapa",
       "url": "http://ciclomapa.org.br"
     },
     {
-      "src": "/public/data_partners_logos/observatorio.webp",
+      "src": "/data_partners_logos/observatorio.webp",
       "alt": "Observatório da Bicicleta",
       "url": "https://observatoriodabicicleta.org.br"
     },
     {
-      "src": "/public/data_partners_logos/mobilidados.webp",
+      "src": "/data_partners_logos/mobilidados.webp",
       "alt": "Mobilidados",
       "url": "https://mobilidados.org.br"
     }
@@ -28,7 +28,7 @@
       "title": "Ameciclo",
       "align": "left",
       "content": [
-        {
+        { 
           "label": "Associação de Metropolitana de Ciclistas do Recife",
           "url": "https://www.ameciclo.org"
         },
@@ -48,7 +48,7 @@
     },
     {
       "title": "Links",
-      "align": "",
+      "align": "center",
       "content": [
         { "label": "Contagens", "url": "/contagens" },
         { "label": "Contato", "url": "http://www.ameciclo.org/contato" }
@@ -56,7 +56,7 @@
     },
     {
       "title": "Social",
-      "align": "",
+      "align": "center",
       "content": [
         { "label": "Facebook", "url": "https://facebook.com/ameciclo" },
         { "label": "Instagram", "url": "https://instagram.com/ameciclo" },
