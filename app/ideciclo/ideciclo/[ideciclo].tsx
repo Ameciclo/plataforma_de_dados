@@ -1,6 +1,4 @@
-import {Layout} from "../../components/OLD/OldLayout";
-import StatisticsBox from "../../components/StatisticsBox";
-
+//import StatisticsBox from "../../components/StatisticsBox";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsExporting from "highcharts/modules/exporting";
@@ -14,6 +12,8 @@ import ReactMapGL, {
   LinearInterpolator,
   WebMercatorViewport,
 } from "react-map-gl";
+/* 
+
 import MAP_STYLE from "../../public/temp_folder/ideciclo_mapstyle";
 import RADAR_STYLE from "../../public/temp_folder/ideciclo_radarstyle";
 import rates_organization from "../../public/temp_folder/ideciclo_rates";
@@ -28,30 +28,7 @@ if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
 }
 
-/**
-function getViewport(feature, viewport) {
-  // calculate the bounding box of the feature
-  const [minLng, minLat, maxLng, maxLat] = bbox(feature);
-  // construct a viewport instance from the current state
-  const vp = new WebMercatorViewport(viewport);
-  const {longitude, latitude, zoom} = vp.fitBounds(
-    [
-      [minLng, minLat],
-      [maxLng, maxLat]
-    ],
-    {
-      padding: 40
-    }
-  );
 
-  return {
-    ...viewport,
-    longitude,
-    latitude,
-    zoom,
-  }
-}
-*/
 
 type geoJsonMap = {
   type: string;
@@ -308,18 +285,7 @@ const Ideciclo = ({ structure, forms }) => {
               );
             })}
           </section>
-          {/*<section>
-        <div className="rounded shadow-2xl">
-          <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
-            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
-              <h3>Situações de risco</h3>
-            </div>
-            <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
-              {info.situacoes}.
-            </div>
-          </div>
-        </div>
-      </section>*/}
+
         </div>
       </section>
     </Layout>
@@ -369,3 +335,38 @@ export async function getStaticProps({ params }) {
 }
 
 export default Ideciclo;
+ */          {/*<section>
+        <div className="rounded shadow-2xl">
+          <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
+            <div className="flex flex-col justify-center font-bold text-2xl uppercase w-full p-6 text-center tracking-widest">
+              <h3>Situações de risco</h3>
+            </div>
+            <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
+              {info.situacoes}.
+            </div>
+          </div>
+        </div>
+      </section>*/}/**
+function getViewport(feature, viewport) {
+  // calculate the bounding box of the feature
+  const [minLng, minLat, maxLng, maxLat] = bbox(feature);
+  // construct a viewport instance from the current state
+  const vp = new WebMercatorViewport(viewport);
+  const {longitude, latitude, zoom} = vp.fitBounds(
+    [
+      [minLng, minLat],
+      [maxLng, maxLat]
+    ],
+    {
+      padding: 40
+    }
+  );
+
+  return {
+    ...viewport,
+    longitude,
+    latitude,
+    zoom,
+  }
+}
+*/

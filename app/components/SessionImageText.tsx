@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export const ImageTextBar = ({ props }) => {
+export const SessionImageText = ({ props }) => {
   const { text, image, alt = "", height = "", width = "" } = props;
   return (
     <section>

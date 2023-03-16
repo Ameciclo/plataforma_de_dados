@@ -1,5 +1,6 @@
 import React from "react";
-import { ImageTextBar } from "./components/ImageTextBar";
+import { NavCover } from "./components/NavCover";
+import { SessionImageText } from "./components/SessionImageText";
 import { CardSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
 import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
@@ -18,8 +19,7 @@ async function fetchFeaturedPages() {
 
 export default async function Home() {
   const data = await fetchPlataformHomePage();
-  const { description, partners } = data;
-  const featuredPages = await fetchFeaturedPages();
+  const { cover, description, partners } = data;
   const dataPartners = partners.map((p) => {
     return {
       src: p.image.url,
@@ -27,10 +27,19 @@ export default async function Home() {
       url: p.link,
     };
   });
+  const featuredPages = await fetchFeaturedPages();
   return (
     <div className="home-page">
+      <main className="flex-1 w-full mx-auto main-padding-top">
+        <NavCover
+          props={{
+            title: "Plataforma de Dados",
+            src: cover.url,
+          }}
+        />
+      </main>
       {/* @ts-ignore */}
-      <ImageTextBar
+      <SessionImageText
         props={{
           image: "/icons/home/research.svg",
           text: description,
