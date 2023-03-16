@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pt_BR">
       <head>
         <title>{page_data.title + " | Ameciclo"}</title>
         <SEO />

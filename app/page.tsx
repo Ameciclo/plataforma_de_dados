@@ -1,41 +1,56 @@
 import React from "react";
-import ImageTextBar from "../components/ImageTextBar";
+import { ImageTextBar } from "./components/ImageTextBar";
 import { CardSession } from "./components/CardsSession";
+import { ImagesGrid } from "./components/ImagesGrid";
 import { PartnersSession } from "../components/PartnersCard";
-import { DataPartners } from "./DataPartners";
-import {FeaturedPages} from "./FeaturedPages"
+import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
 
-/** o que está como constante global virá do Strapi */
-const imagetextbar = {
-  image: "/icons/home/research.svg",
-  text:
-    "Nesta plataforma você encontra dados sobre mobilidade ativa, produzidos por nós ou pelo poder público, com visualização facilitada para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e pessoas interessadas. As informações são abertas para uso de todas as pessoas que desejam uma cidade mais humana, democrática e sustentável.",
+const fetchPlataformHomePage = async () => {
+  const res = await fetch(PLATAFORM_HOME_PAGE, { cache: "no-cache" });
+  const homePageData: any = await res.json();
+  return homePageData;
 };
 
-const partners = [
-  {
-    title: "Realização",
-    orgs: [
-      {
-        name: "Ameciclo",
-        url: "https://www.ameciclo.org",
-        logo: {
-          url: "/logo.png",
-        },
-      },
-    ],
-  },
-];
+async function fetchFeaturedPages() {
+  const response = await fetch(FEATURED_PAGES, { cache: "no-cache" });
+  const data: any[] = await response.json();
+  return data;
+}
 
 export default async function Home() {
+  const data = await fetchPlataformHomePage();
+  const { description, partners } = data;
+  const featuredPages = await fetchFeaturedPages();
+  const dataPartners = partners.map((p) => {
+    return {
+      src: p.image.url,
+      alt: p.title,
+      url: p.link,
+    };
+  });
   return (
-    <>
-      <ImageTextBar image={imagetextbar.image} text={imagetextbar.text} />
-      {/** @ts-ignore */}
-      <FeaturedPages />
-      {/** @ts-ignore */}
-      <DataPartners />
-      <PartnersSession partners={partners} />
-    </>
+    <div className="home-page">
+      {/* @ts-ignore */}
+      <ImageTextBar
+        props={{
+          image: "/icons/home/research.svg",
+          text: description,
+        }}
+      />
+      {/* @ts-ignore */}
+      <CardSession
+        props={{
+          title: "Navegue e visualize os dados",
+          grids: featuredPages,
+        }}
+      />
+      {/* @ts-ignore */}
+      <ImagesGrid
+        props={{
+          title: "Outras plataformas de dados de parceiras",
+          gridImages: dataPartners,
+        }}
+      />
+    </div>
   );
 }

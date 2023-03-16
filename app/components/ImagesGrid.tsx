@@ -20,6 +20,8 @@ export const ImagesGrid = ({props}) => {
                   className="object-fill h-48 w-full"
                   alt={image.alt}
                   src={image.src}
+                  width={"500"}
+                  height={"100"}
                 />
               </Link>
             </div>

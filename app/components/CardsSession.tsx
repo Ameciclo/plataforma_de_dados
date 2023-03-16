@@ -21,7 +21,6 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
 
 export const CardSession = ({props}) => {
   const { title, grids } = props;
-  console.log(props)
   return (
     <section>
       <div className="flex-1 container mx-auto p-10 text-center">

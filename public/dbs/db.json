@@ -1,34 +1,10 @@
 {
-  "home": [
-    {
-      "cover_image": {
-        "url": "/plataforma.png"
-      }
-    }
-  ],
-  "data_partners": [
-    {
-      "src": "/data_partners_logos/ciclomapa.webp",
-      "alt": "Ciclomapa",
-      "url": "http://ciclomapa.org.br"
-    },
-    {
-      "src": "/data_partners_logos/observatorio.webp",
-      "alt": "Observatório da Bicicleta",
-      "url": "https://observatoriodabicicleta.org.br"
-    },
-    {
-      "src": "/data_partners_logos/mobilidados.webp",
-      "alt": "Mobilidados",
-      "url": "https://mobilidados.org.br"
-    }
-  ],
   "footer": [
     {
       "title": "Ameciclo",
       "align": "left",
       "content": [
-        { 
+        {
           "label": "Associação de Metropolitana de Ciclistas do Recife",
           "url": "https://www.ameciclo.org"
         },
@@ -66,13 +42,12 @@
       ]
     }
   ],
-  "featured_pages" : [
+  "featured_pages": [
     {
       "title": "Contagens",
       "icon": "/icons/home/contagem.svg",
       "url": "/contagens",
-      "text":
-        "Contagens das viagens de bicicleta e suas caracteristicas observaveis"
+      "text": "Contagens das viagens de bicicleta e suas caracteristicas observaveis"
     },
     {
       "title": "Ideciclo",
@@ -84,8 +59,7 @@
       "title": "Estudos e Pesquisas",
       "icon": "/icons/home/relatorio.svg",
       "url": "/documentos",
-      "text":
-        "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
+      "text": "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
     },
     {
       "title": "Perfil",
@@ -97,8 +71,14 @@
       "title": "Observatório",
       "icon": "/icons/home/mapa.svg",
       "url": "/observatorio",
-      "text":
-        "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."
+      "text": "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."
+    }
+  ],
+  "data_sponsors": [
+    {
+      "alt": "Ameciclo",
+      "url": "https://www.ameciclo.org",
+      "icon": "/logo.png"
     }
   ]
 }
