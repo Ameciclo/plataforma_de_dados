@@ -2,7 +2,6 @@ import React from "react";
 import { ImageTextBar } from "./components/ImageTextBar";
 import { CardSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
-import { PartnersSession } from "../components/PartnersCard";
 import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
 
 const fetchPlataformHomePage = async () => {

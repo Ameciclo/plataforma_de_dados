@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import {ImageWithLink} from "../../typings"
+import { ImageWithLink } from "../../typings";
 
-export const ImagesGrid = ({props}) => {
+export const ImagesGrid = ({ props }) => {
   const { title, gridImages } = props;
   return (
     <section className="bg-white">

@@ -7,7 +7,10 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
       <div className="bg-white w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
         <div className="flex flex-col text-center">
           {icon != "" && (
-            <img src={`http://localhost:3300${icon}`} className="h-32 fill-current" />
+            <img
+              src={`http://localhost:3300${icon}`}
+              className="h-32 fill-current"
+            />
           )}
           <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
             {title}
@@ -19,7 +22,7 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
   );
 };
 
-export const CardSession = ({props}) => {
+export const CardSession = ({ props }) => {
   const { title, grids } = props;
   return (
     <section>
