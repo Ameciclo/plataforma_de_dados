@@ -3,10 +3,10 @@ import { CardSession } from "./components/CardsSession";
 import { FEATURED_PAGES } from "../servers";
 import { FeaturedPage } from "../typings";
 
-const fetchFeaturedPages = async () => {
-  const res = await fetch(FEATURED_PAGES, { cache: "no-cache" });
-  const featuredPages: FeaturedPage[] = await res.json();
-  return featuredPages;
+async function fetchFeaturedPages() {
+  const response = await fetch(FEATURED_PAGES, { cache: "no-cache" });
+  const data: FeaturedPage[] = await response.json();
+  return data;
 };
 
 export async function FeaturedPages() {

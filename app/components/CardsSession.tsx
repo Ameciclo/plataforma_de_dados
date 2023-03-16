@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import { FeaturedPage } from "../../typings";
 
 const Card = ({ title, text, icon = "", url = "#" }) => {
   return (
@@ -8,7 +7,7 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
       <div className="bg-white w-full rounded-lg flex items-center justify-center text-ameciclo p-10">
         <div className="flex flex-col text-center">
           {icon != "" && (
-            <img src={`/icons/${icon}.svg`} className="h-32 fill-current" />
+            <img src={`http://localhost:3300${icon}`} className="h-32 fill-current" />
           )}
           <h2 className="text-2xl font-bold text-ameciclo uppercase tracking-wider my-2">
             {title}
@@ -20,8 +19,9 @@ const Card = ({ title, text, icon = "", url = "#" }) => {
   );
 };
 
-export const CardSession = (props) => {
+export const CardSession = ({props}) => {
   const { title, grids } = props;
+  console.log(props)
   return (
     <section>
       <div className="flex-1 container mx-auto p-10 text-center">

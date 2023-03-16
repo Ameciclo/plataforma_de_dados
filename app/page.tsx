@@ -7,7 +7,7 @@ import {FeaturedPages} from "./FeaturedPages"
 
 /** o que está como constante global virá do Strapi */
 const imagetextbar = {
-  image: "/icons/research.svg",
+  image: "/icons/home/research.svg",
   text:
     "Nesta plataforma você encontra dados sobre mobilidade ativa, produzidos por nós ou pelo poder público, com visualização facilitada para estudantes, jornalistas, cicloativistas, pesquisadoras(es) e pessoas interessadas. As informações são abertas para uso de todas as pessoas que desejam uma cidade mais humana, democrática e sustentável.",
 };
@@ -20,7 +20,7 @@ const partners = [
         name: "Ameciclo",
         url: "https://www.ameciclo.org",
         logo: {
-          url: "/public/logo.png",
+          url: "/logo.png",
         },
       },
     ],

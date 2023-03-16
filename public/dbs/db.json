@@ -69,33 +69,33 @@
   "featured_pages" : [
     {
       "title": "Contagens",
-      "icon": "contagem",
+      "icon": "/icons/home/contagem.svg",
       "url": "/contagens",
       "text":
         "Contagens das viagens de bicicleta e suas caracteristicas observaveis"
     },
     {
       "title": "Ideciclo",
-      "icon": "ideciclo",
+      "icon": "/icons/home/ideciclo.svg",
       "url": "/ideciclo",
       "text": "Índice que mede a malha e qualidade da estrutura cicloviaria"
     },
     {
       "title": "Estudos e Pesquisas",
-      "icon": "relatorio",
+      "icon": "/icons/home/relatorio.svg",
       "url": "/documentos",
       "text":
         "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
     },
     {
       "title": "Perfil",
-      "icon": "perfil",
+      "icon": "/icons/home/perfil.svg",
       "url": "/perfil",
       "text": "Dados socio-economicos dos ciclistas e suas percepções"
     },
     {
       "title": "Observatório",
-      "icon": "mapa",
+      "icon": "/icons/home/mapa.svg",
       "url": "/observatorio",
       "text":
         "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."

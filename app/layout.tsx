@@ -13,7 +13,7 @@ export const metadata = {
 
 const page_data = {
   title: "Plataforma de Dados",
-  cover_image_url: "/plataforma.png",
+  cover_image_url: "/pages_covers/plataforma.png",
 };
 
 export default function RootLayout({
