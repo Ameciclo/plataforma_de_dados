@@ -1,7 +1,7 @@
 import {Layout} from "../../components/OLD/OldLayout";
-import StatisticsBox from "../contagens/components/StatisticsBox";
+import StatisticsBox from "../components/StatisticsBox";
 import {ExplanationBox} from "../components/ExplanationBox";
-import NumberCards from "../../components/NumberCards";
+import NumberCards from "../components/NumberCards";
 import IdecicloTable from "./components/IdecicloTable"
 
 import React, { useEffect, useState, useRef } from "react";

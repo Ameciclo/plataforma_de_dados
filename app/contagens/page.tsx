@@ -1,12 +1,12 @@
 import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { StatisticsBox } from "./components/StatisticsBox";
+import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBox } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
 import CountingMap from "./components/CountingMap";
 import ContagensTable from "./components/ContagensTable";
-import { GridSession } from "./components/GridSession";
+import { GridSession } from "../components/GridSession";
 import { groupBy } from "../../utils";
 import {
   COUNTINGS_DATA,

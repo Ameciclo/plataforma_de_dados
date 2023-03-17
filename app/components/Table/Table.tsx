@@ -1,9 +1,6 @@
-import React, { useState, useEffect }  from "react";
+import React  from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
 import { matchSorter } from "match-sorter";
-import Link from "next/link";
-import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter, GlobalFilter} from "./TableFilters";
-import SelectColumn from "../app/ideciclo/components/SelectColumn";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -12,7 +9,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-const Table = ({ title, data, columns }) => {
+export const Table = ({ title, data, columns }) => {
 
   const filterTypes = React.useMemo(
     () => ({
@@ -215,5 +212,3 @@ const Table = ({ title, data, columns }) => {
       </section>
   );
 };
-
-export default Table;
