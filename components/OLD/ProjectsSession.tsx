@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { DocumentCard } from "../../components/DocumentCard";
+import { DocumentCard } from "../../app/documentos/components/DocumentCard";
 import { DOCUMENTS_DATA } from "../../servers";
 /* "use client";
 

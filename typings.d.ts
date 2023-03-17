@@ -27,3 +27,12 @@ export type FeaturedPage = {
   url: string;
   text: string;
 };
+
+export type document = {
+  title: string;
+  description: string;
+  url: string;
+  type: string;
+  release_date: string;
+  cover: any;
+};

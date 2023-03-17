@@ -18,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt_BR">
       <head>
+        <title>{"Plataforma de Dados" + " | Ameciclo"}</title>
         <SEO />
       </head>
       <body>

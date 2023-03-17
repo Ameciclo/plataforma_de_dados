@@ -4,7 +4,7 @@ module.exports = {
     appDir: true,
   },
   images: {
-    domains: ['localhost:3300', 'res.cloudinary.com'],
+    domains: ['localhost:3300', 'res.cloudinary.com', 'f000.backblazeb2.com'],
   },
   future: {
     webpack5: true,

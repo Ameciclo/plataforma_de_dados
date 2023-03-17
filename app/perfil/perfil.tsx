@@ -14,7 +14,7 @@ if (typeof Highcharts === "object") {
   HighchartsHistogram(Highcharts);
   HighchartsMore(Highcharts);
 }
-/* 
+/*
 //////
 /// esses consts irão para o BD
 //////
