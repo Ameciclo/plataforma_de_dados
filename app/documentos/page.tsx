@@ -1,18 +1,14 @@
 import { NavCover } from "../components/NavCover";
 import { ExplanationBox } from "../components/ExplanationBox";
-import { DOCUMENTS_PAGE } from "../../servers";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { DocumentsSession } from "./DocumentsSession";
+import { DocumentsSession } from "./components/DocumentsSession";
+import { document } from "../../typings";
+import { DOCUMENTS_PAGE, DOCUMENTS_DATA } from "../../servers";
+import { docTypes } from "./docTypes.json";
 
 export const metadata = {
   title: "Documentos e estudos da Ameciclo",
   description: "Área dedicada aos nossos estudos e documentos.",
-};
-
-const fetchDocumentsPage = async () => {
-  const response = await fetch(DOCUMENTS_PAGE, { cache: "no-cache" });
-  const data = await response.json();
-  return data;
 };
 
 const crumb = {
@@ -21,9 +17,28 @@ const crumb = {
   routes: ["/", "/documentos"],
 };
 
-const Documentos = async () => {
-  const page_data = await fetchDocumentsPage();
+const fetchDocumentsPage = async () => {
+  const response_page = await fetch(DOCUMENTS_PAGE, { cache: "no-cache" });
+  const page_data = await response_page.json();
+  const response_data = await fetch(DOCUMENTS_DATA, { cache: "no-cache" });
+  const documents_data = await response_data.json();
+  return { page_data, documents_data };
+};
+
+export default async function Documentos() {
+  const { page_data, documents_data } = await fetchDocumentsPage();
   const { cover, description, objectives } = page_data;
+  const documents: document[] = documents_data?.map((doc) => {
+    return {
+      title: doc.title,
+      description: doc.description,
+      url: doc.url,
+      type: doc.type,
+      release_date: doc.release_date,
+      cover: doc.cover.url,
+    };
+  });
+
   return (
     <>
       <NavCover
@@ -42,9 +57,8 @@ const Documentos = async () => {
           { title: "E o que mais?", description: objectives },
         ]}
       />
-      <DocumentsSession />
+      {/* @ts-ignore */}
+      <DocumentsSession props={{ documents, docTypes }} />
     </>
   );
-};
-
-export default Documentos;
+}
