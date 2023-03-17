@@ -1,0 +1,90 @@
+
+const documents = {
+  title: "Documentos para realizar contagens de ciclistas.",
+  grids: [
+    {
+      title: "Planilha de Contagem",
+      icon: "",
+      url:
+        "https://drive.google.com/uc?export=download&id=14D_Ly5GlX9toMKIy79Lsg4TcTQwI1vJP",
+      text:
+        "Planilha que faz as contagens de fluxos e características de ciclistas",
+    },
+    {
+      title: "Planilha Auxiliar",
+      icon: "",
+      url:
+        "https://drive.google.com/uc?export=download&id=1hEP6Dlqf6677LpCdnSyldAzoGTTrmGNT",
+      text: "Planilha com os dados qualitativos para auxiliar na contagem.",
+    },
+    {
+      title: "Planilha Eletrônica",
+      icon: "",
+      url:
+        "https://docs.google.com/spreadsheets/d/1KZUXJ_GkcEnu-ZBgEKkIMq2yRNCI0nRK7dlz2O9QqVs/edit#gid=2030770011",
+      text: "Planilha para compilar todos os dados e chegar às conclusões.",
+    },
+    {
+      title: "Modelo de Relatório",
+      icon: "",
+      url:
+        "https://drive.google.com/file/d/1SaisbxjoaKoG0cSAsWRgoRC5W6wgSx_r/view?usp=sharing",
+      text: "Relatório modelo para cada contagem de ciclistas.",
+    },
+    {
+      title: "Panfleto de instruções",
+      icon: "",
+      url:
+        "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4LURYY2o2Nml0TDA",
+      text:
+        "Panfleto informativo que mostra como as informações devem ser marcadas.",
+    },
+    {
+      title: "Instruções gerais",
+      icon: "",
+      url:
+        "https://drive.google.com/uc?export=download&id=0BzQ5vNvMmIF4emY5aENNWnJDZE9jRlVvU0VqTVpKMUFZemxV",
+      text: "Mais informações acerca de como nossa contagem é realizada.",
+    },
+    {
+      title: "Manual da Transporte Ativo",
+      icon: "",
+      url:
+        "http://transporteativo.org.br/contagens/manual_contagem_fotografica.pdf",
+      text:
+        "Manual de contagens fotográficas que baseou muitas das contagens no Brasil.",
+    },
+    {
+      title: "Manual do ITDP",
+      icon: "",
+      url:
+        "http://itdpbrasil.org/wp-content/uploads/2018/10/Contagens-de-ciclistas_ITDP_out2018_v04.pdf",
+      text:
+        "Recomendações técnicas e monitoramento atualizado para uniformização das contagens de ciclistas.",
+    },
+  ],
+};
+
+const page_data = {
+  title: "Contagens de ciclistas",
+  cover_image_url: "/contagem.png",
+  ExplanationBoxData: {
+    title_1: "O que é?",
+    text_1: `Registramos as pessoas que passam de bicicleta durante 14 horas em
+      um pré-escolhido cruzamento da cidade do Recife. As nossas
+      contagens são registradas manualmente através da observação das
+      pessoas voluntárias na contagem, registrando a direção do
+      deslocamento e fatores qualitativos. Dentre esses fatores estão o
+      gênero, tipo de bicicleta, uso de capacete, se estão dando carona,
+      se são crianças se estão à serviço e comportamentos como contramão
+      e pedalada na calçada. Ainda são registrados outros fatores
+      qualitativos que podem ser especificidades de cada local.`,
+    title_2: "Para que serve?",
+    text_2: `As contagens de ciclistas são importantes instrumentos de
+      planejamento urbano. Elas permitem identificar os pontos de maior
+      demanda por estruturas cicláveis, além das tendências futuras. A
+      Ameciclo as utiliza como ferramentas para incidir no planejamento
+      e tem seus dados abertos para serem usados pela mídia, academia ou
+      quaisquer pessoa que assim deseje.`,
+  },
+};
