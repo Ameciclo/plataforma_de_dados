@@ -1,21 +1,48 @@
 function group_by(objetoArray, propriedade) {
-    return objetoArray.reduce((acc, obj) => {
-      let key = obj[propriedade]
-      if (!acc[key]) acc[key] = []
-      acc[key].push(obj)
-      return acc;
-    }, {});
-  }
+  return objetoArray.reduce((acc, obj) => {
+    let key = obj[propriedade];
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(obj);
+    return acc;
+  }, {});
+}
 
-  function filterByElement(jsonObject, element_value, element) {return jsonObject.filter(function(jsonObject) {return (jsonObject[element] == element_value);})[0];}
-  function filterById(jsonObject, id) {return jsonObject.filter(function(jsonObject) {return (jsonObject['id'] == id);})[0];}
-  function filterByName(jsonObject, name) {return jsonObject.filter(function(jsonObject) {return (jsonObject['name'] == name);})[0];}
+// https://stackoverflow.com/questions/14446511/most-efficient-method-to-groupby-on-an-array-of-objects
+export const groupBy = (xs, f) => {
+  return xs.reduce(
+    (r, v, i, a, k = f(v)) => ((r[k] || (r[k] = [])).push(v), r),
+    {}
+  );
+};
 
+/* var groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+}; */
+
+function filterByElement(jsonObject, element_value, element) {
+  return jsonObject.filter(function (jsonObject) {
+    return jsonObject[element] == element_value;
+  })[0];
+}
+function filterById(jsonObject, id) {
+  return jsonObject.filter(function (jsonObject) {
+    return jsonObject["id"] == id;
+  })[0];
+}
+function filterByName(jsonObject, name) {
+  return jsonObject.filter(function (jsonObject) {
+    return jsonObject["name"] == name;
+  })[0];
+}
 
 function exportToJsonFile(jsonData, name) {
-    let dataStr = JSON.stringify(jsonData);
-    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    return dataUri
+  let dataStr = JSON.stringify(jsonData);
+  let dataUri =
+    "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+  return dataUri;
 }
 /**     let exportFileDefaultName = name + '.json';
 
@@ -36,7 +63,10 @@ function exportToJsonFile(jsonData, name) {
 exportToJsonFile(data, "observatorio-data")
 */
 
-
-
-export default {group_by, filterByElement, filterById, filterByName, exportToJsonFile}
-
+export default {
+  group_by,
+  filterByElement,
+  filterById,
+  filterByName,
+  exportToJsonFile,
+};

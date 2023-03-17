@@ -1,9 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const InfoCard = ({ label, data, style, icon }) => {
-  let percent = (data * 100)
-  let text = `${percent.toLocaleString("pt-BR", {maximumFractionDigits: 1})}%`
+const InfoCard = ({ props }) => {
+  const { label, data, icon , style} = props;
+  let percent = data * 100;
+  let text = `${percent.toLocaleString("pt-BR", {
+    maximumFractionDigits: 1,
+  })}%`;
 
   return (
     <div

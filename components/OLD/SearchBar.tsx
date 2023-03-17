@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import axios from "axios";
-import useDebounce from "../hooks/useDebounce";
+import useDebounce from "../../hooks/useDebounce";
 import Link from "next/link";
 
 export const SearchBar = () => {

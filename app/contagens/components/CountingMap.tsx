@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from "react";
 import ReactMapGL, { Marker, NavigationControl, FullscreenControl } from "react-map-gl";
 

@@ -1,6 +1,6 @@
 
 import React from "react";
-import CityCard from "./CityCard";
+import CityCard from "../app/ideciclo/components/CityCard";
 
 const NumberCards = ( props ) => {
   const {title, data, selected, changeFunction, filters, maxDigs, onClickFnc} = props
@@ -24,7 +24,7 @@ const NumberCards = ( props ) => {
                 </div>                
                 ))
         )   }
-        <section className="container mx-auto grid grid-cols-6 md:grid-cols-1 md:grid-cols-6 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto grid grid-cols-6 sd:grid-cols-1 md:grid-cols-6 auto-rows-auto gap-10 my-10">
           {data.map((city : any, index) => (
               <CityCard data={city} selected={city.id==selected} key={city.id} changeFunction={changeFunction} position={index} maxDigs={maxDigs} onClickFnc={onClickFnc}/>
             ))}

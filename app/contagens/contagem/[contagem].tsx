@@ -1,5 +1,5 @@
 import {Layout} from "../../../components/OLD/OldLayout";
-import CardsSession from "../../../components/CardsSession";
+import CardsSession from "../components/CardsSession";
 
 import React, { useState } from "react";
 import ReactMapGL, { Marker, Popup, NavigationControl } from "react-map-gl";

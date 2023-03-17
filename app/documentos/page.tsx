@@ -17,18 +17,18 @@ const crumb = {
   routes: ["/", "/documentos"],
 };
 
-const fetchDocumentsPage = async () => {
-  const response_page = await fetch(DOCUMENTS_PAGE, { cache: "no-cache" });
-  const page_data = await response_page.json();
-  const response_data = await fetch(DOCUMENTS_DATA, { cache: "no-cache" });
-  const documents_data = await response_data.json();
-  return { page_data, documents_data };
+const fetchData = async () => {
+  const pageDataRes = await fetch(DOCUMENTS_PAGE, { cache: "no-cache" });
+  const pageData = await pageDataRes.json();
+  const dataRes = await fetch(DOCUMENTS_DATA, { cache: "no-cache" });
+  const data = await dataRes.json();
+  return { pageData, data };
 };
 
 export default async function Documentos() {
-  const { page_data, documents_data } = await fetchDocumentsPage();
-  const { cover, description, objectives } = page_data;
-  const documents: document[] = documents_data?.map((doc) => {
+  const { pageData, data } = await fetchData();
+  const { cover, description, objectives } = pageData;
+  const documents: document[] = data?.map((doc) => {
     return {
       ...doc,
       cover: doc.cover.url,
@@ -39,7 +39,7 @@ export default async function Documentos() {
     <>
       <NavCover
         props={{
-          title: page_data.title,
+          title: pageData.title,
           src: cover.url,
         }}
       />

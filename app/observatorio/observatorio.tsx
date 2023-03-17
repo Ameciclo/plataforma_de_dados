@@ -1,10 +1,10 @@
 import {Layout} from "../../components/OLD/OldLayout";
 import {ExplanationBox} from "../components/ExplanationBox";
-import StatisticsBox from "../../components/StatisticsBox";
+import StatisticsBox from "../contagens/components/StatisticsBox";
 import StructureMap from "../../components/StructureMap";
 import NumberCards from "../../components/NumberCards";
 import Table from "../../components/Table";
-import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../../components/TableFilters";
+import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../../components/Table/TableFilters";
 /* 
 
 //import EvalolutionGraph from 

@@ -2,8 +2,7 @@ import React, { useState, useEffect }  from "react";
 import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
-import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter, GlobalFilter} from "./TableFilters";
-import SelectColumn from "./SelectColumn";
+import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter, GlobalFilter} from "../../../components/Table/TableFilters";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -12,8 +11,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-const Table = ({ title, data, columns }) => {
-
+const IdecicloTable = ({ title, data }) => {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -31,6 +29,127 @@ const Table = ({ title, data, columns }) => {
         });
       },
     }),
+    []
+  );
+/*
+
+  const ratedColumns = [
+        {
+          Header: "Qualidade do Projeto",
+          accessor: "projeto",
+          Cell: ({ value }) => {
+            if (value) {
+            return <span>{((value).toFixed(1)).replace(".",",")}</span>
+          } else {
+            return  <span>{"N/A"}</span>
+          }
+          },
+          Filter: NumberRangeColumnFilter,
+          filter: 'between',
+    
+      },
+      {
+        Header: "Segurança Viária",
+        accessor: "seguranca",
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{((value).toFixed(1)).replace(".",",")}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
+        Filter: NumberRangeColumnFilter,
+        filter: 'between',
+  
+    },
+    {
+      Header: "Manutenção e Urbanidade",
+      accessor: "manutencao",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+
+    },{
+      Header: "Nota Geral",
+      accessor: "nota",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+      }
+    ]
+
+  const [filteredCol, setFilteredCol] = useState(ratedColumns[3]);
+
+  const [rateColumn, setRateColumn] = useState("nota");
+  
+  useEffect(() => {
+    if (rateColumn) {
+      setFilteredCol(
+        ratedColumns.filter((col) => { return col.accessor === rateColumn;})[0]
+      );
+    } else {
+      setFilteredCol(ratedColumns[3]);
+    }
+  }, [status, ratedColumns]);
+*/
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "Rua",
+        accessor: "logradouro",
+        Cell: ({ row }) => (
+            <Link className="text-ameciclo" href={`ideciclo/${row.original.id}`} key={row.original.id}>
+                {row.original.cidade == 1 ? 
+                (<> {row.original.logradouro}</>) :
+                (<>{row.original.logradouro}</>)}
+            </Link>
+        ),
+        Filter: ColumnFilter,
+      },
+      {
+        Header: "Tipo",
+        accessor: "tipologia",
+        Filter: SelectColumnFilter,
+      },
+      {
+        Header: "Extensão (km)",
+        accessor: "comprimento",
+        Cell: ({ value }) => {
+          if (value) {
+          return <span>{(""+(value).toFixed(2)).replace(".",",")}</span>
+        } else {
+          return  <span>{"N/A"}</span>
+        }
+        },
+        Filter: NumberRangeColumnFilter,
+        filter: 'between',
+    },
+    ,{
+      Header: "Nota Geral",
+      accessor: "nota",
+      Cell: ({ value }) => {
+        if (value) {
+        return <span>{((value).toFixed(1)).replace(".",",")}</span>
+      } else {
+        return  <span>{"N/A"}</span>
+      }
+      },
+      Filter: NumberRangeColumnFilter,
+      filter: 'between',
+      },
+    ],
     []
   );
 
@@ -71,7 +190,7 @@ const Table = ({ title, data, columns }) => {
 
 
   const pagesButtons = (numPages) => {
-    var pages : any[] = []
+    const pages : React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>[] = []
     for (let i = 1; i <= numPages; i++) {
       if(numPages < 6) {
         if (i - 1 != pageIndex) {
@@ -99,16 +218,51 @@ const Table = ({ title, data, columns }) => {
             )
     
         }
-      }
+      }/* else {
+        if(
+          i == 1 
+          ||  i == numPages  
+          || ((i <= pageIndex+2) && (i >= pageIndex-1))
+          ){
+          if (i - 1 != pageIndex) {
+            pages.push(
+                <button
+                    className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
+                    onClick={() => gotoPage(i-1)}
+                >
+                    {i}
+                </button>
+            )
+    
+        } else {
+            pages.push(
+                <button
+                    className="bg-red-500 border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
+                    type="button"
+                    style={{ transition: "all .15s ease" }}
+                    onClick={() => gotoPage(i-1)}
+                >
+                    {i}
+                </button>
+            )
+    
+        }
+        }
+      }*/
     }
     return pages
-  }
+}
 
   return (
     <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
       <h2 className="text-gray-600 text-3xl">{title}</h2>
         <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
-          <table {...getTableProps()} className="table-auto shadow min-w-full divide-y divide-gray-200">
+          <table
+            {...getTableProps()}
+            className="table-auto shadow min-w-full divide-y divide-gray-200"
+          >
             <thead>
               {headerGroups.map((headerGroup : any) => (
                 <tr
@@ -139,14 +293,23 @@ const Table = ({ title, data, columns }) => {
                 </tr>
               ))}
             </thead>
-            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700">
+            <tbody
+              {...getTableBodyProps()}
+              className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
+            >
               {page.map((row : any, i) => {
                 prepareRow(row);
                 return (
-                  <tr {...row.getRowProps()} className="hover:bg-gray-100 border-b border-gray-200 py-10">
+                  <tr
+                    {...row.getRowProps()}
+                    className="hover:bg-gray-100 border-b border-gray-200 py-10"
+                  >
                     {row.cells.map((cell : any) => {
                       return (
-                        <td {...cell.getCellProps()} className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm" >
+                        <td
+                          {...cell.getCellProps()}
+                          className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm"
+                        >
                           {cell.render("Cell")}
                         </td>
                       );
@@ -156,12 +319,9 @@ const Table = ({ title, data, columns }) => {
               })}
             </tbody>
           </table>
-              {//console.log("PAGINA")
-              }
-              {//console.log(rows)
-              }
+
           <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-            São {rows.length} estruturas e somam {Math.round(rows.reduce((a,c)=>a + c.values.ciclo_kms,0)*10)/10}km feitos de {Math.round(rows.reduce((a,c)=>a + c.values.pdc_kms,0)*10)/10}km projetados.
+            Exibindo {rows.length} de {data.length} estruturas
             <div className="inline-flex mt-2 xs:mt-0">
               {canPreviousPage ? (
                 <button
@@ -210,10 +370,26 @@ const Table = ({ title, data, columns }) => {
                 </button>
               )}
             </div>
+            {/*
+            <div className="inline-block relative w-64">
+                <label htmlFor="status">Veja outras notas:</label>
+                <select
+                  value={rateColumn}
+                  name="rateColumn"
+                  className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                  onChange={(e) => setRateColumn(e.target.value)}
+                  onBlur={(e) => e}
+                >
+                  <option value="nota">Nota Geral</option>
+                  <option value="projeto">Qualidade do Projeto</option>
+                  <option value="seguranca">Segurança Viária</option>
+                  <option value="manutencao">Manutenção e Urbanidade</option>
+                </select>
+              </div>*/}
             </div>
         </div>
       </section>
   );
 };
 
-export default Table;
+export default IdecicloTable;
