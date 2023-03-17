@@ -6,7 +6,7 @@ import { DocumentCard } from "./DocumentCard";
 import { document } from "../../../typings";
 
 export const DocumentsSession = ({ props }) => {
-  const {documents, docTypes} = props
+  const { documents, docTypes } = props;
   const [selectedDocumentType, setSelectedDocumentType] = useState("all");
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
 
@@ -38,6 +38,15 @@ export const DocumentsSession = ({ props }) => {
           ],
         }}
       />
+      <DocumentsList props={{filteredDocuments, docTypes}} />
+    </>
+  );
+};
+
+const DocumentsList = ({ props }) => {
+  const { filteredDocuments, docTypes } = props;
+  return (
+    <>
       <div className="mt-5 mx-3 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {filteredDocuments
           .sort((a: document, b: document) =>
@@ -46,17 +55,12 @@ export const DocumentsSession = ({ props }) => {
           .map((document: document) => (
             <DocumentCard
               props={{
-                title: document.title,
-                description: document.description,
-                release_date: document.release_date,
-                type: document.type,
-                cover: document.cover,
-                url: document.url,
-                indicator: docTypes.filter(d => document.type === d.value)[0],
+                ...document,
+                indicator: docTypes.filter((d) => document.type === d.value)[0],
               }}
             />
           ))}
-      </div>
+      </div>{" "}
     </>
   );
 };

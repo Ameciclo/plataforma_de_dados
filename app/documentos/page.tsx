@@ -30,11 +30,7 @@ export default async function Documentos() {
   const { cover, description, objectives } = page_data;
   const documents: document[] = documents_data?.map((doc) => {
     return {
-      title: doc.title,
-      description: doc.description,
-      url: doc.url,
-      type: doc.type,
-      release_date: doc.release_date,
+      ...doc,
       cover: doc.cover.url,
     };
   });
