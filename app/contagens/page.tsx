@@ -50,7 +50,6 @@ export default async function Contagens() {
       url: a.file.url,
     };
   });
-  console.log(cards)
   return (
     <>
       <NavCover
@@ -75,8 +74,8 @@ export default async function Contagens() {
         ]}
       />
      <GridSession props={cards} />
-  {/*               <CountingMap cyclistCounts={data} />
-      <ContagensTable data={data} />*/}
+      <CountingMap cyclistCounts={data} />
+      <ContagensTable data={data} />
       <CardsSession
         props={{
           title: "Documentos para realizar contagens de ciclistas.",

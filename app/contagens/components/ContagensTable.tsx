@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import { useTable, usePagination, useFilters, useSortBy } from "react-table";
 import { matchSorter } from "match-sorter";
