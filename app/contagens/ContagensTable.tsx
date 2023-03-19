@@ -1,9 +1,9 @@
-'use client'
+"use client";
 import React from "react";
 import { useTable, usePagination, useFilters, useSortBy } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
-import {ColumnFilter} from "../../components/Table/TableFilters";
+import { ColumnFilter } from "../components/Table/TableFilters";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -39,7 +39,11 @@ const ContagensTable = ({ data }) => {
         Header: "Nome",
         accessor: "name",
         Cell: ({ row }) => (
-          <Link className="text-ameciclo" href={`contagens/${row.original._id}`} key={row.original._id}>
+          <Link
+            className="text-ameciclo"
+            href={`contagens/${row.original._id}`}
+            key={row.original._id}
+          >
             {row.original.name}
           </Link>
         ),
@@ -63,11 +67,17 @@ const ContagensTable = ({ data }) => {
         Header: "Dados",
         Cell: ({ row }) => (
           <span>
-            <Link className="text-ameciclo" href={row.original.summary.download_xlsx_url}>
+            <Link
+              className="text-ameciclo"
+              href={row.original.summary.download_xlsx_url}
+            >
               XLSX
             </Link>
             <span> | </span>
-            <Link className="text-ameciclo" href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}>
+            <Link
+              className="text-ameciclo"
+              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
+            >
               JSON
             </Link>
           </span>
@@ -105,19 +115,18 @@ const ContagensTable = ({ data }) => {
 
   return (
     <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
-
       <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
         <table
           {...getTableProps()}
           className="table-auto shadow min-w-full divide-y divide-gray-200"
         >
           <thead>
-            {headerGroups.map((headerGroup : any) => (
+            {headerGroups.map((headerGroup: any) => (
               <tr
                 {...headerGroup.getHeaderGroupProps()}
                 className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
               >
-                {headerGroup.headers.map((column : any) => (
+                {headerGroup.headers.map((column: any) => (
                   <th
                     {...column.getHeaderProps()}
                     className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
@@ -145,14 +154,14 @@ const ContagensTable = ({ data }) => {
             {...getTableBodyProps()}
             className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700"
           >
-            {page.map((row : any, i) => {
+            {page.map((row: any, i) => {
               prepareRow(row);
               return (
                 <tr
                   {...row.getRowProps()}
                   className="hover:bg-gray-100 border-b border-gray-200 py-10"
                 >
-                  {row.cells.map((cell : any) => {
+                  {row.cells.map((cell: any) => {
                     return (
                       <td
                         {...cell.getCellProps()}

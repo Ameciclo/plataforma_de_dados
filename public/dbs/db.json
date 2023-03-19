@@ -26,50 +26,71 @@
       "title": "Links",
       "align": "center",
       "content": [
-        { "label": "Contagens", "url": "/contagens" },
-        { "label": "Contato", "url": "http://www.ameciclo.org/contato" }
+        {
+          "label": "Contagens",
+          "url": "/contagens"
+        },
+        {
+          "label": "Contato",
+          "url": "http://www.ameciclo.org/contato"
+        }
       ]
     },
     {
       "title": "Social",
       "align": "center",
       "content": [
-        { "label": "Facebook", "url": "https://facebook.com/ameciclo" },
-        { "label": "Instagram", "url": "https://instagram.com/ameciclo" },
-        { "label": "Twitter", "url": "https://twitter.com/ameciclo" },
-        { "label": "Telegram", "url": "https://t.me/s/ameciclo" },
-        { "label": "Youtube", "url": "https://www.youtube.com/user/ameciclo" }
+        {
+          "label": "Facebook",
+          "url": "https://facebook.com/ameciclo"
+        },
+        {
+          "label": "Instagram",
+          "url": "https://instagram.com/ameciclo"
+        },
+        {
+          "label": "Twitter",
+          "url": "https://twitter.com/ameciclo"
+        },
+        {
+          "label": "Telegram",
+          "url": "https://t.me/s/ameciclo"
+        },
+        {
+          "label": "Youtube",
+          "url": "https://www.youtube.com/user/ameciclo"
+        }
       ]
     }
   ],
   "featured_pages": [
     {
       "title": "Contagens",
-      "icon": "/icons/home/contagem.svg",
+      "src": "/icons/home/contagem.svg",
       "url": "/contagens",
       "text": "Contagens das viagens de bicicleta e suas caracteristicas observaveis"
     },
     {
       "title": "Ideciclo",
-      "icon": "/icons/home/ideciclo.svg",
+      "src": "/icons/home/ideciclo.svg",
       "url": "/ideciclo",
       "text": "Índice que mede a malha e qualidade da estrutura cicloviaria"
     },
     {
       "title": "Estudos e Pesquisas",
-      "icon": "/icons/home/relatorio.svg",
+      "src": "/icons/home/relatorio.svg",
       "url": "/documentos",
       "text": "Nossos estudos, pesquisas e livros que participamos ou que fizeramos sobre nós."
     },
     {
       "title": "Perfil",
-      "icon": "/icons/home/perfil.svg",
+      "src": "/icons/home/perfil.svg",
       "url": "/perfil",
       "text": "Dados socio-economicos dos ciclistas e suas percepções"
     },
     {
       "title": "Observatório",
-      "icon": "/icons/home/mapa.svg",
+      "src": "/icons/home/mapa.svg",
       "url": "/observatorio",
       "text": "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC."
     }
@@ -78,7 +99,7 @@
     {
       "alt": "Ameciclo",
       "url": "https://www.ameciclo.org",
-      "icon": "/logo.png"
+      "src": "/logo.png"
     }
   ]
 }

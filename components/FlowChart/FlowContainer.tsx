@@ -1,12 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
 import FlowStreetBackground from "./FlowStreetBackground";
 import FlowTotalCount from "./FlowTotalCount";
 
-FlowContainer.propTypes = {};
-
 function FlowContainer({ count, flowData }) {
-
   function getFlowsFromDirection(direction): string[] {
     return Object.keys(count.data.quantitative).filter((key) =>
       key.startsWith(`${direction}_`)
@@ -14,7 +9,9 @@ function FlowContainer({ count, flowData }) {
   }
 
   function getTotalCountFromFlow(flow): number {
-    let total: number[] = Object.values(count.data.quantitative[flow].count_per_hour)
+    let total: number[] = Object.values(
+      count.data.quantitative[flow].count_per_hour
+    );
     return total.reduce((sum: number, current: number) => sum + current, 0);
   }
 
@@ -27,9 +24,6 @@ function FlowContainer({ count, flowData }) {
 
     return result;
   }
-
-
-
 
   return (
     <>

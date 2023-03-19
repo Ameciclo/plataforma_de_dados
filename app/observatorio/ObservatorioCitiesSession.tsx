@@ -1,19 +1,31 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { NumberCards } from "../../components/NumberCards";
-import { StatisticsBox } from "../../components/StatisticsBox";
-import { Table } from "../../components/Table/Table";
+import { NumberCards } from "../components/NumberCards";
+import { StatisticsBox } from "../components/StatisticsBox";
+import { Table } from "../components/Table/Table";
 import {
   ColumnFilter,
   SelectColumnFilter,
-} from "../../components/Table/TableFilters";
+} from "../components/Table/TableFilters";
 import { CitiesStatistics, sortCards } from "./citiesStatisticsConf";
 import { colsconf } from "./tableConf";
-import utils from "../../../utils";
+import utils from "../../utils";
 
-export default function ObservatorioCitiesSession({ props }) {
-  const { cities, inicialCity } = props;
-  console.log(inicialCity);
+const ExtensionCell = ({ value }) => {
+  return (
+    <>
+      {value ? (
+        <span>
+          {value.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}
+        </span>
+      ) : (
+        <span>N/A</span>
+      )}
+    </>
+  );
+};
+
+export default function ObservatorioCitiesSession({ cities, inicialCity }) {
   const [selectedCity, setCity] = useState(
     utils.filterByName(cities, "Recife")
   );
@@ -65,12 +77,7 @@ export default function ObservatorioCitiesSession({ props }) {
       {
         Header: "Extensão prevista (km)",
         accessor: "pdc_kms",
-        Cell: ({ value }) =>
-          value ? (
-            <span>{("" + value.toFixed(2)).replace(".", ",")}</span>
-          ) : (
-            <span>{"N/A"}</span>
-          ),
+        Cell: ({ value }) => <ExtensionCell value={value} />,
         Filter: false,
       },
       {
@@ -81,27 +88,17 @@ export default function ObservatorioCitiesSession({ props }) {
       {
         Header: "Extensão executada (km)",
         accessor: "ciclo_kms",
-        Cell: ({ value }) =>
-          value ? (
-            <span>{("" + value.toFixed(2)).replace(".", ",")}</span>
-          ) : (
-            <span>{"N/A"}</span>
-          ),
+        Cell: ({ value }) => <ExtensionCell value={value} />,
         Filter: false,
       },
     ],
     []
   );
 
-  console.log(columns[2])
-
   const ref = useRef(null);
   function handleClick(ref) {
     return ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-
-  //const uri = utils.exportToJsonFile(calcs(), "PDC")
-  //   <Link href={uri} target={"_blank "}>BAIXAR</Link>
 
   return (
     <>
@@ -110,7 +107,6 @@ export default function ObservatorioCitiesSession({ props }) {
           title: "Estrutura nas cidades",
           data: sortCards(cities, city_sort),
           changeFunction: changeCity,
-          onClickFnc: handleClick(ref),
           selected: selectedCity.id,
           maxDigs: 1,
           filters: sort_cities,

@@ -2,8 +2,13 @@ import Link from "next/link";
 import React from "react";
 import Image from "next/image";
 
-export const CardsSession = ({ props }) => {
-  const { title, cards } = props;
+export const CardsSession = ({
+  title,
+  cards,
+}: {
+  title: string;
+  cards: any[];
+}) => {
   return (
     <section>
       <div className="flex-1 container mx-auto p-10 text-center">
@@ -11,8 +16,8 @@ export const CardsSession = ({ props }) => {
           {title}
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
-          {cards.map((card: any) => (
-            <Card props = {{...card}} />
+          {cards.map((card) => (
+            <Card card={card} />
           ))}
         </div>
       </div>
@@ -20,8 +25,8 @@ export const CardsSession = ({ props }) => {
   );
 };
 
-const Card = ({ props }) => {
-  const {title, description, src = "", url= "#" } = props
+const Card = ({ card }) => {
+  const { title, description, src = "", url = "#" } = card;
   return (
     <Link href={url} target="_blank">
       <div className="bg-white w-full rounded-lg flex items-center justify-center text-ameciclo p-10">

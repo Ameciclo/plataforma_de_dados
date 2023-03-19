@@ -1,7 +1,7 @@
 import {
   ColumnFilter,
   SelectColumnFilter,
-} from "../../components/Table/TableFilters";
+} from "../components/Table/TableFilters";
 
 export const colsconf = [
   {

@@ -4,8 +4,8 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBox } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
-import CountingMap from "./components/CountingMap";
-import ContagensTable from "./components/ContagensTable";
+import CountingMap from "./CountingMap";
+import ContagensTable from "./ContagensTable";
 import { GridSession } from "../components/GridSession";
 import { groupBy } from "../../utils";
 import {
@@ -73,14 +73,12 @@ export default async function Contagens() {
           { title: "E o que mais?", description: objective },
         ]}
       />
-     <GridSession props={cards} />
+      <GridSession props={cards} />
       <CountingMap cyclistCounts={data} />
       <ContagensTable data={data} />
       <CardsSession
-        props={{
-          title: "Documentos para realizar contagens de ciclistas.",
-          cards: docs,
-        }}
+        title={"Documentos para realizar contagens de ciclistas."}
+        cards={docs}
       />
     </>
   );

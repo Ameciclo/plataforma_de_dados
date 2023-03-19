@@ -1,7 +1,6 @@
-import React from "react";
 import { NavCover } from "./components/NavCover";
 import { SessionImageText } from "./components/SessionImageText";
-import { CardSession } from "./components/CardsSession";
+import { CardsSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
 import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
 
@@ -38,26 +37,19 @@ export default async function Home() {
           }}
         />
       </main>
-      {/* @ts-ignore */}
       <SessionImageText
         props={{
           image: "/icons/home/research.svg",
           text: description,
         }}
       />
-      {/* @ts-ignore */}
-      <CardSession
-        props={{
-          title: "Navegue e visualize os dados",
-          grids: featuredPages,
-        }}
+      <CardsSession
+        title="Navegue e visualize os dados"
+        cards={featuredPages}
       />
-      {/* @ts-ignore */}
       <ImagesGrid
-        props={{
-          title: "Outras plataformas de dados de parceiras",
-          gridImages: dataPartners,
-        }}
+        title="Outras plataformas de dados de parceiras"
+        gridImages={dataPartners}
       />
     </div>
   );

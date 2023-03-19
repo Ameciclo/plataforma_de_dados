@@ -8,7 +8,7 @@ import { CardsSession } from "../components/CardsSession";
 import data from "../../public/temp_folder/observatorio-data.json";
 import { documents, page_data } from "./todb";
 import { layers, generalStatistics } from "./observatorioConf";
-import ObservatorioCitiesSession from "./components/ObservatorioCitiesSession";
+import ObservatorioCitiesSession from "./ObservatorioCitiesSession";
 //import EvalolutionGraph from
 
 const crumb = {
@@ -55,12 +55,10 @@ export default async function Observatorio() {
             description: page_data.ExplanationBoxData.text_2,
           },
         ]}
-      />{" "}
-      <StructureMap props={{ map: ciclos, layers: layers }} />
-      <ObservatorioCitiesSession
-        props={{ cities: cities, inicialCity: "Recife" }}
       />
-      <CardsSession props={{ ...documents }} />
+      <StructureMap props={{ map: ciclos, layers: layers }} />
+      <ObservatorioCitiesSession cities={cities} inicialCity={"Recife"} />
+      <CardsSession title={documents.title} cards={documents.cards} />
     </>
   );
 }
