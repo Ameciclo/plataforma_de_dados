@@ -26,9 +26,9 @@ export const DocumentsSession = ({ props }) => {
     <>
       <SelectionFilterMenu
         props={{
-          title: "Selecione o tipo de documento",
           filters: [
             {
+              title: "Selecione o tipo de documento",
               value: selectedDocumentType,
               name: "docType",
               onChange: (e) => setSelectedDocumentType(e.target.value),

@@ -21,7 +21,7 @@ export default async function Observatorio() {
   const ciclos = data.map;
   const statistics = generalStatistics(data);
 
-  const cities = data.kms.municipios.map((m: any, index) => ({
+  const cities = data.kms.municipios.map((m, index) => ({
     id: index,
     name: m.name,
     km_projected: m.pdc_total,
@@ -57,7 +57,9 @@ export default async function Observatorio() {
         ]}
       />{" "}
       <StructureMap props={{ map: ciclos, layers: layers }} />
-      <ObservatorioCitiesSession props = {cities} />
+      <ObservatorioCitiesSession
+        props={{ cities: cities, inicialCity: "Recife" }}
+      />
       <CardsSession props={{ ...documents }} />
     </>
   );

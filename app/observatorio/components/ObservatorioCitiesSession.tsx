@@ -1,25 +1,27 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { NumberCards } from "../../components/NumberCards";
+import { StatisticsBox } from "../../components/StatisticsBox";
 import { Table } from "../../components/Table/Table";
 import {
   ColumnFilter,
   SelectColumnFilter,
 } from "../../components/Table/TableFilters";
+import { CitiesStatistics, sortCards } from "./citiesStatisticsConf";
+import { colsconf } from "./tableConf";
 import utils from "../../../utils";
-import { StatisticsBox } from "../../components/StatisticsBox";
 
 export default function ObservatorioCitiesSession({ props }) {
-  const cities = props;
+  const { cities, inicialCity } = props;
+  console.log(inicialCity);
   const [selectedCity, setCity] = useState(
     utils.filterByName(cities, "Recife")
   );
-  const [city_sort, sortCity] = useState("km_completed");
-
   const changeCity = (id) => {
     setCity(utils.filterById(cities, id));
   };
 
+  const [city_sort, sortCity] = useState("km_completed");
   const sort_cities = [
     {
       title: "Ordene as cidades: ",
@@ -36,43 +38,16 @@ export default function ObservatorioCitiesSession({ props }) {
     },
   ];
 
-  const CityStatistics = {
-    title: selectedCity.name,
-    subtitle: "Estatísticas Gerais",
-    boxes: [
-      {
-        title: "estrutura cicloviárias",
-        unit: "km",
-        value: selectedCity.km_ciclos.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "projetada no plano cicloviário",
-        unit: "km",
-        value: selectedCity.km_projected.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "implantados no plano cicloviário",
-        unit: "km",
-        value: selectedCity.km_completed.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "cobertos do plano cicloviário",
-        value: (selectedCity.percentil / 100).toLocaleString("pt-BR", {
-          style: "percent",
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-    ].filter((e) => e),
+  const CityStatistics = CitiesStatistics(selectedCity);
+
+  const cellFilterByValue = {
+    Cell: ({ value }) => {
+      value ? (
+        <span>{("" + value.toFixed(2)).replace(".", ",")}</span>
+      ) : (
+        <span>{"N/A"}</span>
+      );
+    },
   };
 
   const columns = React.useMemo(
@@ -117,22 +92,8 @@ export default function ObservatorioCitiesSession({ props }) {
     ],
     []
   );
-  const numcards = (data, order) => {
-    const units = {
-      percentil: "%",
-      km_completed: "km",
-      km_projected: "km",
-      km_ciclos: "km",
-    };
-    return data
-      .map((d: any) => ({
-        id: d.id,
-        label: d.name,
-        unit: units[order],
-        value: d[order],
-      }))
-      .sort((a: any, b: any) => (b.value >= a.value ? 1 : -1));
-  };
+
+  console.log(columns[2])
 
   const ref = useRef(null);
   function handleClick(ref) {
@@ -147,7 +108,7 @@ export default function ObservatorioCitiesSession({ props }) {
       <NumberCards
         props={{
           title: "Estrutura nas cidades",
-          data: numcards(cities, city_sort),
+          data: sortCards(cities, city_sort),
           changeFunction: changeCity,
           onClickFnc: handleClick(ref),
           selected: selectedCity.id,
