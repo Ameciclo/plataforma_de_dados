@@ -1,16 +1,14 @@
 import React from "react";
 import Link from "next/link";
 
-export const Breadcrumb = ({ props }) => {
+export const Breadcrumb = ({routes, label, slug}) => {
 
   const baseCrumb = {
     label:"Plataforma de Dados",
     slug:"/",
     routes: ["/"]
   }
-
-  const {routes, label, slug} = props;
-
+  
   return (
     <div className="bg-ameciclo text-white p-4 items-center uppercase w-full">
       <nav className="bg-grey-light rounded font-sans w-full">

@@ -1,18 +1,16 @@
 import React from "react";
 
-export const GridSession = ({ props }) => {
-  const cards = props;
+export const GridSession = ({ cards }) => {
   return (
     <section className="container mx-auto grid grid-cols-3 sd:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
       {cards.map((card) => (
-        <InfoCard props={card} />
+        <InfoCard {...card} />
       ))}
     </section>
   );
 };
 
-const InfoCard = ({ props }) => {
-  const { label, data, icon } = props;
+const InfoCard = ({ label, data, icon }) => {
   let percent = data * 100;
   let text = `${percent.toLocaleString("pt-BR", {
     maximumFractionDigits: 1,

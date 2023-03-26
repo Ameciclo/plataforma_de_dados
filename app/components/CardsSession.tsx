@@ -17,7 +17,7 @@ export const CardsSession = ({
         </h3>
         <div className="grid grid-cols-1 lg:grid-cols-3 grid-rows-4 sm:grid-rows-2 gap-8 grid-flow-row">
           {cards.map((card) => (
-            <Card card={card} />
+            <Card {...card} />
           ))}
         </div>
       </div>
@@ -25,8 +25,7 @@ export const CardsSession = ({
   );
 };
 
-const Card = ({ card }) => {
-  const { title, description, src = "", url = "#" } = card;
+const Card = ({ title, description, src = "", url = "#" }) => {
   return (
     <Link href={url} target="_blank">
       <div className="bg-white w-full rounded-lg flex items-center justify-center text-ameciclo p-10">

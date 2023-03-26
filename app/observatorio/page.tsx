@@ -1,13 +1,13 @@
 import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { ExplanationBox } from "../components/ExplanationBox";
+import { ExplanationBoxes } from "../components/ExplanationBox";
 import { StatisticsBox } from "../components/StatisticsBox";
-import { StructureMap } from "../components/Maps/StructureMap";
+import { Map } from "../components/Maps/Map";
 import { CardsSession } from "../components/CardsSession";
 import data from "../../public/temp_folder/observatorio-data.json";
 import { documents, page_data } from "./todb";
-import { layers, generalStatistics } from "./observatorioConf";
+import { layersConf, generalStatistics } from "./observatorioConf";
 import ObservatorioCitiesSession from "./ObservatorioCitiesSession";
 //import EvalolutionGraph from
 
@@ -32,20 +32,15 @@ export default async function Observatorio() {
   }));
   return (
     <>
-      <NavCover
-        props={{
-          title: page_data.title,
-          src: page_data.cover_image_url,
-        }}
-      />
-      <Breadcrumb props={crumb} />
+      <NavCover title="Observatório cicloviário" src={""} />
+      <Breadcrumb {...crumb} />
       <StatisticsBox
         title={statistics.title}
         subtitle={statistics.subtitle}
         boxes={statistics.boxes}
       />
-      <ExplanationBox
-        props={[
+      <ExplanationBoxes
+        boxes={[
           {
             title: page_data.ExplanationBoxData.title_1,
             description: page_data.ExplanationBoxData.text_1,
@@ -56,7 +51,7 @@ export default async function Observatorio() {
           },
         ]}
       />
-      <StructureMap props={{ map: ciclos, layers: layers }} />
+      <Map layerData={ciclos} layersConf={layersConf}/>
       <ObservatorioCitiesSession cities={cities} inicialCity={"Recife"} />
       <CardsSession title={documents.title} cards={documents.cards} />
     </>

@@ -77,4 +77,4 @@ const PDCLayer = {
     filter: ["==", "STATUS", "NotPDC"],
   };
 
-export const layers = [PDCLayer, PDCDoneLayer, NotPDC];
+export const layersConf = [PDCLayer, PDCDoneLayer, NotPDC];

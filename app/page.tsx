@@ -30,26 +30,16 @@ export default async function Home() {
   return (
     <div className="home-page">
       <main className="flex-1 w-full mx-auto main-padding-top">
-        <NavCover
-          props={{
-            title: "Plataforma de Dados",
-            src: cover.url,
-          }}
-        />
+        <NavCover title="Plataforma de dados" src={cover.url} />
       </main>
-      <SessionImageText
-        props={{
-          image: "/icons/home/research.svg",
-          text: description,
-        }}
-      />
+      <SessionImageText image={"/icons/home/research.svg"} text={description} />
       <CardsSession
         title="Navegue e visualize os dados"
         cards={featuredPages}
       />
       <ImagesGrid
         title="Outras plataformas de dados de parceiras"
-        gridImages={dataPartners}
+        images={dataPartners}
       />
     </div>
   );

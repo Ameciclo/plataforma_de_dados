@@ -2,10 +2,10 @@ import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
-import { ExplanationBox } from "../components/ExplanationBox";
+import { ExplanationBoxes } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
-import CountingMap from "./CountingMap";
-import ContagensTable from "./ContagensTable";
+import { Map } from "../components/Maps/Map";
+import { ContagensTable } from "./ContagensTable";
 import { GridSession } from "../components/GridSession";
 import { groupBy } from "../../utils";
 import {
@@ -14,6 +14,7 @@ import {
   COUNTINGS_PAGE_DATA,
 } from "../../servers";
 import { GeneralStatistics, CardsData } from "./contagensConf";
+import { pointData } from "../../typings";
 
 const crumb = {
   label: "Contagens",
@@ -38,6 +39,12 @@ const fetchData = async () => {
 export default async function Contagens() {
   const { data, summaryData, pageData } = await fetchData();
   const { cover, description, objective, archives } = pageData;
+  const pointsData: pointData[] = data.map((d) => ({
+    key: d._id,
+    latitude: d.location.coordinates[0],
+    longitude: d.location.coordinates[1],
+    name: d.name,
+  }));
   const countsGroupedByLocation = groupBy(data, (count) => count.name);
   const countsGroupedArray = Object.entries(countsGroupedByLocation);
   const statistics = GeneralStatistics(summaryData, countsGroupedArray.length);
@@ -52,20 +59,15 @@ export default async function Contagens() {
   });
   return (
     <>
-      <NavCover
-        props={{
-          title: pageData.title,
-          src: cover.url,
-        }}
-      />
-      <Breadcrumb props={crumb} />
+      <NavCover title="Contagens de ciclistas" src={cover.url} />
+      <Breadcrumb {...crumb} />
       <StatisticsBox
         title={statistics.title}
         subtitle={statistics.subtitle}
         boxes={statistics.boxes}
       />
-      <ExplanationBox
-        props={[
+      <ExplanationBoxes
+        boxes={[
           {
             title: "O que é?",
             description: description,
@@ -73,8 +75,8 @@ export default async function Contagens() {
           { title: "E o que mais?", description: objective },
         ]}
       />
-      <GridSession props={cards} />
-      <CountingMap cyclistCounts={data} />
+      <GridSession cards={cards} />
+      <Map pointsData={pointsData} />
       <ContagensTable data={data} />
       <CardsSession
         title={"Documentos para realizar contagens de ciclistas."}

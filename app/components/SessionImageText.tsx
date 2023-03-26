@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-export const SessionImageText = ({ props }) => {
-  const { text, image, alt = "", height = "", width = "" } = props;
+export const SessionImageText = ({ text, image, alt = "", height = "", width = "" }) => {
   return (
     <section>
       <div className="container mx-auto flex flex-wrap p-10 flex-1 my-8 w-3/4 border bg-ameciclo bg-opacity-5 rounded-xl">

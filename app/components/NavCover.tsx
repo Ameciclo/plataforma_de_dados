@@ -1,7 +1,6 @@
 import React from "react";
 
-export const NavCover = ({props}) => {
-  const { title, src = "" } = props
+export const NavCover = ({ title, src = "" }) => {
   return (
     <>
       {src == "" ? (

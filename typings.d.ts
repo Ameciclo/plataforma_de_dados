@@ -46,3 +46,23 @@ export type LayerType = {
   };
   filter: string[];
 }
+
+export type layersData = {
+  type: string;
+  name: string;
+  crs: {
+    type: string;
+    properties: {
+      name: string;
+    };
+  };
+  features: any[];
+};
+
+export type pointData = {
+  key: string;
+  latitude: number;
+  longitude: number;
+  name?: string;
+  size?: number;
+};

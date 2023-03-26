@@ -2,25 +2,23 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-export const DocumentCard = ({ props }) => {
-  const { cover, indicator } = props;
+export const DocumentCard = ({ document, indicator }) => {
   return (
     <div className="bg-white rounded-lg shadow " style={{ minHeight: "450px" }}>
       {indicator?.label != "" &&  (
-        <DocumentTypeIndicator props={indicator} />
+        <DocumentTypeIndicator {...indicator} />
       )}
-      {cover ? (
-        <DocumentCover props={props} />
+      {document.cover ? (
+        <DocumentCover {...document} />
       ) : (
         <div style={{ minHeight: "270px" }} />
       )}
-      <DocumentDescription props={props} />
+      <DocumentDescription {...document} />
     </div>
   );
 };
 
-export const DocumentTypeIndicator = ({ props }) => {
-  const {label, color, fontColor} = props
+export const DocumentTypeIndicator = ({label, color, fontColor}) => {
   return (
     <>
       <div
@@ -40,8 +38,7 @@ export const DocumentTypeIndicator = ({ props }) => {
   );
 };
 
-const DocumentCover = ({ props }) => {
-  const { url, cover } = props;
+const DocumentCover = ({ url, cover }) => {
   return (
     <>
       <Link href={`${url}`} target={"_blank"}>
@@ -51,8 +48,7 @@ const DocumentCover = ({ props }) => {
   );
 };
 
-const DocumentDescription = ({ props }) => {
-  const { title, url, release_date, description } = props;
+const DocumentDescription = ({ title, url, release_date, description }) => {
   return (
     <>
       <div className="px-4 py-5 lg:p-6">

@@ -1,7 +1,7 @@
 import { NavCover } from "../components/NavCover";
-import { ExplanationBox } from "../components/ExplanationBox";
+import { ExplanationBoxes } from "../components/ExplanationBox";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { DocumentsSession } from "./components/DocumentsSession";
+import { DocumentsSession } from "./DocumentsSession";
 import { document } from "../../typings";
 import { DOCUMENTS_PAGE, DOCUMENTS_DATA } from "../../servers";
 import { docTypes } from "./docTypes.json";
@@ -38,14 +38,12 @@ export default async function Documentos() {
   return (
     <>
       <NavCover
-        props={{
-          title: pageData.title,
-          src: cover.url,
-        }}
+         title = "Documentos e pesquisas"
+          src = {cover.url}
       />
-      <Breadcrumb props={crumb} />
-      <ExplanationBox
-        props={[
+      <Breadcrumb {...crumb} />
+      <ExplanationBoxes
+        boxes={[
           {
             title: "O que é?",
             description: description,
@@ -54,7 +52,7 @@ export default async function Documentos() {
         ]}
       />
       {/* @ts-ignore */}
-      <DocumentsSession props={{ documents, docTypes }} />
+      <DocumentsSession documents = {documents} docTypes = {docTypes} />
     </>
   );
 }
