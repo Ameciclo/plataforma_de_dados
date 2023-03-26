@@ -61,11 +61,7 @@ export default async function Contagens() {
     <>
       <NavCover title="Contagens de ciclistas" src={cover.url} />
       <Breadcrumb {...crumb} />
-      <StatisticsBox
-        title={statistics.title}
-        subtitle={statistics.subtitle}
-        boxes={statistics.boxes}
-      />
+      <StatisticsBox {...statistics}/>
       <ExplanationBoxes
         boxes={[
           {

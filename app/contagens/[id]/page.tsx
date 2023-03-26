@@ -1,6 +1,16 @@
 import FlowContainer from "../../../components/FlowChart/FlowContainer";
-import Link from "next/link";
-import { CardsSession } from "../../components/CardsSession";
+import { GridSession } from "../../components/GridSession";
+import { StatisticsBox } from "../../components/StatisticsBox";
+import {
+  CountingStatistic,
+  getPointsDataForSingleCounting,
+  getCountingCards
+} from "../contagensConf";
+import { Map as PointMap } from "../../components/Maps/Map";
+import { pointData } from "../../../typings";
+import { NavCover } from "../../components/NavCover";
+import { Breadcrumb } from "../../components/Breadcrumb";
+import { HourlyCyclists } from "../HourlyCyclists";
 
 const getCyclistCount = async (id: string) => {
   const res = await fetch(
@@ -17,7 +27,7 @@ const Contagem = async ({ params }) => {
     title: cyclistCount.name,
     cover_image_url: "",
   };
-  const BreadcrumbConf = {
+  const crumb = {
     label: cyclistCount.name,
     slug: cyclistCount._id,
     routes: ["/", "/contagens", cyclistCount._id],
@@ -60,22 +70,6 @@ const Contagem = async ({ params }) => {
     return "";
   }
 
-  const keyMap = new Map([
-      ["child", { name: "Crianças" }],
-      ["women", { name: "Mulheres" }],
-      ["men", { name: "Homens" }],
-    ]),
-    hourlyBarKeysOriginal = ["men", "women", "child"],
-    series: any[] = [],
-    hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
-    summary = cyclistCount.summary;
-  hourlyBarKeysOriginal.forEach((hk) => {
-    const keymapname = keyMap.get(hk)?.name;
-    series.push({
-      name: keymapname,
-      data: Object.values(cyclistCount.data.qualitative[hk].count_per_hour),
-    });
-  });
 
   let flowData = {};
 
@@ -85,124 +79,34 @@ const Contagem = async ({ params }) => {
     }
   });
 
-  const dayOptions = {
-    chart: {
-      type: "column",
-    },
-    plotOptions: {
-      column: {
-        stacking: "normal",
-        dataLabels: {
-          enabled: true,
-        },
-      },
-    },
-    tooltip: {
-      headerFormat: "<b>{point.x}:00h</b><br/>",
-      pointFormat: "{series.name}: {point.y}<br/>",
-    },
-    title: {
-      text:
-        "Quantos dias da semana costuma utilizar a bicicleta como meio de transporte",
-    },
-    xAxis: {
-      type: "category",
-      categories: hours,
-      title: {
-        text: "Hora",
-      },
-    },
-    yAxis: {
-      title: {
-        text: "Quantidade",
-      },
-      scrollbar: {
-        enabled: true,
-      },
-    },
-    series,
 
-    credits: {
-      enabled: false,
-    },
-  };
-
-  const cards = [
-    { label: "Mulheres", icon: "women", data: summary.women_percent },
-    {
-      label: "Crianças e Adolescentes",
-      icon: "children",
-      data: summary.children_percent,
-    },
-    { label: "Capacete", icon: "helmet", data: summary.helmet_percent },
-    { label: "Serviço", icon: "service", data: summary.service_percent },
-    { label: "Cargueira", icon: "cargo", data: summary.cargo_percent },
-    { label: "Contramão", icon: "wrong_way", data: summary.wrong_way_percent },
-    { label: "Calçada", icon: "sidewalk", data: summary.sidewalk_percent },
-  ];
+  const statistics = CountingStatistic(cyclistCount);
+  const pointsData = getPointsDataForSingleCounting(
+    cyclistCount
+  ) as pointData[];
+  const cards = getCountingCards(cyclistCount.summary)
 
   return (
     <main className="flex-auto">
-      <div className="mx-auto text-center my-24">
-        <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Total de ciclistas"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {cyclistCount.summary.total}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Pico em 1h"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {cyclistCount.summary.hour_max}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Data da contagem"}</h3>
-            <h3 className="text-5xl font-bold mt-2">
-              {cyclistCount.date.substr(0, 10).split("-").reverse().join("/")}
-            </h3>
-          </div>
-          <div className="flex flex-col justify-center w-full p-6 text-center uppercase tracking-widest">
-            <h3>{"Dados"}</h3>
-            <Link
-              href={cyclistCount.summary.download_xlsx_url}
-              className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2"
-            >
-              XLSX
-            </Link>
-            <Link
-              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${cyclistCount._id}`}
-              className="border border-teal-500 text-teal-500 hover:bg-ameciclo hover:text-white rounded px-4 py-2 mt-2"
-            >
-              JSON
-            </Link>
-          </div>
-        </div>
-      </div>
-      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+      <NavCover title={page_data.title} src={""} />
+      <Breadcrumb {...crumb} />
+      <StatisticsBox {...statistics} />
+      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
         <div
           className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
-          style={{ minHeight: "400px" }}
-        ></div>
+          style={{ minHeight: "500px" }}
+        >
+          <PointMap pointsData={[]} />
+        </div>
         <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
           <FlowContainer count={cyclistCount} flowData={flowData} />
         </div>
       </section>
-
-      <CardsSession title="" cards={cards} />
-
-      <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-        <div className="shadow-2xl rounded p-10 text-center overflow-x-scroll">
-          <div style={{ minWidth: "500px" }}>
-            <h2 className="text-gray-600 text-3xl">
-              Quantidade de ciclistas por hora
-            </h2>
-          </div>
-        </div>
-      </section>
+      <GridSession cards={cards} />
+      <HourlyCyclists title={page_data.title} cyclistCount={cyclistCount} />
     </main>
   );
 };
 
 export default Contagem;
+

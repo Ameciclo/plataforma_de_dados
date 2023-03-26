@@ -44,7 +44,7 @@ export const Map = ({
   };
 
   return (
-    <section className="container mx-auto my-10">
+    <section className="container mx-auto">
       <div className="bg-green-200 rounded shadow-2xl">
         <ReactMapGL
           {...viewport}
