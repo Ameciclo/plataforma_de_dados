@@ -9,7 +9,6 @@ import {
   SelectColumnFilter,
 } from "../components/Table/TableFilters";
 import { CitiesStatistics, sortCards } from "./citiesStatisticsConf";
-import { colsconf } from "./tableConf";
 
 const ExtensionCell = ({ value }) => {
   return (
@@ -25,10 +24,8 @@ const ExtensionCell = ({ value }) => {
   );
 };
 
-export default function ObservatorioClientSide({ cities, inicialCity }) {
-  const [selectedCity, setCity] = useState(
-    filterByName(cities, "Recife")
-  );
+const ObservatorioClientSide = ({ cities, inicialCity }) => {
+  const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
   const changeCity = (id) => {
     setCity(filterById(cities, id));
   };
@@ -103,14 +100,16 @@ export default function ObservatorioClientSide({ cities, inicialCity }) {
   return (
     <>
       <NumberCards
-        props={{
+        cards={sortCards(cities, city_sort)}
+        data={{
           title: "Estrutura nas cidades",
-          data: sortCards(cities, city_sort),
-          changeFunction: changeCity,
-          selected: selectedCity.id,
-          maxDigs: 1,
           filters: sort_cities,
         }}
+        options={{
+          changeFunction: changeCity,
+          maxDigs: 1,
+        }}
+        selected={selectedCity.id}
       />
       <div ref={ref}>
         <StatisticsBox
@@ -126,4 +125,6 @@ export default function ObservatorioClientSide({ cities, inicialCity }) {
       />
     </>
   );
-}
+};
+
+export default ObservatorioClientSide;

@@ -10,7 +10,7 @@ import { Map as PointMap } from "../../components/Maps/Map";
 import { pointData } from "../../../typings";
 import { NavCover } from "../../components/NavCover";
 import { Breadcrumb } from "../../components/Breadcrumb";
-import { HourlyCyclists } from "../HourlyCyclists";
+import { HourlyCyclists } from "./HourlyCyclists";
 
 const getCyclistCount = async (id: string) => {
   const res = await fetch(
@@ -103,7 +103,7 @@ const Contagem = async ({ params }) => {
         </div>
       </section>
       <GridSession cards={cards} />
-      <HourlyCyclists title={page_data.title} cyclistCount={cyclistCount} />
+      <HourlyCyclists cyclistCount={cyclistCount} />
     </main>
   );
 };

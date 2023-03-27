@@ -36,7 +36,7 @@ const Ideciclo = async () => {
 
   return (
     <>
-      <NavCover title="Índice de desenvolvimento cicloviário" src={pageData.cover_image_url} />
+      <NavCover title="Índice de desenvolvimento cicloviário" src={pageData.cover.url} />
       <Breadcrumb {...crumb} />
       <StatisticsBox
         title={GeneralStatistics.title}

@@ -2,14 +2,17 @@
 import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-
+import HighchartsExporting from "highcharts/modules/exporting";
+import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
+import HighchartsMore from "highcharts/highcharts-more";
 
 type Series = {
   name: string | undefined;
   data: number[];
 };
 
-export function HourlyCyclists({ title, cyclistCount }) {
+export function HourlyCyclists({cyclistCount}) {
+
   const keyMap = new Map([
       ["child", { name: "Crianças" }],
       ["women", { name: "Mulheres" }],
@@ -43,7 +46,7 @@ export function HourlyCyclists({ title, cyclistCount }) {
       pointFormat: "{series.name}: {point.y}<br/>",
     },
     title: {
-      text: title,
+      text: "Fluxo horário de ciclistas",
     },
     xAxis: {
       type: "category",
@@ -66,7 +69,7 @@ export function HourlyCyclists({ title, cyclistCount }) {
       enabled: true,
     },
   };
-
+  console.log(options)
   return (
     <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
       <div className="shadow-2xl rounded p-10 text-center overflow-x-scroll">

@@ -8,3 +8,4 @@ export const COUNTINGS_PAGE_DATA =`https://cms.ameciclo.org/contagens`
 export const IDECICLO_DATA = `https://api.ideciclo.ameciclo.org/reviews`
 export const IDECICLO_STRUCTURES_DATA = `https://api.ideciclo.ameciclo.org/structures`
 export const IDECICLO_PAGE_DATA = `https://cms.ameciclo.org/ideciclo`
+export const PERFIL_PAGE_DATA = `https://cms.ameciclo.org/perfil`
