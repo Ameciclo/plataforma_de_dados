@@ -2,9 +2,6 @@
 import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import HighchartsExporting from "highcharts/modules/exporting";
-import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
-import HighchartsMore from "highcharts/highcharts-more";
 
 type Series = {
   name: string | undefined;
