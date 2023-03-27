@@ -7,6 +7,12 @@ import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
 import HighchartsMore from "highcharts/highcharts-more";
 import HorizontalBarChart from "../components/Charts/HorizontalBarChart";
+import {
+  getHistogramData,
+  getInicialFilters,
+} from "./configuration";
+import { PERFIL_DATA } from "../../servers";
+import HistogramChart from "../components/Charts/HistogramChart";
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -14,86 +20,51 @@ if (typeof Highcharts === "object") {
   HighchartsMore(Highcharts);
 }
 
+async function fetchWithFilters(filters) {
+  const res = await fetch(PERFIL_DATA, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(filters.filter((f) => f.checked)),
+  });
+  const { data } = await res.json();
+  return data;
+}
+
 function PerfilClientSide({ data }) {
-  const [isSearching, setIsSearching] = useState(false);
-  const [filters, setFilters] = useState([
-    { key: "gender", value: "Masculino", checked: true },
-    { key: "gender", value: "Feminino", checked: true },
-    { key: "gender", value: "Outro", checked: true },
-    { key: "color_race", value: "Amarela", checked: false },
-    { key: "color_race", value: "Branca", checked: false },
-    { key: "color_race", value: "Indígena", checked: false },
-    { key: "color_race", value: "Parda", checked: false },
-    { key: "color_race", value: "Preta", checked: false },
-  ]);
+  const [filters, setFilters] = useState(getInicialFilters());
+
   const [dayData, setDayData] = useState([]);
   const [yearData, setYearData] = useState([]);
   const [needData, setNeedData] = useState([]);
   const [startData, setStartData] = useState([]);
   const [continueData, setContinueData] = useState([]);
   const [issueData, setIssueData] = useState([]);
-  const [distanceOptions, setDistanceOptions] = useState({
-    title: {
-      text: "Quanto tempo você leva?",
-    },
-
-    subtitle: {
-      text: "Histograma de agrupamento de distâncias em minutos",
-    },
-
-    xAxis: [
-      {
-        title: { text: "" },
-        alignTicks: false,
-      },
-      {
-        title: { text: "Distância em minutos" },
-        alignTicks: false,
-        opposite: false,
-      },
-    ],
-
-    yAxis: [
-      {
-        title: { text: "" },
-      },
-      {
-        title: { text: "Quantidade" },
-        opposite: false,
-      },
-    ],
-
-    series: [
-      {
-        name: "Total",
-        type: "histogram",
-        xAxis: 1,
-        yAxis: 1,
-        baseSeries: "s1",
-        zIndex: 2,
-      },
-      {
-        name: "",
-        type: "scatter",
-        data: [],
-        visible: false,
-        id: "s1",
-        marker: {
-          radius: 1.5,
-        },
-      },
-    ],
-    credits: {
-      enabled: false,
-    },
-  });
   const [collisionData, setCollisionData] = useState([]);
+  const [distanceOptions, setDistanceOptions] = useState(getHistogramData([]));
 
   useEffect(() => {
     Highcharts.charts.forEach((c) => {
       if (c !== undefined) {
         setTimeout(() => c.reflow(), 300);
       }
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      return await fetchWithFilters(getInicialFilters());
+    };
+    fetchInitialData().then((data) => {
+      setDayData(data.dayAggregate);
+      setYearData(data.yearAggregate);
+      setNeedData(data.needAggregate);
+      setStartData(data.startAggregate);
+      setContinueData(data.continueAggregate);
+      setIssueData(data.issueAggregate);
+      setCollisionData(data.collisionAggregate);
+      setDistanceOptions(() => getHistogramData(data.distances));
     });
   }, []);
 
@@ -107,81 +78,8 @@ function PerfilClientSide({ data }) {
     });
   };
 
-  const clearFilters = () => {
-    setFilters((prevState) => {
-      return prevState.map((i: any) => {
-        return { ...i, checked: false };
-      });
-    });
-  };
-
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      const defaultFilters = [
-        { key: "gender", value: "Masculino" },
-        { key: "gender", value: "Feminino" },
-        { key: "gender", value: "Outro" },
-      ];
-      const res = await fetch(
-        `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-          body: JSON.stringify(defaultFilters),
-        }
-      );
-      const { data } = await res.json();
-      return data;
-    };
-
-    fetchInitialData().then((data) => {
-      setDayData(data.dayAggregate);
-      setYearData(data.yearAggregate);
-      setNeedData(data.needAggregate);
-      setStartData(data.startAggregate);
-      setContinueData(data.continueAggregate);
-      setIssueData(data.issueAggregate);
-      setDistanceOptions((prevState) => ({
-        ...prevState,
-        series: [
-          {
-            name: "Total",
-            type: "histogram",
-            xAxis: 1,
-            yAxis: 1,
-            baseSeries: "s1",
-            zIndex: 2,
-          },
-          {
-            name: "",
-            type: "scatter",
-            data: data.distances,
-            visible: false,
-            id: "s1",
-            marker: {
-              radius: 1.5,
-            },
-          },
-        ],
-      }));
-      setCollisionData(data.collisionAggregate);
-    });
-  }, []);
-
   const applyFilters = async () => {
-    const res = await fetch(
-      `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(filters.filter((f) => f.checked)),
-      }
-    );
-    const { data } = await res.json();
+    const data: any = fetchWithFilters(filters);
     setDayData(data.dayAggregate);
     setYearData(data.yearAggregate);
     setNeedData(data.needAggregate);
@@ -191,9 +89,18 @@ function PerfilClientSide({ data }) {
     setCollisionData(data.collisionAggregate);
   };
 
+  const clearFilters = () => {
+    setFilters((prevState) => {
+      return prevState.map((i: any) => {
+        return { ...i, checked: false };
+      });
+    });
+  };
+
   const options = [
     {
-      title: "Quantos dias da semana costuma utilizar a bicicleta como meio de transporte",
+      title:
+        "Quantos dias da semana costuma utilizar a bicicleta como meio de transporte",
       series: dayData,
     },
     {
@@ -219,6 +126,11 @@ function PerfilClientSide({ data }) {
     {
       title: "Já sofreu algum tipo de colisão?",
       series: collisionData,
+    },
+    {
+      title: "Quanto tempo você leva?",
+      series: data.distances,
+      type: "histogram",
     },
   ];
 
@@ -260,7 +172,7 @@ function PerfilClientSide({ data }) {
                       onChange={() => toggleFilter(f, i)}
                       checked={f.checked}
                     />
-                    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
+                    <div className="toggle-btn rounded-3xl flex border switch  hover:bg-ameciclo hover:text-white w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
                       {f.value}
                     </div>
                   </label>
@@ -285,12 +197,16 @@ function PerfilClientSide({ data }) {
       </section>
 
       <section className="container mx-auto grid grid-cols-1 sm:grid-cols-2 auto-rows-auto gap-10 my-10">
-        {options.map(o => (
-          <HorizontalBarChart title={o.title} data={o.series} />
-        ))}
-        <div className="shadow-2xl rounded p-10 text-center">
+        {options.map((option) =>
+          option.type === "histogram" ? (
+            <HistogramChart {...option} />
+          ) : (
+            <HorizontalBarChart {...option} />
+          )
+        )}
+         <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={distanceOptions} />
-        </div>
+        </div> 
       </section>
     </>
   );

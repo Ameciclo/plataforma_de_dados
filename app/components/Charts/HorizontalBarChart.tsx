@@ -2,7 +2,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React from "react";
 
-function HorizontalBarChart({title, yAxisTitle = "Quantidade", data}) {
+function HorizontalBarChart({title, yAxisTitle = "Quantidade", series}) {
 
 const options = {
     chart: {
@@ -20,7 +20,7 @@ const options = {
         text: yAxisTitle,
       },
     },
-    series: data,
+    series: series,
 
     credits: {
       enabled: false,

@@ -1,4 +1,4 @@
-"use-client";
+"use client";
 import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
@@ -77,7 +77,7 @@ export function HourlyCyclists({cyclistCount}) {
           <h2 className="text-gray-600 text-3xl">
             Quantidade de ciclistas por hora
           </h2>
-          {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
+          <HighchartsReact highcharts={Highcharts} options={options} /> 
         </div>
       </div>
     </section>
