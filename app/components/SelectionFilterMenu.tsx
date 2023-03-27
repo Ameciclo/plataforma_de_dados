@@ -1,7 +1,6 @@
 import React from "react";
 
-export function MultipleSelectionFilters({ props }) {
-  const { title, filters } = props;
+export function MultipleSelectionFilters({ title, filters }) {
   return (
     <>
       <div className="mx-auto text-center">

@@ -5,3 +5,6 @@ export const DOCUMENTS_DATA = "https://cms.ameciclo.org/documents"
 export const COUNTINGS_SUMMARY_DATA =`https://api.contagem.ameciclo.org/v1/cyclist-count/metadata`
 export const COUNTINGS_DATA =`https://api.contagem.ameciclo.org/v1/cyclist-count/`
 export const COUNTINGS_PAGE_DATA =`https://cms.ameciclo.org/contagens`
+export const IDECICLO_DATA = `https://api.ideciclo.ameciclo.org/reviews`
+export const IDECICLO_STRUCTURES_DATA = `https://api.ideciclo.ameciclo.org/structures`
+export const IDECICLO_PAGE_DATA = `https://cms.ameciclo.org/ideciclo`

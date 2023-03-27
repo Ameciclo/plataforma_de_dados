@@ -7,8 +7,8 @@ import { Map } from "../components/Maps/Map";
 import { CardsSession } from "../components/CardsSession";
 import data from "../../public/temp_folder/observatorio-data.json";
 import { documents, page_data } from "./todb";
-import { layersConf, generalStatistics } from "./observatorioConf";
-import ObservatorioCitiesSession from "./ObservatorioCitiesSession";
+import { layersConf, generalStatistics } from "./configuration";
+import ObservatorioClientSide from "./ObservatorioClientSide";
 //import EvalolutionGraph from
 
 const crumb = {
@@ -52,7 +52,7 @@ export default async function Observatorio() {
         ]}
       />
       <Map layerData={ciclos} layersConf={layersConf}/>
-      <ObservatorioCitiesSession cities={cities} inicialCity={"Recife"} />
+      <ObservatorioClientSide cities={cities} inicialCity={"Recife"} />
       <CardsSession title={documents.title} cards={documents.cards} />
     </>
   );

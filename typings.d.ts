@@ -66,3 +66,11 @@ export type pointData = {
   name?: string;
   size?: number;
 };
+
+export type city = {
+  name: string;
+  population: number;
+  area: number;
+  id: number;
+  reviews: any[];
+};

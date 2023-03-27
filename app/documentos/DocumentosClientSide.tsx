@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { SelectionFilter } from "../components/SelectionFilterMenu";
-import { DocumentCard } from "./DocumentCard";
+import { DocumentCard } from "../components/DocumentCard";
 import { document } from "../../typings";
 
 export const DocumentsSession = ({ documents, docTypes }) => {

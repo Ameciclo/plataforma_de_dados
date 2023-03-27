@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { useTable, usePagination, useFilters, useSortBy } from "react-table";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../components/Table/TableFilters";

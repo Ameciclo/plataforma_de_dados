@@ -1,7 +1,7 @@
 import { NavCover } from "../components/NavCover";
 import { ExplanationBoxes } from "../components/ExplanationBox";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { DocumentsSession } from "./DocumentsSession";
+import { DocumentsSession } from "./DocumentosClientSide";
 import { document } from "../../typings";
 import { DOCUMENTS_PAGE, DOCUMENTS_DATA } from "../../servers";
 import { docTypes } from "./docTypes.json";

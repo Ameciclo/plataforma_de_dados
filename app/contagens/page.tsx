@@ -5,7 +5,7 @@ import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
 import { Map } from "../components/Maps/Map";
-import { ContagensTable } from "./ContagensTable";
+import { ContagensTable } from "./ContagensClientSide";
 import { GridSession } from "../components/GridSession";
 import { groupBy } from "../../utils";
 import {
@@ -13,7 +13,7 @@ import {
   COUNTINGS_SUMMARY_DATA,
   COUNTINGS_PAGE_DATA,
 } from "../../servers";
-import { GeneralStatistics, CardsData } from "./contagensConf";
+import { GeneralStatistics, CardsData } from "./configuration";
 import { pointData } from "../../typings";
 
 const crumb = {

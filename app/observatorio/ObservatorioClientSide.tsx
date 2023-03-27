@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from "react";
+import { filterByName, filterById } from "../../utils";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { Table } from "../components/Table/Table";
@@ -9,7 +10,6 @@ import {
 } from "../components/Table/TableFilters";
 import { CitiesStatistics, sortCards } from "./citiesStatisticsConf";
 import { colsconf } from "./tableConf";
-import utils from "../../utils";
 
 const ExtensionCell = ({ value }) => {
   return (
@@ -25,12 +25,12 @@ const ExtensionCell = ({ value }) => {
   );
 };
 
-export default function ObservatorioCitiesSession({ cities, inicialCity }) {
+export default function ObservatorioClientSide({ cities, inicialCity }) {
   const [selectedCity, setCity] = useState(
-    utils.filterByName(cities, "Recife")
+    filterByName(cities, "Recife")
   );
   const changeCity = (id) => {
-    setCity(utils.filterById(cities, id));
+    setCity(filterById(cities, id));
   };
 
   const [city_sort, sortCity] = useState("km_completed");

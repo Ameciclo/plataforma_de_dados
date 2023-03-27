@@ -1,11 +1,11 @@
-import FlowContainer from "../../../components/FlowChart/FlowContainer";
+import FlowContainer from "../../components/FlowChart/FlowContainer";
 import { GridSession } from "../../components/GridSession";
 import { StatisticsBox } from "../../components/StatisticsBox";
 import {
   CountingStatistic,
   getPointsDataForSingleCounting,
   getCountingCards
-} from "../contagensConf";
+} from "../configuration";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { pointData } from "../../../typings";
 import { NavCover } from "../../components/NavCover";
