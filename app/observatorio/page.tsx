@@ -8,7 +8,7 @@ import { CardsSession } from "../components/CardsSession";
 import data from "../../public/temp_folder/observatorio-data.json";
 import { documents, page_data } from "./todb";
 import { layersConf, generalStatistics } from "./configuration";
-import ObservatorioClientSide from "./ObservatorioClientSide";
+import ObservatorioClientSide from "./useclient";
 //import EvalolutionGraph from
 
 const crumb = {

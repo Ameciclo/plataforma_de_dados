@@ -3,7 +3,7 @@ import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
-import IdecicloClientSide from "./IdecicloClientSide";
+import IdecicloClientSide from "./useclient";
 import { IDECICLO_DATA, IDECICLO_PAGE_DATA, IDECICLO_STRUCTURES_DATA } from "../../servers";
 import { getGeneralStatistics } from "./configuration";
 

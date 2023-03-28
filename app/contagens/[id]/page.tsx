@@ -4,24 +4,23 @@ import { StatisticsBox } from "../../components/StatisticsBox";
 import {
   CountingStatistic,
   getPointsDataForSingleCounting,
-  getCountingCards
+  getCountingCards,
 } from "../configuration";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { pointData } from "../../../typings";
 import { NavCover } from "../../components/NavCover";
 import { Breadcrumb } from "../../components/Breadcrumb";
-import { HourlyCyclists } from "./HourlyCyclists";
+import { HourlyCyclists } from "./useclient";
+import { COUNTINGS_DATA } from "../../../servers";
 
-const getCyclistCount = async (id: string) => {
-  const res = await fetch(
-    `https://api.contagem.ameciclo.org/v1/cyclist-count/${id}`
-  );
-  const { cyclistCount } = await res.json();
-  return cyclistCount;
+const fetchUniqueData = async (id: string) => {
+  const res = await fetch(COUNTINGS_DATA + "/" + id);
+  const { data } = await res.json();
+  return data;
 };
 
 const Contagem = async ({ params }) => {
-  const cyclistCount = await getCyclistCount(params.id);
+  const cyclistCount = await fetchUniqueData(params.id);
 
   const page_data = {
     title: cyclistCount.name,
@@ -70,7 +69,6 @@ const Contagem = async ({ params }) => {
     return "";
   }
 
-
   let flowData = {};
 
   ["north", "east", "west", "south"].forEach((d) => {
@@ -79,12 +77,11 @@ const Contagem = async ({ params }) => {
     }
   });
 
-
   const statistics = CountingStatistic(cyclistCount);
   const pointsData = getPointsDataForSingleCounting(
     cyclistCount
   ) as pointData[];
-  const cards = getCountingCards(cyclistCount.summary)
+  const cards = getCountingCards(cyclistCount.summary);
 
   return (
     <main className="flex-auto">
@@ -109,4 +106,3 @@ const Contagem = async ({ params }) => {
 };
 
 export default Contagem;
-

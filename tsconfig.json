@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-  ],
+, "app/ideciclo/[id]/configuration.tjs"  ],
   "exclude": [
     "node_modules"
   ]

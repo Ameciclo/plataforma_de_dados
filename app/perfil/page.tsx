@@ -3,7 +3,7 @@ import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { ExplanationBoxes } from "../components/ExplanationBox";
 import { PERFIL_PAGE_DATA } from "../../servers";
-import PerfilClientSide from "./PerfilClientSide";
+import PerfilClientSide from "./useclient";
 
 const crumb = {
   label: "Perfil Ciclista",
