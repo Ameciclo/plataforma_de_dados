@@ -41,7 +41,6 @@ const Contagem = async ({ params }) => {
 
   const statistics = CountingStatistic(data);
   const pointsData = getPointsDataForSingleCounting(data) as pointData[];
-  console.log(pointsData);
   const cards = getCountingCards(data);
   return (
     <main className="flex-auto">

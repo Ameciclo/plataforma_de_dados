@@ -13,10 +13,9 @@ import ReactMapGL, {
   WebMercatorViewport,
 } from "react-map-gl";
 
-import MAP_STYLE from "../../public/temp_folder/ideciclo_mapstyle";
-import RADAR_STYLE from "../../public/temp_folder/ideciclo_radarstyle";
-import rates_organization from "../../public/temp_folder/ideciclo_rates";
-import map from "../../public/malhacicloviariapermanente_mar2021.json";
+import MAP_STYLE from "./ideciclo_mapstyle";
+import RADAR_STYLE from "./ideciclo_radarstyle";
+import map from "../../../public/dbs/malhacicloviariapermanente_mar2021.json";
 import bbox from "@turf/bbox";
 
 if (typeof Highcharts === "object") {
@@ -36,36 +35,9 @@ type geoJsonMap = {
   features: any[];
 };
 
-function get_map_data(structure: any) {
-  // TRABALHA O MAPA
-  const geoJsonMap: geoJsonMap = {
-    type: "FeatureCollection",
-    name: structure.street,
-    crs: {
-      type: "name",
-      properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
-    },
-    features: [],
-  };
+export function StructureMap({data}) {
 
-  structure.reviews[structure.reviews.length - 1].segments.forEach(
-    (seg: any) => {
-      geoJsonMap.features.push(
-        map.features.filter((m: any) => m.properties.idunido == seg.geo_id)[0]
-      );
-    }
-  );
-
-  if (geoJsonMap.features[0] == undefined) {
-    geoJsonMap.features = map.features;
-  }
-
-  return geoJsonMap;
-}
-
-export function StructureMap() {
-
-    const [minLng, minLat, maxLng, maxLat] = bbox(info.map);
+    const [minLng, minLat, maxLng, maxLat] = bbox(data);
 
     const vp = new WebMercatorViewport({
       width: 400,
@@ -95,7 +67,7 @@ export function StructureMap() {
       pitch: 0,
     });
     //  var line = turf.lineString([[-74, 40], [-78, 42], [-82, 35]]);
-    //  setViewport(getViewport(info.map, viewport))
+    //  setViewport(getViewport(data, viewport))
   
     const [settings, setsettings] = useState({
       dragPan: true,
@@ -143,7 +115,7 @@ export function StructureMap() {
         >
           <NavigationControl style={MAP_STYLE.navControlStyle} />
         </div>
-        <Source id="malha" type="geojson" data={info.map}>
+        <Source id="malha" type="geojson" data={data}>
           <Layer {...MAP_STYLE.layers.ciclovia} />
           <Layer {...MAP_STYLE.layers.ciclofaixa} />
           <Layer {...MAP_STYLE.layers.ciclorrota} />
@@ -153,12 +125,12 @@ export function StructureMap() {
   );
 }
 
-export function StructureRadar() {
+export function StructureRadar({series, categories}) {
   return (
     <div className="flex flex-col justify-center w-full p-6 pt-12 text-center tracking-widest">
       <HighchartsReact
         highcharts={Highcharts}
-        options={RADAR_STYLE(info.series, info.categories)}
+        options={RADAR_STYLE(series, categories)}
       />
     </div>
   );

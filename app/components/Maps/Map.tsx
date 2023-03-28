@@ -1,4 +1,5 @@
 "use client";
+import bbox from "@turf/bbox";
 import React, { useState } from "react";
 import ReactMapGL, {
   Source,
@@ -31,6 +32,7 @@ export const Map = ({
   width?: string;
   height?: string;
 }) => {
+
   const [viewport, setViewport] = useState(inicialViewPort);
   const [settings, setsettings] = useState({ ...mapInicialState });
   const handleClick = () => {
