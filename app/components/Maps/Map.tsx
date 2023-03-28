@@ -9,7 +9,6 @@ import ReactMapGL, {
   Marker,
 } from "react-map-gl";
 import { layersData, LayerType, pointData } from "../../../typings";
-
 import {
   MAPBOXTOKEN,
   MAPBOXSTYLE,
@@ -23,10 +22,14 @@ export const Map = ({
   layerData,
   layersConf,
   pointsData,
+  width = "100%",
+  height = "500px"
 }: {
   layerData?: layersData;
   layersConf?: LayerType[];
   pointsData?: pointData[];
+  width?: string;
+  height?: string;
 }) => {
   const [viewport, setViewport] = useState(inicialViewPort);
   const [settings, setsettings] = useState({ ...mapInicialState });
@@ -50,8 +53,8 @@ export const Map = ({
           {...viewport}
           {...settings}
           onViewportChange={(nextViewport) => setViewport(nextViewport)}
-          width="100%"
-          height="500px"
+          width={width}
+          height={height}
           mapStyle={MAPBOXSTYLE}
           mapboxApiAccessToken={MAPBOXTOKEN}
         >
@@ -66,9 +69,7 @@ export const Map = ({
           )}
           {pointsData?.map((p) => (
             <Marker {...p}>
-              <MapMarker
-                icon={dropIcon}
-              />
+              <MapMarker icon={dropIcon} />
             </Marker>
           ))}
         </ReactMapGL>

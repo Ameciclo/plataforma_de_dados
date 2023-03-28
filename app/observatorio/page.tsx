@@ -5,10 +5,10 @@ import { ExplanationBoxes } from "../components/ExplanationBox";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { Map } from "../components/Maps/Map";
 import { CardsSession } from "../components/CardsSession";
-import data from "../../public/temp_folder/observatorio-data.json";
+import ObservatorioClientSide from "./useclient";
+import data from "../../public/dbs/observatorio-data.json";
 import { documents, page_data } from "./todb";
 import { layersConf, generalStatistics } from "./configuration";
-import ObservatorioClientSide from "./useclient";
 //import EvalolutionGraph from
 
 const crumb = {
@@ -51,7 +51,7 @@ export default async function Observatorio() {
           },
         ]}
       />
-      <Map layerData={ciclos} layersConf={layersConf}/>
+      <Map layerData={ciclos} layersConf={layersConf} />
       <ObservatorioClientSide cities={cities} inicialCity={"Recife"} />
       <CardsSession title={documents.title} cards={documents.cards} />
     </>

@@ -24,15 +24,18 @@ const crumb = {
 
 const fetchData = async () => {
   const dataRes = await fetch(COUNTINGS_DATA, { cache: "no-cache" });
+  const dataJson = await dataRes.json();
+  const data = dataJson.data;
+
   const summaryDataRes = await fetch(COUNTINGS_SUMMARY_DATA, {
     cache: "no-cache",
   });
-  const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
-  const dataJson = await dataRes.json();
-  const data = dataJson.data;
   const summaryDataJson = await summaryDataRes.json();
   const summaryData = summaryDataJson.data[0];
+
+  const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
   const pageData = await pageDataRes.json();
+
   return { data, summaryData, pageData };
 };
 
@@ -61,7 +64,7 @@ export default async function Contagens() {
     <>
       <NavCover title="Contagens de ciclistas" src={cover.url} />
       <Breadcrumb {...crumb} />
-      <StatisticsBox {...statistics}/>
+      <StatisticsBox {...statistics} />
       <ExplanationBoxes
         boxes={[
           {

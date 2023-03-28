@@ -4,7 +4,7 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { DocumentsSession } from "./useclient";
 import { document } from "../../typings";
 import { DOCUMENTS_PAGE, DOCUMENTS_DATA } from "../../servers";
-import { docTypes } from "./docTypes.json";
+import { docTypes } from "../../public/dbs/docTypes.json";
 
 export const metadata = {
   title: "Documentos e estudos da Ameciclo",

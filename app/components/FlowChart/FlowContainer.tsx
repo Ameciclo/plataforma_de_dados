@@ -1,7 +1,7 @@
 import FlowStreetBackground from "./FlowStreetBackground";
 import FlowTotalCount from "./FlowTotalCount";
 
-function FlowContainer({ count, flowData }) {
+export function FlowContainer({ count }) {
   function getFlowsFromDirection(direction): string[] {
     return Object.keys(count.data.quantitative).filter((key) =>
       key.startsWith(`${direction}_`)
@@ -307,5 +307,3 @@ function FlowContainer({ count, flowData }) {
     </>
   );
 }
-
-export default FlowContainer;
