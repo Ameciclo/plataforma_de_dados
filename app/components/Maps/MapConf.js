@@ -2,12 +2,63 @@ export const MAPBOXTOKEN =
   "pk.eyJ1IjoiaWFjYXB1Y2EiLCJhIjoiODViMTRmMmMwMWE1OGIwYjgxNjMyMGFkM2Q5OWJmNzUifQ.OFgXp9wbN5BJlpuJEcDm4A";
 export const MAPBOXSTYLE = "mapbox://styles/mapbox/light-v10";
 
-export const inicialViewPort = {
-  latitude: -8.0584364,
-  longitude: -34.945277,
-  zoom: 11,
-  bearing: 0,
-  pitch: 0,
+import bbox from "@turf/bbox";
+import * as turf from "@turf/helpers";
+import { WebMercatorViewport } from "react-map-gl";
+
+export const getInicialViewPort = (pointsData, layerData) => {
+  let standardViewPort = {
+    latitude: -8.0584364,
+    longitude: -34.945277,
+    zoom: 11,
+    bearing: 0,
+    pitch: 0,
+  };
+
+  let points = [
+    [-8.05843, -34.9452],
+    [-8.0584364, -34.945277],
+  ];
+
+  if (pointsData)
+    points = pointsData.map((point) => [point.latitude, point.longitude]);
+
+  const lineStringFromPointData = turf.lineString(points);
+
+  let lineStringFromLayersData = lineStringFromPointData;
+  if (layerData) lineStringFromLayersData = turf.lineString(layerData);
+
+  const [PminX, PminY, PmaxX, PmaxY] = bbox(lineStringFromPointData);
+  const [LminX, LminY, LmaxX, LmaxY] = bbox(lineStringFromLayersData);
+
+  const minX = Math.min(PminX, LminX);
+  const minY = Math.min(PminY, LminY);
+  const maxX = Math.max(PmaxX, LmaxX);
+  const maxY = Math.max(PmaxY, LmaxY);
+
+  const vp = new WebMercatorViewport({
+    width: 400,
+    height: 600,
+    ...standardViewPort,
+  });
+
+  const { longitude, latitude, zoom } = vp.fitBounds(
+    [
+      [minY, minX],
+      [maxY, maxX],
+    ],
+    {
+      padding: 40,
+    }
+  );
+
+  if (latitude && longitude && zoom) {
+    standardViewPort.longitude = longitude;
+    standardViewPort.latitude = latitude;
+    standardViewPort.zoom = zoom;
+  }
+
+  return standardViewPort;
 };
 
 export const mapInicialState = {
