@@ -8,11 +8,11 @@ export const NumberCards = ({ cards, data, selected, options }) => {
         <MultipleSelectionFilters {...data} />
         <section className="container mx-auto gap-8 my-5 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
           {cards.map((city) => (
-            <CityCard
+            <NumberCard
               city={city}
               selected={city.id == selected}
               changeFunction={options.changeFunction}
-              onClickFnc={options.changeCity}
+              onClickFnc={options.onClickFnc}
             />
           ))}
         </section>
@@ -21,7 +21,7 @@ export const NumberCards = ({ cards, data, selected, options }) => {
   );
 };
 
-export const CityCard = ({
+export const NumberCard = ({
   city,
   selected,
   changeFunction,
