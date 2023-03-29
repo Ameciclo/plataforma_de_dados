@@ -65,7 +65,6 @@ export function HourlyCyclistsChart({ cyclistCount }) {
       enabled: true,
     },
   };
-  console.log(options);
   return (
     <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
       <div className="shadow-2xl rounded p-10 text-center overflow-x-scroll">
