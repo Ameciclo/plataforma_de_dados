@@ -18,22 +18,17 @@ export const Footer = async () => {
         <div className="container mx-auto px-6 pt-10 pb-6">
           <div className="flex flex-wrap">
             {columns.map((column: footerColumn, i) => (
-              <FooterColumn column={column} />
+              <div
+                className={`w-full md:w-1/3 text-center md:text-${
+                  column.align != "" ? column.align : "center"
+                }`}
+              >
+                <FooterColumn column={column} />{" "}
+              </div>
             ))}
           </div>
-          <div className="container text-center mt-2">
-            <Link
-              href=" https://vercel.com/?utm_source=ameciclo&utm_campaign=oss"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src="/vercel_logo/vercel-logo.svg"
-                alt="Vercel Logo"
-                width={212}
-                height={44}
-              />
-            </Link>
+          <div className="container p3">
+            <VercelSponsor />{" "}
           </div>
         </div>
       </footer>
@@ -43,11 +38,7 @@ export const Footer = async () => {
 
 function FooterColumn({ column }) {
   return (
-    <div
-      className={`w-full md:w-1/3 text-center md:text-${
-        column.align != "" ? column.align : "center"
-      }`}
-    >
+    <>
       <h5 className="uppercase mb-6 font-bold">{column.title}</h5>
       <ul className="mb-4">
         {column.content.map((content: footerColumnContent) => (
@@ -63,6 +54,24 @@ function FooterColumn({ column }) {
           </li>
         ))}
       </ul>
-    </div>
+    </>
+  );
+}
+
+function VercelSponsor() {
+  return (
+    <Link
+      href=" https://vercel.com/?utm_source=ameciclo&utm_campaign=oss"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <Image
+        src="/vercel_logo/vercel-logo.svg"
+        alt="Vercel Logo"
+        width={212}
+        height={44}
+        className="mx-auto"
+      />
+    </Link>
   );
 }
