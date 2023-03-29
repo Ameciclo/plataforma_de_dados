@@ -23,7 +23,6 @@ export default function RootLayout({
       </head>
       <body>
         <div className="flex flex-col min-h-screen">
-          <p className="font-bold bg-gray-900">CRALHO</p>
           <Navbar
             pages={[
               { name: "Inicial", url: "/" },
@@ -32,7 +31,6 @@ export default function RootLayout({
               { name: "Ideciclo", url: "/ideciclo" },
               { name: "Observatório", url: "/observatorio" },
               { name: "Perfil", url: "/perfil" },
-              { name: "Ameciclo", url: "http://www.ameciclo.org" },
             ]}
           />
           {children}
