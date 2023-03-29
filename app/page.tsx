@@ -3,6 +3,7 @@ import { SessionImageText } from "./components/SessionImageText";
 import { CardsSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
 import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
+import { ExplanationBoxes } from "./components/ExplanationBox";
 
 const fetchPlataformHomePage = async () => {
   const res = await fetch(PLATAFORM_HOME_PAGE, { cache: "no-cache" });
@@ -31,16 +32,22 @@ export default async function Home() {
     <div className="home-page">
       <main className="flex-1 w-full mx-auto main-padding-top">
         <NavCover title="Plataforma de dados" src={cover.url} />
+        <ExplanationBoxes
+          boxes={[{ title: "O que temos aqui?", description: description }]}
+        />
+        {/* <SessionImageText
+          image={"/icons/home/research.svg"}
+          text={description}
+        /> */}
+        <CardsSession
+          title="Navegue e visualize os dados"
+          cards={featuredPages}
+        />
+        <ImagesGrid
+          title="Outras plataformas de dados de parceiras"
+          images={dataPartners}
+        />
       </main>
-      <SessionImageText image={"/icons/home/research.svg"} text={description} />
-      <CardsSession
-        title="Navegue e visualize os dados"
-        cards={featuredPages}
-      />
-      <ImagesGrid
-        title="Outras plataformas de dados de parceiras"
-        images={dataPartners}
-      />
     </div>
   );
 }
