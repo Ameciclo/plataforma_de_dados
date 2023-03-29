@@ -8,7 +8,7 @@ export function ImagesGrid({ title, images }) {
       <div className="flex-1 container mx-auto p-10 text-center">
         <h3 className="font-bold text-3xl text-ameciclo py-8">{title}</h3>
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 grid-rows-3 md:grid-rows-1 gap-4 grid-flow-row"
+          className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           style={{ justifyItems: "center" }}
         >
           {images?.map((image) => (
@@ -22,23 +22,27 @@ export function ImagesGrid({ title, images }) {
   );
 }
 
+
+
 export function ImageWithLink({
   url,
   alt,
   src,
-  width = 500,
-  height = 500,
+  aspectRatio = 16 / 9,
+  width = 400,
   target = "_blank",
 }) {
   return (
     <Link href={url} target={target}>
-      <Image
-        className="object-fill h-48 w-full"
-        alt={alt}
-        src={src}
-        width={width}
-        height={height}
-      />
+      <div className="relative h-0" style={{ paddingBottom: `${100 / aspectRatio}%` }}>
+        <Image
+          className="absolute object-cover top-0 left-0 w-full h-full"
+          alt={alt}
+          src={src}
+          width={width}
+          height={width/aspectRatio}
+        />
+      </div>
     </Link>
   );
 }
