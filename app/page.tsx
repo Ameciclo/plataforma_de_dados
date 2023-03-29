@@ -40,7 +40,7 @@ export default async function Home() {
           text={description}
         /> */}
         <CardsSession
-          title="Navegue e visualize os dados"
+          title="Navegue por nossas pesquisas"
           cards={featuredPages}
         />
         <ImagesGrid
