@@ -1,8 +1,8 @@
 import "../styles/tailwind.scss";
 import React from "react";
-import { SEO } from "./SEO";
-import { Navbar } from "./Navbar";
-import { Footer } from "./Footer";
+import { SEO } from "./components/SEO";
+import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 
 export const metadata = {
   title: "Plataforma de Dados da Ameciclo",
