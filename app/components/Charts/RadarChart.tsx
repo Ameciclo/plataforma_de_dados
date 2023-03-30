@@ -20,10 +20,10 @@ export function RadarChart({ series, categories, title="", subtitle="" }) {
         enabled: false,
       },
       title: {
-        text: "EVOLUÇÃO DA NOTA",
+        text: title,
       },
       subtitle: {
-        text: "Notas que compõem a média",
+        text: subtitle,
       },
       pane: {
         size: "70%",
@@ -59,7 +59,7 @@ export function RadarChart({ series, categories, title="", subtitle="" }) {
     };
   }
   return (
-    <div className="flex flex-col justify-center w-full p-6 pt-12 text-center tracking-widest">
+    <div className="w-full p-6">
       <HighchartsReact
         highcharts={Highcharts}
         options={getRadarOptions(series, categories)}

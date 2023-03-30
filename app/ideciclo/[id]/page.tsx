@@ -5,7 +5,6 @@ import { StatisticsBox } from "../../components/StatisticsBox";
 import { IdecicloDescription } from "./IdecicloDescription";
 import { Map } from "../../components/Maps/Map";
 import {RadarChart} from "../../components/Charts/RadarChart"
-import { StructureRadar } from "./useclient";
 import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
 import {
   IDECICLO_FORMS_DATA,
@@ -86,7 +85,7 @@ const Ideciclo = async ({ params }) => {
           />
         </div>
         <div className="rounded shadow-2xl">
-          <RadarChart {...info}/>
+          <RadarChart {...info} title={"EVOLUÇÃO DA NOTA"} subtitle={"Notas que compõem a média"}/>
         </div>
       </section>
       <VerticalStatisticsBoxes
