@@ -8,7 +8,7 @@ import {
   ColumnFilter,
   SelectColumnFilter,
 } from "../components/Table/TableFilters";
-import { CitiesStatistics, sortCards } from "./citiesStatisticsConf";
+import { cityCycleStructureExecutionStatistics, sortCards } from "./configuration";
 
 const ExtensionCell = ({ value }) => {
   return (
@@ -47,7 +47,7 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
     },
   ];
 
-  const CityStatistics = CitiesStatistics(selectedCity);
+  const CityStatistics = cityCycleStructureExecutionStatistics(selectedCity);
 
   const cellFilterByValue = {
     Cell: ({ value }) => {
