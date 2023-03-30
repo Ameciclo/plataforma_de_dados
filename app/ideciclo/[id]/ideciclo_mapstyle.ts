@@ -32,6 +32,8 @@ const ciclorrota: LayerProps = {
   filter: ["==", "Tipo", "Ciclorrota"],
 };
 
+export const idecicloLayers = [ciclovia, ciclofaixa, ciclorrota]
+
 const layers = {
   ciclovia,
   ciclofaixa,

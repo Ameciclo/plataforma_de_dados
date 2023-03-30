@@ -15,6 +15,8 @@ import {
 } from "./configuration";
 import { NavCover } from "../../components/NavCover";
 import { Breadcrumb } from "../../components/Breadcrumb";
+import { Map } from "../../components/Maps/Map";
+import mapStyle, { idecicloLayers } from "./ideciclo_mapstyle";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(IDECICLO_STRUCTURES_DATA + "/" + id);
@@ -118,6 +120,7 @@ const Ideciclo = async ({ params }) => {
           <IdecicloDescription info={info} />
         </div>
         <div className="bg-green-200 rounded shadow-2xl">
+          <Map layerData={mapData} layersConf = {idecicloLayers}/>
           <StructureMap data={mapData} />
         </div>
         <div className="rounded shadow-2xl">

@@ -36,17 +36,6 @@ export type document = {
   release_date: string;
   cover: any;
 };
-
-export type LayerType = {
-  id: string;
-  type: string;
-  paint: {
-      'line-color': string;
-      'line-width': number;
-  };
-  filter: string[];
-}
-
 export type layersData = {
   type: string;
   name: string;

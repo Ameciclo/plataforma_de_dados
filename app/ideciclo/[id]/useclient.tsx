@@ -58,7 +58,6 @@ export function StructureMap({data}) {
         padding: 40,
       }
     );
-  
     const [viewport, setViewport] = useState({
       latitude: latitude,
       longitude: longitude,

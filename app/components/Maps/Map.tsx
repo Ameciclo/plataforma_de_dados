@@ -4,8 +4,9 @@ import ReactMapGL, {
   Source,
   Layer,
   Marker,
+  LayerProps,
 } from "react-map-gl";
-import { layersData, LayerType, pointData } from "../../../typings";
+import { layersData, pointData } from "../../../typings";
 import {
   MAPBOXTOKEN,
   MAPBOXSTYLE,
@@ -24,7 +25,7 @@ export const Map = ({
   height = "500px",
 }: {
   layerData?: layersData;
-  layersConf?: LayerType[];
+  layersConf?: LayerProps[];
   pointsData?: pointData[];
   width?: string;
   height?: string;

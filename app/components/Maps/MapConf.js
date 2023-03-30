@@ -10,32 +10,34 @@ export const getInicialViewPort = (pointsData, layerData) => {
   let standardViewPort = {
     latitude: -8.0584364,
     longitude: -34.945277,
-    zoom: 11,
+    zoom: 20,
     bearing: 0,
     pitch: 0,
   };
 
   let points = [
-    [-8.05843, -34.9452],
-    [-8.0584364, -34.945277],
+    [-34.9452,-8.05843 ],
+    [-34.945277,-8.0584364],
   ];
-
   if (pointsData)
-    points = pointsData.map((point) => [point.latitude, point.longitude]);
-
+    points = pointsData.map((point) => [point.longitude,point.latitude]);
   const lineStringFromPointData = turf.lineString(points);
+  const [PminX, PminY, PmaxX, PmaxY] = bbox(lineStringFromPointData);
 
   let lineStringFromLayersData = lineStringFromPointData;
-  if (layerData) lineStringFromLayersData = turf.lineString(layerData);
-
-  const [PminX, PminY, PmaxX, PmaxY] = bbox(lineStringFromPointData);
+  if (layerData) lineStringFromLayersData = layerData;
   const [LminX, LminY, LmaxX, LmaxY] = bbox(lineStringFromLayersData);
 
-  const minX = Math.min(PminX, LminX);
-  const minY = Math.min(PminY, LminY);
-  const maxX = Math.max(PmaxX, LmaxX);
-  const maxY = Math.max(PmaxY, LmaxY);
-
+  let [minX, minY, maxX, maxY] = [PminX, PminY, PmaxX, PmaxY];
+  if (pointsData && layerData) {
+    minX = Math.min(PminX, LminX);
+    minY = Math.min(PminY, LminY);
+    maxX = Math.max(PmaxX, LmaxX);
+    maxY = Math.max(PmaxY, LmaxY);
+  } else if (!pointsData && layerData) {
+    [minX, minY, maxX, maxY] = [LminX, LminY, LmaxX, LmaxY]
+  }
+  console.log( [minX, minY, maxX, maxY], [PminX, PminY, PmaxX, PmaxY], [LminX, LminY, LmaxX, LmaxY])
   const vp = new WebMercatorViewport({
     width: 400,
     height: 600,
@@ -44,8 +46,8 @@ export const getInicialViewPort = (pointsData, layerData) => {
 
   const { longitude, latitude, zoom } = vp.fitBounds(
     [
-      [minY, minX],
-      [maxY, maxX],
+      [minX, minY],
+      [maxX, maxY],
     ],
     {
       padding: 40,
@@ -57,7 +59,6 @@ export const getInicialViewPort = (pointsData, layerData) => {
     standardViewPort.latitude = latitude;
     standardViewPort.zoom = zoom;
   }
-
   return standardViewPort;
 };
 
