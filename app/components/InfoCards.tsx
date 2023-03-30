@@ -1,8 +1,8 @@
 import React from "react";
 
-export const GridSession = ({ cards }) => {
+export const InfoCards = ({ cards }) => {
   return (
-    <section className="container mx-auto grid grid-cols-3 sd:grid-cols-1 md:grid-cols-3 auto-rows-auto gap-10 my-10">
+    <section className="container mx-auto grid grid-cols-2 max-[320px]:grid-cols-1 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
       {cards.map((card) => (
         <InfoCard {...card} />
       ))}
@@ -18,11 +18,11 @@ const InfoCard = ({ label, data, icon }) => {
 
   return (
     <div
-      className={`bg-white text-gray-800 h-32 rounded shadow-2xl p-3 uppercase tracking-widest flex justify-between flex-col sm:flex-row`}
+      className={`text-center sm:text-left text-base bg-white text-gray-800 min-h-32 rounded shadow-2xl p-3 uppercase tracking-widest flex justify-between flex-col sm:flex-row`}
     >
       <div>
-        <h3 className="hidden sm:block">{label}</h3>
-        <h3 className="text-center sm:text-left text-base sm:text-5xl font-bold">
+        <h3 className="">{label}</h3>
+        <h3 className="text-4xl sm:text-5xl font-bold">
           {text}
         </h3>
       </div>

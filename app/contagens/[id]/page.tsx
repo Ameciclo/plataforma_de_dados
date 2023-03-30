@@ -3,7 +3,7 @@ import { Breadcrumb } from "../../components/Breadcrumb";
 import { StatisticsBox } from "../../components/StatisticsBox";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { FlowContainer } from "../../components/FlowChart/FlowContainer";
-import { GridSession } from "../../components/GridSession";
+import { InfoCards } from "../../components/InfoCards";
 import { HourlyCyclistsChart } from "./useclient";
 import {
   CountingStatistic,
@@ -58,7 +58,7 @@ const Contagem = async ({ params }) => {
           <FlowContainer count={data} />
         </div>
       </section>
-      <GridSession cards={cards} />
+      <InfoCards cards={cards} />
       <HourlyCyclistsChart cyclistCount={data} />
     </main>
   );

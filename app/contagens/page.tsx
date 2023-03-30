@@ -6,7 +6,7 @@ import { ExplanationBoxes } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
 import { Map } from "../components/Maps/Map";
 import { ContagensTable } from "./client-side";
-import { GridSession } from "../components/GridSession";
+import { InfoCards } from "../components/InfoCards";
 import { groupBy } from "../../utils";
 import {
   COUNTINGS_DATA,
@@ -74,7 +74,7 @@ export default async function Contagens() {
           { title: "E o que mais?", description: objective },
         ]}
       />
-      <GridSession cards={cards} />
+      <InfoCards cards={cards} />
       <Map pointsData={pointsData} />
       <ContagensTable data={data} />
       <CardsSession
