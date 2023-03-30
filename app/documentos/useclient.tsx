@@ -1,6 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { SelectionFilter } from "../components/SelectionFilterMenu";
+import {
+  MultipleSelectionFilters,
+  SelectionFilter,
+} from "../components/SelectionFilterMenu";
 import { DocumentsList } from "../components/DocumentList";
 import { docTypes } from "../../public/dbs/docTypes.json";
 
@@ -49,34 +52,36 @@ export const DocumentsSession = ({ documents }) => {
       filteredDocuments[0].title
     );
     setFilteredAndOrderedDocuments(filteredDocuments);
-    if(selectedDocumentType === "all") {
-      null
+    if (selectedDocumentType === "all") {
+      null;
     }
   }, [selectedDocumentType, selectedDocumentOrder, documents]);
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 mx-auto">
-        <SelectionFilter
-          title={"Ordene os documentos"}
-          value={selectedDocumentOrder}
-          name={"docOrder"}
-          onChange={(e) => setSelectedDocumentsOrder(e.target.value)}
-          items={[
-            { value: "date-newer", label: "Mais novo" },
-            { value: "date-older", label: "Mais antigo" },
-            { value: "alfa", label: "de A a Z" },
-            { value: "anti-alfa", label: "de Z a A" },
-          ]}
-        />
-        <SelectionFilter
-          title={"Selecione o tipo de documento"}
-          value={selectedDocumentType}
-          name={"docType"}
-          onChange={(e) => setSelectedDocumentType(e.target.value)}
-          items={docTypes}
-        />
-      </div>
+      <MultipleSelectionFilters
+        filters={[
+          {
+            title: "Ordene os documentos",
+            value: selectedDocumentOrder,
+            name: "docOrder",
+            onChange: (e) => setSelectedDocumentsOrder(e.target.value),
+            items: [
+              { value: "date-newer", label: "Mais novo" },
+              { value: "date-older", label: "Mais antigo" },
+              { value: "alfa", label: "de A a Z" },
+              { value: "anti-alfa", label: "de Z a A" },
+            ],
+          },
+          {
+            title: "Selecione o tipo de documento",
+            value: selectedDocumentType,
+            name: "docType",
+            onChange: (e) => setSelectedDocumentType(e.target.value),
+            items: docTypes,
+          },
+        ]}
+      />
       <DocumentsList documents={filteredAndOrderedDocuments} />
     </>
   );

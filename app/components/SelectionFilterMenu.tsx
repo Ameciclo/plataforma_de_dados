@@ -1,6 +1,6 @@
 import React from "react";
 
-export function MultipleSelectionFilters({ title, filters }) {
+export function MultipleSelectionFilters({ title = "", filters }) {
   return (
     <>
       <h1 className="text-4xl md:text-5xl text-center font-bold pb-5">
