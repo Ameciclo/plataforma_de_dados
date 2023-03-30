@@ -57,7 +57,6 @@ function exportToJsonFile(jsonData, name) {
   let dataStr = JSON.stringify(jsonData);
   let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
   let exportFileDefaultName = name + '.json';
-  console.log(dataUri)
 }
 
 exportToJsonFile(data, "observatorio-data")

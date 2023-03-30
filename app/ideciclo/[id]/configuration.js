@@ -216,7 +216,6 @@ export function rates_organization(structure, forms) {
   const date = new Date(form.header.date);
 
   let risk = "";
-  //console.log(forms)
   structure.reviews[structure.reviews.length - 1].segments.forEach((s) => {
     //  let frm = forms.filter(f => f.id == s.form_id)[0]
     // risk = risk.concat(frm.evaluation.risks.situation)
