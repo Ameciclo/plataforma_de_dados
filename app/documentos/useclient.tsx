@@ -1,61 +1,59 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {
-  MultipleSelectionFilters,
-  SelectionFilter,
-} from "../components/SelectionFilterMenu";
+import { MultipleSelectionFilters } from "../components/SelectionFilterMenu";
 import { DocumentsList } from "../components/DocumentList";
 import { docTypes } from "../../public/dbs/docTypes.json";
 
 export const DocumentsSession = ({ documents }) => {
   const [selectedDocumentType, setSelectedDocumentType] = useState("all");
-  const [selectedDocumentOrder, setSelectedDocumentsOrder] = useState(
-    "date-newer"
-  );
-  const [
-    filteredAndOrderedDocuments,
-    setFilteredAndOrderedDocuments,
-  ] = useState(documents);
+  const [selectedDocumentOrder, setSelectedDocumentsOrder] = useState("random");
+  const [filteredDocuments, setFilteredDocuments] = useState(documents);
+  const [orderedDocuments, setOrderedDocuments] = useState([]);
 
-  useEffect(() => {
-    let filteredDocuments = documents;
-
+  const filterDocs = (arr) => {
     if (selectedDocumentType !== "all") {
-      filteredDocuments = documents.filter((doc) => {
+      return arr.filter((doc) => {
         return doc.type === selectedDocumentType;
       });
+    } else {
+      return arr.filter((doc) => {
+        return doc.type !== "any";
+      });
     }
+  };
+
+  const sortDocs = (arr) => {
     switch (selectedDocumentOrder) {
       case "date-newer":
-        filteredDocuments.sort((a, b) =>
-          a.release_date < b.release_date ? 1 : -1
-        );
+        arr.sort((a, b) => (a.release_date < b.release_date ? 1 : -1));
         break;
       case "date-older":
-        filteredDocuments.sort((a, b) =>
-          a.release_date < b.release_date ? -1 : 1
-        );
+        arr.sort((a, b) => (a.release_date < b.release_date ? -1 : 1));
         break;
       case "alfa":
-        filteredDocuments.sort((a, b) => a.title.localeCompare(b.title));
+        arr.sort((a, b) => a.title.localeCompare(b.title));
         break;
       case "anti-alfa":
-        filteredDocuments.sort((a, b) => b.title.localeCompare(a.title));
+        arr.sort((a, b) => b.title.localeCompare(a.title));
         break;
       default:
-        console.log(selectedDocumentType, selectedDocumentOrder);
         break;
     }
-    console.log(
-      selectedDocumentType,
-      selectedDocumentOrder,
-      filteredDocuments[0].title
-    );
-    setFilteredAndOrderedDocuments(filteredDocuments);
-    if (selectedDocumentType === "all") {
-      null;
-    }
+    return arr;
+  };
+
+  useEffect(() => {
+    let filteredDocs = filterDocs(documents);
+    setFilteredDocuments(filteredDocs);
+
+    let orderedDocs = sortDocs(filteredDocs);
+    setOrderedDocuments(orderedDocs);
   }, [selectedDocumentType, selectedDocumentOrder, documents]);
+
+  useEffect(() => {
+    let orderedDocs = sortDocs(filteredDocuments);
+    setOrderedDocuments(orderedDocs);
+  }, [selectedDocumentOrder, filteredDocuments]);
 
   return (
     <>
@@ -67,7 +65,7 @@ export const DocumentsSession = ({ documents }) => {
             name: "docOrder",
             onChange: (e) => setSelectedDocumentsOrder(e.target.value),
             items: [
-              { value: "date-newer", label: "Mais novo" },
+              { value: "date-newer", label: "Mais recente" },
               { value: "date-older", label: "Mais antigo" },
               { value: "alfa", label: "de A a Z" },
               { value: "anti-alfa", label: "de Z a A" },
@@ -82,7 +80,7 @@ export const DocumentsSession = ({ documents }) => {
           },
         ]}
       />
-      <DocumentsList documents={filteredAndOrderedDocuments} />
+      <DocumentsList documents={orderedDocuments} />
     </>
   );
 };
