@@ -5,7 +5,7 @@ export function VerticalStatisticsBoxes({ title, boxes }) {
     <section className="container mx-auto">
       <div className="mx-auto text-center my-24">
         <h3 className="text-4xl font-bold my-8">{title}</h3>
-        <section className="container mx-auto grid lg:grid-cols-4 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+        <section className="container mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 auto-rows-auto gap-10 my-10">
           {boxes.map((out_param: any) => (
             <VerticalBox {...out_param} />
           ))}

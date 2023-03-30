@@ -120,7 +120,7 @@ const Ideciclo = async ({ params }) => {
           <IdecicloDescription info={info} />
         </div>
         <div className="bg-green-200 rounded shadow-2xl">
-          <Map layerData={mapData} layersConf = {idecicloLayers}/>
+          <Map layerData={mapData} layersConf = {idecicloLayers} height={"550px"}/>
         </div>
         <div className="rounded shadow-2xl">
           <StructureRadar {...info} />
