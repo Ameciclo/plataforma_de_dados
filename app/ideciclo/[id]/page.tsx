@@ -115,7 +115,7 @@ const Ideciclo = async ({ params }) => {
         subtitle={GeneralStatistics.subtitle}
         boxes={GeneralStatistics.boxes}
       />
-      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10 my-10">
+      <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
         <div className="rounded shadow-2xl">
           <IdecicloDescription info={info} />
         </div>
