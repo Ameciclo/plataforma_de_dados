@@ -1,79 +1,60 @@
+import { IntlNumberMax1Digit, IntlPercentil } from "../../utils";
+
 export const cycleStructureExecutionStatistics = (data) => {
+  const kms = data.kms;
+  const { pdc_feito, out_pdc, pdc_total } = { ...kms };
+  const percent = 0.0 + pdc_feito / pdc_total;
+  console.log(percent)
   return [
     {
       title: "estrutura cicloviárias",
       unit: "km",
-      value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString("pt-BR", {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }),
+      value: IntlNumberMax1Digit(pdc_feito + out_pdc),
     },
     {
       title: "projetada no plano cicloviário",
       unit: "km",
-      value: data.kms.pdc_total.toLocaleString("pt-BR", {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }),
+      value: IntlNumberMax1Digit(pdc_total),
     },
     {
       title: "implantados no plano cicloviário",
       unit: "km",
-      value: data.kms.pdc_feito.toLocaleString("pt-BR", {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }),
+      value: IntlNumberMax1Digit(pdc_feito),
     },
     {
       title: "cobertos do plano cicloviário",
-      value: (data.kms.pdc_feito / data.kms.pdc_total).toLocaleString("pt-BR", {
-        style: "percent",
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1,
-      }),
+      unit: "%",
+      value: IntlPercentil(percent),
     },
   ];
 };
 
 export function cityCycleStructureExecutionStatistics(selectedCity) {
-  return {
-    title: selectedCity.name,
-    subtitle: "Estatísticas Gerais",
-    boxes: [
-      {
-        title: "estrutura cicloviárias",
-        unit: "km",
-        value: selectedCity.km_ciclos.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "projetada no plano cicloviário",
-        unit: "km",
-        value: selectedCity.km_projected.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "implantados no plano cicloviário",
-        unit: "km",
-        value: selectedCity.km_completed.toLocaleString("pt-BR", {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-      {
-        title: "cobertos do plano cicloviário",
-        value: (selectedCity.percentil / 100).toLocaleString("pt-BR", {
-          style: "percent",
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        }),
-      },
-    ].filter((e) => e),
+  const { km_ciclos, km_completed, km_projected, percentil } = {
+    ...selectedCity,
   };
+  return [
+    {
+      title: "estrutura cicloviárias",
+      unit: "km",
+      value: IntlNumberMax1Digit(km_ciclos),
+    },
+    {
+      title: "projetada no plano cicloviário",
+      unit: "km",
+      value: IntlNumberMax1Digit(km_projected),
+    },
+    {
+      title: "implantados no plano cicloviário",
+      unit: "km",
+      value: IntlNumberMax1Digit(km_completed),
+    },
+    {
+      title: "cobertos do plano cicloviário",
+      value: IntlPercentil(percentil / 100),
+      unit: "%",
+    },
+  ].filter((e) => e);
 }
 
 export function sortCards(data, order) {

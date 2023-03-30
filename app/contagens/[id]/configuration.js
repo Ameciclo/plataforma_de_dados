@@ -1,3 +1,6 @@
+import { compileString } from "sass";
+import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
+
 export const getPointsDataForSingleCounting = (d) => {
   return [
     {
@@ -34,19 +37,22 @@ export const getPointsDataForSingleCounting = (d) => {
 };
 
 export const CountingStatistic = (data) => {
-  const date = new Date(data.date);
+  const {date, id, summary} = {...data}
+  const {total, hour_max, download_xlsx_url} = {...summary}
+  const JSON_URL = `https://api.contagem.ameciclo.org/v1/cyclist-count/${id}`
+  console.log("DATA",date)
   return [
-    { title: "Total de ciclistas", value: data.summary.total },
-    { title: "Pico em 1h", value: data.summary.hour_max },
-    { title: "Data da Contagem", value: date.toLocaleDateString() },
+    { title: "Total de ciclistas", value: IntlNumber(total) },
+    { title: "Pico em 1h", value: IntlNumber(hour_max) },
+    { title: "Data da Contagem", value: IntlDateStr(date) },
     {
       type: "LinksBox",
       title: "Dados",
       value: [
-        { label: "XLSX", url: data.summary.download_xlsx_url },
+        { label: "XLSX", url: download_xlsx_url },
         {
           label: "JSON",
-          url: `https://api.contagem.ameciclo.org/v1/cyclist-count/${data._id}`,
+          url: JSON_URL,
         },
       ],
     },
@@ -54,21 +60,22 @@ export const CountingStatistic = (data) => {
 };
 
 export function getCountingCards(data) {
+  const summary = data.summary
   return [
-    { label: "Mulheres", icon: "women", data: data.summary.women_percent },
+    { label: "Mulheres", icon: "women", data: IntlPercentil(summary.women_percent) },
     {
       label: "Crianças e Adolescentes",
       icon: "children",
-      data: data.summary.children_percent,
+      data: IntlPercentil(summary.children_percent),
     },
-    { label: "Capacete", icon: "helmet", data: data.summary.helmet_percent },
-    { label: "Serviço", icon: "service", data: data.summary.service_percent },
-    { label: "Cargueira", icon: "cargo", data: data.summary.cargo_percent },
+    { label: "Capacete", icon: "helmet", data: IntlPercentil(summary.helmet_percent) },
+    { label: "Serviço", icon: "service", data: IntlPercentil(summary.service_percent) },
+    { label: "Cargueira", icon: "cargo", data: IntlPercentil(summary.cargo_percent) },
     {
       label: "Contramão",
       icon: "wrong_way",
-      data: data.summary.wrong_way_percent,
+      data: IntlPercentil(summary.wrong_way_percent),
     },
-    { label: "Calçada", icon: "sidewalk", data: data.summary.sidewalk_percent },
+    { label: "Calçada", icon: "sidewalk", data: IntlPercentil(summary.sidewalk_percent) },
   ];
 }

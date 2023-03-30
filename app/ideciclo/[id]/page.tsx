@@ -13,7 +13,7 @@ import {
 } from "../../../servers";
 import {
   structureStatistics,
-  getStructuresMap,
+  getStructureMap,
   getRatesSummary,
 } from "./configuration";
 import { idecicloLayers } from "./ideciclo_mapstyle";
@@ -61,7 +61,7 @@ const Ideciclo = async ({ params }) => {
   };
 
   const info = getRatesSummary(data, forms);
-  const mapData = getStructuresMap(data);
+  const mapData = getStructureMap(data);
   const GeneralStatistics = structureStatistics(data, info);
 
   return (

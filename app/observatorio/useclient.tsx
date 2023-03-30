@@ -8,7 +8,10 @@ import {
   ColumnFilter,
   SelectColumnFilter,
 } from "../components/Table/TableFilters";
-import { cityCycleStructureExecutionStatistics, sortCards } from "./configuration";
+import {
+  cityCycleStructureExecutionStatistics,
+  sortCards,
+} from "./configuration";
 
 const ExtensionCell = ({ value }) => {
   return (
@@ -113,9 +116,9 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
       />
       <div ref={ref}>
         <StatisticsBox
-          title={CityStatistics.title}
-          subtitle={CityStatistics.subtitle}
-          boxes={CityStatistics.boxes}
+          title={selectedCity.name}
+          subtitle={"Estatísticas Gerais"}
+          boxes={CityStatistics}
         />
       </div>
       <Table

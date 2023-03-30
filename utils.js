@@ -1,3 +1,27 @@
+const LANG = "pt-BR"
+export const IntlNumber = (n, max = 3, min = 0) => {
+  const INumber = new Intl.NumberFormat(LANG, {
+    maximumFractionDigits: max,
+    minimumFractionDigits: min,
+  }).format(n);
+  return INumber;
+};
+export const IntlNumberMin1Max3Digits = (n) => IntlNumber(n, 3, 1);
+export const IntlNumberMax1Digit = (n) => IntlNumber(n, 1);
+export const IntlNumber3Digit = (n) => IntlNumber(n, 3, 3);
+export const IntlDateStr = (str) => {
+  const date = new Date(str);
+  const IDate = new Intl.DateTimeFormat(LANG).format(date);
+  return IDate
+};
+export const IntlPercentil = (n) => {
+  const INumber = new Intl.NumberFormat(LANG, {
+    style: "percent",
+    minimumFractionDigits: 1,
+  }).format(n);
+  return INumber
+};
+
 export function group_by(objetoArray, propriedade) {
   return objetoArray.reduce((acc, obj) => {
     let key = obj[propriedade];

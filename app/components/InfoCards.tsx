@@ -11,11 +11,6 @@ export const InfoCards = ({ cards }) => {
 };
 
 const InfoCard = ({ label, data, icon }) => {
-  let percent = data * 100;
-  let text = `${percent.toLocaleString("pt-BR", {
-    maximumFractionDigits: 1,
-  })}%`;
-
   return (
     <div
       className={`text-center sm:text-left text-base bg-white text-gray-800 min-h-32 rounded shadow-2xl p-3 uppercase tracking-widest flex justify-between flex-col sm:flex-row`}
@@ -23,7 +18,7 @@ const InfoCard = ({ label, data, icon }) => {
       <div>
         <h3 className="">{label}</h3>
         <h3 className="text-4xl sm:text-5xl font-bold">
-          {text}
+          {data}
         </h3>
       </div>
       <img src={`/icons/contagens/${icon}.svg`} className="h-20 fill-current" />

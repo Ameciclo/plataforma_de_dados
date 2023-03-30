@@ -1,3 +1,5 @@
+import { IntlNumber, IntlNumber3Digit, IntlNumberMax1Digit } from "../../utils";
+
 export function getTotalCityStates(input) {
   let arr = input,
     obj = {},
@@ -15,71 +17,66 @@ export function getTotalCityStates(input) {
   return { states: st_arr, count: count };
 }
 
-export function allCitiesStatistics(cidades, structures) {
+export function allCitiesStatistics(cities, structures) {
+
   return [
-    { title: "Cidades avaliadas", value: cidades.length },
-    { title: "Em quantos estados", value: getTotalCityStates(cidades).count },
+    { title: "Cidades avaliadas", value: cities.length },
     {
-      title: "Extensão avaliada (km)",
-      value: (
-        "" +
-        (
-          (cidades.reduce(
-            (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.road,
+      title: "Em quantos estados",
+      value: getTotalCityStates(cities).count,
+    },
+    {
+      title: "Extensão avaliada",
+      value: IntlNumberMax1Digit(
+        (cities.reduce(
+          (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.road,
+          0
+        ) +
+          cities.reduce(
+            (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.street,
             0
           ) +
-            cidades.reduce(
-              (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.street,
-              0
-            ) +
-            cidades.reduce(
-              (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.local,
-              0
-            )) /
+          cities.reduce(
+            (acc, cur) => acc + cur.reviews[0].city_network.cycle_length.local,
+            0
+          )) /
           1000
-        ).toFixed(1)
-      ).replace(".", ","),
+      ),
+      unit:"km"
     },
-    { title: "Vias avaliadas", value: "" + structures.length },
+    { title: "Vias avaliadas", value: IntlNumber(structures.length) },
   ];
 }
 
-
 export function cityStatistics(selectedCity) {
+  const reviews = selectedCity.reviews
+
   return [
-    selectedCity.reviews.length > 0 && {
-      title: "IDECICLO " + selectedCity.reviews[0].year,
-      value: ("" + selectedCity.reviews[0].ideciclo.toFixed(3)).replace(
-        ".",
-        ","
-      ),
+    reviews.length > 0 && {
+      title: "IDECICLO " + reviews[0].year,
+      value: IntlNumber3Digit(reviews[0].ideciclo.toFixed(3)),
     },
-    selectedCity.reviews.length > 1 && {
-      title: "IDECICLO " + selectedCity.reviews[1].year,
-      value: ("" + selectedCity.reviews[1].ideciclo.toFixed(3)).replace(
-        ".",
-        ","
-      ),
+    reviews.length > 1 && {
+      title: "IDECICLO " + reviews[1].year,
+      value: IntlNumber3Digit(reviews[1].ideciclo.toFixed(3)),
     },
-    selectedCity.reviews.length && {
-      title: "Extensão avaliada (km)",
-      value: (
-        "" +
-        (
-          (selectedCity.reviews[0].city_network.cycle_length.road +
-            selectedCity.reviews[0].city_network.cycle_length.street +
-            selectedCity.reviews[0].city_network.cycle_length.local) /
+    reviews.length && {
+      title: "Extensão avaliada",
+      value: IntlNumberMax1Digit(
+        (reviews[0].city_network.cycle_length.road +
+          reviews[0].city_network.cycle_length.street +
+          reviews[0].city_network.cycle_length.local) /
           1000
-        ).toFixed(1)
-      ).replace(".", ","),
+      ),
+      unit:"km"
     },
     {
       title: "Vias avaliadas",
-      value:
-        "" +
-        (selectedCity.reviews[0].city_network.cycle_structures.road +
-          selectedCity.reviews[0].city_network.cycle_structures.street +
-          selectedCity.reviews[0].city_network.cycle_structures.local),
+      value: IntlNumber(
+        reviews[0].city_network.cycle_structures.road +
+          reviews[0].city_network.cycle_structures.street +
+          reviews[0].city_network.cycle_structures.local
+      ),
     },
   ].filter((e) => e);
 }

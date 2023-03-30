@@ -1,9 +1,21 @@
+import { IntlNumber, IntlPercentil } from "../../utils";
+
 export const allCountsStatistics = (summaryData, counts) => {
+  const {totalAmount, numberOfCounts, MaximumValue} = {...summaryData}
   return [
-    { title: "Total de ciclistas", value: summaryData.totalAmount },
-    { title: "Contagens Realizadas", value: summaryData.numberOfCounts },
-    { title: "Pontos Monitorados", value: counts },
-    { title: "Máximo em um ponto", value: summaryData.MaximumValue },
+    {
+      title: "Total de ciclistas",
+      value: IntlNumber(totalAmount),
+    },
+    {
+      title: "Contagens Realizadas",
+      value: IntlNumber(numberOfCounts),
+    },
+    { title: "Pontos Monitorados", value: IntlNumber(counts) },
+    {
+      title: "Máximo em um ponto",
+      value: IntlNumber(MaximumValue),
+    },
   ];
 };
 
@@ -12,32 +24,32 @@ export const CardsData = (summaryData) => {
     {
       label: "Mulheres",
       icon: "women",
-      data: summaryData.totalWomenPercentile,
+      data: IntlPercentil(summaryData.totalWomenPercentile),
     },
     {
       label: "Crianças e Adolescentes",
       icon: "children",
-      data: summaryData.totalChildrenPercentile,
+      data: IntlPercentil(summaryData.totalChildrenPercentile),
     },
     {
       label: "Capacete",
       icon: "helmet",
-      data: summaryData.totalHelmetPercentile,
+      data: IntlPercentil(summaryData.totalHelmetPercentile),
     },
     {
       label: "Serviço",
       icon: "service",
-      data: summaryData.totalServicePercentile,
+      data: IntlPercentil(summaryData.totalServicePercentile),
     },
     {
       label: "Cargueira",
       icon: "cargo",
-      data: summaryData.totalCargoPercentile,
+      data: IntlPercentil(summaryData.totalCargoPercentile),
     },
     {
       label: "Contramão",
       icon: "wrong_way",
-      data: summaryData.totalWrongWayPercentile,
+      data: IntlPercentil(summaryData.totalWrongWayPercentile),
     },
   ];
 };

@@ -1,7 +1,8 @@
 import descriptions from "../../../public/dbs/ideciclo_rates_descriptions.json";
 import map from "../../../public/dbs/malhacicloviariapermanente_mar2021.json";
+import { IntlDateStr, IntlNumberMax1Digit, IntlNumberMin1Max3Digits } from "../../../utils";
 
-export function getStructuresMap(structure) {
+export function getStructureMap(structure) {
   // TRABALHA O MAPA
   const geoJsonMap = {
     type: "FeatureCollection",
@@ -27,19 +28,20 @@ export function getStructuresMap(structure) {
 }
 
 export function structureStatistics(structure, info) {
+  const {nota, comprimento, avaliacoes} = {...info}
   return {
     title: structure.street,
     subtitle: "Visão geral",
     boxes: [
       {
         title: "Nota geral",
-        value: ("" + info.nota.toFixed(1)).replace(".", ","),
+        value: IntlNumberMax1Digit(nota),
       },
       {
         title: "Extensão (km)",
-        value: (info.comprimento / 1000).toFixed(2).replace(".", ","),
+        value: IntlNumberMin1Max3Digits(comprimento/1000),
       },
-      { title: "Avaliações", value: info.avaliacoes },
+      { title: "Avaliações", value: avaliacoes },
     ],
   };
 }
@@ -225,7 +227,7 @@ export function getRatesSummary(structure, forms) {
     localizacao: form.characteristics.localization,
     largura_total: form.characteristics.total_width,
     largura_transitavel: form.characteristics.cyclable_width,
-    data: date.toLocaleDateString("pt-br"),
+    data: IntlDateStr(date),
     avaliacoes: structure.reviews.length,
     nota: structure.reviews[structure.reviews.length - 1].rates.average,
     categories: categories,
