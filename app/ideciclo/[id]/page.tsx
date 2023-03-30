@@ -1,7 +1,7 @@
 import React from "react";
 import { StatisticsBox } from "../../components/StatisticsBox";
 import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
-import { StructureMap, StructureRadar } from "./useclient";
+import { StructureRadar } from "./useclient";
 import {
   IDECICLO_FORMS_DATA,
   IDECICLO_PAGE_DATA,

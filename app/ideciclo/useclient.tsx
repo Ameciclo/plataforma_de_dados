@@ -6,6 +6,7 @@ import { filterById, filterByName } from "../../utils";
 import { city } from "../../typings";
 import { getTotalCityStates } from "./configuration";
 import { StatisticsBox } from "../components/StatisticsBox";
+import { SelectionFilter } from "../components/SelectionFilterMenu";
 
 function IdecicloClientSide({ cidades, structures, ideciclo }) {
   const [filteredCity, setFilteredCity] = useState<any[]>([]);
@@ -120,7 +121,19 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
       value: c.reviews[0].ideciclo, // `${data.value.toLocaleString("pt-BR", {maximumFractionDigits: {maxDig}, minimumFractionDigits: {minDig}})}
     }));
   };
-
+  const statesFilter =  {
+    title: "por estado:",
+    value: cityState,
+    name: "cityState",
+    onChange: (e) => setCityState(e.target.value),
+    onBlur: (e) => e,
+    items: [{ value: "", label: "Todas" }].concat(
+      getTotalCityStates(cidades).states.map((s: any) => ({
+        value: s,
+        label: s,
+      }))
+    ),
+  }
   const CitiesRanking = {
     title: "Ranking das Cidades",
     filters: [
@@ -170,7 +183,6 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
         selected={selectedCity.id}
         options={{ changeFunction: changeCity, onClickFnc: handleClick(ref) }}
       />
-      <div ref={ref}>""</div>
       {filteredCityData.length > 0 && (
         <StatisticsBox
           title={CityStatistics.title}
