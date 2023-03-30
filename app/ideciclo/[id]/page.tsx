@@ -1,70 +1,29 @@
 import React from "react";
+import { NavCover } from "../../components/NavCover";
+import { Breadcrumb } from "../../components/Breadcrumb";
 import { StatisticsBox } from "../../components/StatisticsBox";
-import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
+import { IdecicloDescription } from "./IdecicloDescription";
+import { Map } from "../../components/Maps/Map";
+import {RadarChart} from "../../components/Charts/RadarChart"
 import { StructureRadar } from "./useclient";
+import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
 import {
   IDECICLO_FORMS_DATA,
   IDECICLO_PAGE_DATA,
   IDECICLO_STRUCTURES_DATA,
 } from "../../../servers";
-import { IdecicloDescription } from "./IdecicloDescription";
 import {
   getGeneralStatistics,
   get_map_data,
   rates_organization,
 } from "./configuration";
-import { NavCover } from "../../components/NavCover";
-import { Breadcrumb } from "../../components/Breadcrumb";
-import { Map } from "../../components/Maps/Map";
-import mapStyle, { idecicloLayers } from "./ideciclo_mapstyle";
+import { idecicloLayers } from "./ideciclo_mapstyle";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(IDECICLO_STRUCTURES_DATA + "/" + id);
   const data = await res.json();
   return data;
 };
-
-// export async function getStaticPaths() {
-//   const res = await fetch(IDECICLO_STRUCTURES_DATA);
-//   const allstructs = await res.json();
-//   const rec_structs = allstructs.filter((s) => s.city_id === 1);
-//   // Get the paths we want to pre-render based on posts
-//   const paths = rec_structs.map((s: any) => ({
-//     params: { ideciclo: s.id },
-//   }));
-
-//   return { paths, fallback: false };
-// }
-
-// export async function getStaticProps({ params }) {
-//   const res = await fetch(IDECICLO_STRUCTURES_DATA + "/" + params.ideciclo);
-
-//   let structure = await res.json();
-//   // iterar sobre reviews
-//   // map ou foreach
-//   // cada review
-
-//   /// COLOCAR EM REVIEW NO Back
-//   const new_review_form_id =
-//     structure.reviews[structure.reviews.length - 1].segments[0].form_id;
-
-//   const formres = await fetch(IDECICLO_FORMS_DATA + "/" + new_review_form_id);
-
-//   const forms = await formres.json();
-
-//   let last_review_form_id = null;
-//   if (structure.reviews.length > 1)
-//     last_review_form_id =
-//       structure.reviews[structure.reviews.length - 2].segments[0].form_id;
-
-//   return {
-//     props: {
-//       structure: structure,
-//       forms: forms,
-//     },
-//     revalidate: 1,
-//   };
-// }
 
 const fetchData = async (id, structure) => {
   /// COLOCAR EM REVIEW NO Back
@@ -120,10 +79,14 @@ const Ideciclo = async ({ params }) => {
           <IdecicloDescription info={info} />
         </div>
         <div className="bg-green-200 rounded shadow-2xl">
-          <Map layerData={mapData} layersConf = {idecicloLayers} height={"550px"}/>
+          <Map
+            layerData={mapData}
+            layersConf={idecicloLayers}
+            height={"550px"}
+          />
         </div>
         <div className="rounded shadow-2xl">
-          <StructureRadar {...info} />
+          <RadarChart {...info}/>
         </div>
       </section>
       <VerticalStatisticsBoxes
