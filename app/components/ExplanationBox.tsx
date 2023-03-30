@@ -7,7 +7,7 @@ type box = {
 
 export const ExplanationBoxes = ({ boxes }: { boxes: box[] }) => {
   return (
-    <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+    <section className="container mx-auto my-5 md:my-6 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
       <div className="flex flex-col sm:flex-row justify-between">
         {boxes.map((box : box) => {
           return (
