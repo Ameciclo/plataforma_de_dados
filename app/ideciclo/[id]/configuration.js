@@ -13,13 +13,11 @@ export function get_map_data(structure) {
     features: [],
   };
 
-  structure.reviews[structure.reviews.length - 1].segments.forEach(
-    (seg) => {
-      geoJsonMap.features.push(
-        map.features.filter((m) => m.properties.idunido == seg.geo_id)[0]
-      );
-    }
-  );
+  structure.reviews[structure.reviews.length - 1].segments.forEach((seg) => {
+    geoJsonMap.features.push(
+      map.features.filter((m) => m.properties.idunido == seg.geo_id)[0]
+    );
+  });
 
   if (geoJsonMap.features[0] == undefined) {
     geoJsonMap.features = map.features;
@@ -46,7 +44,6 @@ export function getGeneralStatistics(structure, info) {
   };
 }
 
-
 export function rates_organization(structure, forms) {
   // ORDENA POR ANO
   let s = structure;
@@ -62,28 +59,28 @@ export function rates_organization(structure, forms) {
   //let last_rate = structure.reviews[1].rates
   const project_param = [
     {
-      // key: "protection",
+      key: "protection",
       titulo: descriptions.protection.title,
       media: rate.protection,
       different: rate.protection != last_rate.protection,
       better: rate.protection > last_rate.protection,
     },
     {
-      // key: "all_vert_signs",
+      key: "all_vert_signs",
       titulo: descriptions.all_vert_signs.title,
       media: rate.all_vert_signs,
       different: rate.all_vert_signs != last_rate.all_vert_signs,
       better: rate.all_vert_signs > last_rate.all_vert_signs,
     },
     {
-      // key: "all_hor_signs",
+      key: "all_hor_signs",
       titulo: descriptions.all_hor_signs.title,
       media: rate.all_hor_signs,
       different: rate.all_hor_signs != last_rate.all_hor_signs,
       better: rate.all_hor_signs > last_rate.all_hor_signs,
     },
     {
-      // key: "comfort",
+      key: "comfort",
       titulo: descriptions.comfort.title,
       media: rate.comfort,
       different: rate.comfort != last_rate.comfort,
@@ -92,21 +89,21 @@ export function rates_organization(structure, forms) {
   ];
   const safety_param = [
     {
-      // key: "speed_control",
+      key: "speed_control",
       titulo: descriptions.speed_control.title,
       media: rate.speed_control,
       different: rate.speed_control != last_rate.speed_control,
       better: rate.speed_control > last_rate.speed_control,
     },
     {
-      // key: "conflicts",
+      key: "conflicts",
       titulo: descriptions.conflicts.title,
       media: rate.conflicts,
       different: rate.conflicts != last_rate.conflicts,
       better: rate.conflicts > last_rate.conflicts,
     },
     {
-      // key: "cross_conflict",
+      key: "cross_conflict",
       titulo: descriptions.cross_conflict.title,
       media: rate.cross_conflict,
       different: rate.cross_conflict != last_rate.cross_conflict,
@@ -115,21 +112,21 @@ export function rates_organization(structure, forms) {
   ];
   const maintenance_param = [
     {
-      // key: "pavement",
+      key: "pavement",
       titulo: descriptions.pavement.title,
       media: rate.pavement,
       different: rate.pavement != last_rate.pavement,
       better: rate.pavement > last_rate.pavement,
     },
     {
-      // key: "hor_sign_conditions",
+      key: "hor_sign_conditions",
       titulo: descriptions.hor_sign_conditions.title,
       media: rate.hor_sign_conditions,
       different: rate.hor_sign_conditions != last_rate.hor_sign_conditions,
       better: rate.hor_sign_conditions > last_rate.hor_sign_conditions,
     },
     {
-      // key: "protection_conditions",
+      key: "protection_conditions",
       titulo: descriptions.protection_conditions.title,
       media: rate.protection_conditions,
       different: rate.protection_conditions != last_rate.protection_conditions,
@@ -138,28 +135,28 @@ export function rates_organization(structure, forms) {
   ];
   const urbanity_param = [
     {
-      // key: "obstacles",
+      key: "obstacles",
       titulo: descriptions.obstacles.title,
       media: rate.obstacles,
       different: rate.obstacles != last_rate.obstacles,
       better: rate.obstacles > last_rate.obstacles,
     },
     {
-      // key: "shading",
+      key: "shading",
       titulo: descriptions.shading.title,
       media: rate.shading,
       different: rate.shading != last_rate.shading,
       better: rate.shading > last_rate.shading,
     },
     {
-      // key: "access",
+      key: "access",
       titulo: descriptions.access.title,
       media: rate.access,
       different: rate.access != last_rate.access,
       better: rate.access > last_rate.access,
     },
     {
-      // key: "lighting",
+      key: "lighting",
       titulo: descriptions.lighting.title,
       media: rate.lighting,
       different: rate.lighting != last_rate.lighting,
@@ -169,28 +166,28 @@ export function rates_organization(structure, forms) {
 
   const main_parameters = [
     {
-      // key: "project",
+      key: "project",
       titulo: descriptions.project.title,
       media: rate.project,
       color: "#24CBE5",
       parametros: project_param,
     },
     {
-      // key: "safety",
+      key: "safety",
       titulo: descriptions.safety.title,
       media: rate.safety,
       color: "#E02F31",
       parametros: safety_param,
     },
     {
-      // key: "maintenance",
+      key: "maintenance",
       titulo: descriptions.maintenance.title,
       media: rate.maintenance,
       color: "#DDDF00",
       parametros: maintenance_param,
     },
     {
-      // key: "urbanity",
+      key: "urbanity",
       titulo: descriptions.urbanity.title,
       media: rate.urbanity,
       color: "#6AF9C4",
@@ -207,7 +204,6 @@ export function rates_organization(structure, forms) {
     main_parameters.forEach((p) => {
       d.push(r.rates[p.key]);
     });
-
     let type = "area";
     if (index != 0) type = "line";
     series.push({ type: type, name: r.year, data: d });
