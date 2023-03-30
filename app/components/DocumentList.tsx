@@ -23,29 +23,26 @@ export const DocumentsList = ({ documents }) => {
 const DocumentCard = ({ document, indicator }) => {
   return (
     <div
-      className="container bg-white rounded-lg"
+      className="bg-white relative rounded-lg border"
       style={{ minHeight: "450px", maxWidth: "220" }}
     >
-      <div style={{ position: "relative" }}>
-        {indicator?.label != "" && (
-          <DocumentTypeIndicator
-            {...indicator}
-            style={{ position: "absolute", top: 0, left: 0 }}
+      {indicator?.label != "" && (
+        <div className=" absolute top-0 left-0 z-10">
+          <DocumentTypeIndicator {...indicator} />
+        </div>
+      )}
+      {document.cover ? (
+        <div className="">
+          <ImageWithLink
+            url={document.url}
+            alt={""}
+            src={document.cover}
+            aspectRatio={0.75}
           />
-        )}
-        {document.cover ? (
-          <div style={{ position: "relative", top:0, left:0 }}>
-            <ImageWithLink
-              url={document.url}
-              alt={""}
-              src={document.cover}
-              aspectRatio={0.75}
-            />
-          </div>
-        ) : (
-          <div style={{ minHeight: "270px" }} />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div style={{ minHeight: "270px" }} />
+      )}
       <DocumentDescription {...document} />
     </div>
   );
@@ -54,7 +51,7 @@ const DocumentCard = ({ document, indicator }) => {
 const DocumentTypeIndicator = ({ label, color, fontColor }) => {
   return (
     <div
-      className="uppercase p-4 rounded bg-green-400 font-semibold"
+      className="uppercase p-2 rounded bg-green-400 text-base font-semibold truncate"
       style={{
         maxHeight: "50px",
         color: fontColor,
@@ -73,7 +70,7 @@ const DocumentDescription = ({ title, url, release_date, description }) => {
   return (
     <div className="px-4 py-5 lg:p-6">
       <dl className="pb-6">
-        <Link href={`${url}`}>
+        <Link href={url}>
           <dt className="mt-1 text-2xl font-semibold leading-9 text-gray-900 cursor-pointer">
             {title} ({release_date.substr(0, 4)})
           </dt>
