@@ -4,7 +4,7 @@ import React from "react";
 export const StatisticsBox = ({ title, boxes, subtitle = "" }) => {
   return (
     <section className="mx-auto container">
-      <div className="mx-auto text-center my-24">
+      <div className="mx-auto text-center my-12">
         <h1 className="text-4xl sm:text-5xl font-bold">{title}</h1>
         {subtitle && <h3 className="text-2xl md:text-3xl font-bold my-8">{subtitle}</h3>}
         <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
