@@ -4,8 +4,8 @@ import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
 import IdecicloClientSide from "./useclient";
+import { allCitiesStatistics } from "./configuration";
 import { IDECICLO_DATA, IDECICLO_PAGE_DATA, IDECICLO_STRUCTURES_DATA } from "../../servers";
-import { getGeneralStatistics } from "./configuration";
 
 const crumb = {
   label: "IDECICLO",
@@ -31,17 +31,13 @@ const fetchData = async () => {
 const Ideciclo = async () => {
   const { ideciclo, structures, pageData } = await fetchData();
   const cidades = ideciclo.filter((c) => c.reviews.length > 0);
-
-  const GeneralStatistics = getGeneralStatistics(cidades, structures);
-
   return (
     <>
       <NavCover title="Índice de desenvolvimento cicloviário" src={pageData.cover.url} />
       <Breadcrumb {...crumb} />
       <StatisticsBox
-        title={GeneralStatistics.title}
-        subtitle={GeneralStatistics.subtitle}
-        boxes={GeneralStatistics.boxes}
+        title={"Estatísticas Gerais"}
+        boxes={allCitiesStatistics(cidades, structures)}
       />
       <ExplanationBoxes
         boxes={[

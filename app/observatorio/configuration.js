@@ -1,80 +1,129 @@
-export const generalStatistics = (data) => {
-    return (
-        {
-            title: "Execução Cicloviária",
-            subtitle: "da Região Metropolitana do Recife",
-            boxes: [
-              {
-                title: "estrutura cicloviárias",
-                unit: "km",
-                value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString("pt-BR", {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                }),
-              },
-              {
-                title: "projetada no plano cicloviário",
-                unit: "km",
-                value: data.kms.pdc_total.toLocaleString("pt-BR", {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                }),
-              },
-              {
-                title: "implantados no plano cicloviário",
-                unit: "km",
-                value: data.kms.pdc_feito.toLocaleString("pt-BR", {
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                }),
-              },
-              {
-                title: "cobertos do plano cicloviário",
-                value: (data.kms.pdc_feito / data.kms.pdc_total).toLocaleString(
-                  "pt-BR",
-                  {
-                    style: "percent",
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1,
-                  }
-                )
-              }
-            ]
-          }
-    )
+export const cycleStructureExecutionStatistics = (data) => {
+  return [
+    {
+      title: "estrutura cicloviárias",
+      unit: "km",
+      value: (data.kms.pdc_feito + data.kms.out_pdc).toLocaleString("pt-BR", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+    },
+    {
+      title: "projetada no plano cicloviário",
+      unit: "km",
+      value: data.kms.pdc_total.toLocaleString("pt-BR", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+    },
+    {
+      title: "implantados no plano cicloviário",
+      unit: "km",
+      value: data.kms.pdc_feito.toLocaleString("pt-BR", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+    },
+    {
+      title: "cobertos do plano cicloviário",
+      value: (data.kms.pdc_feito / data.kms.pdc_total).toLocaleString("pt-BR", {
+        style: "percent",
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }),
+    },
+  ];
+};
+
+export function cityCycleStructureExecutionStatistics(selectedCity) {
+  return {
+    title: selectedCity.name,
+    subtitle: "Estatísticas Gerais",
+    boxes: [
+      {
+        title: "estrutura cicloviárias",
+        unit: "km",
+        value: selectedCity.km_ciclos.toLocaleString("pt-BR", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      },
+      {
+        title: "projetada no plano cicloviário",
+        unit: "km",
+        value: selectedCity.km_projected.toLocaleString("pt-BR", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      },
+      {
+        title: "implantados no plano cicloviário",
+        unit: "km",
+        value: selectedCity.km_completed.toLocaleString("pt-BR", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      },
+      {
+        title: "cobertos do plano cicloviário",
+        value: (selectedCity.percentil / 100).toLocaleString("pt-BR", {
+          style: "percent",
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }),
+      },
+    ].filter((e) => e),
+  };
+}
+
+export function sortCards(data, order) {
+  const units = {
+    percentil: "%",
+    km_completed: "km",
+    km_projected: "km",
+    km_ciclos: "km",
+  };
+  return data
+    .map((d) => ({
+      id: d.id,
+      label: d.name,
+      unit: units[order],
+      value: d[order],
+    }))
+    .sort((a, b) => (b.value >= a.value ? 1 : -1));
 }
 
 const PDCLayer = {
-    id: "Não executado no PDC",
-    type: "line",
-    paint: {
-      "line-color": "#000000",
-      "line-opacity": 0.5,
-      "line-width": 2,
-    },
-    filter: ["==", "STATUS", "Projeto"],
-  };
+  id: "Não executado no PDC",
+  type: "line",
+  paint: {
+    "line-color": "#000000",
+    "line-opacity": 0.5,
+    "line-width": 2,
+  },
+  filter: ["==", "STATUS", "Projeto"],
+};
 
-  const PDCDoneLayer = {
-    id: "Executados dentro do PDC",
-    type: "line",
-    paint: {
-      "line-color": "#008080",
-      "line-width": 3,
-    },
-    filter: ["==", "STATUS", "Realizada"],
-  };
+const PDCDoneLayer = {
+  id: "Executados dentro do PDC",
+  type: "line",
+  paint: {
+    "line-color": "#008080",
+    "line-width": 3,
+  },
+  filter: ["==", "STATUS", "Realizada"],
+};
 
-  const NotPDC = {
-    id: "Executados fora do PDC",
-    type: "line",
-    paint: {
-      "line-color": "#E02F31",
-      "line-width": 1.5,
-      "line-opacity": 0.8,
-      //          'line-dasharray': [2,.5],
-    },
-    filter: ["==", "STATUS", "NotPDC"],
-  };
+const NotPDC = {
+  id: "Executados fora do PDC",
+  type: "line",
+  paint: {
+    "line-color": "#E02F31",
+    "line-width": 1.5,
+    "line-opacity": 0.8,
+    //          'line-dasharray': [2,.5],
+  },
+  filter: ["==", "STATUS", "NotPDC"],
+};
 
 export const layersConf = [PDCLayer, PDCDoneLayer, NotPDC];

@@ -1,15 +1,10 @@
-export const GeneralStatistics = (summaryData, counts) => {
-  return {
-    title: "Estatísticas Gerais",
-    subtitle: "",
-    type: "general",
-    boxes: [
-      { title: "Total de ciclistas", value: summaryData.totalAmount },
-      { title: "Contagens Realizadas", value: summaryData.numberOfCounts },
-      { title: "Pontos Monitorados", value: counts },
-      { title: "Máximo em um ponto", value: summaryData.MaximumValue },
-    ],
-  };
+export const allCountsStatistics = (summaryData, counts) => {
+  return [
+    { title: "Total de ciclistas", value: summaryData.totalAmount },
+    { title: "Contagens Realizadas", value: summaryData.numberOfCounts },
+    { title: "Pontos Monitorados", value: counts },
+    { title: "Máximo em um ponto", value: summaryData.MaximumValue },
+  ];
 };
 
 export const CardsData = (summaryData) => {

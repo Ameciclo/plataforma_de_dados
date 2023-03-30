@@ -7,8 +7,9 @@ import { Map } from "../components/Maps/Map";
 import { CardsSession } from "../components/CardsSession";
 import ObservatorioClientSide from "./useclient";
 import data from "../../public/dbs/observatorio-data.json";
-import { documents, page_data } from "./todb";
-import { layersConf, generalStatistics } from "./configuration";
+import { documents, page_data } from "../../public/dbs/todb_observatorio";
+import { layersConf, cycleStructureExecutionStatistics } from "./configuration";
+
 //import EvalolutionGraph from
 
 const crumb = {
@@ -19,7 +20,7 @@ const crumb = {
 
 export default async function Observatorio() {
   const ciclos = data.map;
-  const statistics = generalStatistics(data);
+  const statistics = cycleStructureExecutionStatistics(data);
 
   const cities = data.kms.municipios.map((m, index) => ({
     id: index,
@@ -35,9 +36,9 @@ export default async function Observatorio() {
       <NavCover title="Observatório cicloviário" src={""} />
       <Breadcrumb {...crumb} />
       <StatisticsBox
-        title={statistics.title}
-        subtitle={statistics.subtitle}
-        boxes={statistics.boxes}
+        title={"Execução Cicloviária"}
+        subtitle={"da Região Metropolitana do Recife"}
+        boxes={cycleStructureExecutionStatistics(data)}
       />
       <ExplanationBoxes
         boxes={[

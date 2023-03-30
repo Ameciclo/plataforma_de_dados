@@ -1,7 +1,7 @@
 import descriptions from "../../../public/dbs/ideciclo_rates_descriptions.json";
 import map from "../../../public/dbs/malhacicloviariapermanente_mar2021.json";
 
-export function get_map_data(structure) {
+export function getStructuresMap(structure) {
   // TRABALHA O MAPA
   const geoJsonMap = {
     type: "FeatureCollection",
@@ -26,7 +26,7 @@ export function get_map_data(structure) {
   return geoJsonMap;
 }
 
-export function getGeneralStatistics(structure, info) {
+export function structureStatistics(structure, info) {
   return {
     title: structure.street,
     subtitle: "Visão geral",
@@ -44,7 +44,7 @@ export function getGeneralStatistics(structure, info) {
   };
 }
 
-export function rates_organization(structure, forms) {
+export function getRatesSummary(structure, forms) {
   // ORDENA POR ANO
   let s = structure;
   // PEGA FORMULÁRIO PARA DADOS DESCRITOS

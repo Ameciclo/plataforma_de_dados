@@ -12,9 +12,9 @@ import {
   IDECICLO_STRUCTURES_DATA,
 } from "../../../servers";
 import {
-  getGeneralStatistics,
-  get_map_data,
-  rates_organization,
+  structureStatistics,
+  getStructuresMap,
+  getRatesSummary,
 } from "./configuration";
 import { idecicloLayers } from "./ideciclo_mapstyle";
 
@@ -60,9 +60,9 @@ const Ideciclo = async ({ params }) => {
     routes: ["/", "/ideciclo", data.id],
   };
 
-  const info = rates_organization(data, forms);
-  const mapData = get_map_data(data);
-  const GeneralStatistics = getGeneralStatistics(data, info);
+  const info = getRatesSummary(data, forms);
+  const mapData = getStructuresMap(data);
+  const GeneralStatistics = structureStatistics(data, info);
 
   return (
     <>

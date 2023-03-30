@@ -4,9 +4,8 @@ import { NumberCards } from "../components/NumberCards";
 import IdecicloTable from "./IdecicloTable";
 import { filterById, filterByName } from "../../utils";
 import { city } from "../../typings";
-import { getTotalCityStates } from "./configuration";
+import { cityStatistics, getTotalCityStates } from "./configuration";
 import { StatisticsBox } from "../components/StatisticsBox";
-import { SelectionFilter } from "../components/SelectionFilterMenu";
 
 function IdecicloClientSide({ cidades, structures, ideciclo }) {
   const [filteredCity, setFilteredCity] = useState<any[]>([]);
@@ -22,46 +21,6 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
     //window.location.replace("#maisinfo")
   };
 
-  const CityStatistics = {
-    title: selectedCity.name,
-    subtitle: "Estatísticas Gerais",
-    boxes: [
-      selectedCity.reviews.length > 0 && {
-        title: "IDECICLO " + selectedCity.reviews[0].year,
-        value: ("" + selectedCity.reviews[0].ideciclo.toFixed(3)).replace(
-          ".",
-          ","
-        ),
-      },
-      selectedCity.reviews.length > 1 && {
-        title: "IDECICLO " + selectedCity.reviews[1].year,
-        value: ("" + selectedCity.reviews[1].ideciclo.toFixed(3)).replace(
-          ".",
-          ","
-        ),
-      },
-      selectedCity.reviews.length && {
-        title: "Extensão avaliada (km)",
-        value: (
-          "" +
-          (
-            (selectedCity.reviews[0].city_network.cycle_length.road +
-              selectedCity.reviews[0].city_network.cycle_length.street +
-              selectedCity.reviews[0].city_network.cycle_length.local) /
-            1000
-          ).toFixed(1)
-        ).replace(".", ","),
-      },
-      {
-        title: "Vias avaliadas",
-        value:
-          "" +
-          (selectedCity.reviews[0].city_network.cycle_structures.road +
-            selectedCity.reviews[0].city_network.cycle_structures.street +
-            selectedCity.reviews[0].city_network.cycle_structures.local),
-      },
-    ].filter((e) => e),
-  };
 
   useEffect(() => {
     if (selectedCity) {
@@ -185,9 +144,9 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
       />
       {filteredCityData.length > 0 && (
         <StatisticsBox
-          title={CityStatistics.title}
-          subtitle={CityStatistics.subtitle}
-          boxes={CityStatistics.boxes}
+          title={selectedCity.name}
+          subtitle={"Estatísticas Gerais"}
+          boxes={cityStatistics(selectedCity)}
         />
       )}
       {filteredCityData.length > 0 && (

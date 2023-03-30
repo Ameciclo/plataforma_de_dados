@@ -13,7 +13,7 @@ import {
   COUNTINGS_SUMMARY_DATA,
   COUNTINGS_PAGE_DATA,
 } from "../../servers";
-import { GeneralStatistics, CardsData } from "./configuration";
+import { allCountsStatistics, CardsData } from "./configuration";
 import { pointData } from "../../typings";
 
 const crumb = {
@@ -50,7 +50,6 @@ export default async function Contagens() {
   }));
   const countsGroupedByLocation = groupBy(data, (count) => count.name);
   const countsGroupedArray = Object.entries(countsGroupedByLocation);
-  const statistics = GeneralStatistics(summaryData, countsGroupedArray.length);
   const cards = CardsData(summaryData);
   const docs = archives.map((a) => {
     return {
@@ -64,7 +63,10 @@ export default async function Contagens() {
     <>
       <NavCover title="Contagens de ciclistas" src={cover.url} />
       <Breadcrumb {...crumb} />
-      <StatisticsBox {...statistics} />
+      <StatisticsBox
+        title={"Estatísticas Gerais"}
+        boxes={allCountsStatistics(summaryData, countsGroupedArray.length)}
+      />
       <ExplanationBoxes
         boxes={[
           {

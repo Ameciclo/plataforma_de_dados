@@ -39,14 +39,13 @@ const Contagem = async ({ params }) => {
     routes: ["/", "/contagens", data._id],
   };
 
-  const statistics = CountingStatistic(data);
   const pointsData = getPointsDataForSingleCounting(data) as pointData[];
   const cards = getCountingCards(data);
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
-      <StatisticsBox {...statistics} />
+      <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
       <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
         <div
           className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
