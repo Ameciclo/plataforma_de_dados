@@ -39,7 +39,7 @@ const Perfil = async () => {
           },
         ]}
       />
-      <PerfilClientSide data={[]} />
+      <PerfilClientSide />
     </>
   );
 };

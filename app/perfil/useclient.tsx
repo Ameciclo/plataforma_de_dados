@@ -7,10 +7,7 @@ import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsHistogram from "highcharts/modules/histogram-bellcurve";
 import HighchartsMore from "highcharts/highcharts-more";
 import HorizontalBarChart from "../components/Charts/HorizontalBarChart";
-import {
-  getHistogramData,
-  getInicialFilters,
-} from "./configuration";
+import { getFiltersKeys, getHistogramData, getInicialFilters } from "./configuration";
 import { PERFIL_DATA } from "../../servers";
 import HistogramChart from "../components/Charts/HistogramChart";
 
@@ -32,7 +29,7 @@ async function fetchWithFilters(filters) {
   return data;
 }
 
-function PerfilClientSide({ data }) {
+function PerfilClientSide() {
   const [filters, setFilters] = useState(getInicialFilters());
 
   const [dayData, setDayData] = useState([]);
@@ -56,6 +53,7 @@ function PerfilClientSide({ data }) {
     const fetchInitialData = async () => {
       return await fetchWithFilters(getInicialFilters());
     };
+    applyFilters()
     fetchInitialData().then((data) => {
       setDayData(data.dayAggregate);
       setYearData(data.yearAggregate);
@@ -68,18 +66,8 @@ function PerfilClientSide({ data }) {
     });
   }, []);
 
-  const toggleFilter = (f, i: number) => {
-    setFilters((prevState) => {
-      return prevState.map((item: any) => {
-        return item.value === f.value
-          ? { ...item, checked: !item.checked }
-          : item;
-      });
-    });
-  };
-
   const applyFilters = async () => {
-    const data: any = fetchWithFilters(filters);
+    const data: any = await fetchWithFilters(filters);
     setDayData(data.dayAggregate);
     setYearData(data.yearAggregate);
     setNeedData(data.needAggregate);
@@ -93,6 +81,16 @@ function PerfilClientSide({ data }) {
     setFilters((prevState) => {
       return prevState.map((i: any) => {
         return { ...i, checked: false };
+      });
+    });
+  };
+
+  const toggleFilter = (f, i: number) => {
+    setFilters((prevState) => {
+      return prevState.map((item: any) => {
+        return item.value === f.value
+          ? { ...item, checked: !item.checked }
+          : item;
       });
     });
   };
@@ -127,58 +125,28 @@ function PerfilClientSide({ data }) {
       title: "Já sofreu algum tipo de colisão?",
       series: collisionData,
     },
-    {
-      title: "Quanto tempo você leva?",
-      series: data.distances,
-      type: "histogram",
-    },
   ];
 
   return (
     <>
       <section className="container mx-auto shadow-md p-10">
         <h2 className="font-bold text-3xl mt-5">Selecione seus filtros</h2>
-        <div className="border-gray-200 border p-8 grid grid-cols-1 sm:grid-cols-3">
-          <div className="flex flex-col items-center space-y-4">
-            <h3 className="font-bold text-xl mt-5">Gênero</h3>
-            {filters
-              .filter((f) => f.key === "gender")
-              .map((f: any, i) => {
-                return (
-                  <label key={f.value}>
-                    <input
-                      className="hidden"
-                      type="checkbox"
-                      onChange={() => toggleFilter(f, i)}
-                      checked={f.checked}
-                    />
-                    <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                      {f.value}
-                    </div>
-                  </label>
-                );
-              })}
-          </div>
-          <div className="flex flex-col items-center space-y-4">
-            <h3 className="font-bold text-xl mt-5">Cor/Raça</h3>
-            {filters
-              .filter((f) => f.key === "color_race")
-              .map((f: any, i) => {
-                return (
-                  <label key={f.value}>
-                    <input
-                      className="hidden"
-                      type="checkbox"
-                      onChange={() => toggleFilter(f, i)}
-                      checked={f.checked}
-                    />
-                    <div className="toggle-btn rounded-3xl flex border switch  hover:bg-ameciclo hover:text-white w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
-                      {f.value}
-                    </div>
-                  </label>
-                );
-              })}
-          </div>
+        <div className="border-gray-200 border p-8 flex flex-col">
+          {getFiltersKeys().map((key) => (
+            <div className="flex flex-wrap items-center space-y-4">
+              <h3 className="font-bold text-xl mt-5">{key.title}</h3>
+              <p>{"   "}</p>
+              {filters
+                .filter((f) => f.key === key.key)
+                .map((f, i) => (
+                  <ToogleButton
+                    value={f.value}
+                    checked={f.checked}
+                    onChange={() => toggleFilter(f, i)}
+                  />
+                ))}
+            </div>
+          ))}
         </div>
         <div className="flex flex-row justify-center items-center mt-8 space-x-4">
           <button
@@ -197,19 +165,35 @@ function PerfilClientSide({ data }) {
       </section>
 
       <section className="container mx-auto grid grid-cols-1 sm:grid-cols-2 auto-rows-auto gap-10 my-10">
-        {options.map((option) =>
-          option.type === "histogram" ? (
-            <HistogramChart {...option} />
-          ) : (
-            <HorizontalBarChart {...option} />
-          )
-        )}
-         <div className="shadow-2xl rounded p-10 text-center">
+        {options.map((option) => (
+          <HorizontalBarChart {...option} />
+        ))}
+        <div className="shadow-2xl rounded p-10 text-center">
           <HighchartsReact highcharts={Highcharts} options={distanceOptions} />
-        </div> 
+        </div>
       </section>
     </>
   );
 }
 
 export default PerfilClientSide;
+
+function ToogleButton({ value, onChange, checked }) {
+  return (
+    <label key={value}>
+      <input
+        className="hidden bg-white text-gray-600"
+        type="checkbox"
+        onChange={onChange}
+        checked={checked}
+      />
+      <div
+        className={` hover:bg-ameciclo hover:text-white toggle-btn rounded-3xl flex border switch w-32 h-10 items-center justify-center ${
+          checked ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
+        } outline-none focus:outline-none`}
+      >
+        {value}
+      </div>
+    </label>
+  );
+}

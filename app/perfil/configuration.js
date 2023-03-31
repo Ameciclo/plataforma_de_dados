@@ -10,6 +10,14 @@ export function getInicialFilters() {
     { key: "color_race", value: "Preta", checked: false },
   ];
 }
+
+export function getFiltersKeys() {
+  return [
+    { key: "gender", title: "Gênero" },
+    { key: "color_race", title: "Cor/Raça" },
+  ];
+}
+
 export function getHistogramData(data) {
   return {
     title: {
