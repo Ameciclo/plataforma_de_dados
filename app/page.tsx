@@ -1,5 +1,4 @@
 import { NavCover } from "./components/NavCover";
-import { SessionImageText } from "./components/SessionImageText";
 import { CardsSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
 import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";

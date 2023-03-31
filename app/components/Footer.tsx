@@ -2,9 +2,10 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { footerColumn, footerColumnContent } from "../../typings";
+import { FOOTER } from "../../servers";
 
 const fetchFooterColumns = async () => {
-  const res = await fetch("http://localhost:3300/footer");
+  const res = await fetch(FOOTER, { cache: "no-cache" });
   const columns: footerColumn[] = await res.json();
   return columns;
 };
