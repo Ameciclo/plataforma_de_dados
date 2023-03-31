@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { filterByName, filterById } from "../../utils";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
@@ -95,11 +95,6 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
     []
   );
 
-  const ref = useRef(null);
-  function handleClick(ref) {
-    return ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
   return (
     <>
       <NumberCards
@@ -114,13 +109,11 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
         }}
         selected={selectedCity.id}
       />
-      <div ref={ref}>
-        <StatisticsBox
-          title={selectedCity.name}
-          subtitle={"Estatísticas Gerais"}
-          boxes={CityStatistics}
-        />
-      </div>
+      <StatisticsBox
+        title={selectedCity.name}
+        subtitle={"Estatísticas Gerais"}
+        boxes={CityStatistics}
+      />
       <Table
         title={"Estruturas do PDC para " + selectedCity.name}
         data={selectedCity.ways}
