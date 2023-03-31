@@ -20,7 +20,6 @@ const crumb = {
 
 export default async function Observatorio() {
   const ciclos = data.map;
-  const statistics = cycleStructureExecutionStatistics(data);
 
   const cities = data.kms.municipios.map((m, index) => ({
     id: index,
@@ -33,7 +32,7 @@ export default async function Observatorio() {
   }));
   return (
     <>
-      <NavCover title="Observatório cicloviário" src={""} />
+      <NavCover title="Observatório cicloviário" src={page_data.cover_image_url} />
       <Breadcrumb {...crumb} />
       <StatisticsBox
         title={"Execução Cicloviária"}

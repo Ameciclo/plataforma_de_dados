@@ -41,7 +41,7 @@ export const documents = {
 
 export const page_data = {
   title: 'Observatório Cicloviário',
-  cover_image_url: 'http://localhost:3000/pages_covers/observatorio.png',
+  cover_image_url: './pages_covers/observatorio.png',
   ExplanationBoxData: {
     title_1: 'O que é?',
     text_1: `O Observatório Cicloviário é uma central de monitoramento que acompanha a evolução da estrutura cicloviária da Região Metropolitana do Recife, comparando a estrutura projetada pelo Plano Diretor Cicloviário frente à estrutura executada.

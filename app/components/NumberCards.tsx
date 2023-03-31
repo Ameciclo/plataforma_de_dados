@@ -12,7 +12,7 @@ export const NumberCards = ({ cards, data, selected, options }) => {
               city={city}
               selected={city.id == selected}
               changeFunction={options.changeFunction}
-              onClickFnc={options.onClickFnc}
+              onClickFnc={()=>{}}
             />
           ))}
         </section>
