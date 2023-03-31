@@ -2,16 +2,80 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { footerColumn, footerColumnContent } from "../../typings";
-import { FOOTER } from "../../servers";
 
-const fetchFooterColumns = async () => {
-  const res = await fetch(FOOTER, { cache: "no-cache" });
-  const columns: footerColumn[] = await res.json();
-  return columns;
-};
+const columns = [
+  {
+    title: "Ameciclo",
+    align: "left",
+    content: [
+      {
+        label: "Associação de Metropolitana de Ciclistas do Recife",
+        url: "https://www.ameciclo.org",
+      },
+      {
+        label: "+55 (81) 93618 2947",
+        url: "https://api.whatsapp.com/send?phone=5581936182947",
+      },
+      {
+        label: "R. da Aurora, 529, loja 2 - Santo Amaro, Recife/PE, 50050-145",
+        url: "https://bit.ly/2C01AhY",
+      },
+      {
+        label: "contato@ameciclo.org",
+        url: "mailto:contato@ameciclo.org",
+      },
+    ],
+  },
+  {
+    title: "Links",
+    align: "center",
+    content: [
+      {
+        label: "Contagens",
+        url: "/contagens",
+      },
+      {
+        label: "Contato",
+        url: "http://www.ameciclo.org/contato",
+      },
+    ],
+  },
+  {
+    title: "Social",
+    align: "center",
+    content: [
+      {
+        label: "Facebook",
+        url: "https://facebook.com/ameciclo",
+      },
+      {
+        label: "Instagram",
+        url: "https://instagram.com/ameciclo",
+      },
+      {
+        label: "Twitter",
+        url: "https://twitter.com/ameciclo",
+      },
+      {
+        label: "Telegram",
+        url: "https://t.me/s/ameciclo",
+      },
+      {
+        label: "Youtube",
+        url: "https://www.youtube.com/user/ameciclo",
+      },
+    ],
+  },
+];
+
+// const fetchFooterColumns = async () => {
+//   const res = await fetch(FOOTER, { cache: "no-cache" });
+//   const columns: footerColumn[] = await res.json();
+//   return columns;
+// };
 
 export const Footer = async () => {
-  const columns = await fetchFooterColumns();
+  // const columns = await fetchFooterColumns();
 
   return (
     <>

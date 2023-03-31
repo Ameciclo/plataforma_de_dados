@@ -1,23 +1,18 @@
 import { NavCover } from "./components/NavCover";
+import { ExplanationBoxes } from "./components/ExplanationBox";
 import { CardsSession } from "./components/CardsSession";
 import { ImagesGrid } from "./components/ImagesGrid";
-import { PLATAFORM_HOME_PAGE, FEATURED_PAGES } from "../servers";
-import { ExplanationBoxes } from "./components/ExplanationBox";
+import { PLATAFORM_HOME_PAGE } from "../servers";
+import { FEATURED_PAGES } from "./configuration";
 
-const fetchPlataformHomePage = async () => {
+const fetchData = async () => {
   const res = await fetch(PLATAFORM_HOME_PAGE, { cache: "no-cache" });
   const homePageData: any = await res.json();
   return homePageData;
 };
 
-async function fetchFeaturedPages() {
-  const response = await fetch(FEATURED_PAGES, { cache: "no-cache" });
-  const data: any[] = await response.json();
-  return data;
-}
-
 export default async function Home() {
-  const data = await fetchPlataformHomePage();
+  const data = await fetchData();
   const { cover, description, partners } = data;
   const dataPartners = partners.map((p) => {
     return {
@@ -26,7 +21,6 @@ export default async function Home() {
       url: p.link,
     };
   });
-  const featuredPages = await fetchFeaturedPages();
   return (
     <div className="home-page">
       <main className="flex-1 w-full mx-auto main-padding-top">
@@ -40,7 +34,7 @@ export default async function Home() {
         /> */}
         <CardsSession
           title="Navegue por nossas pesquisas"
-          cards={featuredPages}
+          cards={FEATURED_PAGES}
         />
         <ImagesGrid
           title="Outras plataformas de dados de parceiras"
