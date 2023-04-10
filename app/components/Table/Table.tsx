@@ -1,6 +1,13 @@
-import React  from "react";
-import { useTable, usePagination, useFilters, useGlobalFilter, useSortBy, useAsyncDebounce } from "react-table";
+import React, { useEffect, useState } from "react";
+import {
+  useTable,
+  usePagination,
+  useFilters,
+  useGlobalFilter,
+  useSortBy,
+} from "react-table";
 import { matchSorter } from "match-sorter";
+import { TableBody, TableFooter, TableHead } from "./TableComponents";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -10,6 +17,13 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export const Table = ({ title, data, columns }) => {
+  const [winWidth, setWinWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    setWinWidth(window.innerWidth);
+    winWidth < 640 ? setPageSize(5) : setPageSize(10)
+    
+  }, []);
 
   const filterTypes = React.useMemo(
     () => ({
@@ -55,156 +69,44 @@ export const Table = ({ title, data, columns }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 5 },
       filterTypes,
-
     },
     useFilters,
     useGlobalFilter, // useGlobalFilter!
 
     useSortBy,
-    usePagination,
+    usePagination
   );
 
-
-  const pagesButtons = (numPages) => {
-    var pages : any[] = []
-    for (let i = 1; i <= numPages; i++) {
-      if(numPages < 6) {
-        if (i - 1 != pageIndex) {
-            pages.push(
-                <button
-                    className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
-                    type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => gotoPage(i-1)}
-                >
-                    {i}
-                </button>
-            )
-    
-        } else {
-            pages.push(
-                <button
-                    className="bg-red-500 border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-1 mb-2"
-                    type="button"
-                    style={{ transition: "all .15s ease" }}
-                    onClick={() => gotoPage(i-1)}
-                >
-                    {i}
-                </button>
-            )
-    
-        }
-      }
-    }
-    return pages
-  }
-
   return (
-    <section className="container mx-auto my-10 shadow-2xl rounded p-12 overflow-auto bg-gray-100">
+    <section className="container mx-auto my-10 shadow-2xl rounded p-2 sm:p-12 overflow-auto bg-gray-100">
       <h2 className="text-gray-600 text-3xl">{title}</h2>
-        <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
-          <table {...getTableProps()} className="table-auto shadow min-w-full divide-y divide-gray-200">
-            <thead>
-              {headerGroups.map((headerGroup : any) => (
-                <tr
-                  {...headerGroup.getHeaderGroupProps()}
-                  className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
-                >
-                  {headerGroup.headers.map((column : any) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
-                    >
-                      <div
-                        {...column.getSortByToggleProps({ title: "Ordenar" })}
-                        className="flex items-center"
-                      >
-                        <span className="inline-block">
-                          {column.isSorted
-                            ? column.isSortedDesc
-                              ? "🔻 "
-                              : "🔺 "
-                            : "♦️ "}
-                        </span>
-                        {column.render("Header")}
-                      </div>
-                      {column.canFilter ? column.render("Filter") : null}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()} className="bg-white divide-y divide-gray-200 text-sm font-normal text-gray-700">
-              {page.map((row : any, i) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()} className="hover:bg-gray-100 border-b border-gray-200 py-10">
-                    {row.cells.map((cell : any) => {
-                      return (
-                        <td {...cell.getCellProps()} className="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm" >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-            São {rows.length} estruturas e somam {Math.round(rows.reduce((a,c)=>a + c.values.ciclo_kms,0)*10)/10}km feitos de {Math.round(rows.reduce((a,c)=>a + c.values.pdc_kms,0)*10)/10}km projetados.
-            <div className="inline-flex mt-2 xs:mt-0">
-              {canPreviousPage ? (
-                <button
-                  className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-2 mx-2"
-                  type="button"
-                  style={{ transition: "all .15s ease" }}
-                  onClick={() => previousPage()}
-                  disabled={!canPreviousPage}
-                >
-                  Anterior
-                </button>
-              ) : (
-                <button
-                className="bg-red-500 border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-2 mx-2"
-                type="button"
-                style={{ transition: "all .15s ease" }}
-                //onClick={() => previousPage()}
-                disabled={!canPreviousPage}
-                >
-                  Anterior
-                </button> 
-              )}
-              
-              <div className="p-1">
-                {(pageOptions.length > 0) && (pagesButtons(pageOptions.length))}
-              </div>
-              {canNextPage ? (
-                <button
-                  className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none mb-2 mx-1"
-                  type="button"
-                  style={{ transition: "all .15s ease" }}
-                  onClick={() => nextPage()}
-                  disabled={!canNextPage}
-                >
-                  Próxima
-                </button>
-              ) : (
-                <button
-                className="bg-red-500 border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-4 py-2 rounded outline-none focus:outline-none mb-2 mx-1"
-                type="button"
-                style={{ transition: "all .15s ease" }}
-                //onClick={() => nextPage()}
-                disabled={!canNextPage}
-                >
-                  Próxima
-                </button>
-              )}
-            </div>
-            </div>
-        </div>
-      </section>
+      <div className="shadow overflow-x-auto bg-white border-b border-gray-200 sm:rounded-lg">
+        <table
+          {...getTableProps()}
+          className="table-auto shadow min-w-full divide-y divide-gray-200"
+        >
+          <TableHead headerGroups={headerGroups} isSmallScreen={winWidth < 640}/>
+          <TableBody
+            getTableBodyProps={getTableBodyProps}
+            page={page}
+            prepareRow={prepareRow}
+            isSmallScreen={winWidth < 640}
+          />
+        </table>
+        <TableFooter
+          rows={rows}
+          canPreviousPage={canPreviousPage}
+          canNextPage={canNextPage}
+          previousPage={previousPage}
+          pageOptions={pageOptions}
+          nextPage={nextPage}
+          pageIndex={pageIndex}
+          gotoPage={gotoPage}
+          data={data}
+        />
+      </div>
+    </section>
   );
 };

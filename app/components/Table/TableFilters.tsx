@@ -10,7 +10,7 @@ import {
 } from "react-table";
 
 // Define a default UI for filtering
-const GlobalFilter = ({
+export const GlobalFilter = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
@@ -23,7 +23,6 @@ const GlobalFilter = ({
 
   return (
     <span className="max-w-sm text-gray-600 border-2 border-amecicloTransparent bg-white h-10 px-5 pr-5 pt-2 rounded-lg text-sm focus:outline-none">
-      {" "}
       <input
         value={value || ""}
         onChange={(e) => {
@@ -40,7 +39,7 @@ const GlobalFilter = ({
   );
 };
 
-const ColumnFilter = ({ column }) => {
+export const ColumnFilter = ({ column }) => {
   const { filterValue, setFilter } = column;
   return (
     <>
@@ -56,7 +55,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
-function NumberRangeColumnFilter({
+export function NumberRangeColumnFilter({
   column: { filterValue = [], preFilteredRows, setFilter, id },
 }) {
   const [min, max] = React.useMemo(() => {
@@ -116,7 +115,7 @@ function NumberRangeColumnFilter({
   );
 }
 
-function SliderColumnFilter({
+export function SliderColumnFilter({
   column: { filterValue, setFilter, preFilteredRows, id },
 }) {
   // Calculate the min and max
@@ -149,7 +148,7 @@ function SliderColumnFilter({
   );
 }
 
-function SelectColumnFilter({
+export function SelectColumnFilter({
   column: { filterValue, setFilter, preFilteredRows, id },
 }) {
   // Calculate the options for filtering
@@ -181,6 +180,39 @@ function SelectColumnFilter({
   );
 }
 
+// Define a custom filter filter function!
+export function filterGreaterThan(rows, id, filterValue) {
+  return rows.filter(row => {
+    const rowValue = row.values[id]
+    return rowValue >= filterValue
+  })
+}
+
+// This is an autoRemove method on the filter function that
+// when given the new filter value and returns true, the filter
+// will be automatically removed. Normally this is just an undefined
+// check, but here, we want to remove the filter if it's not a number
+filterGreaterThan.autoRemove = val => typeof val !== 'number'
+
+export const FilterPill = ({ filter, addOrRemoveFilter }) => {
+  return (
+    <>
+      <label>
+        <input
+          className="hidden"
+          type="checkbox"
+          value={filter}
+          onChange={(e) => addOrRemoveFilter(filter)}
+        />
+
+        <div className="toggle-btn rounded-3xl flex border switch w-32 h-10 bg-transparent items-center justify-center text-gray-800 outline-none focus:outline-none">
+          {filter.value}
+        </div>
+      </label>
+    </>
+  );
+};
+
 /* export const cellFilterByValue = {
   Cell: ({ value }) => {
     value ? (
@@ -190,11 +222,3 @@ function SelectColumnFilter({
     );
   },
 }; */
-
-export {
-  ColumnFilter,
-  NumberRangeColumnFilter,
-  SliderColumnFilter,
-  SelectColumnFilter,
-  GlobalFilter,
-};
