@@ -1,16 +1,16 @@
 import React from "react";
 
 export function TableHead({ headerGroups, isSmallScreen = false }) {
-    return (
-      <thead>
-        {headerGroups.map((headerGroup: any) => (
-          <tr
-            {...headerGroup.getHeaderGroupProps()}
-            className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
-          >
-            {headerGroup.headers.map((column: any, index: number) => (
-              // Show only the first column when isSmallScreen is true
-              (isSmallScreen && index !== 0) ? null :
+  return (
+    <thead>
+      {headerGroups.map((headerGroup: any) => (
+        <tr
+          {...headerGroup.getHeaderGroupProps()}
+          className="bg-gray-100 rounded-lg text-sm font-medium text-gray-700 text-left"
+        >
+          {headerGroup.headers.map((column: any, index: number) =>
+            // Show only the first column when isSmallScreen is true
+            isSmallScreen && index !== 0 ? null : (
               <th
                 {...column.getHeaderProps()}
                 className="px-6 py-3 border-gray-200 text-left text-xs leading-4 font-medium text-gray-700 uppercase tracking-wider"
@@ -29,26 +29,25 @@ export function TableHead({ headerGroups, isSmallScreen = false }) {
                   {column.render("Header")}
                 </div>
                 {/* Only show filter for the first column when isSmallScreen is true */}
-                {isSmallScreen && index !== 0 ? null :
-                column.canFilter ? column.render("Filter") : null}
+                {isSmallScreen && index !== 0
+                  ? null
+                  : column.canFilter
+                  ? column.render("Filter")
+                  : null}
               </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-    );
-  }
-  
+            )
+          )}
+        </tr>
+      ))}
+    </thead>
+  );
+}
 
 function SingleColumnRow({ cells }) {
   return (
     <tr className="hover:bg-gray-100 border-b border-gray-200 py-10 m-10">
       {cells.map((cell) => {
-        return (
-          <p className="px-6 whitespace-no-wrap text-sm leading-5 text-gray-700 truncate max-w-sm">
-            <strong>{cell.column.Header}: </strong> {cell.value}
-          </p>
-        );
+        return <div><strong>{cell.column.Header}:</strong> {cell.render("Cell")}</div>;
       })}
     </tr>
   );

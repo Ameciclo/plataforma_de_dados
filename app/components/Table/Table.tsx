@@ -9,6 +9,8 @@ import {
 import { matchSorter } from "match-sorter";
 import { TableBody, TableFooter, TableHead } from "./TableComponents";
 
+const SMALL_SCREEN_WIDTH = 640
+
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
@@ -17,11 +19,12 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export const Table = ({ title, data, columns }) => {
-  const [winWidth, setWinWidth] = useState(window.innerWidth);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
-    setWinWidth(window.innerWidth);
-    winWidth < 640 ? setPageSize(5) : setPageSize(10)
+    const isSmallScreen = window.innerWidth < SMALL_SCREEN_WIDTH
+    setIsSmallScreen(isSmallScreen);
+    isSmallScreen ? setPageSize(5) : setPageSize(10)
     
   }, []);
 
@@ -87,12 +90,12 @@ export const Table = ({ title, data, columns }) => {
           {...getTableProps()}
           className="table-auto shadow min-w-full divide-y divide-gray-200"
         >
-          <TableHead headerGroups={headerGroups} isSmallScreen={winWidth < 640}/>
+          <TableHead headerGroups={headerGroups} isSmallScreen={isSmallScreen}/>
           <TableBody
             getTableBodyProps={getTableBodyProps}
             page={page}
             prepareRow={prepareRow}
-            isSmallScreen={winWidth < 640}
+            isSmallScreen={isSmallScreen}
           />
         </table>
         <TableFooter
