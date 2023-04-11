@@ -45,9 +45,13 @@ export function TableHead({ headerGroups, isSmallScreen = false }) {
 
 function SingleColumnRow({ cells }) {
   return (
-    <tr className="hover:bg-gray-100 border-b border-gray-200 py-10 m-10">
+    <tr>
       {cells.map((cell) => {
-        return <div><strong>{cell.column.Header}:</strong> {cell.render("Cell")}</div>;
+        return (
+          <div>
+            <strong>{cell.column.Header}:</strong> {cell.render("Cell")}
+          </div>
+        );
       })}
     </tr>
   );
@@ -67,7 +71,9 @@ export function TableBody({
       {page.map((row, i) => {
         prepareRow(row);
         return isSmallScreen ? (
-          <SingleColumnRow cells={row.cells} />
+          <div className="hover:bg-gray-100 border-b border-gray-200 p-3">
+            <SingleColumnRow cells={row.cells} />
+          </div>
         ) : (
           <tr
             {...row.getRowProps()}
