@@ -9,7 +9,7 @@ import {
 import { matchSorter } from "match-sorter";
 import { TableBody, TableFooter, TableHead } from "./TableComponents";
 
-const SMALL_SCREEN_WIDTH = 640
+const SMALL_SCREEN_WIDTH = 768
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
