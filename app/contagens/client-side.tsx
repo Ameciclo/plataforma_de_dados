@@ -50,6 +50,12 @@ export const ContagensTable = ({ data }) => {
         Filter: ColumnFilter,
       },
       {
+        Header: "Total de Ciclistas",
+        accessor: "summary.total",
+        Filter: ColumnFilter,
+        disableFilters: true,
+      },
+      {
         Header: "Data",
         accessor: "date",
         Cell: ({ value }) => (
@@ -57,12 +63,7 @@ export const ContagensTable = ({ data }) => {
         ),
         Filter: ColumnFilter,
       },
-      {
-        Header: "Total de Ciclistas",
-        accessor: "summary.total",
-        Filter: ColumnFilter,
-        disableFilters: true,
-      },
+
       {
         Header: "Dados",
         Cell: ({ row }) => (
