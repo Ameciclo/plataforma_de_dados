@@ -1,11 +1,17 @@
 "use client";
-import React  from "react";
+import React, { useState } from "react";
+import Link from "next/link";
+import { matchSorter } from "match-sorter";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { matchSorter } from "match-sorter";
-import Link from "next/link";
-import { ColumnFilter } from "../../components/Table/TableFilters";
-import { Table } from "../../components/Table/Table";
+import { ColumnFilter } from "../../../components/Table/TableFilters";
+import { Table } from "../../../components/Table/Table";
+import { StatisticsBox } from "../../../components/StatisticsBox";
+import { InfoCards } from "../../../components/InfoCards";
+import { COUNTINGS_DATA } from "../../../../servers";
+import { CountingStatistic, getCountingCards, getPointsDataForSingleCounting } from "./configuration";
+import { pointData } from "../../../../typings";
+import { Map as PointMap } from "../../../components/Maps/Map";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -14,7 +20,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export const CountingComparisionTable = ({ data, firstId }) => {
+const ContagensTable = ({ data }) => {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -71,7 +77,7 @@ export const CountingComparisionTable = ({ data, firstId }) => {
           <span>
             <Link
               className="text-ameciclo"
-              href={`/contagens/${firstId}/${row.original._id}`}
+              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
             >
               COMPARE
             </Link>
@@ -83,7 +89,13 @@ export const CountingComparisionTable = ({ data, firstId }) => {
     []
   );
 
-  return <Table title={"Compare com outras contagens"} data={data} columns={columns} />;
+  return (
+    <Table
+      title={"Compare com outras contagens"}
+      data={data}
+      columns={columns}
+    />
+  );
 };
 
 type Series = {
@@ -91,7 +103,7 @@ type Series = {
   data: number[];
 };
 
-export function HourlyCyclistsChart({ cyclistCount }) {
+function HourlyCyclistsChart({ cyclistCount }) {
   const keyMap = new Map([
       ["child", { name: "Crianças" }],
       ["women", { name: "Mulheres" }],
@@ -159,5 +171,38 @@ export function HourlyCyclistsChart({ cyclistCount }) {
         </div>
       </div>
     </section>
+  );
+}
+
+export function CountingsComparision({ data }) {
+  const [countingComparision, setCountingComparision] = useState({});
+
+  const selectComparision = (id) => {
+    const fetchComparisionData = async (id) => {
+      const res = await fetch(COUNTINGS_DATA + "/" + id);
+      const { cyclistCount } = await res.json();
+      return cyclistCount;
+    };
+
+    setCountingComparision(fetchComparisionData);
+  };
+
+  const pointsData = getPointsDataForSingleCounting(data) as pointData[];
+  const cards = getCountingCards(data);
+
+  return (
+    <>
+      <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
+      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
+        <div
+          className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
+          style={{ minHeight: "400px" }}
+        >
+          <PointMap pointsData={pointsData} height="400px" />
+        </div>
+      </section>
+      <InfoCards cards={cards} />
+      <HourlyCyclistsChart cyclistCount={data} />
+    </>
   );
 }

@@ -4,7 +4,7 @@ import { StatisticsBox } from "../../components/StatisticsBox";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { FlowContainer } from "../../components/FlowChart/FlowContainer";
 import { InfoCards } from "../../components/InfoCards";
-import { HourlyCyclistsChart } from "./useclient";
+import { HourlyCyclistsChart, CountingComparisionTable } from "./useclient";
 import {
   CountingStatistic,
   getPointsDataForSingleCounting,
@@ -20,14 +20,18 @@ const fetchUniqueData = async (id: string) => {
 };
 
 const fetchData = async () => {
+  const dataRes = await fetch(COUNTINGS_DATA, { cache: "no-cache" });
+  const dataJson = await dataRes.json();
+  const otherData = dataJson.data;
+
   const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
-  const pageData = await pageDataRes.json();
-  return pageData;
+  const pageCover = await pageDataRes.json();
+  return { pageCover, otherData };
 };
 
 const Contagem = async ({ params }) => {
   const data = await fetchUniqueData(params.id);
-  const pageCover = await fetchData();
+  const { pageCover, otherData } = await fetchData();
   let pageData = {
     title: data.name,
     src: pageCover.cover.url,
@@ -38,7 +42,6 @@ const Contagem = async ({ params }) => {
     slug: data._id,
     routes: ["/", "/contagens", data._id],
   };
-
   const pointsData = getPointsDataForSingleCounting(data) as pointData[];
   const cards = getCountingCards(data);
   return (
@@ -51,7 +54,7 @@ const Contagem = async ({ params }) => {
           className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
           style={{ minHeight: "400px" }}
         >
-          <PointMap pointsData={pointsData} height="400px"/>
+          <PointMap pointsData={pointsData} height="400px" />
         </div>
         <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
           <FlowContainer count={data} />
@@ -59,6 +62,7 @@ const Contagem = async ({ params }) => {
       </section>
       <InfoCards cards={cards} />
       <HourlyCyclistsChart cyclistCount={data} />
+      <CountingComparisionTable data={otherData.filter((d) => d._id !== data._id)} firstId={data._id}/>
     </main>
   );
 };

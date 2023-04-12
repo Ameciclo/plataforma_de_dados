@@ -1,4 +1,4 @@
-import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
+import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
 
 export const getPointsDataForSingleCounting = (d) => {
   return [

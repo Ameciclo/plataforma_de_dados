@@ -89,9 +89,5 @@ export const ContagensTable = ({ data }) => {
     []
   );
 
-  return (
-    <>
-      <Table title={"Nossas contagens"} data={data} columns={columns} />
-    </>
-  );
+  return <Table title={"Nossas contagens"} data={data} columns={columns} />;
 };

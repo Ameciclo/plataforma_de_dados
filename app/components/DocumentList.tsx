@@ -6,18 +6,16 @@ import { ImageWithLink } from "./ImageWithLink";
 
 export const DocumentsList = ({ documents }) => {
   return (
-    <>
-      <div className="mt-5 mx-3 px-10 shadow border grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3  auto-cols-max lg:grid-cols-4 gap-10">
-        {documents.map((document: document) => (
-          <DocumentCard
-            {...{
-              document,
-              indicator: docTypes.filter((d) => document.type === d.value)[0],
-            }}
-          />
-        ))}
-      </div>{" "}
-    </>
+    <div className="mt-5 mx-3 px-10 shadow border grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3  auto-cols-max lg:grid-cols-4 gap-10">
+      {documents.map((document: document) => (
+        <DocumentCard
+          {...{
+            document,
+            indicator: docTypes.filter((d) => document.type === d.value)[0],
+          }}
+        />
+      ))}
+    </div>
   );
 };
 const DocumentCard = ({ document, indicator }) => {
