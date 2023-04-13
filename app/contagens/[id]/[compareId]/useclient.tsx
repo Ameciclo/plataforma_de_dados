@@ -44,7 +44,7 @@ export const CountingComparisionTable = ({ data, ids }) => {
         Cell: ({ row }) => (
           <Link
             className="text-ameciclo"
-            href={`contagens/${row.original._id}`}
+            href={`/contagens/${row.original._id}`}
             key={row.original._id}
           >
             {row.original.name}
