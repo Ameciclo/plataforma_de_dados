@@ -52,7 +52,7 @@ export type pointData = {
   key: string;
   latitude: number;
   longitude: number;
-  name?: string;
+  popup?: any;
   size?: number;
 };
 

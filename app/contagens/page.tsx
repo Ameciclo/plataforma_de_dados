@@ -7,7 +7,7 @@ import { CardsSession } from "../components/CardsSession";
 import { Map } from "../components/Maps/Map";
 import { ContagensTable } from "./client-side";
 import { InfoCards } from "../components/InfoCards";
-import { groupBy } from "../../utils";
+import { groupBy, IntlDateStr } from "../../utils";
 import {
   COUNTINGS_DATA,
   COUNTINGS_SUMMARY_DATA,
@@ -46,8 +46,13 @@ export default async function Contagens() {
     key: d._id,
     latitude: d.location.coordinates[0],
     longitude: d.location.coordinates[1],
-    name: d.name,
-    size: Math.round(d.summary.total/250)+5,
+    popup: {
+      name: d.name,
+      total: d.summary.total,
+      date: IntlDateStr(d.date),
+      url: `/contagens/${d._id}`
+    },
+    size: Math.round(d.summary.total / 250) + 5,
   }));
   const countsGroupedByLocation = groupBy(data, (count) => count.name);
   const countsGroupedArray = Object.entries(countsGroupedByLocation);

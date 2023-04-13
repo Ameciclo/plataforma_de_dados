@@ -16,7 +16,8 @@
 1. Inserção de dados da contagem por plataforma específica para isso.
 2. ~~Possibilidade de comparação entre contagens.~~
 3. Inserção de contagens extra-ameciclo. 
-4. Atualização do mapa para exibir o tamanho de cada contagem, assim como informações extras e redirecionamento para contagens.
+4. ~~Atualização do mapa para exibir o tamanho de cada contagem~~
+5. ~~assim como informações extras e redirecionamento para contagens.~~
 
 ## Acompanhamento PDC
 1. ~~Criação de página que acompanha quais partes do Plano Diretor Cicloviário estão sendo construídas e o total que já foi completado,~~
