@@ -1,4 +1,5 @@
 import React from "react";
+import { IntlDateStr, IntlNumber1Digit } from "../../utils";
 
 export function VerticalStatisticsBoxes({ title, boxes }) {
   return (
@@ -15,7 +16,7 @@ export function VerticalStatisticsBoxes({ title, boxes }) {
   );
 }
 
-export function VerticalBox({ titulo, media, color, parametros }) {
+function VerticalBox({ titulo, media, mediaType = "", color, parametros }) {
   return (
     <div className="rounded shadow-2xl">
       <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y md:divide-x divide-gray-100">
@@ -24,8 +25,18 @@ export function VerticalBox({ titulo, media, color, parametros }) {
           style={{ background: color }}
         >
           <h3>{titulo}</h3>
-          <h3 className="text-5xl font-bold mt-2">
-            {media && ("" + media.toFixed(1)).replace(".", ",")}
+          <h3 className="text-4xl font-bold mt-2">
+            {media &&
+              (() => {
+                switch (mediaType) {
+                  case "number":
+                    return IntlNumber1Digit(media);
+                  case "date":
+                    return IntlDateStr(media);
+                  default:
+                    return media;
+                }
+              })()}
           </h3>
         </div>
         {parametros.map((inner_param: any) => (
@@ -41,10 +52,11 @@ function StatisticBox({ titulo, media, different, bigger }) {
     <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
       <h3>{titulo}</h3>
       <h3 className="text-4xl font-bold mt-2">
-        {media !== null && media >= 0
-          ? ("" + media.toFixed(1)).replace(".", ",") +
-            "" +
-            (different ? (bigger ? "" : "") : "")
+        {/* {media !== null && media >= 0
+          ? IntlNumber1Digit(media) + (different ? (bigger ? "" : "") : "")
+          : "N/A"} */}
+        {media !== null
+          ? media
           : "N/A"}
       </h3>
     </div>
