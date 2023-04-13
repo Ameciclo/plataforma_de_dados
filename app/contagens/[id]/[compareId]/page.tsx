@@ -1,11 +1,12 @@
 import { NavCover } from "../../../components/NavCover";
 import { Breadcrumb } from "../../../components/Breadcrumb";
-import { CountingsComparision } from "./useclient";
 import { COUNTINGS_DATA, COUNTINGS_PAGE_DATA } from "../../../../servers";
-import { CountingStatistic } from "./configuration";
-import { StatisticsBox } from "../../../components/StatisticsBox";
+import { getPointsDataForSingleCounting } from "./configuration";
 import { VerticalStatisticsBoxes } from "../../../components/VerticalStatisticsBoxes";
 import { IntlDateStr, IntlNumber, IntlPercentil } from "../../../../utils";
+import { Map } from "../../../components/Maps/Map";
+import { pointData } from "../../../../typings";
+import { Table } from "../../../components/Table/Table";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(COUNTINGS_DATA + "/" + id, { cache: "no-cache" });
@@ -95,13 +96,20 @@ export default async function Compare({ params }) {
     };
   });
 
-  console.log(JSON.stringify(boxes));
+  const pointsData = data.map((d, index) => {
+    const points = getPointsDataForSingleCounting(
+      d,
+      colors[index]
+    ) as pointData[];
+    return points[0];
+  });
 
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
       <VerticalStatisticsBoxes title={label} boxes={boxes} />
+      <Map pointsData={pointsData} />
     </main>
   );
 }

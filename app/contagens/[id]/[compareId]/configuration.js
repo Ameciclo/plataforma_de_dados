@@ -1,36 +1,41 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
 
-export const getPointsDataForSingleCounting = (d) => {
+export const getPointsDataForSingleCounting = (d, color) => {
   return [
     {
       key: d.name,
       latitude: d.location.coordinates[0],
       longitude: d.location.coordinates[1],
       name: d.summary.total,
+      color: color
     },
     {
       key: d.name + " north",
       latitude: d.north.location.coordinates[1],
       longitude: d.north.location.coordinates[0],
       name: d.north.name,
+      color: color
     },
     {
       key: d.name + " south",
       latitude: d.south.location.coordinates[1],
       longitude: d.south.location.coordinates[0],
       name: d.south.name,
+      color: color
     },
     {
       key: d.name + " east",
       latitude: d.east.location.coordinates[1],
       longitude: d.east.location.coordinates[0],
       name: d.east.name,
+      color: color
     },
     {
       key: d.name + " west",
       latitude: d.west.location.coordinates[1],
       longitude: d.west.location.coordinates[0],
       name: d.west.name,
+      color: color
     },
   ];
 };

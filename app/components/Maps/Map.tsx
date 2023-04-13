@@ -71,7 +71,7 @@ export const Map = ({
           )}
           {pointsData?.map((p) => (
             <Marker {...p}>
-              <MapMarker icon={dropIcon} />
+              <MapMarker icon={dropIcon} color={p.color ? p.color : "#008888"}/>
             </Marker>
           ))}
         </ReactMapGL>
