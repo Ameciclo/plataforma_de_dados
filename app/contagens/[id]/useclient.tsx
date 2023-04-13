@@ -1,7 +1,7 @@
 "use client";
 import React  from "react";
 import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
+import Highcharts, { color } from "highcharts";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../components/Table/TableFilters";
