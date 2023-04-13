@@ -71,7 +71,7 @@ export const Map = ({
           )}
           {pointsData?.map((p) => (
             <Marker {...p}>
-              <MapMarker icon={dropIcon} />
+              <MapMarker icon={dropIcon} size={p.size ? p.size : 15}/>
             </Marker>
           ))}
         </ReactMapGL>

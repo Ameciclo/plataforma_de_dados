@@ -47,6 +47,7 @@ export default async function Contagens() {
     latitude: d.location.coordinates[0],
     longitude: d.location.coordinates[1],
     name: d.name,
+    size: Math.round(d.summary.total/250)+5,
   }));
   const countsGroupedByLocation = groupBy(data, (count) => count.name);
   const countsGroupedArray = Object.entries(countsGroupedByLocation);
