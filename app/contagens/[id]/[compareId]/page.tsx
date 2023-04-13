@@ -1,10 +1,14 @@
 import { NavCover } from "../../../components/NavCover";
 import { Breadcrumb } from "../../../components/Breadcrumb";
 import { COUNTINGS_DATA, COUNTINGS_PAGE_DATA } from "../../../../servers";
-import { getBoxesForCountingComparision, getPointsDataForComparingCounting, getPointsDataForSingleCounting } from "./configuration";
+import {
+  getBoxesForCountingComparision,
+  getPointsDataForComparingCounting,
+  getPointsDataForSingleCounting,
+} from "./configuration";
 import { VerticalStatisticsBoxes } from "../../../components/VerticalStatisticsBoxes";
 import { Map } from "../../../components/Maps/Map";
-import { CountingComparisionTable } from "./useclient";
+import { CountingComparisionTable, HourlyCyclistsChart } from "./useclient";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(COUNTINGS_DATA + "/" + id, { cache: "no-cache" });
@@ -31,7 +35,7 @@ export default async function Compare({ params }) {
     })
   );
 
-  const {pageCover, otherData} = await fetchData();
+  const { pageCover, otherData } = await fetchData();
   let pageData = {
     title: "Comparação de contagens",
     src: pageCover.cover.url,
@@ -50,16 +54,39 @@ export default async function Compare({ params }) {
     routes: ["/", "/contagens", params.compareId],
   };
 
-  const boxes = getBoxesForCountingComparision(data)
-  const pointsData = getPointsDataForComparingCounting(data)
-  
+  const boxes = getBoxesForCountingComparision(data);
+  const pointsData = getPointsDataForComparingCounting(data);
+
+  const countsByHour = {};
+
+  data.forEach((countData, index) => {
+    const countQuantitative = countData.data.quantitative;
+    Object.keys(countQuantitative).forEach((direction) => {
+      const directionCounts = countQuantitative[direction].count_per_hour;
+      Object.keys(directionCounts).forEach((hour) => {
+        const count = directionCounts[hour];
+        countsByHour[index] = countsByHour[index] || {};
+        countsByHour[index][hour] = (countsByHour[index][hour] || 0) + count;
+      });
+    });
+  });
+
+  const chartData = data.map((d, index) => ({
+    name: d.name,
+    data: Object.values(countsByHour[index]),
+  }));
+
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
-      <VerticalStatisticsBoxes title={"Comparação entre as contagens"} boxes={boxes} />
+      <VerticalStatisticsBoxes
+        title={"Comparação entre as contagens"}
+        boxes={boxes}
+      />
       <Map pointsData={pointsData} />
-      <CountingComparisionTable data={otherData} ids={toCompare}/>
+      <HourlyCyclistsChart series={chartData} />
+      <CountingComparisionTable data={otherData} ids={toCompare} />
     </main>
   );
 }
