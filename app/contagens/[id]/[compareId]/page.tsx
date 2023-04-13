@@ -31,35 +31,33 @@ export default async function Compare({ params }) {
     })
   );
 
-  console.log(toCompare)
   const {pageCover, otherData} = await fetchData();
   let pageData = {
     title: "Comparação de contagens",
     src: pageCover.cover.url,
   };
 
-  const label = data
-    .reduce(
-      (a, c) => (a += c.name + " (" + c.date.substring(0, 4) + ") e "),
-      "Comparação entre "
-    )
-    .slice(0, -3);
+  // const label = data
+  //   .reduce(
+  //     (a, c) => (a += c.name + " (" + c.date.substring(0, 4) + ") e "),
+  //     "COMPARAÇÃO ENTRE: "
+  //   )
+  //   .slice(0, -3);
 
   const crumb = {
-    label: label,
+    label: "Comparação entre contagens",
     slug: params.compareId,
     routes: ["/", "/contagens", params.compareId],
   };
 
   const boxes = getBoxesForCountingComparision(data)
-
   const pointsData = getPointsDataForComparingCounting(data)
   
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
-      <VerticalStatisticsBoxes title={label} boxes={boxes} />
+      <VerticalStatisticsBoxes title={"Comparação entre as contagens"} boxes={boxes} />
       <Map pointsData={pointsData} />
       <CountingComparisionTable data={otherData} ids={toCompare}/>
     </main>

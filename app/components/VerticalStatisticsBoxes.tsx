@@ -6,7 +6,9 @@ export function VerticalStatisticsBoxes({ title, boxes }) {
     <section className="container mx-auto">
       <div className="mx-auto text-center my-24">
         <h3 className="text-4xl font-bold my-8">{title}</h3>
-        <section className={`container mx-auto grid grid-cols-1 lg:grid-cols-${boxes.length} md:grid-cols-2 auto-rows-auto gap-10 my-10`}>
+        <section
+          className={`container mx-auto grid grid-cols-1 lg:grid-cols-${boxes.length} md:grid-cols-2 auto-rows-auto gap-10 my-10`}
+        >
           {boxes.map((out_param: any) => (
             <VerticalBox {...out_param} />
           ))}
@@ -47,7 +49,7 @@ function VerticalBox({ titulo, media, mediaType = "", color, parametros }) {
   );
 }
 
-function StatisticBox({ titulo, media, different, bigger }) {
+function StatisticBox({ titulo, media, maior, menor }) {
   return (
     <div className="flex flex-col justify-center uppercase w-full p-6 text-center tracking-widest">
       <h3>{titulo}</h3>
@@ -56,7 +58,8 @@ function StatisticBox({ titulo, media, different, bigger }) {
           ? IntlNumber1Digit(media) + (different ? (bigger ? "" : "") : "")
           : "N/A"} */}
         {media !== null
-          ? media
+          ? media +
+            (!(maior & menor) ? (maior ? "🔺" : "") + (menor ? "🔻" : "") : "")
           : "N/A"}
       </h3>
     </div>
