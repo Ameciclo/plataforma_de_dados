@@ -7,6 +7,7 @@ import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../../components/Table/TableFilters";
 import { Table } from "../../../components/Table/Table";
+import { colors } from "./configuration";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -81,8 +82,7 @@ export const CountingComparisionTable = ({ data, ids }) => {
                 REMOVER COMPARAÇÃO
               </Link>
             );
-          }
-          else if (ids.includes(id)) {
+          } else if (ids.includes(id)) {
             const ids2 = ids.filter((id) => id !== ids[0]);
             const newIds = ids2.filter((i) => i !== id);
             const newLink =
@@ -123,32 +123,16 @@ export const CountingComparisionTable = ({ data, ids }) => {
     />
   );
 };
-type Series = {
-  name: string | undefined;
-  data: number[];
-};
 
-export function HourlyCyclistsChart({ cyclistCount }) {
-  const keyMap = new Map([
-      ["child", { name: "Crianças" }],
-      ["women", { name: "Mulheres" }],
-      ["men", { name: "Homens" }],
-    ]),
-    hourlyBarKeysOriginal: string[] = ["men", "women", "child"],
-    series: Series[] = [],
-    hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-  hourlyBarKeysOriginal.forEach((hk) => {
-    const keymapname = keyMap.get(hk)?.name;
-    series.push({
-      name: keymapname,
-      data: Object.values(cyclistCount.data.qualitative[hk].count_per_hour),
-    });
-  });
 
+export function HourlyCyclistsChart({ series }) {
+
+ const hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
   const options = {
     chart: {
-      type: "column",
-    },
+      type: "line",
+    }, 
+    colors: colors,
     plotOptions: {
       column: {
         stacking: "normal",
@@ -162,7 +146,7 @@ export function HourlyCyclistsChart({ cyclistCount }) {
       pointFormat: "{series.name}: {point.y}<br/>",
     },
     title: {
-      text: "Fluxo horário de ciclistas",
+      text: "Comparação entre contagens",
     },
     xAxis: {
       type: "category",
@@ -182,7 +166,7 @@ export function HourlyCyclistsChart({ cyclistCount }) {
     series,
 
     credits: {
-      enabled: true,
+      enabled: false,
     },
   };
   return (

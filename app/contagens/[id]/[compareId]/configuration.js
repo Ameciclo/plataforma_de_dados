@@ -1,5 +1,5 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
-const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
+export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
 
 export const getPointsDataForSingleCounting = (d, color) => {
   return [
