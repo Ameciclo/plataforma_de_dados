@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { MultipleSelectionFilters } from "../components/SelectionFilterMenu";
 import { DocumentsList } from "../components/DocumentList";
-import { docTypes } from "../../public/dbs/docTypes.json";
+import { docTypes } from "./configuration";
 
 export const DocumentsSession = ({ documents }) => {
   const [selectedDocumentType, setSelectedDocumentType] = useState("all");
@@ -80,7 +80,7 @@ export const DocumentsSession = ({ documents }) => {
           },
         ]}
       />
-      <DocumentsList documents={orderedDocuments} />
+      <DocumentsList documents={orderedDocuments} docTypes={docTypes} />
     </>
   );
 };
