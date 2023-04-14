@@ -54,6 +54,7 @@ export type pointData = {
   longitude: number;
   popup?: any;
   size?: number;
+  color?: string;
 };
 
 export type city = {

@@ -15,7 +15,7 @@
 ## Contagem
 1. Inserção de dados da contagem por plataforma específica para isso.
 2. ~~Possibilidade de comparação entre contagens.~~
-3. Inserção de contagens extra-ameciclo. 
+3. ~~Inserção de contagens extra-ameciclo.~~ 
 4. ~~Atualização do mapa para exibir o tamanho de cada contagem~~
 5. ~~assim como informações extras e redirecionamento para contagens.~~
 

@@ -15,6 +15,7 @@ import {
 } from "../../servers";
 import { allCountsStatistics, CardsData } from "./configuration";
 import { pointData } from "../../typings";
+import pcr_countings from "../../public/dbs/PCR_CONTAGENS.json"
 
 const crumb = {
   label: "Contagens",
@@ -42,7 +43,7 @@ const fetchData = async () => {
 export default async function Contagens() {
   const { data, summaryData, pageData } = await fetchData();
   const { cover, description, objective, archives } = pageData;
-  const pointsData: pointData[] = data.map((d) => ({
+  let pointsData: pointData[] = data.map((d) => ({
     key: d._id,
     latitude: d.location.coordinates[0],
     longitude: d.location.coordinates[1],
@@ -50,10 +51,27 @@ export default async function Contagens() {
       name: d.name,
       total: d.summary.total,
       date: IntlDateStr(d.date),
-      url: `/contagens/${d._id}`
+      url: `/contagens/${d._id}`,
+      obs: ""
     },
     size: Math.round(d.summary.total / 250) + 5,
+    color: "#008888"
   }));
+  const pcrPointsData: pointData[] = pcr_countings.map((d, index)=> ({
+    key: "pcr_" + index,
+    latitude: d.location.coordinates[0],
+    longitude: d.location.coordinates[1],
+    popup: {
+      name: d.name,
+      total: d.summary.total,
+      date: IntlDateStr(d.date),
+      url: "",
+      obs: "Contagens realizadas pela ocasião do Diagnóstico do Plano de Mobilidade (ICPS/PCR)."
+    },
+    size: Math.round(d.summary.total / 250) + 5,
+    color: "#FF0000"
+  }))
+  pointsData = pointsData.concat(pcrPointsData);
   const countsGroupedByLocation = groupBy(data, (count) => count.name);
   const countsGroupedArray = Object.entries(countsGroupedByLocation);
   const cards = CardsData(summaryData);

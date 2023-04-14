@@ -83,7 +83,11 @@ export const Map = ({
                 setSelectedPoint(point);
               }}
             >
-              <MapMarker icon={dropIcon} size={point.size ? point.size : 15} />
+              <MapMarker
+                icon={dropIcon}
+                size={point.size ? point.size : 15}
+                color={point.color ? point.color : "#008080"}
+              />
             </Marker>
           ))}
           {selectedPoint !== undefined && (
@@ -132,15 +136,27 @@ function PointPopup({ selectedPoint, setSelectedPoint }) {
 function ControlPanel({ selectedPoint, setSelectedPoint }) {
   return (
     <div className="absolute top-0 left-0 max-w-sm bg-white shadow-md p-6 m-10 text-sm text-gray-600 uppercase">
-      <button className="absolute top-0 right-0 hover:text-red-500" onClick={(e) => setSelectedPoint(undefined)}>X</button>
+      <button
+        className="absolute top-0 right-0 hover:text-red-500"
+        onClick={(e) => setSelectedPoint(undefined)}
+      >
+        X
+      </button>
       <div className="text-center">
         <h2 className="font-bold">{selectedPoint.popup.name}</h2>
         <p className="py-2">
           {selectedPoint.popup.total} ciclistas em {selectedPoint.popup.date}
         </p>
-        <Link href={selectedPoint.popup.url}>
-          <button className="bg-ameciclo text-white p-2">Ver mais</button>
-        </Link>
+        {selectedPoint.popup.obs != "" && (
+          <p className="py-2 text-sm text-gray-700">
+            {selectedPoint.popup.obs}
+          </p>
+        )}
+        {selectedPoint.popup.url != "" && (
+          <Link href={selectedPoint.popup.url}>
+            <button className="bg-ameciclo text-white p-2">Ver mais</button>
+          </Link>
+        )}
       </div>
     </div>
   );
