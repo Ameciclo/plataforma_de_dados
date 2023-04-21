@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import React, { useState } from "react";
 import ReactMapGL, {
   Source,
@@ -15,9 +14,9 @@ import {
   mapInicialState,
   getInicialViewPort,
   dropIcon,
-  standartDropIconSize,
 } from "./MapConf";
-import { MapCommands, MapMarker } from "./MapsExtras";
+import { MapControlPanel } from "./MapControlPanel";
+import { CountingPopUp, MapCommands, MapMarker } from "./MapsExtras";
 
 export const Map = ({
   layerData,
@@ -25,20 +24,24 @@ export const Map = ({
   pointsData,
   width = "100%",
   height = "500px",
+  controlPanel = [],
 }: {
   layerData?: layersData;
   layersConf?: LayerProps[];
   pointsData?: pointData[];
   width?: string;
   height?: string;
+  controlPanel?: any[];
 }) => {
-  let inicialViewPort = getInicialViewPort(pointsData, layerData);
+  const inicialViewPort = getInicialViewPort(pointsData, layerData);
+
   const [selectedPoint, setSelectedPoint] = useState<pointData | undefined>(
     undefined
   );
 
   const [viewport, setViewport] = useState(inicialViewPort);
   const [settings, setsettings] = useState({ ...mapInicialState });
+
   const handleClick = () => {
     setsettings({
       dragPan: true,
@@ -50,6 +53,14 @@ export const Map = ({
       boxZoom: true,
       doubleClickZoom: true,
     });
+  };
+
+  const [markerVisibility, setMarkerVisibility] = useState(
+    pointsData?.reduce((obj, marker) => ({ ...obj, [marker.key]: true }), {})
+  );
+
+  const handleMarkerToggle = (key: string) => {
+    setMarkerVisibility((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -65,7 +76,6 @@ export const Map = ({
           mapboxApiAccessToken={MAPBOXTOKEN}
         >
           <MapCommands handleClick={handleClick} />
-          {/* <MapCaptions captions={layers} /> */}
           {layerData && (
             <Source id="layersMap" type="geojson" data={layerData}>
               {layersConf?.map((layer: any) => (
@@ -73,27 +83,30 @@ export const Map = ({
               ))}
             </Source>
           )}
-          {pointsData?.map((point) => (
-            <Marker
-              {...point}
-              onClick={(e) => {
-                // If we let the click event propagates to the map, it will immediately close the popup
-                // with `closeOnClick: true`
-                //e.originalEvent.stopPropagation();
-                setSelectedPoint(point);
-              }}
-            >
-              <MapMarker
-                icon={dropIcon}
-                size={point.size ? point.size : 15}
-                color={point.color ? point.color : "#008080"}
-              />
-            </Marker>
-          ))}
+          {pointsData?.map(
+            (point) =>
+              markerVisibility[point.key] == true && (
+                <Marker {...point} onClick={() => setSelectedPoint(point)}>
+                  <MapMarker
+                    icon={dropIcon}
+                    size={point.size ? point.size : 15}
+                    color={point.color ? point.color : "#008080"}
+                  />
+                </Marker>
+              )
+          )}
           {selectedPoint !== undefined && (
-            <ControlPanel
+            <CountingPopUp
               selectedPoint={selectedPoint}
               setSelectedPoint={setSelectedPoint}
+            />
+          )}
+          {controlPanel.length > 0 && (
+            <MapControlPanel
+              controlPanel={controlPanel}
+              markerVisibility={markerVisibility}
+              pointsData={pointsData}
+              handleMarkerToggle={handleMarkerToggle}
             />
           )}
         </ReactMapGL>
@@ -101,63 +114,4 @@ export const Map = ({
     </section>
   );
 };
-
-function PointPopup({ selectedPoint, setSelectedPoint }) {
-  console.log(selectedPoint);
-  return (
-    <>
-      <Popup
-        onClose={() => setSelectedPoint(undefined)}
-        longitude={Number(selectedPoint.longitude)}
-        latitude={Number(selectedPoint.latitude)}
-        anchor={"top"}
-        altitude={1}
-        offsetLeft={0}
-        offsetTop={0}
-        dynamicPosition={false}
-        className={
-          "flex flex-auto flex-row min-w-[200] justify-center p-10 tracking-widest aspect-video w-screen"
-        }
-      >
-        <div className="text-center">
-          <h2 className="font-bold">{selectedPoint.popup.name}</h2>
-          <p>
-            {selectedPoint.popup.total} ciclistas em {selectedPoint.popup.date}
-          </p>
-          <Link href={selectedPoint.popup.url}>
-            <button className="bg-ameciclo text-white p-2">Ver mais</button>
-          </Link>
-        </div>
-      </Popup>
-    </>
-  );
-}
-
-function ControlPanel({ selectedPoint, setSelectedPoint }) {
-  return (
-    <div className="absolute top-0 left-0 max-w-sm bg-white shadow-md p-6 m-10 text-sm text-gray-600 uppercase">
-      <button
-        className="absolute top-0 right-0 hover:text-red-500"
-        onClick={(e) => setSelectedPoint(undefined)}
-      >
-        X
-      </button>
-      <div className="text-center">
-        <h2 className="font-bold">{selectedPoint.popup.name}</h2>
-        <p className="py-2">
-          {selectedPoint.popup.total} ciclistas em {selectedPoint.popup.date}
-        </p>
-        {selectedPoint.popup.obs != "" && (
-          <p className="py-2 text-sm text-gray-700">
-            {selectedPoint.popup.obs}
-          </p>
-        )}
-        {selectedPoint.popup.url != "" && (
-          <Link href={selectedPoint.popup.url}>
-            <button className="bg-ameciclo text-white p-2">Ver mais</button>
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
+``;

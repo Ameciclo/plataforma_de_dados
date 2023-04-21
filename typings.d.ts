@@ -55,6 +55,7 @@ export type pointData = {
   popup?: any;
   size?: number;
   color?: string;
+  type?: string;
 };
 
 export type city = {
