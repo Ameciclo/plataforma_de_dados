@@ -1,6 +1,11 @@
 import descriptions from "../../../public/dbs/ideciclo_rates_descriptions.json";
 import map from "../../../public/dbs/malhacicloviariapermanente_mar2021.json";
-import { IntlDateStr, IntlNumberMax1Digit, IntlNumberMin1Max3Digits } from "../../../utils";
+import {
+  IntlDateStr,
+  Intlnumber,
+  IntlNumberMax1Digit,
+  IntlNumberMin1Max3Digits,
+} from "../../../utils";
 
 export function getStructureMap(structure) {
   // TRABALHA O MAPA
@@ -28,7 +33,7 @@ export function getStructureMap(structure) {
 }
 
 export function structureStatistics(structure, info) {
-  const {nota, comprimento, avaliacoes} = {...info}
+  const { nota, comprimento, avaliacoes } = { ...info };
   return {
     title: structure.street,
     subtitle: "Visão geral",
@@ -39,7 +44,7 @@ export function structureStatistics(structure, info) {
       },
       {
         title: "Extensão (km)",
-        value: IntlNumberMin1Max3Digits(comprimento/1000),
+        value: IntlNumberMin1Max3Digits(comprimento / 1000),
       },
       { title: "Avaliações", value: avaliacoes },
     ],
@@ -64,6 +69,7 @@ export function getRatesSummary(structure, forms) {
       key: "protection",
       titulo: descriptions.protection.title,
       media: rate.protection,
+      mediaType: "number",
       different: rate.protection != last_rate.protection,
       better: rate.protection > last_rate.protection,
     },
@@ -71,6 +77,7 @@ export function getRatesSummary(structure, forms) {
       key: "all_vert_signs",
       titulo: descriptions.all_vert_signs.title,
       media: rate.all_vert_signs,
+      mediaType: "number",
       different: rate.all_vert_signs != last_rate.all_vert_signs,
       better: rate.all_vert_signs > last_rate.all_vert_signs,
     },
@@ -78,6 +85,7 @@ export function getRatesSummary(structure, forms) {
       key: "all_hor_signs",
       titulo: descriptions.all_hor_signs.title,
       media: rate.all_hor_signs,
+      mediaType: "number",
       different: rate.all_hor_signs != last_rate.all_hor_signs,
       better: rate.all_hor_signs > last_rate.all_hor_signs,
     },
@@ -85,6 +93,7 @@ export function getRatesSummary(structure, forms) {
       key: "comfort",
       titulo: descriptions.comfort.title,
       media: rate.comfort,
+      mediaType: "number",
       different: rate.comfort != last_rate.comfort,
       better: rate.comfort > last_rate.comfort,
     },
@@ -94,6 +103,7 @@ export function getRatesSummary(structure, forms) {
       key: "speed_control",
       titulo: descriptions.speed_control.title,
       media: rate.speed_control,
+      mediaType: "number",
       different: rate.speed_control != last_rate.speed_control,
       better: rate.speed_control > last_rate.speed_control,
     },
@@ -101,6 +111,7 @@ export function getRatesSummary(structure, forms) {
       key: "conflicts",
       titulo: descriptions.conflicts.title,
       media: rate.conflicts,
+      mediaType: "number",
       different: rate.conflicts != last_rate.conflicts,
       better: rate.conflicts > last_rate.conflicts,
     },
@@ -108,6 +119,7 @@ export function getRatesSummary(structure, forms) {
       key: "cross_conflict",
       titulo: descriptions.cross_conflict.title,
       media: rate.cross_conflict,
+      mediaType: "number",
       different: rate.cross_conflict != last_rate.cross_conflict,
       better: rate.cross_conflict > last_rate.cross_conflict,
     },
@@ -117,6 +129,7 @@ export function getRatesSummary(structure, forms) {
       key: "pavement",
       titulo: descriptions.pavement.title,
       media: rate.pavement,
+      mediaType: "number",
       different: rate.pavement != last_rate.pavement,
       better: rate.pavement > last_rate.pavement,
     },
@@ -124,6 +137,7 @@ export function getRatesSummary(structure, forms) {
       key: "hor_sign_conditions",
       titulo: descriptions.hor_sign_conditions.title,
       media: rate.hor_sign_conditions,
+      mediaType: "number",
       different: rate.hor_sign_conditions != last_rate.hor_sign_conditions,
       better: rate.hor_sign_conditions > last_rate.hor_sign_conditions,
     },
@@ -131,6 +145,7 @@ export function getRatesSummary(structure, forms) {
       key: "protection_conditions",
       titulo: descriptions.protection_conditions.title,
       media: rate.protection_conditions,
+      mediaType: "number",
       different: rate.protection_conditions != last_rate.protection_conditions,
       better: rate.protection_conditions > last_rate.protection_conditions,
     },
@@ -140,6 +155,7 @@ export function getRatesSummary(structure, forms) {
       key: "obstacles",
       titulo: descriptions.obstacles.title,
       media: rate.obstacles,
+      mediaType: "number",
       different: rate.obstacles != last_rate.obstacles,
       better: rate.obstacles > last_rate.obstacles,
     },
@@ -147,6 +163,7 @@ export function getRatesSummary(structure, forms) {
       key: "shading",
       titulo: descriptions.shading.title,
       media: rate.shading,
+      mediaType: "number",
       different: rate.shading != last_rate.shading,
       better: rate.shading > last_rate.shading,
     },
@@ -154,6 +171,7 @@ export function getRatesSummary(structure, forms) {
       key: "access",
       titulo: descriptions.access.title,
       media: rate.access,
+      mediaType: "number",
       different: rate.access != last_rate.access,
       better: rate.access > last_rate.access,
     },
@@ -161,6 +179,7 @@ export function getRatesSummary(structure, forms) {
       key: "lighting",
       titulo: descriptions.lighting.title,
       media: rate.lighting,
+      mediaType: "number",
       different: rate.lighting != last_rate.lighting,
       better: rate.lighting > last_rate.lighting,
     },
@@ -171,6 +190,7 @@ export function getRatesSummary(structure, forms) {
       key: "project",
       titulo: descriptions.project.title,
       media: rate.project,
+      mediaType: "number",
       color: "#24CBE5",
       parametros: project_param,
     },
@@ -178,6 +198,7 @@ export function getRatesSummary(structure, forms) {
       key: "safety",
       titulo: descriptions.safety.title,
       media: rate.safety,
+      mediaType: "number",
       color: "#E02F31",
       parametros: safety_param,
     },
@@ -185,6 +206,7 @@ export function getRatesSummary(structure, forms) {
       key: "maintenance",
       titulo: descriptions.maintenance.title,
       media: rate.maintenance,
+      mediaType: "number",
       color: "#DDDF00",
       parametros: maintenance_param,
     },
@@ -192,6 +214,7 @@ export function getRatesSummary(structure, forms) {
       key: "urbanity",
       titulo: descriptions.urbanity.title,
       media: rate.urbanity,
+      mediaType: "number",
       color: "#6AF9C4",
       parametros: urbanity_param,
     },

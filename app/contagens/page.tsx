@@ -5,7 +5,7 @@ import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
 import { CardsSession } from "../components/CardsSession";
 import { Map } from "../components/Maps/Map";
-import { ContagensTable } from "./client-side";
+import { ContagensTable } from "./useclient";
 import { InfoCards } from "../components/InfoCards";
 import { groupBy, IntlDateStr } from "../../utils";
 import {

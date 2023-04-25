@@ -37,9 +37,10 @@ export const getInicialViewPort = (pointsData, layerData) => {
   } else if (!pointsData && layerData) {
     [minX, minY, maxX, maxY] = [LminX, LminY, LmaxX, LmaxY]
   }
+
   const vp = new WebMercatorViewport({
     width: 400,
-    height: 600,
+    height: 500,
     ...standardViewPort,
   });
 

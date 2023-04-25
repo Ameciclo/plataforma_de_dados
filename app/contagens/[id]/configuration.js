@@ -1,4 +1,3 @@
-import { compileString } from "sass";
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
 
 export const getPointsDataForSingleCounting = (d) => {
@@ -40,7 +39,6 @@ export const CountingStatistic = (data) => {
   const {date, id, summary} = {...data}
   const {total, hour_max, download_xlsx_url} = {...summary}
   const JSON_URL = `https://api.contagem.ameciclo.org/v1/cyclist-count/${id}`
-  console.log("DATA",date)
   return [
     { title: "Total de ciclistas", value: IntlNumber(total) },
     { title: "Pico em 1h", value: IntlNumber(hour_max) },

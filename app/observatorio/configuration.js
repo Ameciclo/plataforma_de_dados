@@ -4,7 +4,6 @@ export const cycleStructureExecutionStatistics = (data) => {
   const kms = data.kms;
   const { pdc_feito, out_pdc, pdc_total } = { ...kms };
   const percent = 0.0 + pdc_feito / pdc_total;
-  console.log(percent)
   return [
     {
       title: "estrutura cicloviárias",
