@@ -17,6 +17,7 @@ import {
 } from "./MapConf";
 import { MapControlPanel } from "./MapControlPanel";
 import { CountingPopUp, MapCommands, MapMarker } from "./MapsExtras";
+import * as GEOJSON from "geojson";
 
 export const Map = ({
   layerData,
@@ -26,7 +27,10 @@ export const Map = ({
   height = "500px",
   controlPanel = [],
 }: {
-  layerData?: layersData;
+  layerData?:
+    | GeoJSON.Feature<GeoJSON.Geometry>
+    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+    | string;
   layersConf?: LayerProps[];
   pointsData?: pointData[];
   width?: string;
@@ -60,7 +64,7 @@ export const Map = ({
   );
 
   const handleMarkerToggle = (key: string) => {
-    setMarkerVisibility((prev) => ({ ...prev, [key]: !prev[key] }));
+    setMarkerVisibility((prev = {}) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -85,6 +89,7 @@ export const Map = ({
           )}
           {pointsData?.map(
             (point) =>
+              markerVisibility &&
               markerVisibility[point.key] == true && (
                 <Marker {...point} onClick={() => setSelectedPoint(point)}>
                   <MapMarker

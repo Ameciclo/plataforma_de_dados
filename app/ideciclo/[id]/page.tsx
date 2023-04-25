@@ -4,7 +4,7 @@ import { Breadcrumb } from "../../components/Breadcrumb";
 import { StatisticsBox } from "../../components/StatisticsBox";
 import { IdecicloDescription } from "./IdecicloDescription";
 import { Map } from "../../components/Maps/Map";
-import {RadarChart} from "../../components/Charts/RadarChart"
+import { RadarChart } from "../../components/Charts/RadarChart";
 import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
 import {
   IDECICLO_FORMS_DATA,
@@ -17,6 +17,7 @@ import {
   getRatesSummary,
 } from "./configuration";
 import { idecicloLayers } from "./ideciclo_mapstyle";
+import * as GEOJSON from "geojson";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(IDECICLO_STRUCTURES_DATA + "/" + id);
@@ -61,7 +62,10 @@ const Ideciclo = async ({ params }) => {
   };
 
   const info = getRatesSummary(data, forms);
-  const mapData = getStructureMap(data);
+  const mapData = getStructureMap(data) as
+    | GeoJSON.Feature<GeoJSON.Geometry>
+    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+    | string;
   const GeneralStatistics = structureStatistics(data, info);
 
   return (
@@ -85,7 +89,11 @@ const Ideciclo = async ({ params }) => {
           />
         </div>
         <div className="rounded shadow-2xl">
-          <RadarChart {...info} title={"EVOLUÇÃO DA NOTA"} subtitle={"Notas que compõem a média"}/>
+          <RadarChart
+            {...info}
+            title={"EVOLUÇÃO DA NOTA"}
+            subtitle={"Notas que compõem a média"}
+          />
         </div>
       </section>
       <VerticalStatisticsBoxes

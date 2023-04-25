@@ -9,7 +9,8 @@ import ObservatorioClientSide from "./useclient";
 import data from "../../public/dbs/observatorio-data.json";
 import { documents, page_data } from "../../public/dbs/todb_observatorio";
 import { layersConf, cycleStructureExecutionStatistics } from "./configuration";
-
+import * as GEOJSON from "geojson";
+import { LayerProps } from "react-map-gl";
 //import EvalolutionGraph from
 
 const crumb = {
@@ -19,7 +20,10 @@ const crumb = {
 };
 
 export default async function Observatorio() {
-  const ciclos = data.map;
+  const ciclos = data.map as
+    | GeoJSON.Feature<GeoJSON.Geometry>
+    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+    | string;
 
   const cities = data.kms.municipios.map((m, index) => ({
     id: index,
@@ -32,7 +36,10 @@ export default async function Observatorio() {
   }));
   return (
     <>
-      <NavCover title="Observatório cicloviário" src={page_data.cover_image_url} />
+      <NavCover
+        title="Observatório cicloviário"
+        src={page_data.cover_image_url}
+      />
       <Breadcrumb {...crumb} />
       <StatisticsBox
         title={"Execução Cicloviária"}
@@ -51,7 +58,7 @@ export default async function Observatorio() {
           },
         ]}
       />
-      <Map layerData={ciclos} layersConf={layersConf} />
+      <Map layerData={ciclos} layersConf={layersConf as LayerProps[]} />
       <ObservatorioClientSide cities={cities} inicialCity={"Recife"} />
       <CardsSession title={documents.title} cards={documents.cards} />
     </>
