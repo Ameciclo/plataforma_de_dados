@@ -2,9 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { MultipleSelectionFilters } from "../components/SelectionFilterMenu";
 import { DocumentsList } from "../components/DocumentList";
-import { docTypes } from "../../public/dbs/docTypes.json";
 
-export const DocumentsSession = ({ documents }) => {
+export const DocumentsSession = ({ documents, docTypes }) => {
   const [selectedDocumentType, setSelectedDocumentType] = useState("all");
   const [selectedDocumentOrder, setSelectedDocumentsOrder] = useState("random");
   const [filteredDocuments, setFilteredDocuments] = useState(documents);
