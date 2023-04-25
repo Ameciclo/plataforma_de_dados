@@ -1,7 +1,16 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ["./components/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
+      height: {
+        cover: "52vh",
+        "no-cover": "25vh",
+      },
       fontFamily: {
         custom: ["Open Sans"],
       },
@@ -17,12 +26,6 @@ module.exports = {
       gridTemplateRows: {
         fill: "minmax(100px, auto)",
       },
-    },
-  },
-  variants: {
-    extend: {
-      backgroundColor: ["checked"],
-      borderColor: ["checked"],
     },
   },
   plugins: [],
