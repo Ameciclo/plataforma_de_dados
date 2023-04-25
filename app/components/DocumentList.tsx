@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { document } from "../../typings";
-import { docTypes } from "../../public/dbs/docTypes.json";
 import { ImageWithLink } from "./ImageWithLink";
 
-export const DocumentsList = ({ documents }) => {
+export const DocumentsList = ({ documents, docTypes }) => {
   return (
     <>
       <div className="mt-5 mx-3 px-10 shadow border grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3  auto-cols-max lg:grid-cols-4 gap-10">
@@ -12,7 +11,7 @@ export const DocumentsList = ({ documents }) => {
           <DocumentCard
             {...{
               document,
-              indicator: docTypes.filter((d) => document.type === d.value)[0],
+              indicator: document.type,
             }}
           />
         ))}
@@ -48,20 +47,20 @@ const DocumentCard = ({ document, indicator }) => {
   );
 };
 
-const DocumentTypeIndicator = ({ label, color, fontColor }) => {
+const DocumentTypeIndicator = ({ type, background_color, font_color }) => {
   return (
     <div
       className="uppercase p-2 rounded bg-green-400 text-base font-semibold truncate"
       style={{
         maxHeight: "50px",
-        color: fontColor,
-        backgroundColor: color,
+        color: font_color,
+        backgroundColor: background_color,
         borderRadius: "0 0 15px 0",
         borderBottom: "0 none",
         boxShadow: "0 1px 5px rgba(0, 0, 0, 0.46)",
       }}
     >
-      {label}
+      {type}
     </div>
   );
 };

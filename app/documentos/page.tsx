@@ -32,7 +32,7 @@ export default async function Documentos() {
   const documents: document[] = data?.map((doc) => {
     return {
       ...doc,
-      cover: doc.cover.url,
+      cover: doc.cover?.url,
     };
   });
 
@@ -45,17 +45,16 @@ export default async function Documentos() {
     },
   ];
 
-  const documentsTypes = documents.map(d => d.type)
+  const documentsTypes = documents.map(d => d.type.type)
   const formattedDocTypes = docTypes.map((t) => ({
-    value: t.type,
-    label: t.description,
+    value: t.slug,
+    label: t.type,
     color: t.background_color,
     fontColor: t.font_color,
     valid: documentsTypes.indexOf(t.type) > -1,
   }));
 
   const types = all_types_definitions.concat(formattedDocTypes.filter(t => t.valid === true))
-
   return (
     <>
       <NavCover title="Documentos e pesquisas" src={cover.url} />

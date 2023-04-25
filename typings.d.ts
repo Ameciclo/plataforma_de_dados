@@ -32,7 +32,7 @@ export type document = {
   title: string;
   description: string;
   url: string;
-  type: string;
+  type: any;
   release_date: string;
   cover: any;
 };

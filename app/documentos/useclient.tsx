@@ -79,7 +79,7 @@ export const DocumentsSession = ({ documents, docTypes }) => {
           },
         ]}
       />
-      <DocumentsList documents={orderedDocuments} />
+      <DocumentsList documents={orderedDocuments} docTypes={docTypes}/>
     </>
   );
 };
