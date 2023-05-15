@@ -74,7 +74,6 @@ export const CardsData = (GeneralStatistics) => {
     },
   ];
 };
-
 export function getInicialFilters() {
   return [
     { key: "gender", value: "Masculino", checked: true },
@@ -85,15 +84,36 @@ export function getInicialFilters() {
     { key: "color_race", value: "Indígena", checked: false },
     { key: "color_race", value: "Parda", checked: false },
     { key: "color_race", value: "Preta", checked: false },
+    { key: "year", value: "2015", checked: false },
+    { key: "year", value: "2018", checked: false },
+    { key: "year", value: "2021", checked: true },
+    { key: "wage", value: "até 1 SM", checked: false },
+    { key: "wage", value: "de 1 a 2 SM", checked: false },
+    { key: "wage", value: "de 2 a 5 SM", checked: false },
+    { key: "wage", value: "acima de 5 SM", checked: false },
+    { key: "schooling", value: "Sem instrução", checked: false },
+    { key: "schooling", value: "Fundamental", checked: false },
+    { key: "schooling", value: "Médio", checked: false },
+    { key: "schooling", value: "Superior e Pós", checked: false },
+    { key: "age", value: "15-24", checked: false },
+    { key: "age", value: "25-34", checked: false },
+    { key: "age", value: "35-44", checked: false },
+    { key: "age", value: "45-55", checked: false },
+    { key: "age", value: "56 ou mais", checked: false },
   ];
 }
 
 export function getFiltersKeys() {
   return [
+    { key: "year", title: "Ano da Pesquisa" },
     { key: "gender", title: "Gênero" },
     { key: "color_race", title: "Cor/Raça" },
+    { key: "salary", title: "Salário" },
+    { key: "schooling", title: "Escolaridade" },
+    { key: "age", title: "Faixa Etária" },
   ];
 }
+
 
 export function getHistogramData(data) {
   return {
