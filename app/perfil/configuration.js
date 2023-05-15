@@ -1,3 +1,25 @@
+export function getGeneralStatistics(statistics) {
+  const {total_editions, total_forms, last_year, last_year_forms} = statistics
+  return [
+    {
+      title: "Edições realizadas",
+      value: total_editions,
+    },
+    {
+      title: "Entrevistas realizadas",
+      value: total_forms,
+    },
+    {
+      title: "Ano da última edição",
+      value: last_year,
+    },
+    {
+      title: "Entrevistas na última edição",
+      value: last_year_forms,
+    },
+  ];
+}
+
 export function getInicialFilters() {
   return [
     { key: "gender", value: "Masculino", checked: true },

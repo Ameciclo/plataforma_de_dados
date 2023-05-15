@@ -10,6 +10,7 @@ import HorizontalBarChart from "../components/Charts/HorizontalBarChart";
 import { getFiltersKeys, getHistogramData, getInicialFilters } from "./configuration";
 import { PERFIL_DATA } from "../../servers";
 import HistogramChart from "../components/Charts/HistogramChart";
+import { StatisticsBox } from "../components/StatisticsBox";
 
 if (typeof Highcharts === "object") {
   HighchartsExporting(Highcharts);
@@ -30,6 +31,8 @@ async function fetchWithFilters(filters) {
 }
 
 function PerfilClientSide() {
+
+
   const [filters, setFilters] = useState(getInicialFilters());
 
   const [dayData, setDayData] = useState([]);
