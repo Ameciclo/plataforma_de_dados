@@ -10,18 +10,21 @@ export const InfoCards = ({ cards }) => {
   );
 };
 
-const InfoCard = ({ label, data, icon }) => {
+const InfoCard = ({ label, data, icon = "" }) => {
   return (
     <div
       className={`text-center sm:text-left text-base bg-white text-gray-800 min-h-32 rounded shadow-2xl p-3 uppercase tracking-widest flex justify-between flex-col sm:flex-row`}
     >
       <div>
         <h3 className="">{label}</h3>
-        <h3 className="text-4xl sm:text-5xl font-bold">
-          {data}
-        </h3>
+        <h3 className="text-4xl sm:text-5xl font-bold">{data}</h3>
       </div>
-      <img src={`/icons/contagens/${icon}.svg`} className="h-20 fill-current" />
+      {icon != "" && (
+        <img
+          src={`/icons/contagens/${icon}.svg`}
+          className="h-20 fill-current"
+        />
+      )}
     </div>
   );
 };

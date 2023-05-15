@@ -1,5 +1,12 @@
+import { IntlPercentil } from "../../utils";
+
 export function getGeneralStatistics(statistics) {
-  const {total_editions, total_forms, last_year, last_year_forms} = statistics
+  const {
+    total_editions,
+    total_forms,
+    last_year,
+    last_year_forms,
+  } = statistics;
   return [
     {
       title: "Edições realizadas",
@@ -19,6 +26,54 @@ export function getGeneralStatistics(statistics) {
     },
   ];
 }
+
+export const CardsData = (GeneralStatistics) => {
+  const {summary} = GeneralStatistics
+  const summaryData = summary.main[0]
+  const summaryExtra = summary.extra
+  return [
+    {
+      label: `Raça ou cor ${summaryExtra.color_race.category}`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.color_race.value/100),
+    },
+    {
+      label: `Ganha ${summaryExtra.wage.category}`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.wage.value/100),
+    },
+    {
+      label: `Tem ${summaryExtra.age.category}`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.age.value/100),
+    },
+    {
+      label: `Cursou até o ${summaryExtra.schooling.category}`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.schooling.value/100),
+    },
+    {
+      label: "Pedala 5+ dias na semana",
+      icon: "",
+      data: IntlPercentil(summaryData.percent_week_at_least_5_days/100),
+    },
+    {
+      label: "Sofreu colisão nos últimos anos",
+      icon: "",
+      data: IntlPercentil(summaryData.percent_collisions/100),
+    },
+    {
+      label: `Pedala a ${summaryExtra.years_using.category}`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.years_using.value/100),
+    },
+    {
+      label: `Pedala ${summaryExtra.distance_time.category} até o destino`,
+      icon: "",
+      data: IntlPercentil(summaryExtra.distance_time.value/100),
+    },
+  ];
+};
 
 export function getInicialFilters() {
   return [
