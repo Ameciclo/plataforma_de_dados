@@ -9,8 +9,9 @@ import ObservatorioClientSide from "./useclient";
 import data from "../../public/dbs/observatorio-data.json";
 import { documents, page_data } from "../../public/dbs/todb_observatorio";
 import { layersConf, cycleStructureExecutionStatistics } from "./configuration";
-import * as GEOJSON from "geojson";
 import { LayerProps } from "react-map-gl";
+import OSMController from "./OSM/OSMController.js";
+
 //import EvalolutionGraph from
 
 const crumb = {
@@ -18,6 +19,19 @@ const crumb = {
   slug: "/observatorio",
   routes: ["/", "/observatorio"],
 };
+
+function initLayers(layersStates, debugMode) {
+  const layers = OSMController.getLayers(debugMode);
+  // Merge with locally saved state
+  if (layersStates && Object.keys(layersStates).length > 0) {
+    layers.forEach((l) => {
+      if (layersStates[l.id] !== undefined) {
+        l.isActive = layersStates[l.id];
+      }
+    });
+  }
+  return layers;
+}
 
 export default async function Observatorio() {
   const ciclos = data.map as
