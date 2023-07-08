@@ -4,7 +4,10 @@ import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../components/Table/TableFilters";
 import { Table } from "../components/Table/Table";
-
+import {
+  COUNTINGS_SUMMARY_DATA,
+  COUNTINGS_SUMMARY_DATA_NEW,
+} from "../../servers";
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
@@ -41,8 +44,8 @@ export const ContagensTable = ({ data }) => {
         Cell: ({ row }) => (
           <Link
             className="text-ameciclo"
-            href={`contagens/${row.original._id}`}
-            key={row.original._id}
+            href={`contagens/${row.original.id}`}
+            key={row.original.id}
           >
             {row.original.name}
           </Link>
@@ -51,7 +54,7 @@ export const ContagensTable = ({ data }) => {
       },
       {
         Header: "Total de Ciclistas",
-        accessor: "summary.total",
+        accessor: "total_cyclists",
         Filter: ColumnFilter,
         disableFilters: true,
       },
@@ -67,21 +70,21 @@ export const ContagensTable = ({ data }) => {
       {
         Header: "Dados",
         Cell: ({ row }) => (
-          <span>
+          // <span>
+          //   <Link
+          //     className="text-ameciclo"
+          //     href={row.original.summary.download_xlsx_url}
+          //   >
+          //     XLSX
+          //   </Link>
+          //   <span> | </span>
             <Link
               className="text-ameciclo"
-              href={row.original.summary.download_xlsx_url}
-            >
-              XLSX
-            </Link>
-            <span> | </span>
-            <Link
-              className="text-ameciclo"
-              href={`https://api.contagem.ameciclo.org/v1/cyclist-count/${row.original._id}`}
+              href={`${COUNTINGS_SUMMARY_DATA_NEW}/${row.original.id}`}
             >
               JSON
             </Link>
-          </span>
+          // </span>
         ),
         disableFilters: true,
       },
