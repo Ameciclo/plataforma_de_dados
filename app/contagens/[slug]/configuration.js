@@ -1,4 +1,15 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
+import { COUNTINGS_DATA_NEW } from "../../../servers";
+
+export function getPointsData(d) {
+  const points = d.map((p) => ({
+    key: p.name,
+    latitude: p.point.x,
+    longitude: p.point.y,
+    name: p.name,
+  }));
+  return points;
+}
 
 export const getPointsDataForSingleCounting = (d) => {
   return [
@@ -36,18 +47,20 @@ export const getPointsDataForSingleCounting = (d) => {
 };
 
 export const CountingStatistic = (data) => {
-  const {date, id, summary} = {...data}
-  const {total, hour_max, download_xlsx_url} = {...summary}
-  const JSON_URL = `https://api.contagem.ameciclo.org/v1/cyclist-count/${id}`
+  const { id, date, max_hour, summary } = { ...data };
+  const { total_cyclists } = { ...summary };
+  const JSON_URL = `${COUNTINGS_DATA_NEW}?id=${id}`;
   return [
-    { title: "Total de ciclistas", value: IntlNumber(total) },
-    { title: "Pico em 1h", value: IntlNumber(hour_max) },
+    { title: "Total de ciclistas", value: IntlNumber(total_cyclists) },
+    {
+      title: "Pico em 1h",
+      value: IntlNumber(max_hour),
+    },
     { title: "Data da Contagem", value: IntlDateStr(date) },
     {
       type: "LinksBox",
       title: "Dados",
       value: [
-        { label: "XLSX", url: download_xlsx_url },
         {
           label: "JSON",
           url: JSON_URL,
@@ -58,22 +71,64 @@ export const CountingStatistic = (data) => {
 };
 
 export function getCountingCards(data) {
-  const summary = data.summary
+  const {
+    total_cyclists,
+    total_cargo,
+    total_helmet,
+    total_juveniles,
+    total_motor,
+    total_ride,
+    total_service,
+    total_shared_bike,
+    total_sidewalk,
+    total_women,
+    total_wrong_way,
+  } = { ...data };
   return [
-    { label: "Mulheres", icon: "women", data: IntlPercentil(summary.women_percent) },
+    {
+      label: "Mulheres",
+      icon: "women",
+      data: IntlPercentil(total_women / total_cyclists),
+    },
     {
       label: "Crianças e Adolescentes",
       icon: "children",
-      data: IntlPercentil(summary.children_percent),
+      data: IntlPercentil(total_juveniles / total_cyclists),
     },
-    { label: "Capacete", icon: "helmet", data: IntlPercentil(summary.helmet_percent) },
-    { label: "Serviço", icon: "service", data: IntlPercentil(summary.service_percent) },
-    { label: "Cargueira", icon: "cargo", data: IntlPercentil(summary.cargo_percent) },
+    {
+      label: "Carona",
+      icon: "ride",
+      data: IntlPercentil(total_ride / total_cyclists),
+    },
+    {
+      label: "Capacete",
+      icon: "helmet",
+      data: IntlPercentil(total_helmet / total_cyclists),
+    },
+    {
+      label: "Serviço",
+      icon: "service",
+      data: IntlPercentil(total_service / total_cyclists),
+    },
+    {
+      label: "Cargueira",
+      icon: "cargo",
+      data: IntlPercentil(total_cargo / total_cyclists),
+    },
+    {
+      label: "Compartilhada",
+      icon: "shared_bike",
+      data: IntlPercentil(total_shared_bike / total_cyclists),
+    },
+    {
+      label: "Calçada",
+      icon: "sidewalk",
+      data: IntlPercentil(total_sidewalk / total_cyclists),
+    },
     {
       label: "Contramão",
       icon: "wrong_way",
-      data: IntlPercentil(summary.wrong_way_percent),
+      data: IntlPercentil(total_wrong_way / total_cyclists),
     },
-    { label: "Calçada", icon: "sidewalk", data: IntlPercentil(summary.sidewalk_percent) },
   ];
 }

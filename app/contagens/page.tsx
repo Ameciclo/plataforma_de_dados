@@ -51,8 +51,6 @@ export default async function Contagens() {
     color: "#ef4444"
   }]
 
-  console.log(data)
-
   let pointsData: pointData[] = data.map((d) => ({
     key: d.id,
     type: 'ameciclo',
