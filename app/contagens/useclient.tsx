@@ -44,7 +44,7 @@ export const ContagensTable = ({ data }) => {
         Cell: ({ row }) => (
           <Link
             className="text-ameciclo"
-            href={`contagens/${row.original.id}`}
+            href={`contagens/${row.original.slug}`}
             key={row.original.id}
           >
             {row.original.name}

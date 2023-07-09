@@ -13,7 +13,8 @@ import {
 import { pointData } from "../../../typings";
 import { COUNTINGS_DATA, COUNTINGS_PAGE_DATA } from "../../../servers";
 
-const fetchUniqueData = async (id: string) => {
+const fetchUniqueData = async (slug: string) => {
+  const id = slug.split("-")[0]
   const res = await fetch(COUNTINGS_DATA + "/" + id);
   const { cyclistCount } = await res.json();
   return cyclistCount;
@@ -30,24 +31,24 @@ const fetchData = async () => {
 };
 
 const Contagem = async ({ params }) => {
-  const data = await fetchUniqueData(params.id);
+  const data = await fetchUniqueData(params.slug);
   const { pageCover, otherData } = await fetchData();
   let pageData = {
-    title: data.name,
+    title: "data.name",
     src: pageCover.cover.url,
   };
 
-  const crumb = {
-    label: data.name,
-    slug: data._id,
-    routes: ["/", "/contagens", data._id],
-  };
-  const pointsData = getPointsDataForSingleCounting(data) as pointData[];
-  const cards = getCountingCards(data);
+  // const crumb = {
+  //   label: data.name,
+  //   slug: data._id,
+  //   routes: ["/", "/contagens", data._id],
+  // };
+  // const pointsData = getPointsDataForSingleCounting(data) as pointData[];
+  // const cards = getCountingCards(data);
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
-      <Breadcrumb {...crumb} />
+      {/* <Breadcrumb {...crumb} />
       <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
       <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
         <div
@@ -63,7 +64,8 @@ const Contagem = async ({ params }) => {
       <InfoCards cards={cards} />
       <HourlyCyclistsChart cyclistCount={data} />
       <CountingComparisionTable data={otherData.filter((d) => d._id !== data._id)} firstId={data._id}/>
-    </main>
+      */}
+    </main> 
   );
 };
 

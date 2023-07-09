@@ -11,7 +11,8 @@ export default async function handler(req, res) {
     FROM
       cyclist_count.edition e
     JOIN
-      public.coordinates c ON e.coordinates_id = c.id;
+      public.coordinates c ON e.coordinates_id = c.id
+      ORDER BY e.id ASC;
     `; // Sua consulta summaryQuery aqui
     const characteristicsQuery = `SELECT cc.edition_id,
       CAST(SUM(CASE WHEN ch.type = 'cargo' THEN cc.count ELSE 0 END) AS INTEGER) AS total_cargo,
@@ -52,9 +53,23 @@ export default async function handler(req, res) {
       const countCharacteristics = characteristicsData.find(
         (char) => char.edition_id === count.id
       );
+    
+      // Remover acentos do nome da contagem
+      const slugName = count.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s]/gi, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase();
+    
+      // Adicionar hífen entre a data e o nome da contagem
+      const slugDate = new Date(count.date).toISOString().slice(0, 10);
+      const slug = `${count.id}-${slugDate}-${slugName}`;
+    
       return {
         ...count,
         ...countCharacteristics,
+        slug,
       };
     });
     

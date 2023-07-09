@@ -10,7 +10,6 @@ import { InfoCards } from "../components/InfoCards";
 import { groupBy, IntlDateStr } from "../../utils";
 import {
   COUNTINGS_DATA,
-  COUNTINGS_SUMMARY_DATA,
   COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_PAGE_DATA,
 } from "../../servers";
@@ -26,25 +25,22 @@ const crumb = {
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_DATA, { cache: "no-cache" });
-  const dataJson = await dataRes.json();
-  const data = dataJson.data;
-
-  const summaryDataResNEW = await fetch(COUNTINGS_SUMMARY_DATA_NEW, {
+  const summaryDataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, {
     cache: "no-cache",
   });
-  const summaryDataJsonNEW = await summaryDataResNEW.json();
-  const summaryDataNEW = summaryDataJsonNEW.summary;
-  const dataNEW = summaryDataJsonNEW.counts;
+
+  const summaryDataJson = await summaryDataRes.json();
+  const summaryData = summaryDataJson.summary;
+  const data = summaryDataJson.counts;
 
   const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
   const pageData = await pageDataRes.json();
 
-  return { data, pageData, summaryDataNEW, dataNEW };
+  return { pageData, summaryData, data };
 };
 
 export default async function Contagens() {
-  const { data, pageData, summaryDataNEW, dataNEW } = await fetchData();
+  const { pageData, summaryData, data } = await fetchData();
   const { cover, description, objective, archives } = pageData;
 
   const controlPanel = [{
@@ -54,9 +50,10 @@ export default async function Contagens() {
     type: 'prefeitura',
     color: "#ef4444"
   }]
-  console.log(dataNEW)
 
-  let pointsData: pointData[] = dataNEW.map((d) => ({
+  console.log(data)
+
+  let pointsData: pointData[] = data.map((d) => ({
     key: d.id,
     type: 'ameciclo',
     latitude: d.coordinates.x,
@@ -65,7 +62,7 @@ export default async function Contagens() {
       name: d.name,
       total: d.total_cyclists,
       date: IntlDateStr(d.date),
-      url: `/contagens/${d.id}`,
+      url: `/contagens/${d.slug}`,
       obs: ""
     },
     size: Math.round(d.total_cyclists / 250) + 5,
@@ -87,9 +84,7 @@ export default async function Contagens() {
     color: "#ef4444"
   }))
   pointsData = pointsData.concat(pcrPointsData);
-
-  const countsGroupedByLocation = groupBy(data, (count) => count.name);
-  const cards = CardsData(summaryDataNEW);
+  const cards = CardsData(summaryData);
   const docs = archives.map((a) => {
     return {
       title: a.filename,
@@ -104,7 +99,7 @@ export default async function Contagens() {
       <Breadcrumb {...crumb} />
       <StatisticsBox
         title={"Estatísticas Gerais"}
-        boxes={allCountsStatistics(summaryDataNEW)}
+        boxes={allCountsStatistics(summaryData)}
       />
       <ExplanationBoxes
         boxes={[
@@ -117,7 +112,7 @@ export default async function Contagens() {
       />
       <InfoCards cards={cards} />
       <Map pointsData={pointsData} controlPanel={controlPanel} />
-      <ContagensTable data={dataNEW} />
+      <ContagensTable data={data} />
       <CardsSession
         title={"Documentos para realizar contagens de ciclistas."}
         cards={docs}
