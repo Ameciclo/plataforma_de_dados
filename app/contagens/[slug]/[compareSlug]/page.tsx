@@ -63,8 +63,6 @@ export default async function Compare({ params }) {
   const pointsData = getPointsDataForComparingCounting(data);
   const chartData = getChartData(data);
 
-  console.log(boxes);
-
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
