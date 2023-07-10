@@ -73,10 +73,10 @@ const Contagem = async ({ params }) => {
       </section>
       <InfoCards cards={getCountingCards(data.summary)} />
       <HourlyCyclistsChart sessions={data.sessions} />
-      {/* <CountingComparisionTable
+      <CountingComparisionTable
         data={otherCounts.filter((d) => d.id !== data.id)}
         firstSlug={params.slug}
-      /> */}
+      />
     </main>
   );
 };
