@@ -9,8 +9,9 @@ import {
 } from "./configuration";
 import { VerticalStatisticsBoxes } from "../../../components/VerticalStatisticsBoxes";
 import { Map } from "../../../components/Maps/Map";
-import { CountingComparisionTable, HourlyCyclistsChart } from "./useclient";
-
+import { CountingComparisionTable } from "./useclient";
+import {HourlyCyclistsChart} from "../../../components/HourlyCyclistsChart"
+import { Series } from "../../../../typings";
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
 
@@ -61,7 +62,7 @@ export default async function Compare({ params }) {
 
   const boxes = getBoxesForCountingComparision(data);
   const pointsData = getPointsDataForComparingCounting(data);
-  const chartData = getChartData(data);
+  const {series, hours} = getChartData(data);
 
   return (
     <main className="flex-auto">
@@ -72,7 +73,7 @@ export default async function Compare({ params }) {
         boxes={boxes}
       />
       <Map pointsData={pointsData} />
-      <HourlyCyclistsChart series={chartData} />
+      <HourlyCyclistsChart series={series as Series[]} hours={hours} /> {/* Modo de comparação */}
       {/*     <CountingComparisionTable data={otherCounts} ids={toCompare} /> */}
     </main>
   );
