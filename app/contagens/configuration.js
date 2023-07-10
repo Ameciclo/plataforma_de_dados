@@ -84,3 +84,25 @@ export const CardsData = (summaryData) => {
     },
   ];
 };
+
+export const characteristicsMap = new Map([
+  ["total_cyclists", { name: "Total" }],
+  ["total_women", { name: "Mulheres" }],
+  ["total_child", { name: "Crianças e Adolescentes" }],
+  ["total_ride", { name: "Carona" }],
+  ["total_helmet", { name: "Capacete" }],
+  ["total_service", { name: "Serviço" }],
+  ["total_cargo", { name: "Cargueira" }],
+  ["total_shared_bike", { name: "Compartilhada" }],
+  ["total_sidewalk", { name: "Calçada" }],
+  ["total_wrong_way", { name: "Contramão" }],
+  ["women", { name: "Mulheres" }],
+  ["child", { name: "Crianças e Adolescentes" }],
+  ["ride", { name: "Carona" }],
+  ["helmet", { name: "Capacete" }],
+  ["service", { name: "Serviço" }],
+  ["cargo", { name: "Cargueira" }],
+  ["shared_bike", { name: "Compartilhada" }],
+  ["sidewalk", { name: "Calçada" }],
+  ["wrong_way", { name: "Contramão" }],
+]);

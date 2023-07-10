@@ -3,24 +3,13 @@ import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import { Series, CountEditionSession } from "../../typings";
+import {characteristicsMap} from "../contagens/configuration"
 
 export function HourlyCyclistsChart({ sessions }: { sessions: { [key: string]: CountEditionSession } }) {
   const series: Series[] = [];
   const hours: number[] = [];
   const totalCyclists: number[] = [];
-  const characteristicsMap = new Map([
-    ["total_cyclists", { name: "Total" }],
-    ["women", { name: "Mulheres" }],
-    ["child", { name: "Crianças e Adolescentes" }],
-    ["ride", { name: "Carona" }],
-    ["helmet", { name: "Capacete" }],
-    ["service", { name: "Serviço" }],
-    ["cargo", { name: "Cargueira" }],
-    ["shared_bike", { name: "Compartilhada" }],
-    ["sidewalk", { name: "Calçada" }],
-    ["wrong_way", { name: "Contramão" }],
-  ]);
-
+ 
   Object.values(sessions).forEach((session: CountEditionSession) => {
     const { start_time, total_cyclists, characteristics } = session;
     const hour = parseInt(start_time.split(":")[0]);

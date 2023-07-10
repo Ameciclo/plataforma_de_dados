@@ -1,3 +1,4 @@
+// import { characteristicsMap } from "../../configuration";
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
 export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
 
@@ -81,16 +82,26 @@ export function getChartData(data) {
   return chartData;
 }
 
-const characteristicsMap = new Map([
-  ["total", { name: "Total" }],
-  ["hour_max", { name: "Pico" }],
-  ["women_percent", { name: "Mulheres" }],
-  ["children_percent", { name: "Crianças e Adolescentes" }],
-  ["helmet_percent", { name: "Capacete" }],
-  ["service_percent", { name: "Serviço" }],
-  ["cargo_percent", { name: "Cargueira" }],
-  ["wrong_way_percent", { name: "Contramão" }],
-  ["sidewalk_percent", { name: "Calçada" }],
+export const characteristicsMap = new Map([
+  ["total_cyclists", { name: "Total" }],
+  ["total_women", { name: "Mulheres" }],
+  ["total_child", { name: "Crianças e Adolescentes" }],
+  ["total_ride", { name: "Carona" }],
+  ["total_helmet", { name: "Capacete" }],
+  ["total_service", { name: "Serviço" }],
+  ["total_cargo", { name: "Cargueira" }],
+  ["total_shared_bike", { name: "Compartilhada" }],
+  ["total_sidewalk", { name: "Calçada" }],
+  ["total_wrong_way", { name: "Contramão" }],
+  ["women", { name: "Mulheres" }],
+  ["child", { name: "Crianças e Adolescentes" }],
+  ["ride", { name: "Carona" }],
+  ["helmet", { name: "Capacete" }],
+  ["service", { name: "Serviço" }],
+  ["cargo", { name: "Cargueira" }],
+  ["shared_bike", { name: "Compartilhada" }],
+  ["sidewalk", { name: "Calçada" }],
+  ["wrong_way", { name: "Contramão" }],
 ]);
 
 export function getBoxesForCountingComparision(data) {
@@ -106,7 +117,7 @@ export function getBoxesForCountingComparision(data) {
             return {
               titulo: characteristic.name,
               label,
-              media: IntlPercentil(value),
+              media: IntlNumber(value),
               maior: false,
               menor: false,
             };
@@ -121,41 +132,27 @@ export function getBoxesForCountingComparision(data) {
   result = getMinValues(data, result);
   return result;
 }
-
 function getMaxValues(data, result) {
-  const maxValues = {
-    total: 0,
-    hour_max: 0,
-    women_percent: 0,
-    children_percent: 0,
-    helmet_percent: 0,
-    service_percent: 0,
-    cargo_percent: 0,
-    wrong_way_percent: 0,
-    sidewalk_percent: 0,
-  };
+  const maxValues = {};
+  const maxIndexes = {};
 
-  const maxIndexes = {
-    total: 0,
-    hour_max: 0,
-    women_percent: 0,
-    children_percent: 0,
-    helmet_percent: 0,
-    service_percent: 0,
-    cargo_percent: 0,
-    wrong_way_percent: 0,
-    sidewalk_percent: 0,
-  };
+  // Inicialize os valores máximos com -Infinity
+  Object.keys(data[0].summary).forEach((key) => {
+    maxValues[key] = -Infinity;
+    maxIndexes[key] = 0;
+  });
 
+  // Encontre os valores máximos e seus respectivos índices
   data.forEach((d, i) => {
-    Object.entries(d.summary).forEach(([label, value]) => {
-      if (characteristicsMap.has(label) && value > maxValues[label]) {
-        maxValues[label] = value;
-        maxIndexes[label] = i;
+    Object.entries(d.summary).forEach(([key, value]) => {
+      if (value > maxValues[key]) {
+        maxValues[key] = value;
+        maxIndexes[key] = i;
       }
     });
   });
 
+  // Atualize as propriedades "maior" em result
   return result.map((d, i) => {
     return {
       titulo: d.titulo,
@@ -173,39 +170,26 @@ function getMaxValues(data, result) {
 }
 
 function getMinValues(data, result) {
-  const minValues = {
-    total: Infinity,
-    hour_max: Infinity,
-    women_percent: Infinity,
-    children_percent: Infinity,
-    helmet_percent: Infinity,
-    service_percent: Infinity,
-    cargo_percent: Infinity,
-    wrong_way_percent: Infinity,
-    sidewalk_percent: Infinity,
-  };
+  const minValues = {};
+  const minIndexes = {};
 
-  const minIndexes = {
-    total: 0,
-    hour_max: 0,
-    women_percent: 0,
-    children_percent: 0,
-    helmet_percent: 0,
-    service_percent: 0,
-    cargo_percent: 0,
-    wrong_way_percent: 0,
-    sidewalk_percent: 0,
-  };
+  // Inicialize os valores mínimos com Infinity
+  Object.keys(data[0].summary).forEach((key) => {
+    minValues[key] = Infinity;
+    minIndexes[key] = 0;
+  });
 
+  // Encontre os valores mínimos e seus respectivos índices
   data.forEach((d, i) => {
-    Object.entries(d.summary).forEach(([label, value]) => {
-      if (characteristicsMap.has(label) && value < minValues[label]) {
-        minValues[label] = value;
-        minIndexes[label] = i;
+    Object.entries(d.summary).forEach(([key, value]) => {
+      if (value < minValues[key]) {
+        minValues[key] = value;
+        minIndexes[key] = i;
       }
     });
   });
 
+  // Atualize as propriedades "menor" em result
   return result.map((d, i) => {
     return {
       titulo: d.titulo,
