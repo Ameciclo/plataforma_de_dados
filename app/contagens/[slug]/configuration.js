@@ -2,11 +2,10 @@ import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
 import { COUNTINGS_DATA_NEW } from "../../../servers";
 
 export function getPointsData(d) {
-  const points = d.map((p) => ({
-    key: p.name,
-    latitude: p.point.x,
-    longitude: p.point.y,
-    name: p.name,
+  const points = d.coordinates.map((coordinate) => ({
+    key: d.name,
+    latitude: coordinate.point.x,
+    longitude: coordinate.point.y,
   }));
   return points;
 }

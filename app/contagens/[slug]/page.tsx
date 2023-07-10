@@ -23,7 +23,6 @@ const fetchUniqueData = async (slug: string) => {
   console.log("NEWURL: " + URL);
   const res = await fetch(URL);
   const responseJson = await res.json();
-
   return responseJson;
 };
 
@@ -52,27 +51,27 @@ const Contagem = async ({ params }) => {
     slug: params.slug,
     routes: ["/", "/contagens", params.slug],
   };
-  //const pointsData = getPointsData(data.coordinates) as pointData[];
-  console.log(data)
+  const pointsData = getPointsData(data) as pointData[];
+  console.log(pointsData)
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
       <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
-      {/*<section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
-             <div
-          className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
+      <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
+{/*               <div
+            className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
           style={{ minHeight: "400px" }}
         >
           <PointMap pointsData={pointsData} height="400px" />
         </div>
-   
-              <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
-          <FlowContainer count={data} />
+ */}
+             <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
+         <FlowContainer data={data} />
         </div>
-      </section>*/}
-      {/*    <InfoCards cards={getCountingCards(data.summary)} />
-        <HourlyCyclistsChart cyclistCount={data} /> 
+      </section>
+       <InfoCards cards={getCountingCards(data.summary)} />
+      {/*     <HourlyCyclistsChart cyclistCount={data} /> 
        <CountingComparisionTable data={otherData.filter((d) => d._id !== data._id)} firstId={data._id}/>
       */}
     </main>

@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     const sessions = {};
     let maxCount = 0;
     let max_hour = null;
-    let directions = {}
+    let directions = {};
 
     for (const session of sessionsData) {
       const sessionId = session.id;
@@ -85,9 +85,9 @@ export default async function handler(req, res) {
         WHERE cc.session_id = $1;
       `;
 
-      const { rows: characteristicsData } = await sql.query(
-        characteristicsQuery, [sessionId]
-      );
+      const {
+        rows: characteristicsData,
+      } = await sql.query(characteristicsQuery, [sessionId]);
 
       const characteristics = {};
       for (const characteristic of characteristicsData) {
@@ -103,20 +103,18 @@ export default async function handler(req, res) {
 
       const { rows: quantitativeData } = await sql.query(quantitativeQuery);
 
-      let total_cyclists = 0
+      let total_cyclists = 0;
       const quantitative = {};
       for (const d of quantitativeData) {
         const key = `${d.origin_cardinal}_${d.destin_cardinal}`;
-        quantitative[key] = {
-          count: d.count,
-        };
+        quantitative[key] = d.count;
         total_cyclists += d.count;
         directions[key] = {
           origin: d.origin,
           destin: d.destin,
           origin_cardinal: d.origin_cardinal,
-          destin_cardinal: d.destin_cardinal
-        }
+          destin_cardinal: d.destin_cardinal,
+        };
       }
       if (total_cyclists > maxCount) {
         maxCount = total_cyclists;
@@ -130,17 +128,17 @@ export default async function handler(req, res) {
         quantitative,
       };
     }
-     // Remover acentos do nome da contagem
-     const slugName = name
-     .normalize("NFD")
-     .replace(/[\u0300-\u036f]/g, "")
-     .replace(/[^\w\s]/gi, "")
-     .replace(/\s+/g, "-")
-     .toLowerCase();
- 
-   // Adicionar hífen entre a data e o nome da contagem
-   const slugDate = new Date(date).toISOString().slice(0, 10);
-   const slug = `${id}-${slugDate}-${slugName}`;
+    // Remover acentos do nome da contagem
+    const slugName = name
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\w\s]/gi, "")
+      .replace(/\s+/g, "-")
+      .toLowerCase();
+
+    // Adicionar hífen entre a data e o nome da contagem
+    const slugDate = new Date(date).toISOString().slice(0, 10);
+    const slug = `${id}-${slugDate}-${slugName}`;
 
     const data = {
       id: parseInt(id),
