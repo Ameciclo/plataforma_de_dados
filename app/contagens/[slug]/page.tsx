@@ -4,13 +4,14 @@ import { StatisticsBox } from "../../components/StatisticsBox";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { FlowContainer } from "../../components/FlowChart/FlowContainer";
 import { InfoCards } from "../../components/InfoCards";
-import { HourlyCyclistsChart, CountingComparisionTable } from "./useclient";
+import { CountingComparisionTable } from "./useclient";
+import { HourlyCyclistsChart } from "../../components/HourlyCyclistsChart";
 import {
   CountingStatistic,
   getPointsData,
   getCountingCards,
 } from "./configuration";
-import { pointData } from "../../../typings";
+import { pointData, CountEdition, CountEditionSession } from "../../../typings";
 import {
   COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_DATA_NEW,
@@ -27,7 +28,9 @@ const fetchUniqueData = async (slug: string) => {
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, { cache: "no-cache" });
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, {
+    cache: "no-cache",
+  });
   const dataJson = await dataRes.json();
   const otherCounts = dataJson.counts;
 
@@ -37,8 +40,7 @@ const fetchData = async () => {
 };
 
 const Contagem = async ({ params }) => {
-  const data = await fetchUniqueData(params.slug);
-  // console.log(JSON.stringify(data));
+  const data: CountEdition = await fetchUniqueData(params.slug);
   const { pageCover, otherCounts } = await fetchData();
 
   let pageData = {
@@ -52,7 +54,7 @@ const Contagem = async ({ params }) => {
     routes: ["/", "/contagens", params.slug],
   };
   const pointsData = getPointsData(data) as pointData[];
-  console.log(data.slug)
+  console.log(data.slug);
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
@@ -70,9 +72,11 @@ const Contagem = async ({ params }) => {
         </div>
       </section>
       <InfoCards cards={getCountingCards(data.summary)} />
-      {/*     <HourlyCyclistsChart cyclistCount={data} /> */} 
-       <CountingComparisionTable data={otherCounts.filter((d) => d.id !== data.id)} firstSlug={params.slug}/>
-     
+      <HourlyCyclistsChart sessions={data.sessions} />
+      {/* <CountingComparisionTable
+        data={otherCounts.filter((d) => d.id !== data.id)}
+        firstSlug={params.slug}
+      /> */}
     </main>
   );
 };

@@ -1,36 +1,10 @@
 import React from "react";
 import FlowStreetBackground from "./FlowStreetBackground";
 import FlowTotalCount from "./FlowTotalCount";
-
-interface Session {
-  start_time: string;
-  end_time: string;
-  total_cyclists: number;
-  characteristics: {
-    [key: string]: number;
-  };
-  quantitative: {
-    [key: string]: number;
-  };
-}
+import { CountEdition } from "../../../typings";
 
 interface FlowContainerProps {
-  data: {
-    summary: {
-      total_cyclists: number;
-    };
-    sessions: {
-      [key: string]: Session;
-    };
-    directions: {
-      [key: string]: {
-        origin: string;
-        destin: string;
-        origin_cardinal: string;
-        destin_cardinal: string;
-      };
-    };
-  };
+  data: CountEdition;
 }
 
 export function FlowContainer({ data }: FlowContainerProps) {
