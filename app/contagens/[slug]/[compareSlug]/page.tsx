@@ -1,10 +1,9 @@
 import { NavCover } from "../../../components/NavCover";
 import { Breadcrumb } from "../../../components/Breadcrumb";
-import { COUNTINGS_DATA_NEW, COUNTINGS_PAGE_DATA } from "../../../../servers";
+import { COUNTINGS_DATA_NEW, COUNTINGS_PAGE_DATA, COUNTINGS_SUMMARY_DATA_NEW } from "../../../../servers";
 import {
   getBoxesForCountingComparision,
   getPointsDataForComparingCounting,
-  getPointsDataForSingleCounting,
   getChartData,
 } from "./configuration";
 import { VerticalStatisticsBoxes } from "../../../components/VerticalStatisticsBoxes";
@@ -23,9 +22,9 @@ const fetchUniqueData = async (slug: string) => {
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_DATA_NEW, { cache: "no-cache" });
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, { cache: "no-cache" });
   const dataJson = await dataRes.json();
-  const otherCounts = dataJson.data;
+  const otherCounts = dataJson.counts;
 
   const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
   const pageCover = await pageDataRes.json();
@@ -63,7 +62,6 @@ export default async function Compare({ params }) {
   const boxes = getBoxesForCountingComparision(data);
   const pointsData = getPointsDataForComparingCounting(data);
   const {series, hours} = getChartData(data);
-
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
@@ -74,7 +72,7 @@ export default async function Compare({ params }) {
       />
       <Map pointsData={pointsData} />
       <HourlyCyclistsChart series={series as Series[]} hours={hours} /> {/* Modo de comparação */}
-      {/*     <CountingComparisionTable data={otherCounts} ids={toCompare} /> */}
+      <CountingComparisionTable data={otherCounts} ids={toCompare} />
     </main>
   );
 }

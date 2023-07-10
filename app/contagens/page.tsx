@@ -7,9 +7,8 @@ import { CardsSession } from "../components/CardsSession";
 import { Map } from "../components/Maps/Map";
 import { ContagensTable } from "./useclient";
 import { InfoCards } from "../components/InfoCards";
-import { groupBy, IntlDateStr } from "../../utils";
+import { IntlDateStr } from "../../utils";
 import {
-  COUNTINGS_DATA,
   COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_PAGE_DATA,
 } from "../../servers";

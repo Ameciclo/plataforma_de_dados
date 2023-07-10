@@ -12,7 +12,7 @@ import {
   getCountingCards,
   getChartData,
 } from "./configuration";
-import { pointData, CountEdition, CountEditionSession, Series } from "../../../typings";
+import { pointData, CountEdition, Series } from "../../../typings";
 import {
   COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_DATA_NEW,
@@ -22,7 +22,6 @@ import {
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
   const URL = COUNTINGS_DATA_NEW + "?id=" + id;
-  console.log("NEWURL: " + URL);
   const res = await fetch(URL);
   const responseJson = await res.json();
   return responseJson;

@@ -1,12 +1,10 @@
 "use client";
 import React from "react";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts, { color } from "highcharts";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../components/Table/TableFilters";
 import { Table } from "../../components/Table/Table";
-import { Series, CountEditionSession, CountEdition } from "../../../typings";
+
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
@@ -91,78 +89,3 @@ export const CountingComparisionTable = ({ data, firstSlug }) => {
     />
   );
 };
-
-// export function HourlyCyclistsChart({
-//   sessions,
-// }: {
-//   sessions: { [key: string]: CountEditionSession };
-// }) {
-//   const series: Series[] = [];
-//   const hours: number[] = [];
-//   Object.values(sessions).forEach((session: CountEditionSession) => {
-//     const { start_time, total_cyclists } = session;
-//     const hour = parseInt(start_time.split(":")[0]); // Extrair a hora do start_time
-//     hours.push(hour);
-//     const dataPoint = [total_cyclists]; // Criar um array com a hora e o total de ciclistas
-
-//     series.push({
-//       name: "total",
-//       data: dataPoint, // Adicionar o array de dados (hora e total de ciclistas) ao gráfico
-//     });
-//   });
-//   console.log(hours, series)
-
-//   const options = {
-//     chart: {
-//       type: "column",
-//     },
-//     plotOptions: {
-//       column: {
-//         stacking: "normal",
-//         dataLabels: {
-//           enabled: true,
-//         },
-//       },
-//     },
-//     tooltip: {
-//       headerFormat: "<b>{point.x}:00h</b><br/>",
-//       pointFormat: "{series.name}: {point.y}<br/>",
-//     },
-//     title: {
-//       text: "Fluxo horário de ciclistas",
-//     },
-//     xAxis: {
-//       type: "category",
-//       categories: hours,
-//       title: {
-//         text: "Hora",
-//       },
-//     },
-//     yAxis: {
-//       title: {
-//         text: "Quantidade",
-//       },
-//       scrollbar: {
-//         enabled: true,
-//       },
-//     },
-//     series,
-
-//     credits: {
-//       enabled: true,
-//     },
-//   };
-
-//   return (
-//     <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-//       <div className="shadow-2xl rounded p-10 text-center overflow-x-scroll">
-//         <div style={{ minWidth: "500px" }}>
-//           <h2 className="text-gray-600 text-3xl">
-//             Quantidade de ciclistas por hora
-//           </h2>
-//           <HighchartsReact highcharts={Highcharts} options={options} />
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }

@@ -54,9 +54,7 @@ export const MapCommands = ({ handleClick }) => {
   );
 };
 
-
 function PointPopup({ selectedPoint, setSelectedPoint }) {
-  console.log(selectedPoint);
   return (
     <>
       <Popup
