@@ -77,8 +77,6 @@ export function FlowContainer({ data }: FlowContainerProps) {
   
   const totalsOrigin = sumQuantitativeByOrigin();
 
-  console.log(totalsOrigin)
-
   return (
     <>
       <svg

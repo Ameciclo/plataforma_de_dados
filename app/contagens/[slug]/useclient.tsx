@@ -1,5 +1,5 @@
 "use client";
-import React  from "react";
+import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts, { color } from "highcharts";
 import { matchSorter } from "match-sorter";
@@ -14,7 +14,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export const CountingComparisionTable = ({ data, firstId }) => {
+export const CountingComparisionTable = ({ data, firstSlug }) => {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -43,8 +43,8 @@ export const CountingComparisionTable = ({ data, firstId }) => {
         Cell: ({ row }) => (
           <Link
             className="text-ameciclo"
-            href={`/contagens/${row.original._id}`}
-            key={row.original._id}
+            href={`contagens/${row.original.slug}`}
+            key={row.original.id}
           >
             {row.original.name}
           </Link>
@@ -61,7 +61,7 @@ export const CountingComparisionTable = ({ data, firstId }) => {
       },
       {
         Header: "Total de Ciclistas",
-        accessor: "summary.total",
+        accessor: "total_cyclists",
         Filter: ColumnFilter,
         disableFilters: true,
       },
@@ -71,7 +71,7 @@ export const CountingComparisionTable = ({ data, firstId }) => {
           <span>
             <Link
               className="text-ameciclo"
-              href={`/contagens/${firstId}/${row.original._id}`}
+              href={`/contagens/${firstSlug}/${row.original.slug}`}
             >
               COMPARE
             </Link>
@@ -83,7 +83,13 @@ export const CountingComparisionTable = ({ data, firstId }) => {
     []
   );
 
-  return <Table title={"Compare com outras contagens"} data={data} columns={columns} />;
+  return (
+    <Table
+      title={"Compare com outras contagens"}
+      data={data}
+      columns={columns}
+    />
+  );
 };
 
 type Series = {

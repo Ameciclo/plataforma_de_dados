@@ -12,7 +12,7 @@ import {
 } from "./configuration";
 import { pointData } from "../../../typings";
 import {
-  COUNTINGS_DATA,
+  COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_DATA_NEW,
   COUNTINGS_PAGE_DATA,
 } from "../../../servers";
@@ -27,19 +27,19 @@ const fetchUniqueData = async (slug: string) => {
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_DATA, { cache: "no-cache" });
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, { cache: "no-cache" });
   const dataJson = await dataRes.json();
-  const otherData = dataJson.data;
+  const otherCounts = dataJson.counts;
 
   const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
   const pageCover = await pageDataRes.json();
-  return { pageCover, otherData };
+  return { pageCover, otherCounts };
 };
 
 const Contagem = async ({ params }) => {
   const data = await fetchUniqueData(params.slug);
   // console.log(JSON.stringify(data));
-  const { pageCover, otherData } = await fetchData();
+  const { pageCover, otherCounts } = await fetchData();
 
   let pageData = {
     title: data.name,
@@ -52,28 +52,27 @@ const Contagem = async ({ params }) => {
     routes: ["/", "/contagens", params.slug],
   };
   const pointsData = getPointsData(data) as pointData[];
-  console.log(pointsData)
+  console.log(data.slug)
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
       <Breadcrumb {...crumb} />
       <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
       <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
-               <div
-            className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
+        <div
+          className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
           style={{ minHeight: "400px" }}
         >
           <PointMap pointsData={pointsData} height="400px" />
         </div>
-{/* */}
-             <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
-         <FlowContainer data={data} />
+        <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
+          <FlowContainer data={data} />
         </div>
       </section>
-       <InfoCards cards={getCountingCards(data.summary)} />
-      {/*     <HourlyCyclistsChart cyclistCount={data} /> 
-       <CountingComparisionTable data={otherData.filter((d) => d._id !== data._id)} firstId={data._id}/>
-      */}
+      <InfoCards cards={getCountingCards(data.summary)} />
+      {/*     <HourlyCyclistsChart cyclistCount={data} /> */} 
+       <CountingComparisionTable data={otherCounts.filter((d) => d.id !== data.id)} firstSlug={params.slug}/>
+     
     </main>
   );
 };

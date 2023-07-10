@@ -53,18 +53,18 @@ export const ContagensTable = ({ data }) => {
         Filter: ColumnFilter,
       },
       {
-        Header: "Total de Ciclistas",
-        accessor: "total_cyclists",
-        Filter: ColumnFilter,
-        disableFilters: true,
-      },
-      {
         Header: "Data",
         accessor: "date",
         Cell: ({ value }) => (
           <span>{value.substr(0, 10).split("-").reverse().join("/")}</span>
         ),
         Filter: ColumnFilter,
+      },
+      {
+        Header: "Total de Ciclistas",
+        accessor: "total_cyclists",
+        Filter: ColumnFilter,
+        disableFilters: true,
       },
 
       {
