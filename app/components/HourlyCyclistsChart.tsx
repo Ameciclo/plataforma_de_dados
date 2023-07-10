@@ -2,48 +2,20 @@
 import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { Series, CountEditionSession } from "../../typings";
-import {characteristicsMap} from "../contagens/configuration"
+import { Series } from "../../typings";
+import { colors } from "../contagens/configuration"
 
-export function HourlyCyclistsChart({ sessions }: { sessions: { [key: string]: CountEditionSession } }) {
-  const series: Series[] = [];
-  const hours: number[] = [];
-  const totalCyclists: number[] = [];
- 
-  Object.values(sessions).forEach((session: CountEditionSession) => {
-    const { start_time, total_cyclists, characteristics } = session;
-    const hour = parseInt(start_time.split(":")[0]);
-    hours.push(hour);
-    totalCyclists.push(total_cyclists);
+interface HourlyCyclistsChartProps {
+  series: Series[];
+  hours: number[];
+}
 
-    Object.entries(characteristics).forEach(([key, value]) => {
-      if (characteristicsMap.has(key)) {
-        const characteristic = characteristicsMap.get(key);
-        const seriesIndex = series.findIndex((s) => s.name === characteristic?.name);
-        if (seriesIndex !== -1) {
-          series[seriesIndex].data.push(value);
-        } else {
-          series.push({
-            name: characteristic?.name ?? "",
-            data: [value],
-            visible: false,
-          });
-        }
-      }
-    });
-  });
-
-  series.push({
-    name: "Total de Ciclistas",
-    data: totalCyclists,
-    visible: true,
-  });
-
-
+export function HourlyCyclistsChart({ series, hours }: HourlyCyclistsChartProps) {
   const options = {
     chart: {
       type: "line",
     },
+    colors: colors,
     plotOptions: {
       column: {
         dataLabels: {

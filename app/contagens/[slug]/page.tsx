@@ -10,8 +10,9 @@ import {
   CountingStatistic,
   getPointsData,
   getCountingCards,
+  getChartData,
 } from "./configuration";
-import { pointData, CountEdition, CountEditionSession } from "../../../typings";
+import { pointData, CountEdition, CountEditionSession, Series } from "../../../typings";
 import {
   COUNTINGS_SUMMARY_DATA_NEW,
   COUNTINGS_DATA_NEW,
@@ -54,7 +55,8 @@ const Contagem = async ({ params }) => {
     routes: ["/", "/contagens", params.slug],
   };
   const pointsData = getPointsData(data) as pointData[];
-  console.log(data.slug);
+  const {series, hours} = getChartData(data.sessions)
+
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
@@ -72,7 +74,7 @@ const Contagem = async ({ params }) => {
         </div>
       </section>
       <InfoCards cards={getCountingCards(data.summary)} />
-      <HourlyCyclistsChart sessions={data.sessions} />
+      <HourlyCyclistsChart series={series as Series[]} hours={hours} />
       <CountingComparisionTable
         data={otherCounts.filter((d) => d.id !== data.id)}
         firstSlug={params.slug}

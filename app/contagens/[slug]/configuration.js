@@ -1,5 +1,8 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
 import { COUNTINGS_DATA_NEW } from "../../../servers";
+import { characteristicsMap } from "../configuration";
+export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
+
 export function getPointsData(d) {
   const { name, coordinates } = d;
   const [centralPoint] = coordinates;
@@ -34,7 +37,6 @@ export function getPointsData(d) {
 
   return points;
 }
-
 
 export const getPointsDataForSingleCounting = (d) => {
   return [
@@ -156,4 +158,43 @@ export function getCountingCards(data) {
       data: IntlPercentil(total_wrong_way / total_cyclists),
     },
   ];
+}
+
+export function getChartData(sessions) {
+  const series = [];
+  const hours = [];
+  const totalCyclists = [];
+
+  Object.values(sessions).forEach((session) => {
+    const { start_time, total_cyclists, characteristics } = session;
+    const hour = parseInt(start_time.split(":")[0]);
+    hours.push(hour);
+    totalCyclists.push(total_cyclists);
+
+    Object.entries(characteristics).forEach(([key, value]) => {
+      if (characteristicsMap.has(key)) {
+        const characteristic = characteristicsMap.get(key);
+        const seriesIndex = series.findIndex(
+          (s) => s.name === characteristic?.name
+        );
+        if (seriesIndex !== -1) {
+          series[seriesIndex].data.push(value);
+        } else {
+          series.push({
+            name: characteristic?.name || "",
+            data: [value],
+            visible: false,
+          });
+        }
+      }
+    });
+  });
+
+  series.push({
+    name: "Total de Ciclistas",
+    data: totalCyclists,
+    visible: true,
+  });
+
+  return { series, hours };
 }

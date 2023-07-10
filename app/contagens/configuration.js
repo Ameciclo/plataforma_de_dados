@@ -1,5 +1,8 @@
 import { IntlNumber, IntlPercentil } from "../../utils";
 
+export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
+
+
 export const allCountsStatistics = (summaryData) => {
   const { total, number_counts, where_max_count, different_counts_points } = {
     ...summaryData,

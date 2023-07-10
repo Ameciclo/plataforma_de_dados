@@ -1,6 +1,6 @@
-// import { characteristicsMap } from "../../configuration";
+import { characteristicsMap } from "../../configuration";
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
-export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
+import { colors } from "../../configuration"
 
 export const getPointsDataForSingleCounting = (d, color) => {
   return [
@@ -63,6 +63,7 @@ export function getPointsDataForComparingCounting(data) {
 
 export function getChartData(data) {
   const countsByHour = {};
+  const hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
 
   data.forEach((countData, index) => {
     const countSessions = Object.values(countData.sessions);
@@ -75,37 +76,16 @@ export function getChartData(data) {
     });
   });
 
-  const chartData = data.map((d, index) => ({
+  const series = data.map((d, index) => ({
     name: d.name,
     data: Object.values(countsByHour[index]),
   }));
-  return chartData;
+  return {series, hours};
 }
-
-export const characteristicsMap = new Map([
-  ["total_cyclists", { name: "Total" }],
-  ["total_women", { name: "Mulheres" }],
-  ["total_child", { name: "Crianças e Adolescentes" }],
-  ["total_ride", { name: "Carona" }],
-  ["total_helmet", { name: "Capacete" }],
-  ["total_service", { name: "Serviço" }],
-  ["total_cargo", { name: "Cargueira" }],
-  ["total_shared_bike", { name: "Compartilhada" }],
-  ["total_sidewalk", { name: "Calçada" }],
-  ["total_wrong_way", { name: "Contramão" }],
-  ["women", { name: "Mulheres" }],
-  ["child", { name: "Crianças e Adolescentes" }],
-  ["ride", { name: "Carona" }],
-  ["helmet", { name: "Capacete" }],
-  ["service", { name: "Serviço" }],
-  ["cargo", { name: "Cargueira" }],
-  ["shared_bike", { name: "Compartilhada" }],
-  ["sidewalk", { name: "Calçada" }],
-  ["wrong_way", { name: "Contramão" }],
-]);
 
 export function getBoxesForCountingComparision(data) {
   let result = data.map((d, index) => {
+    const total_cyclists = d.summary.total_cyclists
     return {
       titulo: d.name,
       media: IntlDateStr(d.date),
@@ -117,7 +97,7 @@ export function getBoxesForCountingComparision(data) {
             return {
               titulo: characteristic.name,
               label,
-              media: IntlNumber(value),
+              media: IntlNumber(value) + " (" + IntlPercentil(value/total_cyclists) + ")",
               maior: false,
               menor: false,
             };
