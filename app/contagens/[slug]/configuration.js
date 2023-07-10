@@ -1,14 +1,40 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
 import { COUNTINGS_DATA_NEW } from "../../../servers";
-
 export function getPointsData(d) {
-  const points = d.coordinates.map((coordinate) => ({
-    key: d.name,
-    latitude: coordinate.point.x,
-    longitude: coordinate.point.y,
-  }));
+  const { name, coordinates } = d;
+  const [centralPoint] = coordinates;
+
+  const points = [
+    {
+      key: name,
+      latitude: centralPoint.point.x,
+      longitude: centralPoint.point.y,
+    },
+    {
+      key: `${name}_north`,
+      latitude: centralPoint.point.x + 0.001,
+      longitude: centralPoint.point.y,
+    },
+    {
+      key: `${name}_south`,
+      latitude: centralPoint.point.x - 0.001,
+      longitude: centralPoint.point.y,
+    },
+    {
+      key: `${name}_east`,
+      latitude: centralPoint.point.x,
+      longitude: centralPoint.point.y + 0.001,
+    },
+    {
+      key: `${name}_west`,
+      latitude: centralPoint.point.x,
+      longitude: centralPoint.point.y - 0.001,
+    },
+  ];
+
   return points;
 }
+
 
 export const getPointsDataForSingleCounting = (d) => {
   return [

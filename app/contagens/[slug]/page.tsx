@@ -59,13 +59,13 @@ const Contagem = async ({ params }) => {
       <Breadcrumb {...crumb} />
       <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
       <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
-{/*               <div
+               <div
             className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
           style={{ minHeight: "400px" }}
         >
           <PointMap pointsData={pointsData} height="400px" />
         </div>
- */}
+{/* */}
              <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
          <FlowContainer data={data} />
         </div>
