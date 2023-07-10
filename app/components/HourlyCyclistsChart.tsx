@@ -2,13 +2,7 @@
 import React from "react";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
-import { CountEditionSession } from "../../typings";
-
-type Series = {
-  name: string;
-  data: number[];
-  visible?: boolean; // Adicionado
-};
+import { Series, CountEditionSession } from "../../typings";
 
 export function HourlyCyclistsChart({ sessions }: { sessions: { [key: string]: CountEditionSession } }) {
   const series: Series[] = [];
@@ -36,14 +30,14 @@ export function HourlyCyclistsChart({ sessions }: { sessions: { [key: string]: C
     Object.entries(characteristics).forEach(([key, value]) => {
       if (characteristicsMap.has(key)) {
         const characteristic = characteristicsMap.get(key);
-        const seriesIndex = series.findIndex((s) => s.name === characteristic.name);
+        const seriesIndex = series.findIndex((s) => s.name === characteristic?.name);
         if (seriesIndex !== -1) {
           series[seriesIndex].data.push(value);
         } else {
           series.push({
-            name: characteristic.name,
+            name: characteristic?.name ?? "",
             data: [value],
-            visible: false, // Adicionado
+            visible: false,
           });
         }
       }
@@ -53,8 +47,9 @@ export function HourlyCyclistsChart({ sessions }: { sessions: { [key: string]: C
   series.push({
     name: "Total de Ciclistas",
     data: totalCyclists,
-    visible: true, // Adicionado
+    visible: true,
   });
+
 
   const options = {
     chart: {
