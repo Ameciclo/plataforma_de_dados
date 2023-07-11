@@ -2,12 +2,9 @@ import React from "react";
 import FlowStreetBackground from "./FlowStreetBackground";
 import FlowTotalCount from "./FlowTotalCount";
 import { CountEdition } from "../../../typings";
+import { colors } from "../../contagens/configuration";
 
-interface FlowContainerProps {
-  data: CountEdition;
-}
-
-export function FlowContainer({ data }: FlowContainerProps) {
+export function FlowContainer({ data }: { data: CountEdition }) {
   function getOriginNames(): { [key: string]: string } {
     const names: { [key: string]: string } = {};
 
@@ -20,36 +17,22 @@ export function FlowContainer({ data }: FlowContainerProps) {
 
   const names = getOriginNames();
 
-  function sumQuantitativeByDirection(): { [key: string]: number } {
+  function sumQuantitativeByDirection() {
     const totals: { [key: string]: number } = {};
-  
+    const totals_by_origin: { [key: string]: number } = {};
     Object.values(data.sessions).forEach((session) => {
       Object.entries(session.quantitative).forEach(([key, value]) => {
+        const origin = key.split("_")[0];
         const total = value;
         totals[key] = (totals[key] || 0) + total;
+        totals_by_origin[origin] = (totals_by_origin[origin] || 0) + total;
       });
     });
-  
-    return totals;
-  }
-  
-  const totals = sumQuantitativeByDirection();
 
-  function sumQuantitativeByOrigin(): { [key: string]: number } {
-    const totals: { [key: string]: number } = {};
-  
-    Object.values(data.sessions).forEach((session) => {
-      Object.entries(session.quantitative).forEach(([key, value]) => {
-        const origin = key.split('_')[0];
-        const total = value;
-        totals[origin] = (totals[origin] || 0) + total;
-      });
-    });
-  
-    return totals;
+    return { totals, totals_by_origin };
   }
-  
-  const totalsOrigin = sumQuantitativeByOrigin();
+
+  const { totals, totals_by_origin } = sumQuantitativeByDirection();
 
   return (
     <>
@@ -120,7 +103,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
             fontSize="20"
             transform="rotate(90 68.876 213.325)"
           >
-            {totalsOrigin.east}
+            {totals_by_origin.east}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -134,7 +117,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
             fontSize="20"
             transform="translate(144.403 296.096)"
           >
-            {totalsOrigin.south}
+            {totals_by_origin.south}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -148,7 +131,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
             fontSize="20"
             transform="rotate(-90 105.064 68.92)"
           >
-            {totalsOrigin.west}
+            {totals_by_origin.west}
           </text>
           <g clipPath="url(#clip-path)">
             <path
@@ -162,10 +145,10 @@ export function FlowContainer({ data }: FlowContainerProps) {
             fontSize="20"
             transform="translate(144.403 36.145)"
           >
-            {totalsOrigin.north}
+            {totals_by_origin.north}
           </text>
           <g>
-            <rect x="98" y="0" width="121" height="19" fill="#008080" />
+            <rect x="98" y="0" width="121" height="19" fill={colors[0]} />
             <text
               fill="#fff"
               fontFamily="Helvetica"
@@ -180,7 +163,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
             </text>
           </g>
           <g>
-            <rect x="98" y="299" width="121" height="19" fill="#008080" />
+            <rect x="98" y="299" width="121" height="19" fill={colors[1]} />
             <text
               fill="#fff"
               fontFamily="Helvetica"
@@ -196,7 +179,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
           </g>
 
           <g>
-            <rect x="300" y="99" width="19" height="121" fill="#008080" />
+            <rect x="300" y="99" width="19" height="121" fill={colors[2]} />
             <text
               textAnchor="start"
               fill="#fff"
@@ -209,7 +192,7 @@ export function FlowContainer({ data }: FlowContainerProps) {
             </text>
           </g>
           <g clipPath="url(#clip-path)">
-            <path fill="#008080" d="M0 98.946H18.811V219.49099999999999H0z" />
+            <path fill={colors[3]} d="M0 98.946H18.811V219.49099999999999H0z" />
           </g>
           <text
             fill="#fff"

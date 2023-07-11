@@ -73,7 +73,7 @@ export type city = {
 };
 
 export interface CountEditionSummary {
-  id: number;
+  max_hour: number;
   total_cyclists: number;
   total_cargo: number;
   total_helmet: number;
@@ -120,7 +120,6 @@ export interface CountEdition {
   slug: string;
   name: string;
   date: string;
-  max_hour: number;
   summary: CountEditionSummary;
   coordinates: CountEditionCoordinates[];
   sessions: {

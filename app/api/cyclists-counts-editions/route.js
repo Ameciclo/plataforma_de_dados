@@ -3,9 +3,9 @@ import { sql } from "@vercel/postgres";
 export async function GET(request) {
     try {
       const url = new URL(request.url);
-      const id = url.searchParams.get("id");
+      const req_id = url.searchParams.get("id");
   
-      if (!id) {
+      if (!req_id) {
         return new Response(
           JSON.stringify({ error: "Missing ID parameter" }),
           {
@@ -43,7 +43,7 @@ export async function GET(request) {
         e.id, e.name, e.date
     `;
 
-    const { rows: editionData } = await sql.query(editionQuery, [id]);
+    const { rows: editionData } = await sql.query(editionQuery, [req_id]);
 
     if (editionData.length === 0) {
       return new Response(JSON.stringify({ error: "Edition not found" }), {
@@ -52,7 +52,7 @@ export async function GET(request) {
       });
     }
 
-    const { name, date, ...summary } = editionData[0];
+    let { id, name, date, ...summary } = editionData[0];
 
     // Query para obter as coordenadas
     const coordinatesQuery = `
@@ -61,7 +61,7 @@ export async function GET(request) {
       JOIN cyclist_count.edition e ON e.coordinates_id = c.id
       WHERE e.id = $1;
     `;
-    const { rows: coordinates } = await sql.query(coordinatesQuery, [id]);
+    const { rows: coordinates } = await sql.query(coordinatesQuery, [req_id]);
 
     // Query para obter as sessões
     const sessionsQuery = `
@@ -70,7 +70,7 @@ export async function GET(request) {
       WHERE s.edition_id = $1;
     `;
 
-    const { rows: sessionsData } = await sql.query(sessionsQuery, [id]);
+    const { rows: sessionsData } = await sql.query(sessionsQuery, [req_id]);
 
     const sessions = {};
     let maxCount = 0;
@@ -141,14 +141,15 @@ export async function GET(request) {
 
     // Adicionar hífen entre a data e o nome da contagem
     const slugDate = new Date(date).toISOString().slice(0, 10);
-    const slug = `${id}-${slugDate}-${slugName}`;
+    const slug = `${req_id}-${slugDate}-${slugName}`;
+
+    summary = {max_hour, ...summary}
 
     const data = {
-      id: parseInt(id),
+      id: parseInt(req_id),
       slug,
       name,
       date,
-      max_hour,
       summary,
       coordinates,
       sessions,

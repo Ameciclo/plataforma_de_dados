@@ -1,7 +1,7 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
 import { COUNTINGS_DATA_NEW } from "../../../servers";
 import { characteristicsMap } from "../configuration";
-export const colors = ["#24CBE5", "#E02F31", "#DDDF00", "#6AF9C4"];
+import { colors } from "../configuration";
 
 export function getPointsData(d) {
   const { name, coordinates } = d;
@@ -17,21 +17,25 @@ export function getPointsData(d) {
       key: `${name}_north`,
       latitude: centralPoint.point.x + 0.001,
       longitude: centralPoint.point.y,
+      color: colors[0]
     },
     {
       key: `${name}_south`,
       latitude: centralPoint.point.x - 0.001,
       longitude: centralPoint.point.y,
+      color: colors[1]
     },
     {
       key: `${name}_east`,
       latitude: centralPoint.point.x,
       longitude: centralPoint.point.y + 0.001,
+      color: colors[2]
     },
     {
       key: `${name}_west`,
       latitude: centralPoint.point.x,
       longitude: centralPoint.point.y - 0.001,
+      color: colors[3]
     },
   ];
 
@@ -74,8 +78,8 @@ export const getPointsDataForSingleCounting = (d) => {
 };
 
 export const CountingStatistic = (data) => {
-  const { id, date, max_hour, summary } = { ...data };
-  const { total_cyclists } = { ...summary };
+  const { id, date, summary } = { ...data };
+  const { total_cyclists, max_hour } = { ...summary };
   const JSON_URL = `${COUNTINGS_DATA_NEW}?id=${id}`;
   return [
     { title: "Total de ciclistas", value: IntlNumber(total_cyclists) },
