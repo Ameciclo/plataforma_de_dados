@@ -66,7 +66,7 @@ export const CountingComparisionTable = ({ data, ids }) => {
       {
         Header: "COMPARE",
         Cell: ({ row }) => {
-          const id = row.original._id;
+          const id = row.original.slug;
           if (id === ids[0]) {
             const newIds = ids.slice(1);
             const newLink =
