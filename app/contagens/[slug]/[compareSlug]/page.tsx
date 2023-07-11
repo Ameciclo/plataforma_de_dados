@@ -13,14 +13,13 @@ import {HourlyCyclistsChart} from "../../../components/HourlyCyclistsChart"
 import { Series } from "../../../../typings";
 
 
+
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
-
-  const res = await fetch(COUNTINGS_DATA_NEW + "?id=" + id, {
-    cache: "no-cache",
-  });
-  const data = await res.json();
-  return data;
+  const URL = COUNTINGS_DATA_NEW + "?id=" + id;
+  const res = await fetch(URL);
+  const responseJson = await res.json();
+  return responseJson;
 };
 
 const fetchData = async () => {

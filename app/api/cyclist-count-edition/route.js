@@ -1,14 +1,19 @@
 import { sql } from "@vercel/postgres";
-import { dir } from "console";
 
-export default async function handler(req, res) {
-  try {
-    const { id } = req.query;
-
-    if (!id) {
-      res.status(400).json({ error: "Missing ID parameter" });
-      return;
-    }
+export async function GET(request) {
+    try {
+      const url = new URL(request.url);
+      const id = url.searchParams.get("id");
+  
+      if (!id) {
+        return new Response(
+          JSON.stringify({ error: "Missing ID parameter" }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+      }
 
     // Consulta para obter os dados da edição de contagem
     const editionQuery = `SELECT
@@ -38,18 +43,16 @@ export default async function handler(req, res) {
         e.id, e.name, e.date
     `;
 
-    //console.log("Edition Query:", editionQuery);
-
     const { rows: editionData } = await sql.query(editionQuery, [id]);
 
     if (editionData.length === 0) {
-      res.status(404).json({ error: "Edition not found" });
-      return;
+      return new Response(JSON.stringify({ error: "Edition not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     const { name, date, ...summary } = editionData[0];
-
-    //console.log("Edition Data:", editionData);
 
     // Query para obter as coordenadas
     const coordinatesQuery = `
@@ -152,9 +155,14 @@ export default async function handler(req, res) {
       directions,
     };
 
-    res.status(200).json(data);
+    return new Response(JSON.stringify(data), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error executing SQL queries:", error);
-    res.status(500).json({ error: error.message }); // Retorna a mensagem de erro detalhada
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }

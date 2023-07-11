@@ -1,6 +1,6 @@
 import { sql } from "@vercel/postgres";
 
-export default async function handler(req, res) {
+export async function GET(request) {
   try {
     const summaryQuery = `SELECT
       e.id,
@@ -101,9 +101,11 @@ export default async function handler(req, res) {
       counts: formattedCounts,
     };
 
-    res.status(200).json(data);
+    return new Response(JSON.stringify(data), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error executing SQL queries:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
