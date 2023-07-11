@@ -85,7 +85,8 @@ export function getChartData(data) {
 
 export function getBoxesForCountingComparision(data) {
   let result = data.map((d, index) => {
-    const total_cyclists = d.summary.total_cyclists
+    let  total_cyclists = 0
+    if (d.summary) total_cyclists = d.summary.total_cyclists
     return {
       titulo: d.name,
       media: IntlDateStr(d.date),

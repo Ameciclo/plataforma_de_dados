@@ -11,6 +11,8 @@ import { Map } from "../../../components/Maps/Map";
 import { CountingComparisionTable } from "./useclient";
 import {HourlyCyclistsChart} from "../../../components/HourlyCyclistsChart"
 import { Series } from "../../../../typings";
+
+
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
 
@@ -45,13 +47,6 @@ export default async function Compare({ params }) {
     title: "Comparação de contagens",
     src: pageCover.cover.url,
   };
-
-  const label = data
-    .reduce(
-      (a, c) => (a += c.name + " (" + c.date.substring(0, 4) + ") e "),
-      "COMPARAÇÃO ENTRE: "
-    )
-    .slice(0, -3);
 
   const crumb = {
     label: "Comparação entre contagens",
