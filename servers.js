@@ -1,5 +1,6 @@
 import { server } from "./config/index";
 
+//generic route
 const CMS = `https://cms.ameciclo.org`
 
 // SINGLE PAGE DATA - LIKE COVER AND DOCS
@@ -10,6 +11,7 @@ export const IDECICLO_PAGE_DATA = `${CMS}/ideciclo`;
 export const PERFIL_PAGE_DATA = `${CMS}/perfil`;
 
 // DATA
+export const DOCUMENTS_DATA = `${CMS}/documents`;
 export const COUNTINGS_DATA_API = `/api/cyclists-counts-editions`;
 export const COUNTINGS_SUMMARY_DATA_NEW = `${server}/api/cyclist-count`;
 export const COUNTINGS_DATA_NEW = `${server}${COUNTINGS_DATA_API}`;
