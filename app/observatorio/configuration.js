@@ -41,6 +41,49 @@ export function sumKilometersByRelationId(data) {
 
   return result;
 }
+export function cityCycleStructureExecutionStatisticsByCity(dataArray, citiesData) {
+  const cityStats = {}; // Usar um objeto em vez de um array
+  const cities = {};
+
+  citiesData.forEach((city) => {
+    cities[city.id] = city.name;
+  });
+
+  dataArray.forEach((item) => {
+    const { city_id, has_cycleway, relation_id, length } = item;
+    const city_name = cities[city_id];
+    const isNotOutPDC = relation_id !== 0;
+
+    if (!cityStats[city_name]) {
+      cityStats[city_name] = {
+        id: city_id,
+        name: city_name,
+        pdc_feito: 0,
+        out_pdc: 0,
+        pdc_total: 0,
+        percentil: 0,
+        total: 0,
+        ways: [],
+      };
+    }
+
+    if (isNotOutPDC) {
+      cityStats[city_name].pdc_total += length;
+      if (has_cycleway) {
+        cityStats[city_name].pdc_feito += length;
+      } else {
+        cityStats[city_name].out_pdc += length;
+      }
+    }
+    cityStats[city_name].total =
+      cityStats[city_name].pdc_feito + cityStats[city_name].out_pdc;
+    cityStats[city_name].percentil =
+      cityStats[city_name].pdc_feito / cityStats[city_name].pdc_total;
+    cityStats[city_name].ways.push(item);
+  });
+
+  return cityStats;
+}
 
 export const cycleStructureExecutionStatistics = (data) => {
   const newData = data.map((d) => {
@@ -96,28 +139,28 @@ export const cycleStructureExecutionStatistics = (data) => {
 };
 
 export function cityCycleStructureExecutionStatistics(selectedCity) {
-  const { km_ciclos, km_completed, km_projected, percentil } = {
+  const { pdc_feito, pdc_total, percentil, total } = {
     ...selectedCity,
   };
   return [
     {
-      title: "estrutura cicloviárias",
+      title: "estruturas cicloviárias",
       unit: "km",
-      value: IntlNumberMax1Digit(km_ciclos),
+      value: IntlNumberMax1Digit(total),
     },
     {
-      title: "projetada no plano cicloviário",
+      title: "projetadas no plano cicloviário",
       unit: "km",
-      value: IntlNumberMax1Digit(km_projected),
+      value: IntlNumberMax1Digit(pdc_total),
     },
     {
       title: "implantados no plano cicloviário",
       unit: "km",
-      value: IntlNumberMax1Digit(km_completed),
+      value: IntlNumberMax1Digit(pdc_feito),
     },
     {
       title: "cobertos do plano cicloviário",
-      value: IntlPercentil(percentil / 100),
+      value: IntlPercentil(percentil),
       unit: "%",
     },
   ].filter((e) => e);
@@ -126,9 +169,9 @@ export function cityCycleStructureExecutionStatistics(selectedCity) {
 export function sortCards(data, order) {
   const units = {
     percentil: "%",
-    km_completed: "km",
-    km_projected: "km",
-    km_ciclos: "km",
+    pdc_feito: "km",
+    pdc_total: "km",
+    total: "km",
   };
   return data
     .map((d) => ({

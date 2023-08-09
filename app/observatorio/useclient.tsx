@@ -27,13 +27,19 @@ const ExtensionCell = ({ value }) => {
   );
 };
 
-const ObservatorioClientSide = ({ cities, inicialCity }) => {
-  const [selectedCity, setCity] = useState(filterByName(cities, "Recife"));
+const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
+  const citiesStatsArray = Object.values(citiesStats).filter(
+    (c) => c.name !== undefined
+  );
+  
+  const [selectedCity, setCity] = useState(
+    filterByName(citiesStatsArray, inicialCity)
+  );
   const changeCity = (id) => {
-    setCity(filterById(cities, id));
+    setCity(filterById(citiesStatsArray, id));
   };
 
-  const [city_sort, sortCity] = useState("km_completed");
+  const [city_sort, sortCity] = useState("total");
   const sort_cities = [
     {
       title: "Ordene as cidades: ",
@@ -43,18 +49,17 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
       onBlur: (e) => e,
       items: [
         { value: "percentil", label: "cobertos do plano cicloviário" },
-        { value: "km_completed", label: "implantados no plano cicloviário" },
-        { value: "km_projected", label: "projetada no plano cicloviário" },
-        { value: "km_ciclos", label: "estrutura cicloviárias" },
+        { value: "pdc_feito", label: "implantados no plano cicloviário" },
+        { value: "pdc_total", label: "projetada no plano cicloviário" },
+        { value: "total", label: "estrutura cicloviárias" },
       ],
     },
   ];
 
-  const CityStatistics = cityCycleStructureExecutionStatistics(selectedCity);
 
   const cellFilterByValue = {
     Cell: ({ value }) => {
-      value ? (
+      return value ? (
         <span>{("" + value.toFixed(2)).replace(".", ",")}</span>
       ) : (
         <span>{"N/A"}</span>
@@ -71,7 +76,7 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
       },
       {
         Header: "Tipologia prevista",
-        accessor: "pdc_tipos",
+        accessor: "pdc_typology",
         Filter: SelectColumnFilter,
       },
       {
@@ -98,7 +103,7 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
   return (
     <>
       <NumberCards
-        cards={sortCards(cities, city_sort)}
+        cards={sortCards(citiesStatsArray, city_sort)}
         data={{
           title: "Estrutura nas cidades",
           filters: sort_cities,
@@ -107,12 +112,12 @@ const ObservatorioClientSide = ({ cities, inicialCity }) => {
           changeFunction: changeCity,
           maxDigs: 1,
         }}
-        selected={selectedCity.id}
+        selected={selectedCity?.id}
       />
       <StatisticsBox
         title={selectedCity.name}
         subtitle={"Estatísticas Gerais"}
-        boxes={CityStatistics}
+        boxes={cityCycleStructureExecutionStatistics(selectedCity)}
       />
       <Table
         title={"Estruturas do PDC para " + selectedCity.name}

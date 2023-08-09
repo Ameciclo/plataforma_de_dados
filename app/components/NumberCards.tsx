@@ -52,8 +52,7 @@ export const NumberCard = ({
       })}`;
     }
   }
-
-  const label = city.label.replace("/", " ");
+  const label = city.label?.replace("/", " ");
   return (
     <div
       className={`flex flex-col rounded shadow-2xl h-full mx-3 ld:mx-0 p-3 justify-between ${

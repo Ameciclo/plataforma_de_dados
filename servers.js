@@ -12,3 +12,4 @@ export const PERFIL_PAGE_DATA = `https://cms.ameciclo.org/perfil`
 export const PERFIL_DATA = `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`
 export const OBSERVATORY_DATA =`http://localhost:3000/cyclist-infra/relations`
 export const OBSERVATORY_DATA_WAYS =`http://localhost:3000/cyclist-infra/ways`
+export const CITIES_DATA =`http://localhost:3000/cities`
