@@ -1,24 +1,91 @@
 import { IntlNumberMax1Digit, IntlPercentil } from "../../utils";
 
+export function combineFeatures(dataArray) {
+  const combinedFeatures = dataArray.map((item) => {
+    let status = "NotPDC";
+    if (item.relation_id !== 0)
+      status = item.has_cycleway ? "Realizada" : "Projeto";
+    const properties = {
+      id: item.id,
+      name: item.name,
+      ...item.geojson.features[0].properties,
+      STATUS: status,
+    };
+    return {
+      type: "Feature",
+      geometry: item.geojson.features[0].geometry,
+      properties: properties,
+    };
+  });
+
+  const combinedGeoJSON = {
+    type: "FeatureCollection",
+    features: combinedFeatures,
+  };
+  return combinedGeoJSON;
+}
+
+export function sumKilometersByRelationId(data) {
+  const result = {};
+
+  // Inicializa o objeto com todos os relation_ids de 1 a 257
+  for (let i = 0; i <= 238; i++) {
+    result[i] = 0;
+  }
+
+  // Percorre os dados e soma os quilômetros para cada relation_id
+  for (const d of data) {
+    const { relation_id, length } = d;
+    result[relation_id] += length;
+  }
+
+  return result;
+}
+
 export const cycleStructureExecutionStatistics = (data) => {
-  const kms = data.kms;
-  const { pdc_feito, out_pdc, pdc_total } = { ...kms };
-  const percent = 0.0 + pdc_feito / pdc_total;
+  const newData = data.map((d) => {
+    const hasCycleway = d.has_cycleway === true;
+    const isNotOutPDC = d.relation_id !== 0;
+
+    const pdc_feito = hasCycleway && isNotOutPDC ? d.length : 0;
+    const out_pdc = hasCycleway && !isNotOutPDC ? d.length : 0;
+    const pdc_total = isNotOutPDC ? d.length : 0;
+
+    return {
+      ...d,
+      pdc_feito,
+      out_pdc,
+      pdc_total,
+    };
+  });
+
+  const kms = newData.reduce(
+    (accumulator, currentData) => {
+      accumulator.pdc_feito += currentData.pdc_feito;
+      accumulator.out_pdc += currentData.out_pdc;
+      accumulator.pdc_total += currentData.pdc_total;
+      return accumulator;
+    },
+    { pdc_feito: 0, out_pdc: 0, pdc_total: 0 }
+  );
+
+  const percent = kms.pdc_feito / kms.pdc_total;
+
   return [
     {
       title: "estrutura cicloviárias",
       unit: "km",
-      value: IntlNumberMax1Digit(pdc_feito + out_pdc),
+      value: IntlNumberMax1Digit(kms.pdc_feito + kms.out_pdc),
     },
     {
       title: "projetada no plano cicloviário",
       unit: "km",
-      value: IntlNumberMax1Digit(pdc_total),
+      value: IntlNumberMax1Digit(kms.pdc_total),
     },
     {
       title: "implantados no plano cicloviário",
       unit: "km",
-      value: IntlNumberMax1Digit(pdc_feito),
+      value: IntlNumberMax1Digit(kms.pdc_feito),
     },
     {
       title: "cobertos do plano cicloviário",
