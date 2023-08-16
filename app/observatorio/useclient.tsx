@@ -31,7 +31,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
   const citiesStatsArray = Object.values(citiesStats).filter(
     (c) => c.name !== undefined
   );
-  
+
   const [selectedCity, setCity] = useState(
     filterByName(citiesStatsArray, inicialCity)
   );
@@ -39,13 +39,15 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
     setCity(filterById(citiesStatsArray, id));
   };
 
+  const [optionsType, setOptionsType] = useState("max1digit");
+
   const [city_sort, sortCity] = useState("total");
   const sort_cities = [
     {
       title: "Ordene as cidades: ",
       value: city_sort,
       name: "city-sort",
-      onChange: (e) => sortCity(e.target.value),
+      onChange: (e) => sortCityAndType(e.target.value),
       onBlur: (e) => e,
       items: [
         { value: "percentil", label: "cobertos do plano cicloviário" },
@@ -56,6 +58,12 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
     },
   ];
 
+  const sortCityAndType = (value) => {
+    sortCity(value)
+    let type = "max1digit"
+    if(value == "percentil") type = "percentual"
+    setOptionsType(type)
+  }
 
   const cellFilterByValue = {
     Cell: ({ value }) => {
@@ -110,7 +118,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
         }}
         options={{
           changeFunction: changeCity,
-          maxDigs: 1,
+          type: optionsType,
         }}
         selected={selectedCity?.id}
       />
