@@ -139,7 +139,11 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
           filters: CitiesRanking.filters,
         }}
         selected={selectedCity.id}
-        options={{ changeFunction: changeCity, onClickFnc: handleClick(ref) }}
+        options={{
+          type: "3digits",
+          changeFunction: changeCity,
+          onClickFnc: handleClick(ref),
+        }}
       />
       {filteredCityData.length > 0 && (
         <StatisticsBox

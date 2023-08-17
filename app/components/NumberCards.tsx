@@ -5,6 +5,7 @@ import {
   IntlNumber1Digit,
   IntlNumberMax1Digit,
   IntlPercentil,
+  IntlNumber3Digit,
 } from "../../utils"; // Import as needed
 
 export const NumberCard = ({
@@ -26,7 +27,10 @@ export const NumberCard = ({
       formattedValue = IntlPercentil(value);
       break;
     case "max3digits":
-      formattedValue = value < 1 ? IntlNumberMin1Max3Digits(value) : IntlNumber1Digit(value);
+      formattedValue = IntlNumberMin1Max3Digits(value);
+      break;
+    case "3digits":
+      formattedValue = IntlNumber3Digit(value);
       break;
     default:
       formattedValue = value; // Default format
