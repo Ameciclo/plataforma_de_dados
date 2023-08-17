@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { filterByName, filterById } from "../../utils";
+import { filterByName, filterById, IntlNumber2Digit } from "../../utils";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { Table } from "../components/Table/Table";
@@ -14,22 +14,12 @@ import {
 } from "./configuration";
 
 const ExtensionCell = ({ value }) => {
-  return (
-    <>
-      {value ? (
-        <span>
-          {value.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}
-        </span>
-      ) : (
-        <span>N/A</span>
-      )}
-    </>
-  );
+  return <>{<span>{IntlNumber2Digit(value)}</span>}</>;
 };
 
 const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
   const citiesStatsArray = Object.values(citiesStats).filter(
-    (c) => c.name !== undefined
+    (c: { name: string | undefined }) => c.name !== undefined
   );
 
   const [selectedCity, setCity] = useState(
@@ -79,7 +69,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
     () => [
       {
         Header: "(COD) Nome da Via",
-        accessor: "name",
+        accessor: "cod_name",
         Filter: ColumnFilter,
       },
       {
@@ -89,18 +79,18 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
       },
       {
         Header: "Extensão prevista (km)",
-        accessor: "pdc_kms",
+        accessor: "length",
         Cell: ({ value }) => <ExtensionCell value={value} />,
         Filter: false,
       },
       {
         Header: "Tipologia executada",
-        accessor: "ciclo_tipos",
-        Filter: SelectColumnFilter,
+        accessor: "typologies_str",
+        Filter: ColumnFilter,
       },
       {
         Header: "Extensão executada (km)",
-        accessor: "ciclo_kms",
+        accessor: "has_cycleway_length",
         Cell: ({ value }) => <ExtensionCell value={value} />,
         Filter: false,
       },
@@ -129,7 +119,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
       />
       <Table
         title={"Estruturas do PDC para " + selectedCity.name}
-        data={[]}
+        data={selectedCity.relations}
         columns={columns}
       />
     </>

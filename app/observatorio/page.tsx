@@ -14,6 +14,7 @@ import {
 } from "./configuration";
 import { LayerProps } from "react-map-gl";
 import {
+  OBSERVATORY_DATA,
   OBSERVATORY_DATA_ALL_WAYS,
   OBSERVATORY_DATA_WAYS_SUMMARY,
   CITIES_DATA,
@@ -36,18 +37,29 @@ const fetchData = async () => {
   const summaryWaysData = await summaryWaysRes.json();
   const citiesRes = await fetch(CITIES_DATA);
   const citiesData = await citiesRes.json();
-  return { allWaysData, summaryWaysData, citiesData };
+  const relationsByCityRes = await fetch(OBSERVATORY_DATA);
+  const relationsByCityData = await relationsByCityRes.json();
+  return { allWaysData, summaryWaysData, citiesData, relationsByCityData };
 };
 
 export default async function Observatorio() {
-  const { allWaysData, citiesData, summaryWaysData } = await fetchData();
+  const {
+    allWaysData,
+    citiesData,
+    summaryWaysData,
+    relationsByCityData,
+  } = await fetchData();
 
   const allCitiesLayer = allWaysData.all as
     | GeoJSON.Feature<GeoJSON.Geometry>
     | GeoJSON.FeatureCollection<GeoJSON.Geometry>
     | string;
-  
-  const citiesStats = cityCycleStructureExecutionStatisticsByCity(summaryWaysData.byCity, citiesData)
+
+  const citiesStats = cityCycleStructureExecutionStatisticsByCity(
+    summaryWaysData.byCity,
+    citiesData,
+    relationsByCityData
+  );
 
   return (
     <>

@@ -44,21 +44,24 @@ export function sumKilometersByRelationId(data) {
 
 export function cityCycleStructureExecutionStatisticsByCity(
   citiesSummary,
-  citiesData
+  citiesData,
+  relationsByCityData
 ) {
-  const cityStats = {}; // Usar um objeto em vez de um array
-
+  const cityStats = {};
   citiesData.forEach((city) => {
     if (citiesSummary[city.id]) {
+      const { relations } = { ...relationsByCityData[city.id] } || [];
       cityStats[city.id] = {
-        name: city.name,
         id: city.id,
-        total:citiesSummary[city.id].pdc_feito + citiesSummary[city.id].out_pdc,
+        name: city.name,
+        relations: relations,
         ...citiesSummary[city.id],
+        total:
+          citiesSummary[city.id].pdc_feito + citiesSummary[city.id].out_pdc,
       };
     }
   });
-
+  
   return cityStats;
 }
 
