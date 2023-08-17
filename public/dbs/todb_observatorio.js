@@ -35,6 +35,13 @@ export const documents = {
       src: '',
       url: 'https://www.youtube.com/watch?v=LEQlGK-FWnI',
       text: 'Episódio de nosso podcast sobre o Plano Diretor Cicloviário.'
+    },
+    //{title: "Ações de desaniversário", icon: "", url: "", text: "Compilado de nossas ações de desaniversário, quando comemoramos a infeliz não execução do PDC."},
+    {
+      title: 'Wiki do PDC',
+      src: '',
+      url: 'https://wiki.openstreetmap.org/w/index.php?title=Plano_Diretor_Ciclovi%C3%A1rio_da_Regi%C3%A3o_Metropolitana_do_Recife',
+      text: 'A wiki com a listagem de todas as infras no OpenStreetMaps.'
     }
   ]
 }
