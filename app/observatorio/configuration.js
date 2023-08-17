@@ -41,46 +41,22 @@ export function sumKilometersByRelationId(data) {
 
   return result;
 }
+
 export function cityCycleStructureExecutionStatisticsByCity(
-  dataArray,
+  citiesSummary,
   citiesData
 ) {
   const cityStats = {}; // Usar um objeto em vez de um array
-  const cities = {};
 
   citiesData.forEach((city) => {
-    cities[city.id] = city.name;
-  });
-
-  dataArray.forEach((item) => {
-    const { city_id, has_cycleway, relation_id, length } = item;
-    const city_name = cities[city_id];
-    const isOnPDC = relation_id !== 0;
-
-    if (!cityStats[city_name]) {
-      cityStats[city_name] = {
-        id: city_id,
-        name: city_name,
-        pdc_feito: 0,
-        out_pdc: 0,
-        pdc_total: 0,
-        percentil: 0,
-        total: 0,
-        ways: [],
+    if (citiesSummary[city.id]) {
+      cityStats[city.id] = {
+        name: city.name,
+        id: city.id,
+        total:citiesSummary[city.id].pdc_feito + citiesSummary[city.id].out_pdc,
+        ...citiesSummary[city.id],
       };
     }
-
-    if (isOnPDC) {
-      cityStats[city_name].pdc_total += length;
-      if (has_cycleway) cityStats[city_name].pdc_feito += length;
-    } else {
-      cityStats[city_name].out_pdc += length;
-    }
-    cityStats[city_name].total =
-      cityStats[city_name].pdc_feito + cityStats[city_name].out_pdc;
-    cityStats[city_name].percentil =
-      cityStats[city_name].pdc_feito / cityStats[city_name].pdc_total;
-    cityStats[city_name].ways.push(item);
   });
 
   return cityStats;
@@ -114,7 +90,7 @@ export const cycleStructureExecutionStatistics = (data) => {
 };
 
 export function cityCycleStructureExecutionStatistics(selectedCity) {
-  const { pdc_feito, pdc_total, percentil, total } = {
+  const { pdc_feito, pdc_total, percent, total } = {
     ...selectedCity,
   };
   return [
@@ -135,7 +111,7 @@ export function cityCycleStructureExecutionStatistics(selectedCity) {
     },
     {
       title: "cobertos do plano cicloviário",
-      value: IntlPercentil(percentil),
+      value: IntlPercentil(percent),
       unit: "%",
     },
   ].filter((e) => e);

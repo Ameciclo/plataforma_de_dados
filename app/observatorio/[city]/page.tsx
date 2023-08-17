@@ -1,3 +1,5 @@
+
+
 "use client";
 import React, { useState } from "react";
 import { filterByName, filterById } from "../../utils";
@@ -50,7 +52,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
       onChange: (e) => sortCityAndType(e.target.value),
       onBlur: (e) => e,
       items: [
-        { value: "percent", label: "cobertos do plano cicloviário" },
+        { value: "percentil", label: "cobertos do plano cicloviário" },
         { value: "pdc_feito", label: "implantados no plano cicloviário" },
         { value: "pdc_total", label: "projetada no plano cicloviário" },
         { value: "total", label: "estrutura cicloviárias" },
@@ -59,11 +61,11 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
   ];
 
   const sortCityAndType = (value) => {
-    sortCity(value);
-    let type = "max1digit";
-    if (value == "percent") type = "percentual";
-    setOptionsType(type);
-  };
+    sortCity(value)
+    let type = "max1digit"
+    if(value == "percentil") type = "percentual"
+    setOptionsType(type)
+  }
 
   const cellFilterByValue = {
     Cell: ({ value }) => {
@@ -129,7 +131,7 @@ const ObservatorioClientSide = ({ citiesStats, inicialCity }) => {
       />
       <Table
         title={"Estruturas do PDC para " + selectedCity.name}
-        data={[]}
+        data={selectedCity.ways}
         columns={columns}
       />
     </>

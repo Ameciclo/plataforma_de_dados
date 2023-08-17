@@ -7,7 +7,7 @@ import ReactMapGL, {
   LayerProps,
   Popup,
 } from "react-map-gl";
-import { layersData, pointData } from "../../../typings";
+import { pointData } from "../../../typings";
 import {
   MAPBOXTOKEN,
   MAPBOXSTYLE,
@@ -16,6 +16,7 @@ import {
   dropIcon,
 } from "./MapConf";
 import { MapControlPanel } from "./MapControlPanel";
+import { MapLayersPanel } from "./MapLayersPanel";
 import { CountingPopUp, MapCommands, MapMarker } from "./MapsExtras";
 import * as GEOJSON from "geojson";
 
@@ -112,6 +113,11 @@ export const Map = ({
               markerVisibility={markerVisibility}
               pointsData={pointsData}
               handleMarkerToggle={handleMarkerToggle}
+            />
+          )}
+          {layersConf && layersConf.length > 0 && (
+            <MapLayersPanel
+              layersConf={layersConf}
             />
           )}
         </ReactMapGL>

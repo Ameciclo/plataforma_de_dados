@@ -21,7 +21,6 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
     //window.location.replace("#maisinfo")
   };
 
-
   useEffect(() => {
     if (selectedCity) {
       let city_structures = structures.filter((s) => {
@@ -80,7 +79,7 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
       value: c.reviews[0].ideciclo, // `${data.value.toLocaleString("pt-BR", {maximumFractionDigits: {maxDig}, minimumFractionDigits: {minDig}})}
     }));
   };
-  const statesFilter =  {
+  const statesFilter = {
     title: "por estado:",
     value: cityState,
     name: "cityState",
@@ -92,7 +91,7 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
         label: s,
       }))
     ),
-  }
+  };
   const CitiesRanking = {
     title: "Ranking das Cidades",
     filters: [
@@ -150,10 +149,12 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
         />
       )}
       {filteredCityData.length > 0 && (
-        <IdecicloTable
-          title={"Avaliações de cada via"}
-          data={filteredCityData}
-        />
+        <div id={"anchor"}>
+          <IdecicloTable
+            title={"Avaliações de cada via"}
+            data={filteredCityData}
+          />
+        </div>
       )}
     </>
   );

@@ -6,24 +6,18 @@ import { StatisticsBox } from "../components/StatisticsBox";
 import { Map } from "../components/Maps/Map";
 import { CardsSession } from "../components/CardsSession";
 import ObservatorioClientSide from "./useclient";
-import data from "../../public/dbs/observatorio-data.json";
 import { documents, page_data } from "../../public/dbs/todb_observatorio";
 import {
   layersConf,
   cycleStructureExecutionStatistics,
   cityCycleStructureExecutionStatisticsByCity,
-  combineFeatures,
 } from "./configuration";
 import { LayerProps } from "react-map-gl";
 import {
-  OBSERVATORY_DATA,
-  OBSERVATORY_DATA_WAYS,
   OBSERVATORY_DATA_ALL_WAYS,
   OBSERVATORY_DATA_WAYS_SUMMARY,
   CITIES_DATA,
 } from "../../servers";
-
-//import EvalolutionGraph from
 
 const crumb = {
   label: "Observatório",
@@ -32,10 +26,6 @@ const crumb = {
 };
 
 const fetchData = async () => {
-  const pdcRes = await fetch(OBSERVATORY_DATA);
-  const pdcData = await pdcRes.json();
-  const waysRes = await fetch(OBSERVATORY_DATA_WAYS, { cache: "no-cache" });
-  const waysData = await waysRes.json();
   const allWaysRes = await fetch(OBSERVATORY_DATA_ALL_WAYS, {
     cache: "no-cache",
   });
@@ -46,26 +36,19 @@ const fetchData = async () => {
   const summaryWaysData = await summaryWaysRes.json();
   const citiesRes = await fetch(CITIES_DATA);
   const citiesData = await citiesRes.json();
-  return { pdcData, waysData, allWaysData, summaryWaysData, citiesData };
+  return { allWaysData, summaryWaysData, citiesData };
 };
 
 export default async function Observatorio() {
-  const {
-    pdcData,
-    waysData,
-    allWaysData,
-    citiesData,
-    summaryWaysData,
-  } = await fetchData();
-  
+  const { allWaysData, citiesData, summaryWaysData } = await fetchData();
+
   const allCitiesLayer = allWaysData.all as
     | GeoJSON.Feature<GeoJSON.Geometry>
     | GeoJSON.FeatureCollection<GeoJSON.Geometry>
     | string;
-  const citiesStats = await cityCycleStructureExecutionStatisticsByCity(
-    waysData,
-    citiesData
-  );
+  
+  const citiesStats = cityCycleStructureExecutionStatisticsByCity(summaryWaysData.byCity, citiesData)
+
   return (
     <>
       <NavCover
