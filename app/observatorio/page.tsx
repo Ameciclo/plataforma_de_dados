@@ -18,6 +18,8 @@ import { LayerProps } from "react-map-gl";
 import {
   OBSERVATORY_DATA,
   OBSERVATORY_DATA_WAYS,
+  OBSERVATORY_DATA_ALL_WAYS,
+  OBSERVATORY_DATA_WAYS_SUMMARY,
   CITIES_DATA,
 } from "../../servers";
 
@@ -34,13 +36,32 @@ const fetchData = async () => {
   const pdcData = await pdcRes.json();
   const waysRes = await fetch(OBSERVATORY_DATA_WAYS, { cache: "no-cache" });
   const waysData = await waysRes.json();
+  const allWaysRes = await fetch(OBSERVATORY_DATA_ALL_WAYS, {
+    cache: "no-cache",
+  });
+  const allWaysData = await allWaysRes.json();
+  const summaryWaysRes = await fetch(OBSERVATORY_DATA_WAYS_SUMMARY, {
+    cache: "no-cache",
+  });
+  const summaryWaysData = await summaryWaysRes.json();
   const citiesRes = await fetch(CITIES_DATA);
   const citiesData = await citiesRes.json();
-  return { pdcData, waysData, citiesData };
+  return { pdcData, waysData, allWaysData, summaryWaysData, citiesData };
 };
 
 export default async function Observatorio() {
-  const { pdcData, waysData, citiesData } = await fetchData();
+  const {
+    pdcData,
+    waysData,
+    allWaysData,
+    citiesData,
+    summaryWaysData,
+  } = await fetchData();
+  
+  const allCitiesLayer = allWaysData.all as
+    | GeoJSON.Feature<GeoJSON.Geometry>
+    | GeoJSON.FeatureCollection<GeoJSON.Geometry>
+    | string;
   const citiesStats = await cityCycleStructureExecutionStatisticsByCity(
     waysData,
     citiesData
@@ -55,7 +76,7 @@ export default async function Observatorio() {
       <StatisticsBox
         title={"Execução Cicloviária"}
         subtitle={"da Região Metropolitana do Recife"}
-        boxes={cycleStructureExecutionStatistics(waysData)}
+        boxes={cycleStructureExecutionStatistics(summaryWaysData.all)}
       />
       <ExplanationBoxes
         boxes={[
@@ -69,15 +90,7 @@ export default async function Observatorio() {
           },
         ]}
       />
-      <Map
-        layerData={
-          combineFeatures(waysData) as
-            | GeoJSON.Feature<GeoJSON.Geometry>
-            | GeoJSON.FeatureCollection<GeoJSON.Geometry>
-            | string
-        }
-        layersConf={layersConf as LayerProps[]}
-      />
+      <Map layerData={allCitiesLayer} layersConf={layersConf as LayerProps[]} />
       <ObservatorioClientSide
         citiesStats={citiesStats}
         inicialCity={"Recife"}
