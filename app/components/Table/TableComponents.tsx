@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export function TableHead({ headerGroups, isSmallScreen = false }) {
   return (
@@ -107,6 +107,31 @@ export function TableFooter({
   gotoPage,
   data,
 }) {
+  const [pageNumberInput, setPageNumberInput] = useState("");
+
+  const handlePageNumberChange = (event) => {
+    setPageNumberInput(event.target.value);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleGoToPage();
+    }
+  };
+
+  const handleGoToPage = () => {
+    const inputPage = parseInt(pageNumberInput, 10);
+    if (
+      !isNaN(inputPage) &&
+      inputPage >= 1 &&
+      inputPage <= pageOptions.length
+    ) {
+      gotoPage(inputPage - 1);
+      setPageNumberInput("");
+    }
+  };
+
+  const shouldUseInput = pageOptions.length > 10;
   const pagesButtons = (numPages) => {
     var pages: any[] = [];
     for (let i = 1; i <= numPages; i++) {
@@ -138,7 +163,8 @@ export function TableFooter({
   };
   return (
     <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between">
-      Mostrando {rows.length} de {data.length} linhas ao todo.
+      <p>Mostrando {rows.length} de {data.length} linhas ao todo.</p>
+      <p>Página {pageIndex + 1} de {pageOptions.length}.</p>
       <div className="inline-flex mt-2 xs:mt-0">
         {canPreviousPage && (
           <button
@@ -153,7 +179,28 @@ export function TableFooter({
         )}
 
         <div className="p-1">
-          {pageOptions.length > 0 && pagesButtons(pageOptions.length)}
+          {shouldUseInput ? (
+            <>
+              <input
+                type="text"
+                className="border-gray-300 border p-1"
+                value={pageNumberInput}
+                onChange={handlePageNumberChange}
+                onKeyUp={handleKeyPress}
+                style={{ width: "40px", textAlign: "center" }}
+              />
+              <button
+                className="bg-ameciclo border-2 border-white uppercase text-white font-bold hover:bg-white hover:text-ameciclo shadow text-xs px-2 py-1 rounded outline-none focus:outline-none mb-2 mx-1"
+                type="button"
+                style={{ transition: "all .15s ease" }}
+                onClick={handleGoToPage}
+              >
+                Ir
+              </button>
+            </>
+          ) : (
+            pageOptions.length > 0 && pagesButtons(pageOptions.length)
+          )}
         </div>
 
         {canNextPage && (

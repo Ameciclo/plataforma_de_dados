@@ -41,7 +41,10 @@ export function sumKilometersByRelationId(data) {
 
   return result;
 }
-export function cityCycleStructureExecutionStatisticsByCity(dataArray, citiesData) {
+export function cityCycleStructureExecutionStatisticsByCity(
+  dataArray,
+  citiesData
+) {
   const cityStats = {}; // Usar um objeto em vez de um array
   const cities = {};
 
@@ -52,7 +55,7 @@ export function cityCycleStructureExecutionStatisticsByCity(dataArray, citiesDat
   dataArray.forEach((item) => {
     const { city_id, has_cycleway, relation_id, length } = item;
     const city_name = cities[city_id];
-    const isNotOutPDC = relation_id !== 0;
+    const isOnPDC = relation_id !== 0;
 
     if (!cityStats[city_name]) {
       cityStats[city_name] = {
@@ -67,13 +70,11 @@ export function cityCycleStructureExecutionStatisticsByCity(dataArray, citiesDat
       };
     }
 
-    if (isNotOutPDC) {
+    if (isOnPDC) {
       cityStats[city_name].pdc_total += length;
-      if (has_cycleway) {
-        cityStats[city_name].pdc_feito += length;
-      } else {
-        cityStats[city_name].out_pdc += length;
-      }
+      if (has_cycleway) cityStats[city_name].pdc_feito += length;
+    } else {
+      cityStats[city_name].out_pdc += length;
     }
     cityStats[city_name].total =
       cityStats[city_name].pdc_feito + cityStats[city_name].out_pdc;

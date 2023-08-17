@@ -11,22 +11,22 @@ export const colsconf = [
   },
   {
     Header: "Tipologia prevista",
-    accessor: "pdc_tipos",
+    accessor: "pdc_typology",
     Filter: SelectColumnFilter,
   },
   {
     Header: "Extensão prevista (km)",
-    accessor: "pdc_kms",
+    accessor: "length",
     Filter: false,
   },
   {
     Header: "Tipologia executada",
-    accessor: "ciclo_tipos",
+    accessor: "cycleway_typology",
     Filter: SelectColumnFilter,
   },
   {
     Header: "Extensão executada (km)",
-    accessor: "ciclo_kms",
+    accessor: "length_made",
     Filter: false,
   },
 ];
