@@ -46,8 +46,8 @@ export const getPointDataForSingleCounting = (d, color) => {
   return [
     {
       key: d.name,
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates[0].point.x,
+      longitude: d.coordinates[0].point.y,
       name: d.summary.total,
       color: color,
     },

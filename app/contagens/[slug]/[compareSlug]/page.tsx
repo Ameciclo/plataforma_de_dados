@@ -17,7 +17,7 @@ import { Series } from "../../../../typings";
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
   const URL = COUNTINGS_DATA + "/" + id;
-  const res = await fetch(URL);
+  const res = await fetch(URL, { cache: "no-cache" });
   const responseJson = await res.json();
   return responseJson;
 };
