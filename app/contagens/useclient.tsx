@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ColumnFilter } from "../components/Table/TableFilters";
 import { Table } from "../components/Table/Table";
 import {
-  COUNTINGS_DATA_API,
+  COUNTINGS_DATA,
 } from "../../servers";
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -79,7 +79,7 @@ export const ContagensTable = ({ data }) => {
           //   <span> | </span>
             <Link
               className="text-ameciclo"
-              href={`${COUNTINGS_DATA_API}/${row.original.id}`}
+              href={`${COUNTINGS_DATA}/${row.original.id}`}
             >
               JSON
             </Link>
