@@ -11,7 +11,7 @@ export const IDECICLO_FORMS_DATA = `https://api.ideciclo.ameciclo.org/forms`
 export const PERFIL_DATA = `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`
 
 export const COUNTINGS_SUMMARY_DATA =`http://135.148.32.138:8080/cyclist-counts`
-export const COUNTINGS_DATA =`http://localhost:3000/cyclist-counts/edition`
+export const COUNTINGS_DATA =`http://135.148.32.138:8080/cyclist-counts/edition`
 
 export const OBSERVATORY_DATA =`http://135.148.32.138:8080/cyclist-infra/relationsByCity`
 export const OBSERVATORY_DATA_WAYS =`http://135.148.32.138:8080/cyclist-infra/ways`
