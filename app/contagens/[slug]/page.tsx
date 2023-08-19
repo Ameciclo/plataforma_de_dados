@@ -4,34 +4,46 @@ import { StatisticsBox } from "../../components/StatisticsBox";
 import { Map as PointMap } from "../../components/Maps/Map";
 import { FlowContainer } from "../../components/FlowChart/FlowContainer";
 import { InfoCards } from "../../components/InfoCards";
-import { HourlyCyclistsChart, CountingComparisionTable } from "./useclient";
+import { CountingComparisionTable } from "./useclient";
+import { HourlyCyclistsChart } from "../../components/HourlyCyclistsChart";
 import {
   CountingStatistic,
-  getPointsDataForSingleCounting,
+  getPointsData,
   getCountingCards,
+  getChartData,
 } from "./configuration";
-import { pointData } from "../../../typings";
-import { COUNTINGS_DATA, COUNTINGS_PAGE_DATA } from "../../../servers";
+import { pointData, CountEdition, Series } from "../../../typings";
+import {
+  COUNTINGS_SUMMARY_DATA,
+  COUNTINGS_DATA,
+  COUNTINGS_PAGE_DATA,
+} from "../../../servers";
 
-const fetchUniqueData = async (id: string) => {
-  const res = await fetch(COUNTINGS_DATA + "/" + id);
-  const { cyclistCount } = await res.json();
-  return cyclistCount;
+const fetchUniqueData = async (slug: string) => {
+  const id = slug.split("-")[0];
+  const URL = COUNTINGS_DATA + "/" + id;
+  const res = await fetch(URL, {
+    cache: "no-cache",
+  });
+  const responseJson = await res.json();
+  return responseJson;
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_DATA, { cache: "no-cache" });
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA, {
+    cache: "no-cache",
+  });
   const dataJson = await dataRes.json();
-  const otherData = dataJson.data;
+  const otherCounts = dataJson.counts;
 
   const pageDataRes = await fetch(COUNTINGS_PAGE_DATA, { cache: "no-cache" });
   const pageCover = await pageDataRes.json();
-  return { pageCover, otherData };
+  return { pageCover, otherCounts };
 };
 
 const Contagem = async ({ params }) => {
-  const data = await fetchUniqueData(params.id);
-  const { pageCover, otherData } = await fetchData();
+  const data: CountEdition = await fetchUniqueData(params.slug);
+  const { pageCover, otherCounts } = await fetchData();
   let pageData = {
     title: data.name,
     src: pageCover.cover.url,
@@ -39,11 +51,12 @@ const Contagem = async ({ params }) => {
 
   const crumb = {
     label: data.name,
-    slug: data._id,
-    routes: ["/", "/contagens", data._id],
+    slug: params.slug,
+    routes: ["/", "/contagens", params.slug],
   };
-  const pointsData = getPointsDataForSingleCounting(data) as pointData[];
-  const cards = getCountingCards(data);
+  const pointsData = getPointsData(data) as pointData[];
+  const { series, hours } = getChartData(data.sessions);
+
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
@@ -57,12 +70,15 @@ const Contagem = async ({ params }) => {
           <PointMap pointsData={pointsData} height="400px" />
         </div>
         <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
-          <FlowContainer count={data} />
+          <FlowContainer data={data} />
         </div>
       </section>
-      <InfoCards cards={cards} />
-      <HourlyCyclistsChart cyclistCount={data} />
-      <CountingComparisionTable data={otherData.filter((d) => d._id !== data._id)} firstId={data._id}/>
+      <InfoCards cards={getCountingCards(data.summary)} />
+      <HourlyCyclistsChart series={series as Series[]} hours={hours} />
+      <CountingComparisionTable
+        data={otherCounts.filter((d) => d.id !== data.id)}
+        firstSlug={params.slug}
+      />
     </main>
   );
 };

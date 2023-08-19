@@ -1,13 +1,9 @@
 "use client";
 import React from "react";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
-
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../../components/Table/TableFilters";
 import { Table } from "../../../components/Table/Table";
-import { colors } from "./configuration";
 
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
@@ -45,7 +41,7 @@ export const CountingComparisionTable = ({ data, ids }) => {
         Cell: ({ row }) => (
           <Link
             className="text-ameciclo"
-            href={`/contagens/${row.original._id}`}
+            href={`/contagens/${row.original.slug}`}
             key={row.original._id}
           >
             {row.original.name}
@@ -63,14 +59,14 @@ export const CountingComparisionTable = ({ data, ids }) => {
       },
       {
         Header: "Total de Ciclistas",
-        accessor: "summary.total",
+        accessor: "total_cyclists",
         Filter: ColumnFilter,
         disableFilters: true,
       },
       {
         Header: "COMPARE",
         Cell: ({ row }) => {
-          const id = row.original._id;
+          const id = row.original.slug;
           if (id === ids[0]) {
             const newIds = ids.slice(1);
             const newLink =
@@ -123,62 +119,3 @@ export const CountingComparisionTable = ({ data, ids }) => {
     />
   );
 };
-
-
-export function HourlyCyclistsChart({ series }) {
-
- const hours = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-  const options = {
-    chart: {
-      type: "line",
-    }, 
-    colors: colors,
-    plotOptions: {
-      column: {
-        stacking: "normal",
-        dataLabels: {
-          enabled: true,
-        },
-      },
-    },
-    tooltip: {
-      headerFormat: "<b>{point.x}:00h</b><br/>",
-      pointFormat: "{series.name}: {point.y}<br/>",
-    },
-    title: {
-      text: "Comparação entre contagens",
-    },
-    xAxis: {
-      type: "category",
-      categories: hours,
-      title: {
-        text: "Hora",
-      },
-    },
-    yAxis: {
-      title: {
-        text: "Quantidade",
-      },
-      scrollbar: {
-        enabled: true,
-      },
-    },
-    series,
-
-    credits: {
-      enabled: false,
-    },
-  };
-  return (
-    <section className="container mx-auto grid grid-cols-1 auto-rows-auto gap-10 my-10">
-      <div className="shadow-2xl rounded p-10 text-center overflow-x-scroll">
-        <div style={{ minWidth: "500px" }}>
-          <h2 className="text-gray-600 text-3xl">
-            Quantidade de ciclistas por hora
-          </h2>
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        </div>
-      </div>
-    </section>
-  );
-}

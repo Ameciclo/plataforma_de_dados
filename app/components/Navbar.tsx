@@ -54,7 +54,7 @@ function BigMenu({ pages }) {
 function SmallMenu({ pages }) {
   const [isMenuOpen, toggleMenu] = useState(false);
 
-  const MAXWIDTHSHOWN = "1024px"
+  const MAXWIDTHSHOWN = "1024px";
 
   interface ButtonContainerProps {
     readonly open: boolean;

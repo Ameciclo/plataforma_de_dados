@@ -2,11 +2,9 @@
 import React from "react";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
-import { ColumnFilter } from "../components/Table/TableFilters";
-import { Table } from "../components/Table/Table";
-import {
-  COUNTINGS_DATA,
-} from "../../servers";
+import { ColumnFilter } from "../../components/Table/TableFilters";
+import { Table } from "../../components/Table/Table";
+
 function fuzzyTextFilterFn(rows, id, filterValue) {
   return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
 }
@@ -14,7 +12,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
-export const ContagensTable = ({ data }) => {
+export const CountingComparisionTable = ({ data, firstSlug }) => {
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -65,25 +63,17 @@ export const ContagensTable = ({ data }) => {
         Filter: ColumnFilter,
         disableFilters: true,
       },
-
       {
-        Header: "Dados",
+        Header: "COMPARE",
         Cell: ({ row }) => (
-          // <span>
-          //   <Link
-          //     className="text-ameciclo"
-          //     href={row.original.summary.download_xlsx_url}
-          //   >
-          //     XLSX
-          //   </Link>
-          //   <span> | </span>
+          <span>
             <Link
               className="text-ameciclo"
-              href={`${COUNTINGS_DATA}/${row.original.id}`}
+              href={`/contagens/${firstSlug}/${row.original.slug}`}
             >
-              JSON
+              COMPARE
             </Link>
-          // </span>
+          </span>
         ),
         disableFilters: true,
       },
@@ -91,5 +81,11 @@ export const ContagensTable = ({ data }) => {
     []
   );
 
-  return <Table title={"Nossas contagens"} data={data} columns={columns} />;
+  return (
+    <Table
+      title={"Compare com outras contagens"}
+      data={data}
+      columns={columns}
+    />
+  );
 };
