@@ -9,7 +9,7 @@ import { ContagensTable } from "./useclient";
 import { InfoCards } from "../components/InfoCards";
 import { IntlDateStr } from "../../utils";
 import {
-  COUNTINGS_SUMMARY_DATA_NEW,
+  COUNTINGS_SUMMARY_DATA,
   COUNTINGS_PAGE_DATA,
 } from "../../servers";
 import { allCountsStatistics, CardsData } from "./configuration";
@@ -24,7 +24,7 @@ const crumb = {
 };
 
 const fetchData = async () => {
-  const summaryDataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, {
+  const summaryDataRes = await fetch(COUNTINGS_SUMMARY_DATA, {
     cache: "no-cache",
   });
 
@@ -41,7 +41,6 @@ const fetchData = async () => {
 export default async function Contagens() {
   const { pageData, summaryData, data } = await fetchData();
   const { cover, description, objective, archives } = pageData;
-
   const controlPanel = [{
     type:'ameciclo',
     color: '#008888'

@@ -1,6 +1,6 @@
 import { NavCover } from "../../../components/NavCover";
 import { Breadcrumb } from "../../../components/Breadcrumb";
-import { COUNTINGS_DATA_NEW, COUNTINGS_PAGE_DATA, COUNTINGS_SUMMARY_DATA_NEW } from "../../../../servers";
+import { COUNTINGS_DATA, COUNTINGS_PAGE_DATA, COUNTINGS_SUMMARY_DATA } from "../../../../servers";
 import {
   getBoxesForCountingComparision,
   getPointsDataForComparingCounting,
@@ -16,14 +16,14 @@ import { Series } from "../../../../typings";
 
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
-  const URL = COUNTINGS_DATA_NEW + "?id=" + id;
+  const URL = COUNTINGS_DATA + "?id=" + id;
   const res = await fetch(URL);
   const responseJson = await res.json();
   return responseJson;
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, { cache: "no-cache" });
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA, { cache: "no-cache" });
   const dataJson = await dataRes.json();
   const otherCounts = dataJson.counts;
 

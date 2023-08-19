@@ -14,21 +14,21 @@ import {
 } from "./configuration";
 import { pointData, CountEdition, Series } from "../../../typings";
 import {
-  COUNTINGS_SUMMARY_DATA_NEW,
-  COUNTINGS_DATA_NEW,
+  COUNTINGS_SUMMARY_DATA,
+  COUNTINGS_DATA,
   COUNTINGS_PAGE_DATA,
 } from "../../../servers";
 
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
-  const URL = COUNTINGS_DATA_NEW + "?id=" + id;
+  const URL = COUNTINGS_DATA + "?id=" + id;
   const res = await fetch(URL);
   const responseJson = await res.json();
   return responseJson;
 };
 
 const fetchData = async () => {
-  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA_NEW, {
+  const dataRes = await fetch(COUNTINGS_SUMMARY_DATA, {
     cache: "no-cache",
   });
   const dataJson = await dataRes.json();

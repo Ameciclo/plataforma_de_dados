@@ -1,5 +1,5 @@
 import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../utils";
-import { COUNTINGS_DATA_NEW } from "../../../servers";
+import { COUNTINGS_DATA } from "../../../servers";
 import { characteristicsMap } from "../configuration";
 import { colors } from "../configuration";
 
@@ -80,7 +80,7 @@ export const getPointsDataForSingleCounting = (d) => {
 export const CountingStatistic = (data) => {
   const { id, date, summary } = { ...data };
   const { total_cyclists, max_hour } = { ...summary };
-  const JSON_URL = `${COUNTINGS_DATA_NEW}?id=${id}`;
+  const JSON_URL = `${COUNTINGS_DATA}?id=${id}`;
   return [
     { title: "Total de ciclistas", value: IntlNumber(total_cyclists) },
     {
