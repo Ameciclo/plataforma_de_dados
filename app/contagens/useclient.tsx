@@ -79,7 +79,7 @@ export const ContagensTable = ({ data }) => {
           //   <span> | </span>
             <Link
               className="text-ameciclo"
-              href={`${COUNTINGS_DATA_API}?id=${row.original.id}`}
+              href={`${COUNTINGS_DATA_API}/${row.original.id}`}
             >
               JSON
             </Link>

@@ -46,32 +46,32 @@ export const getPointsDataForSingleCounting = (d) => {
   return [
     {
       key: d.name,
-      latitude: d.location.coordinates[0],
-      longitude: d.location.coordinates[1],
+      latitude: d.coordinates.point.x,
+      longitude: d.coordinates.point.y,
       name: d.summary.total,
     },
     {
       key: d.name + " north",
-      latitude: d.north.location.coordinates[1],
-      longitude: d.north.location.coordinates[0],
+      latitude: d.coordinates.point.x,
+      longitude: d.coordinates.point.y,
       name: d.north.name,
     },
     {
       key: d.name + " south",
-      latitude: d.south.location.coordinates[1],
-      longitude: d.south.location.coordinates[0],
+      latitude: d.coordinates.point.x,
+      longitude: d.coordinates.point.y,
       name: d.south.name,
     },
     {
       key: d.name + " east",
-      latitude: d.east.location.coordinates[1],
-      longitude: d.east.location.coordinates[0],
+      latitude: d.coordinates.point.x,
+      longitude: d.coordinates.point.y,
       name: d.east.name,
     },
     {
       key: d.name + " west",
-      latitude: d.west.location.coordinates[1],
-      longitude: d.west.location.coordinates[0],
+      latitude: d.coordinates.point.x,
+      longitude: d.coordinates.point.y,
       name: d.west.name,
     },
   ];
@@ -80,7 +80,7 @@ export const getPointsDataForSingleCounting = (d) => {
 export const CountingStatistic = (data) => {
   const { id, date, summary } = { ...data };
   const { total_cyclists, max_hour } = { ...summary };
-  const JSON_URL = `${COUNTINGS_DATA}?id=${id}`;
+  const JSON_URL = `${COUNTINGS_DATA}/${id}`;
   return [
     { title: "Total de ciclistas", value: IntlNumber(total_cyclists) },
     {

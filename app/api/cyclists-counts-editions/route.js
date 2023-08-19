@@ -64,11 +64,11 @@ export async function GET(request) {
     const { rows: coordinates } = await sql.query(coordinatesQuery, [req_id]);
 
     // Query para obter as sessões
-    const sessionsQuery = `
-      SELECT s.start_time, s.end_time, s.id
-      FROM cyclist_count."session" s
-      WHERE s.edition_id = $1;
-    `;
+      const sessionsQuery = `
+        SELECT s.start_time, s.end_time, s.id
+        FROM cyclist_count."session" s
+        WHERE s.edition_id = $1;
+      `;
 
     const { rows: sessionsData } = await sql.query(sessionsQuery, [req_id]);
 
@@ -81,12 +81,11 @@ export async function GET(request) {
       const sessionId = session.id;
 
       // Query para obter os dados de características da sessão
-      const characteristicsQuery = `
-        SELECT cc.characteristics_id, cc.count, ch."name"
-        FROM cyclist_count.characteristics_count cc
-        JOIN cyclist_count.characteristics ch ON cc.characteristics_id = ch.id
-        WHERE cc.session_id = $1;
-      `;
+      const characteristicsQuery = `SELECT cc.characteristics_id, cc.count, ch."name"
+      FROM cyclist_count.characteristics_count cc
+      JOIN cyclist_count.characteristics ch ON cc.characteristics_id = ch.id
+      WHERE cc.session_id = $1;
+    `;
 
       const {
         rows: characteristicsData,
@@ -167,3 +166,4 @@ export async function GET(request) {
     });
   }
 }
+  

@@ -21,8 +21,10 @@ import {
 
 const fetchUniqueData = async (slug: string) => {
   const id = slug.split("-")[0];
-  const URL = COUNTINGS_DATA + "?id=" + id;
-  const res = await fetch(URL);
+  const URL = COUNTINGS_DATA + "/" + id;
+  const res = await fetch(URL, {
+    cache: "no-cache",
+  });
   const responseJson = await res.json();
   return responseJson;
 };
@@ -42,7 +44,6 @@ const fetchData = async () => {
 const Contagem = async ({ params }) => {
   const data: CountEdition = await fetchUniqueData(params.slug);
   const { pageCover, otherCounts } = await fetchData();
-
   let pageData = {
     title: data.name,
     src: pageCover.cover.url,
@@ -54,7 +55,7 @@ const Contagem = async ({ params }) => {
     routes: ["/", "/contagens", params.slug],
   };
   const pointsData = getPointsData(data) as pointData[];
-  const {series, hours} = getChartData(data.sessions)
+  const { series, hours } = getChartData(data.sessions);
 
   return (
     <main className="flex-auto">
