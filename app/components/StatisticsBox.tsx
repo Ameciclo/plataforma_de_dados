@@ -10,11 +10,11 @@ export const StatisticsBox = ({ title, boxes, subtitle = "" }) => {
           <h3 className="text-2xl md:text-3xl font-bold my-8">{subtitle}</h3>
         )}
         <div className="flex flex-col align-baseline md:flex-row bg-white shadow-lg rounded-lg mx-4 md:mx-auto my-8 max-w-4xl divide-y md:divide-x divide-gray-100">
-          {boxes.map((box: any) =>
+          {boxes.map((box: any, index: number) =>
             box?.type == "LinksBox" ? (
-              <LinksBox {...box} />
+              <LinksBox key={`links-box-${index}`} {...box} />
             ) : (
-              <NumberBox {...box} />
+              <NumberBox key={`number-box-${index}`} {...box} />
             )
           )}
         </div>

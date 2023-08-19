@@ -13,8 +13,8 @@ export function VerticalStatisticsBoxes({ title, boxes }) {
         <section
           className={`container mx-auto grid grid-cols-1 lg:grid-cols-${boxes.length} md:grid-cols-2 auto-rows-auto gap-10 my-10`}
         >
-          {boxes.map((out_param: any) => (
-            <VerticalBox {...out_param} />
+          {boxes.map((out_param: any, index: number) => (
+            <VerticalBox key={`vt-st-links-box-${index}`} {...out_param} />
           ))}
         </section>
       </div>
@@ -47,8 +47,8 @@ function VerticalBox({ titulo, media, mediaType = "", color, parametros }) {
         <h3 className="text-4xl font-bold mt-2">{newMedia}</h3>
       </div>
       <div className="flex flex-col mx-4 md:mx-auto max-w-4xl divide-y divide-gray-200">
-        {parametros.map((inner_param: any) => (
-          <StatisticBox {...inner_param} />
+        {parametros.map((inner_param: any, index: number) => (
+          <StatisticBox key={`stbx-links-box-${index}`} {...inner_param} />
         ))}
       </div>
     </div>
