@@ -75,7 +75,6 @@ export function getChartData(data) {
       });
     });
   });
-  console.log(countsByHour)
 
   const series = data.map((d, index) => ({
     name: d.name,
