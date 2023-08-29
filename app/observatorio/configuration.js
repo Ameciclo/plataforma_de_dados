@@ -141,7 +141,7 @@ const PDCLayer = {
   id: "Não executado no PDC",
   type: "line",
   paint: {
-    "line-color": "#000000",
+    "line-color": "#E02F31",
     "line-opacity": 0.5,
     "line-width": 2,
   },
@@ -162,7 +162,7 @@ const NotPDC = {
   id: "Executados fora do PDC",
   type: "line",
   paint: {
-    "line-color": "#E02F31",
+    "line-color": "#DDDF00",
     "line-width": 1.5,
     "line-opacity": 0.8,
     //          'line-dasharray': [2,.5],
