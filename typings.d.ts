@@ -82,7 +82,7 @@ export interface CountEditionSummary {
   total_ride: number;
   total_service: number;
   total_shared_bike: number;
-  total_sidewalk: number;
+  total_sidewalk: number; 
   total_women: number;
   total_wrong_way: number;
 }
