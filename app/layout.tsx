@@ -3,6 +3,7 @@ import React from "react";
 import { SEO } from "./components/SEO";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata = {
   title: "Plataforma de Dados da Ameciclo",
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Footer />
         </div>
       </body>
+      <GoogleAnalytics gaId="G-PQNS7S7FD3" />
     </html>
   );
 }
