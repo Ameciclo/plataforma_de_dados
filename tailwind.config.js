@@ -17,7 +17,9 @@ module.exports = {
       colors: {
         customGrey: "#F1F1F1",
         ameciclo: "#008080",
+        ideciclo: "#5050aa",
         amecicloTransparent: "rgba(0,128,128, .5)",
+        idecicloTransparent: "rgba(80,80,170, .5)",
         gray100Transparent: "rgba(247, 250, 252, .85)",
       },
       gridTemplateColumns: {

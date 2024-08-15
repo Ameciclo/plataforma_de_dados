@@ -2,10 +2,12 @@ import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
-import { ExplanationBoxes } from "../components/ExplanationBox";
+import { ExplanationBoxesIdeciclo } from "../components/ExplanationBoxIdeciclo";
 import IdecicloClientSide from "./useclient";
 import { allCitiesStatistics } from "./configuration";
 import { IDECICLO_DATA, IDECICLO_PAGE_DATA, IDECICLO_STRUCTURES_DATA } from "../../servers";
+import { NavCoverIdeciclo } from "../components/NavCoverIdeciclo";
+import { StatisticsBoxIdeciclo } from "../components/StatisticsBoxIdeciclo";
 
 const crumb = {
   label: "IDECICLO",
@@ -31,15 +33,20 @@ const fetchData = async () => {
 const Ideciclo = async () => {
   const { ideciclo, structures, pageData } = await fetchData();
   const cidades = ideciclo.filter((c) => c.reviews.length > 0);
+
   return (
     <>
-      <NavCover title="Índice de desenvolvimento cicloviário" src={pageData.cover.url} />
-      <Breadcrumb {...crumb} />
-      <StatisticsBox
+      <NavCoverIdeciclo title="Índice de desenvolvimento cicloviário" src="/pages_covers/ideciclo-navcover.png" />
+      <Breadcrumb {...crumb} customColor="bg-gray-400" />
+      {/* LOGO ABAIXO */}
+      {/* <div className="mx-auto my-12">
+        <img src="/ideciclo/ideciclo-logo.png" alt="Logomarca" />
+      </div> */}
+      <StatisticsBoxIdeciclo
         title={"Estatísticas Gerais"}
         boxes={allCitiesStatistics(cidades, structures)}
       />
-      <ExplanationBoxes
+      <ExplanationBoxesIdeciclo
         boxes={[
           {
             title: "O que é?",
@@ -49,6 +56,10 @@ const Ideciclo = async () => {
             title: "Para que serve?",
             description: pageData.objective,
           },
+          {
+            title: "Metodologia",
+            description: pageData.methodology,
+          },
         ]}
       />
       <IdecicloClientSide
@@ -56,8 +67,10 @@ const Ideciclo = async () => {
         structures={structures}
         ideciclo={ideciclo}
       />
+      
     </>
   );
 };
+
 
 export default Ideciclo;

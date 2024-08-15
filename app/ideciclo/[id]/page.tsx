@@ -1,11 +1,11 @@
 import React from "react";
-import { NavCover } from "../../components/NavCover";
+import { NavCoverIdeciclo } from "../../components/NavCoverIdeciclo";
 import { Breadcrumb } from "../../components/Breadcrumb";
-import { StatisticsBox } from "../../components/StatisticsBox";
+import { StatisticsBoxIdecicloDetalhes } from "../../components/StatisticsBoxIdeciclo";
 import { IdecicloDescription } from "./IdecicloDescription";
 import { Map } from "../../components/Maps/Map";
 import { RadarChart } from "../../components/Charts/RadarChart";
-import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
+import { VerticalStatisticsBoxesIdeciclo } from "../../components/VerticalStatisticsBoxes";
 import {
   IDECICLO_FORMS_DATA,
   IDECICLO_PAGE_DATA,
@@ -70,33 +70,35 @@ const Ideciclo = async ({ params }) => {
 
   return (
     <>
-      <NavCover {...page_data} />
-      <Breadcrumb {...crumb} />
-      <StatisticsBox
+      <NavCoverIdeciclo {...page_data} />
+      <Breadcrumb {...crumb} customColor="bg-gray-400" />
+      <StatisticsBoxIdecicloDetalhes
         title={GeneralStatistics.title}
         subtitle={GeneralStatistics.subtitle}
         boxes={GeneralStatistics.boxes}
       />
-      <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-10 my-10">
-        <div className="rounded shadow-2xl">
-          <IdecicloDescription info={info} />
-        </div>
-        <div className="bg-green-200 rounded shadow-2xl">
-          <Map
-            layerData={mapData}
-            layersConf={idecicloLayers}
-            height={"550px"}
-          />
-        </div>
-        <div className="rounded shadow-2xl">
-          <RadarChart
-            {...info}
-            title={"EVOLUÇÃO DA NOTA"}
-            subtitle={"Notas que compõem a média"}
-          />
-        </div>
-      </section>
-      <VerticalStatisticsBoxes
+      <div className="w-full relative z-[-1]  translate-y-[-500px] md:translate-y-[-320px] bg-amber-300">
+        <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 auto-rows-auto gap-10 mt-[500px] md:mt-[300px] mb-[100px]">
+          <div className="rounded bg-white shadow-2xl">
+            <IdecicloDescription info={info} />
+          </div>
+          <div className="bg-green-200 rounded shadow-2xl">
+            <Map
+              layerData={mapData}
+              layersConf={idecicloLayers}
+              height={"550px"}
+            />
+          </div>
+          <div className="rounded bg-white shadow-2xl">
+            <RadarChart
+              {...info}
+              title={"EVOLUÇÃO DA NOTA"}
+              subtitle={"Notas que compõem a média"}
+            />
+          </div>
+        </section>
+      </div>
+      <VerticalStatisticsBoxesIdeciclo
         title={"Detalhamento e composição das notas"}
         boxes={info.parametros}
       />

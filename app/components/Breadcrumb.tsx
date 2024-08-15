@@ -7,7 +7,7 @@ const baseCrumb = {
   route: "/",
 };
 
-export const Breadcrumb = ({ routes, label, slug }) => {
+export const Breadcrumb = ({ routes, label, slug, customColor }) => {
   let crumb = routes.map((route, i) => {
     if (route === "/") return { ...baseCrumb, lastItem: false };
     if (i === routes.length - 1)
@@ -16,8 +16,8 @@ export const Breadcrumb = ({ routes, label, slug }) => {
   });
 
   return (
-    <div className="bg-ameciclo text-white p-4 items-center uppercase w-full">
-      <nav className="bg-grey-light rounded font-sans w-full ">
+    <div className={`p-4 items-center uppercase w-full ${customColor ? customColor : "bg-ameciclo"} text-white`}>
+      <nav className="bg-grey-light rounded font-sans w-full">
         <ol className="inline-flex list-none p-0 max-w-full">
           {crumb.map((c, i) => (
             <Crumb {...c} key={i} />

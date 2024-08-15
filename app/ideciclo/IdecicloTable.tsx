@@ -1,7 +1,7 @@
 import React  from "react";
 import Link from "next/link";
-import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../components/Table/TableFilters";
-import { Table } from "../components/Table/Table";
+import {ColumnFilter, NumberRangeColumnFilter, SelectColumnFilter} from "../components/Table/TableFiltersIdeciclo";
+import { Table } from "../components/Table/TableIdeciclo";
 
 const IdecicloTable = ({ title, data }) => {
 
