@@ -5,7 +5,7 @@ import { StatisticsBoxIdecicloDetalhes } from "../../components/StatisticsBoxIde
 import { IdecicloDescription } from "./IdecicloDescription";
 import { Map } from "../../components/Maps/Map";
 import { RadarChart } from "../../components/Charts/RadarChart";
-import { VerticalStatisticsBoxesIdeciclo } from "../../components/VerticalStatisticsBoxesIdeciclo";
+import { VerticalStatisticsBoxes } from "../../components/VerticalStatisticsBoxes";
 import {
   IDECICLO_FORMS_DATA,
   IDECICLO_PAGE_DATA,
@@ -18,6 +18,7 @@ import {
 } from "./configuration";
 import { idecicloLayers } from "./ideciclo_mapstyle";
 import * as GEOJSON from "geojson";
+import { VerticalStatisticsBoxesIdeciclo } from "../../components/VerticalStatisticsBoxesIdeciclo";
 
 const fetchUniqueData = async (id: string) => {
   const res = await fetch(IDECICLO_STRUCTURES_DATA + "/" + id);

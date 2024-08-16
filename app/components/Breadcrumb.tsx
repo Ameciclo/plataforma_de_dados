@@ -8,7 +8,7 @@ const baseCrumb = {
   customColor: "bg-gray-400",
 };
 
-export const Breadcrumb = ({ routes, label, slug, customColor }) => {
+export const Breadcrumb = ({ routes, label, slug, customColor = "bg-ameciclo" }) => {
   let crumb = routes.map((route, i) => {
     if (route === "/") return { ...baseCrumb, lastItem: false };
     if (i === routes.length - 1)
