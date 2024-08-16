@@ -59,7 +59,7 @@ export default async function Compare({ params }) {
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor = "bg-ameciclo" />
       <VerticalStatisticsBoxes
         title={"Comparação entre as contagens"}
         boxes={boxes}

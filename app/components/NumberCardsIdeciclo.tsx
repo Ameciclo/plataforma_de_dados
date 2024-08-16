@@ -1,5 +1,5 @@
 import React from "react";
-import { MultipleSelectionFilters } from "./SelectionFilterMenu";
+import { MultipleSelectionFiltersIdeciclo } from "./SelectionFilterMenuIdeciclo";
 import {
   IntlNumberMin1Max3Digits,
   IntlNumber1Digit,
@@ -8,6 +8,8 @@ import {
   IntlNumber3Digit,
 } from "../../utils"; // Import as needed
 
+
+// Ideciclo styled
 export const NumberCardIdeciclo = ({
   city,
   selected,
@@ -40,9 +42,9 @@ export const NumberCardIdeciclo = ({
 
   return (
     <div
-      className={`flex flex-col rounded shadow-2xl h-full mx-3 ld:mx-0 p-3 justify-between ${
-        selected ? "bg-ameciclo text-white" : "bg-white text-gray-800"
-      } h-42 hover:bg-red-600 hover:text-white`}
+      className={`flex flex-col rounded-[40px] shadow-[0px_6px_8px_rgba(0,0,0,0.25)] h-full mx-3 ld:mx-0 p-3 justify-center align-center ${
+        selected ? "bg-[#6DBFAC] text-gray-700" : "bg-white text-gray-700"
+      } h-42 hover:bg-[#EFC345] hover:text-gray-700`}
     >
       <button
         onClick={() => {
@@ -50,10 +52,10 @@ export const NumberCardIdeciclo = ({
           onClickFnc();
         }}
       >
-        <div>
+        <div className="flex center justify-center">
           <h3 className="text-center text-5xl font-bold">{formattedValue}</h3>
           {unit != undefined && (
-            <p className="uppercase tracking-widest ">{unit}</p>
+            <p className="uppercase font-semibold tracking-widest ">{unit}</p>
           )}
         </div>
         <div className="p-3">
@@ -67,8 +69,8 @@ export const NumberCardIdeciclo = ({
 export const NumberCardsIdeciclo = ({ cards, data, selected, options }) => {
   return (
     <section className="mx-auto container">
-      <div className="mx-auto text-center my-12 md:my-24">
-        <MultipleSelectionFilters {...data} />
+      <div className="mx-auto text-center my-12 md:my-24 md:mb-6">
+        <MultipleSelectionFiltersIdeciclo {...data} />
         <section className="container mx-auto gap-8 my-5 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {cards.map((city) => (
             <NumberCardIdeciclo

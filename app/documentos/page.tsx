@@ -40,7 +40,7 @@ export default async function Documentos() {
          title = "Documentos e pesquisas"
           src = {cover.url}
       />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor = "bg-ameciclo" />
       <ExplanationBoxes
         boxes={[
           {

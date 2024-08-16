@@ -5,7 +5,7 @@ import { StatisticsBoxIdecicloDetalhes } from "../../components/StatisticsBoxIde
 import { IdecicloDescription } from "./IdecicloDescription";
 import { Map } from "../../components/Maps/Map";
 import { RadarChart } from "../../components/Charts/RadarChart";
-import { VerticalStatisticsBoxesIdeciclo } from "../../components/VerticalStatisticsBoxes";
+import { VerticalStatisticsBoxesIdeciclo } from "../../components/VerticalStatisticsBoxesIdeciclo";
 import {
   IDECICLO_FORMS_DATA,
   IDECICLO_PAGE_DATA,
@@ -70,7 +70,7 @@ const Ideciclo = async ({ params }) => {
 
   return (
     <>
-      <NavCoverIdeciclo {...page_data} />
+      <NavCoverIdeciclo {...page_data} src="/pages_covers/ideciclo-navcover.png" />
       <Breadcrumb {...crumb} customColor="bg-gray-400" />
       <StatisticsBoxIdecicloDetalhes
         title={GeneralStatistics.title}

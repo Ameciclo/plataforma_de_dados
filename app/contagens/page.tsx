@@ -92,7 +92,7 @@ export default async function Contagens() {
   return (
     <>
       <NavCover title="Contagens de ciclistas" src={cover.url} />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor = "bg-ameciclo" />
       <StatisticsBox
         title={"Estatísticas Gerais"}
         boxes={allCountsStatistics(summaryData)}

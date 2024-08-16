@@ -5,6 +5,7 @@ const baseCrumb = {
   label: "Plataforma de Dados",
   slug: "/",
   route: "/",
+  customColor: "bg-gray-400",
 };
 
 export const Breadcrumb = ({ routes, label, slug, customColor }) => {

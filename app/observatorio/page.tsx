@@ -67,7 +67,7 @@ export default async function Observatorio() {
         title="Observatório cicloviário"
         src={page_data.cover_image_url}
       />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor = "bg-ameciclo" />
       <StatisticsBox
         title={"Execução Cicloviária"}
         subtitle={"da Região Metropolitana do Recife"}

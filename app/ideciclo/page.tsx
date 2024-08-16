@@ -1,7 +1,5 @@
 import React from "react";
-import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxesIdeciclo } from "../components/ExplanationBoxIdeciclo";
 import IdecicloClientSide from "./useclient";
 import { allCitiesStatistics } from "./configuration";
