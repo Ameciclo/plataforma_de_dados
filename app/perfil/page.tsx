@@ -26,7 +26,7 @@ const Perfil = async () => {
         title="Pesquisa Perfil Ciclista"
         src={pageData.cover.url}
       />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor="bg-ameciclo" />
       <ExplanationBoxes
         boxes={[
           {

@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { NumberCards } from "../components/NumberCards";
+import { NumberCardsIdeciclo } from "../components/NumberCardsIdeciclo";
 import IdecicloTable from "./IdecicloTable";
 import { filterById, filterByName } from "../../utils";
 import { city } from "../../typings";
 import { cityStatistics, getTotalCityStates } from "./configuration";
-import { StatisticsBox } from "../components/StatisticsBox";
+import { StatisticsBoxIdeciclo2 } from "../components/StatisticsBoxIdeciclo";
 
 function IdecicloClientSide({ cidades, structures, ideciclo }) {
   const [filteredCity, setFilteredCity] = useState<any[]>([]);
@@ -132,7 +132,7 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
 
   return (
     <>
-      <NumberCards
+      <NumberCardsIdeciclo
         cards={cards_city(filteredCity)}
         data={{
           title: CitiesRanking.title,
@@ -146,7 +146,7 @@ function IdecicloClientSide({ cidades, structures, ideciclo }) {
         }}
       />
       {filteredCityData.length > 0 && (
-        <StatisticsBox
+        <StatisticsBoxIdeciclo2
           title={selectedCity.name}
           subtitle={"Estatísticas Gerais"}
           boxes={cityStatistics(selectedCity)}

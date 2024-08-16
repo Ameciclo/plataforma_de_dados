@@ -191,7 +191,7 @@ export function getRatesSummary(structure, forms) {
       titulo: descriptions.project.title,
       media: rate.project,
       mediaType: "number",
-      color: "#24CBE5",
+      color: "#6DBFAC",
       parametros: project_param,
     },
     {
@@ -199,7 +199,7 @@ export function getRatesSummary(structure, forms) {
       titulo: descriptions.safety.title,
       media: rate.safety,
       mediaType: "number",
-      color: "#E02F31",
+      color: "#CE4831",
       parametros: safety_param,
     },
     {
@@ -207,7 +207,7 @@ export function getRatesSummary(structure, forms) {
       titulo: descriptions.maintenance.title,
       media: rate.maintenance,
       mediaType: "number",
-      color: "#DDDF00",
+      color: "#EFC345",
       parametros: maintenance_param,
     },
     {
@@ -215,7 +215,7 @@ export function getRatesSummary(structure, forms) {
       titulo: descriptions.urbanity.title,
       media: rate.urbanity,
       mediaType: "number",
-      color: "#6AF9C4",
+      color: "#5AC2E1",
       parametros: urbanity_param,
     },
   ];

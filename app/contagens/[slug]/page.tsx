@@ -53,6 +53,7 @@ const Contagem = async ({ params }) => {
     label: data.name,
     slug: params.slug,
     routes: ["/", "/contagens", params.slug],
+    customColor: "bg-ameciclo",
   };
   const pointsData = getPointsData(data) as pointData[];
   const { series, hours } = getChartData(data.sessions);
@@ -60,7 +61,7 @@ const Contagem = async ({ params }) => {
   return (
     <main className="flex-auto">
       <NavCover {...pageData} />
-      <Breadcrumb {...crumb} />
+      <Breadcrumb {...crumb} customColor="bg-ameciclo" />
       <StatisticsBox title={data.name} boxes={CountingStatistic(data)} />
       <section className="container mx-auto grid lg:grid-cols-3 md:grid-cols-1 auto-rows-auto gap-10">
         <div
