@@ -18,3 +18,8 @@ export const OBSERVATORY_DATA_WAYS =`http://api.garfo.ameciclo.org/cyclist-infra
 export const OBSERVATORY_DATA_ALL_WAYS = `http://api.garfo.ameciclo.org/cyclist-infra/ways/all-ways`
 export const OBSERVATORY_DATA_WAYS_SUMMARY =`http://api.garfo.ameciclo.org/cyclist-infra/ways/summary`
 export const CITIES_DATA =`http://api.garfo.ameciclo.org/cities`
+
+export const SINISTROS_SUMMARY_DATA =`http://localhost:8080/traffic-crashes/summary`
+export const SINISTROS_GEOJSON_DATA =`http://localhost:8080/traffic-crashes/geojson`
+export const SINISTROS_VEHICLES_DATA =`http://localhost:8080/traffic-crashes/vehicles`
+export const SINISTROS_STREETS_SUMMARY_DATA =`http://localhost:8080/traffic-crashes/streets-summary`

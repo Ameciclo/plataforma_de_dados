@@ -59,3 +59,18 @@ export const page_data = {
         Com metas estipuladas em fases,  o PDC precisa ser concluído em 2024.`
   }
 }
+
+
+export const sinistros_page_data = {
+  title: 'Observatório de Sinistros de Trânsito',
+  cover_image_url: './pages_covers/observatorio.png',
+  ExplanationBoxData: {
+    title_1: 'O que é?',
+    text_1: `O Observatório Cicloviário é uma central de monitoramento que acompanha a evolução da estrutura cicloviária da Região Metropolitana do Recife, comparando a estrutura projetada pelo Plano Diretor Cicloviário frente à estrutura executada.
+        Para facilitar a demonstração dos dados, considera-se EXECUTADA o local onde havia previsão de estrutura e foi implatado algo lá, não necessariamente da mesma tipologia.`,
+    title_2: 'Por que o PDC?',
+    text_2: `Em 4 de fevereiro de 2014 o Governo do Estado de Pernambuco, junto com as prefeituras da Região Metropolitana do Recife, lançou o Plano Diretor Cicloviário (PDC). 
+        O Plano integra os diversos municípios da RMR com uma ampla rede cicloviária, priorizando as principais avenidas e pontos de conexão das cidades. Sua construção teve participação não só dos entes públicos, mas também da sociedade civil, como nós, da Ameciclo. 
+        Com metas estipuladas em fases,  o PDC precisa ser concluído em 2024.`
+  }
+}

@@ -11,6 +11,7 @@ export const IntlNumberMax1Digit = (n) => IntlNumber(n, 1);
 export const IntlNumber1Digit = (n) => IntlNumber(n, 1, 1);
 export const IntlNumber2Digit = (n) => IntlNumber(n, 2, 2);
 export const IntlNumber3Digit = (n) => IntlNumber(n, 3, 3);
+export const IntlNumberNoDigit = (n) => IntlNumber(n, 0);
 export const IntlDateStr = (str) => {
   const date = new Date(str);
   const IDate = new Intl.DateTimeFormat(LANG).format(date);
