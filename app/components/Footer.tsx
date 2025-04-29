@@ -13,7 +13,7 @@ const columns = [
         url: "https://www.ameciclo.org",
       },
       {
-        label: "+55 (81) 93618 2947",
+        label: "+55 (81) 9 9786 0060",
         url: "https://api.whatsapp.com/send?phone=5581936182947",
       },
       {
