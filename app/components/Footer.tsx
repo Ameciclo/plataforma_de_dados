@@ -14,7 +14,7 @@ const columns = [
       },
       {
         label: "+55 (81) 9 9786 0060",
-        url: "https://api.whatsapp.com/send?phone=5581936182947",
+        url: "https://api.whatsapp.com/send?phone=5581997860060",
       },
       {
         label: "R. da Aurora, 529, loja 2 - Santo Amaro, Recife/PE, 50050-145",
