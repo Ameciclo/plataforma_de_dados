@@ -68,7 +68,7 @@ export const CardsData = (summaryData, total) => {
 
   return [
     {
-      label: "Ocupantes de automóvel",
+      label: "Motoristas de carro",
       icon: "women",
       data: IntlPercentil(auto / total),
     },
@@ -78,13 +78,13 @@ export const CardsData = (summaryData, total) => {
       data: IntlPercentil(moto / total),
     },
     {
-      label: "Ciclomotores",
+      label: "Condutores de Ciclomotores",
       icon: "ride",
       data: IntlPercentil(ciclom / total),
     },
     {
       label: "Ciclistas",
-      icon: "helmet",
+      icon: "women",
       data: IntlPercentil(ciclista / total),
     },
     {
@@ -93,17 +93,17 @@ export const CardsData = (summaryData, total) => {
       data: IntlPercentil(pedestre / total),
     },
     {
-      label: "Ocupantes de Ônibus",
+      label: "Motoristas de Ônibus",
       icon: "cargo",
       data: IntlPercentil(onibus / total),
     },
     {
-      label: "Ocupantes de Caminhão",
+      label: "Motoristas de Caminhão",
       icon: "shared_bike",
       data: IntlPercentil(caminhao / total),
     },
     {
-      label: "Ocupantes de Viaturas",
+      label: "Motoristas de Viaturas",
       icon: "sidewalk", //CRIAR!
       data: IntlPercentil(viatura / total),
     },

@@ -57,37 +57,38 @@ export default async function ObservatorioSinistrosPage() {
         title={sinistros_page_data.title}
         src={sinistros_page_data.cover_image_url}
       />
-
       <Breadcrumb
         label="Observatório de Sinistros"
         slug="/observatorio-sinistros"
         routes={["/", "/observatorio-sinistros"]}
       />
-
       <StatisticsBox
         title="Sinistros de Trânsito"
         subtitle="Dados da CTTU - Recife (2016–2024)"
         boxes={[
           {
             title: "Total de sinistros",
-            value: summary.totalSinistros,
+            value: IntlNumberNoDigit(summary.totalSinistros),
             unit: "",
           },
-          { title: "Vítimas", value: summary.totalVitimas, unit: "" },
+          {
+            title: "Total Vítimas (Fatais e Não)",
+            value: IntlNumberNoDigit(summary.totalVitimas),
+            unit: "",
+          },
           // { title: "Fatais", value: summary.totalVitimasFatais, unit: "" },
           {
-            title: "Média anual",
+            title: "Vítimas em 2024//",
             value: IntlNumberNoDigit(summary.mediaAnual),
             unit: "",
           },
           {
-            title: "Crescimento anual",
+            title: "Crescimento com relação a 2023",
             value: IntlPercentil(summary.crescimentoAno / 100),
             unit: "%",
           },
         ]}
       />
-
       <ExplanationBoxes
         boxes={[
           {
@@ -101,8 +102,7 @@ export default async function ObservatorioSinistrosPage() {
           },
         ]}
       />
-      <InfoCards cards={cards} />
-s
+      <InfoCards cards={cards} />s
       {/*      <Map layerData={geojson} layersConf={layersConf} />
        */}
       <ObservatorioClientSide streets={streets} />
