@@ -33,3 +33,31 @@
 2. bem como a evolução dos sinistros fatais ao longo do tempo, a
 3. partir de dados abertos da prefeitura e dados do datasus. 
 4. A possibilidade de mapeamento é baixa, mas pode ser tentada.    
+
+
+/* Vai ser um Obsevatório de Sinistros Fatais, onde a gente vai comparar os dados da CTTU
+ com o do DATASUS e consegui georreferenciar com as informações que a CTTU traz
+
+ Outro observatório de sinistros baseados nos fatais e não fatais da CTTU, para verificar as vias
+ mais perigosas do Recife... Observatório de Vias Perigosas? Talvez
+
+ No de sinistros:
+ Informações sobre o total de sinistros desde XXX
+ Média de sinistros anuais
+ Crescimento com relação o ano anterior
+ Total no ano anterior
+ Talvez diferenciar: por local de ocorrência e por local de residência
+
+ Tabela de sinistros envolvendo uns aos outros, por ano
+
+ Mapear os sinistros fatais no Recife
+
+
+ No de Vias Perigosas:
+ - Somente o Recife
+ - Mapa de vias perigosas
+ - Dados gerais como total de informações, ... talvez outras camadas de distinção... como hierarquia e radares? E estrutura cicloviária
+ - Crescimento anual, total do último ano
+ - 
+
+*/

@@ -64,7 +64,7 @@ export default async function Observatorio() {
   return (
     <>
       <NavCover
-        title="Observatório cicloviário"
+        title="Execução cicloviária"
         src={page_data.cover_image_url}
       />
       <Breadcrumb {...crumb} customColor = "bg-ameciclo" />
