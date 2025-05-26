@@ -107,11 +107,11 @@ function SmallMenu({ pages }) {
     position: absolute;
     top: 0;
     left: 0;
-    height: ${(props) => (props.open ? "450px" : "0")};
+    height: ${(props) => (props.open ? "100vh" : "0")};
     width: 100%;
     display: flex;
     flex-direction: column;
-    background: #028082;
+    background: #008080;
     opacity: 0.95;
     color: #fafafa;
     transition: height 0.3s ease;
