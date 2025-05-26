@@ -30,11 +30,43 @@ export const FEATURED_PAGES = [
     target: "_self",
   },
   {
-    title: "Observatório Cicloviário",
+    title: "Execução Cicloviária",
     src: "/icons/home/mapa.svg",
     url: "/observatorio",
     description:
       "Monitoramento das estruturas cicloviárias projetadas e executadas conforme PDC.",
+    target: "_self",
+  },
+  {
+    title: "Sinistros Fatais",
+    src: "/icons/home/sinistrosfatais.png",
+    url: "/sinistros-fatais",
+    description:
+      "Monitoramento dos sinistros fatais de trânsito na RMR com dados do DATASUS.",
+    target: "_self",
+  },
+  {
+    title: "Vias Inseguras",
+    src: "/icons/home/perigosas.png",
+    url: "/vias-inseguras",
+    description:
+      "Monitoramento das vias com mais sinistros de trânsito no Recife de acordo com a CTTU/PCR.",
+    target: "_self",
+  },
+  {
+    title: "Orçamento Estadual para o Clima",
+    src: "/icons/home/logo2.1d0f07c6.png",
+    url: "https://loaclima.ameciclo.org",
+    description:
+      "Monitoramento do orçamento estadual conforme sua contribuição climática.",
+    target: "_self",
+  },
+  {
+    title: "Orçamento Municipal para o Clima",
+    src: "/icons/home/header-logo.4f44929c.png",
+    url: "https://dom.ameciclo.org",
+    description:
+      "onitoramento do orçamento municipal conforme sua contribuição climática.",
     target: "_self",
   },
 ];
