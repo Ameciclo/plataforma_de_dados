@@ -23,3 +23,8 @@ export const SINISTROS_SUMMARY_DATA =`http://localhost:8080/traffic-crashes/summ
 export const SINISTROS_GEOJSON_DATA =`http://localhost:8080/traffic-crashes/geojson`
 export const SINISTROS_VEHICLES_DATA =`http://localhost:8080/traffic-crashes/vehicles`
 export const SINISTROS_STREETS_SUMMARY_DATA =`http://localhost:8080/traffic-crashes/streets-summary`
+
+// Endpoints para o Observatório de Sinistros Fatais (DATASUS)
+export const DATASUS_SUMMARY_DATA =`http://localhost:8080/datasus-deaths/summary`
+export const DATASUS_CITIES_BY_YEAR_DATA =`http://localhost:8080/datasus-deaths/cities-by-year`
+export const DATASUS_FILTROS_DATA =`http://localhost:8080/datasus-deaths/filtros`

@@ -1,111 +1,79 @@
 import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
-import { StatisticsBox } from "../components/StatisticsBox";
-import { ExplanationBoxes } from "../components/ExplanationBox";
-import { Map } from "../components/Maps/Map";
-import ObservatorioClientSide from "./useclient";
-import { CardsData, layersConf, vehicleCards } from "./configuration";
-import {
-  IntlNumber1Digit,
-  IntlNumber3Digit,
-  IntlNumberMax1Digit,
-  IntlNumberNoDigit,
-  IntlPercentil,
-} from "../../utils";
-import {
-  SINISTROS_GEOJSON_DATA,
-  SINISTROS_STREETS_SUMMARY_DATA,
-  SINISTROS_SUMMARY_DATA,
-  SINISTROS_VEHICLES_DATA,
-} from "../../servers";
-import { sinistros_page_data } from "../../public/dbs/todb_observatorio";
-import { InfoCards } from "../components/InfoCards";
+import SinistrosFataisClientSide from "./useclient";
+import { DATASUS_SUMMARY_DATA, DATASUS_CITIES_BY_YEAR_DATA } from "../../servers";
 
-const fetchData = async () => {
-  const summaryRes = await fetch(SINISTROS_SUMMARY_DATA, {
-    cache: "no-cache",
-  });
-  const summary = await summaryRes.json();
-
-  const vehiclesRes = await fetch(SINISTROS_VEHICLES_DATA, {
-    cache: "no-cache",
-  });
-  const vehicles = await vehiclesRes.json();
-
-  const geojsonRes = await fetch(SINISTROS_GEOJSON_DATA, {
-    cache: "no-cache",
-  });
-  const geojson = await geojsonRes.json();
-
-  const streetsRes = await fetch(SINISTROS_STREETS_SUMMARY_DATA, {
-    cache: "no-cache",
-  });
-  const streets = await streetsRes.json();
-
-  return { summary, vehicles, geojson, streets };
+// Dados da página
+const sinistros_fatais_page_data = {
+  title: "Observatório de Sinistros Fatais",
+  cover_image_url: "/images/covers/sinistros-fatais.jpg"
 };
 
-export default async function ObservatorioSinistrosPage() {
-  const { summary, vehicles, geojson, streets } = await fetchData();
+// Função para buscar os dados da API
+const fetchData = async () => {
+  try {
+    // Buscar resumo geral
+    const summaryRes = await fetch(DATASUS_SUMMARY_DATA, {
+      cache: "no-cache",
+    });
+    const summary = await summaryRes.json();
 
-  const cards = CardsData(vehicles, summary.totalVitimas);
+    // Buscar dados por cidade e ano (local de ocorrência por padrão)
+    const citiesByYearRes = await fetch(DATASUS_CITIES_BY_YEAR_DATA, {
+      cache: "no-cache",
+    });
+    const citiesByYear = await citiesByYearRes.json();
+
+    return { summary, citiesByYear };
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    return { 
+      summary: { 
+        porLocalOcorrencia: {
+          totalSinistrosUltimos10Anos: 0,
+          totalUltimoAno: 0,
+          ultimoAno: 2022,
+          crescimentoRelacaoAnoAnterior: 0,
+          anoMaisViolento: { ano: 2019, total: 0 },
+          dadosPorAno: []
+        },
+        porLocalResidencia: {
+          totalSinistrosUltimos10Anos: 0,
+          totalUltimoAno: 0,
+          ultimoAno: 2022,
+          crescimentoRelacaoAnoAnterior: 0,
+          anoMaisViolento: { ano: 2019, total: 0 },
+          dadosPorAno: []
+        }
+      },
+      citiesByYear: {
+        tipo: "Local de Ocorrência",
+        anos: [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+        cidades: []
+      }
+    };
+  }
+};
+
+export default async function SinistrosFataisPage() {
+  const { summary, citiesByYear } = await fetchData();
 
   return (
     <>
       <NavCover
-        title={sinistros_page_data.title}
-        src={sinistros_page_data.cover_image_url}
+        title={sinistros_fatais_page_data.title}
+        src={sinistros_fatais_page_data.cover_image_url}
       />
       <Breadcrumb
-        label="Observatório de Sinistros"
-        slug="/observatorio-sinistros"
-        routes={["/", "/observatorio-sinistros"]}
+        label="Observatório de Sinistros Fatais"
+        slug="/sinistros-fatais"
+        routes={["/", "/sinistros-fatais"]}
       />
-      <StatisticsBox
-        title="Sinistros de Trânsito"
-        subtitle="Dados da CTTU - Recife (2016–2024)"
-        boxes={[
-          {
-            title: "Total de sinistros",
-            value: IntlNumberNoDigit(summary.totalSinistros),
-            unit: "",
-          },
-          {
-            title: "Total Vítimas (Fatais e Não)",
-            value: IntlNumberNoDigit(summary.totalVitimas),
-            unit: "",
-          },
-          // { title: "Fatais", value: summary.totalVitimasFatais, unit: "" },
-          {
-            title: "Vítimas em 2024//",
-            value: IntlNumberNoDigit(summary.mediaAnual),
-            unit: "",
-          },
-          {
-            title: "Crescimento com relação a 2023",
-            value: IntlPercentil(summary.crescimentoAno / 100),
-            unit: "%",
-          },
-        ]}
+      <SinistrosFataisClientSide 
+        summaryData={summary} 
+        citiesByYearData={citiesByYear} 
       />
-      <ExplanationBoxes
-        boxes={[
-          {
-            title: "O que é?",
-            description:
-              "Distribuição espacial dos sinistros ao longo do tempo.",
-          },
-          {
-            title: "Que dados são esses?",
-            description: "Quantidade de sinistros por categoria de veículo.",
-          },
-        ]}
-      />
-      <InfoCards cards={cards} />s
-      {/*      <Map layerData={geojson} layersConf={layersConf} />
-       */}
-      <ObservatorioClientSide streets={streets} />
     </>
   );
 }
