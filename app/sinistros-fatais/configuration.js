@@ -53,7 +53,7 @@ export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "
 }
 
 // Função para formatar os dados do gráfico de evolução anual
-export function getYearlyChartData(citiesByYearData, selectedCity = null) {
+export function getYearlyChartData(citiesByYearData, selectedCity = null, showAllCities = false) {
   if (!citiesByYearData || !citiesByYearData.anos) return [];
   
   // Se uma cidade está selecionada, mostrar apenas dados dessa cidade
@@ -68,6 +68,17 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null) {
         y: cityData[ano.toString()] || 0
       }))
     }];
+  }
+  
+  // Se showAllCities é true, mostrar todas as cidades da RMR
+  if (showAllCities) {
+    return citiesByYearData.cidades.map(city => ({
+      name: city.nome,
+      data: citiesByYearData.anos.map(ano => ({
+        name: ano.toString(),
+        y: city[ano.toString()] || 0
+      }))
+    }));
   }
   
   // Caso contrário, somar todas as cidades da RMR por ano

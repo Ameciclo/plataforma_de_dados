@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
-import VerticalBarChart from "../components/Charts/VerticalBarChart";
+import LineChart from "../components/Charts/LineChart";
 import { YearSelector } from "../components/YearSelector";
 import { LocalTypeSelector } from "../components/LocalTypeSelector";
 import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
@@ -15,6 +15,7 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [citiesByYearData, setCitiesByYearData] = useState(initialCitiesByYearData);
+  const [showAllCities, setShowAllCities] = useState(false);
   
   // Determinar o último ano disponível nos dados
   useEffect(() => {
@@ -46,11 +47,18 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   // Selecionar cidade
   const handleCityChange = (cityId) => {
     setSelectedCity(cityId === selectedCity ? null : cityId);
+    setShowAllCities(false);
   };
 
   // Selecionar ano
   const handleYearChange = (year) => {
     setSelectedYear(year);
+  };
+
+  // Alternar entre mostrar todas as cidades ou apenas RMR
+  const toggleShowAllCities = () => {
+    setShowAllCities(!showAllCities);
+    setSelectedCity(null);
   };
 
   // Caixas de explicação padrão caso não venham do Strapi
@@ -89,12 +97,40 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
 
       {/* Gráfico de mortes por ano */}
       <div className="mx-auto container my-12">
-        <h2 className="text-3xl font-bold text-center mb-8">Evolução das Mortes no Trânsito</h2>
-        <VerticalBarChart 
+        <h2 className="text-3xl font-bold text-center mb-4">Evolução das Mortes no Trânsito</h2>
+        
+        {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
+        <div className="flex justify-center mb-4">
+          <button 
+            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+              !showAllCities && !selectedCity
+                ? "bg-ameciclo text-white" 
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+            onClick={() => {
+              setShowAllCities(false);
+              setSelectedCity(null);
+            }}
+          >
+            Mostrar RMR
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
+              showAllCities 
+                ? "bg-ameciclo text-white" 
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+            onClick={toggleShowAllCities}
+          >
+            Mostrar Todas as Cidades
+          </button>
+        </div>
+        
+        <LineChart 
           title={`Mortes por Ano na RMR (${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
           xAxisTitle="Ano"
           yAxisTitle="Número de Mortes"
-          series={getYearlyChartData(citiesByYearData, selectedCity)}
+          series={getYearlyChartData(citiesByYearData, selectedCity, showAllCities)}
         />
       </div>
 
