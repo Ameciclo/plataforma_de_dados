@@ -8,27 +8,47 @@ import LineChart from "../components/Charts/LineChart";
 import { YearSelector } from "../components/YearSelector";
 import { LocalTypeSelector } from "../components/LocalTypeSelector";
 import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
-import { getGeneralStatistics, getCityCardsByYear, getYearlyChartData, getModoTransporteCards } from "./configuration";
-import { DATASUS_CITIES_BY_YEAR_DATA, DATASUS_FILTROS_DATA } from "../../servers";
+import {
+  getGeneralStatistics,
+  getCityCardsByYear,
+  getYearlyChartData,
+  getModoTransporteCards,
+} from "./configuration";
+import {
+  DATASUS_CITIES_BY_YEAR_DATA,
+  DATASUS_FILTROS_DATA,
+} from "../../servers";
 
-export default function SinistrosFataisClientSide({ summaryData, citiesByYearData: initialCitiesByYearData, pageData }) {
+export default function SinistrosFataisClientSide({
+  summaryData,
+  citiesByYearData: initialCitiesByYearData,
+  pageData,
+}) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
   const [selectedYear, setSelectedYear] = useState(2023); // Pré-selecionar 2023
   const [selectedCity, setSelectedCity] = useState(null); // Mostrar RMR por padrão no gráfico
   const [selectedCardCity, setSelectedCardCity] = useState(2611606); // ID do Recife para os cards
-  const [citiesByYearData, setCitiesByYearData] = useState(initialCitiesByYearData);
+  const [citiesByYearData, setCitiesByYearData] = useState(
+    initialCitiesByYearData
+  );
   const [showAllCities, setShowAllCities] = useState(false);
   const [modoTransporteData, setModoTransporteData] = useState(null);
   const [isLoadingModoTransporte, setIsLoadingModoTransporte] = useState(false);
-  
+
   // Determinar o último ano disponível nos dados
   useEffect(() => {
-    if (citiesByYearData && citiesByYearData.anos && citiesByYearData.anos.length > 0) {
+    if (
+      citiesByYearData &&
+      citiesByYearData.anos &&
+      citiesByYearData.anos.length > 0
+    ) {
       // Verificar se 2023 está disponível, caso contrário usar o último ano
       if (citiesByYearData.anos.includes(2023)) {
         setSelectedYear(2023);
       } else {
-        setSelectedYear(citiesByYearData.anos[citiesByYearData.anos.length - 1]);
+        setSelectedYear(
+          citiesByYearData.anos[citiesByYearData.anos.length - 1]
+        );
       }
     }
   }, [citiesByYearData]);
@@ -37,7 +57,9 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   useEffect(() => {
     const fetchCitiesByYearData = async () => {
       try {
-        const response = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`);
+        const response = await fetch(
+          `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`
+        );
         const data = await response.json();
         setCitiesByYearData(data);
       } catch (error) {
@@ -52,41 +74,31 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   useEffect(() => {
     const fetchModoTransporteData = async () => {
       if (!selectedCardCity || !selectedYear) return;
-      
+
       setIsLoadingModoTransporte(true);
       try {
         const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${selectedYear}`;
-        console.log("Buscando dados de modo de transporte:", url);
         const response = await fetch(url);
         const data = await response.json();
-        console.log("Dados de modo de transporte recebidos:", data);
-        
-        // Verificar se os dados estão vazios ou em formato incorreto
-        if (!data || !data.resumo) {
-          console.error("Dados de modo de transporte inválidos ou vazios:", data);
-          // Criar dados de exemplo para teste se necessário
-          if (process.env.NODE_ENV === 'development') {
-            const dadosExemplo = {
-              resumo: {
-                porModoTransporte: {
-                  "V01": 10,  // Pedestres
-                  "V11": 5,   // Ciclistas
-                  "V21": 15,  // Motociclistas
-                  "V41": 8,   // Ocupantes de automóvel
-                  "V71": 3,   // Ocupantes de ônibus
-                  "V51": 2    // Outros veículos
-                }
-              }
-            };
-            setModoTransporteData(dadosExemplo);
-          } else {
-            setModoTransporteData(data);
-          }
-        } else {
+
+        // Verificar se os dados são válidos
+        if (
+          data &&
+          data.resumo &&
+          ((data.resumo.porModoTransporte &&
+            Object.keys(data.resumo.porModoTransporte).length > 0) ||
+            (data.resumo.porMeioTransporte &&
+              Object.keys(data.resumo.porMeioTransporte).length > 0) ||
+            (data.resumo.porCID && Object.keys(data.resumo.porCID).length > 0))
+        ) {
           setModoTransporteData(data);
+        } else {
+          // Se não há dados válidos, definir como null para não mostrar a seção
+          setModoTransporteData(null);
         }
       } catch (error) {
         console.error("Erro ao buscar dados de modo de transporte:", error);
+        setModoTransporteData(null);
       } finally {
         setIsLoadingModoTransporte(false);
       }
@@ -121,54 +133,68 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   const defaultExplanationBoxes = [
     {
       title: "O que são esses dados?",
-      description: "Dados de mortalidade no trânsito extraídos do Sistema de Informações sobre Mortalidade (SIM) do DATASUS, considerando os códigos CID-10 de V01 a V89 (acidentes de transporte terrestre)."
+      description:
+        "Dados de mortalidade no trânsito extraídos do Sistema de Informações sobre Mortalidade (SIM) do DATASUS, considerando os códigos CID-10 de V01 a V89 (acidentes de transporte terrestre).",
     },
     {
       title: "Local de Ocorrência vs. Residência",
-      description: "Local de Ocorrência indica onde o sinistro aconteceu, enquanto Local de Residência mostra onde a vítima morava. Essa distinção é importante para análises de políticas públicas e planejamento urbano."
-    }
+      description:
+        "Local de Ocorrência indica onde o sinistro aconteceu, enquanto Local de Residência mostra onde a vítima morava. Essa distinção é importante para análises de políticas públicas e planejamento urbano.",
+    },
   ];
 
   // Obter o nome da cidade selecionada
-  const selectedCityName = selectedCardCity 
-    ? citiesByYearData?.cidades?.find(c => c.id === selectedCardCity)?.nome || "Cidade selecionada"
+  const selectedCityName = selectedCardCity
+    ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)?.nome ||
+      "Cidade selecionada"
     : "RMR";
 
   // Processar dados de modo de transporte
-  const modoTransporteProcessado = modoTransporteData ? getModoTransporteCards(modoTransporteData) : null;
+  const modoTransporteProcessado = modoTransporteData
+    ? getModoTransporteCards(modoTransporteData)
+    : null;
 
+    console.log("MODO", modoTransporteData)
   return (
     <>
       {/* Estatísticas gerais */}
       <StatisticsBox
         title="Mortes no Trânsito"
-        subtitle={`Dados do DATASUS - RMR (por ${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
+        subtitle={`Dados do DATASUS - RMR (por ${
+          tipoLocal === "ocorrencia"
+            ? "Local de Ocorrência"
+            : "Local de Residência"
+        })`}
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
       />
 
       {/* Seletor de tipo de local (movido para depois das estatísticas) */}
-      <LocalTypeSelector 
-        selectedType={tipoLocal} 
-        onChange={handleTipoLocalChange} 
+      <LocalTypeSelector
+        selectedType={tipoLocal}
+        onChange={handleTipoLocalChange}
       />
 
       {/* Caixas de explicação */}
       <ExplanationBoxes
-        boxes={pageData.explanationBoxes && pageData.explanationBoxes.length > 0 
-          ? pageData.explanationBoxes 
-          : defaultExplanationBoxes}
+        boxes={
+          pageData.explanationBoxes && pageData.explanationBoxes.length > 0
+            ? pageData.explanationBoxes
+            : defaultExplanationBoxes
+        }
       />
 
       {/* Gráfico de mortes por ano */}
       <div className="mx-auto container my-12">
-        <h2 className="text-3xl font-bold text-center mb-4">Evolução das Mortes no Trânsito</h2>
-        
+        <h2 className="text-3xl font-bold text-center mb-4">
+          Evolução das Mortes no Trânsito
+        </h2>
+
         {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
         <div className="flex justify-center mb-4">
-          <button 
+          <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
               !showAllCities && !selectedCity
-                ? "bg-ameciclo text-white" 
+                ? "bg-ameciclo text-white"
                 : "bg-gray-200 text-gray-800 hover:bg-gray-300"
             }`}
             onClick={() => {
@@ -178,10 +204,10 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
           >
             Mostrar RMR
           </button>
-          <button 
+          <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
-              showAllCities 
-                ? "bg-ameciclo text-white" 
+              showAllCities
+                ? "bg-ameciclo text-white"
                 : "bg-gray-200 text-gray-800 hover:bg-gray-300"
             }`}
             onClick={toggleShowAllCities}
@@ -189,34 +215,48 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
             Mostrar Todas as Cidades
           </button>
         </div>
-        
-        <LineChart 
-          title={`Mortes por Ano na RMR (${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
+
+        <LineChart
+          title={`Mortes por Ano na RMR (${
+            tipoLocal === "ocorrencia"
+              ? "Local de Ocorrência"
+              : "Local de Residência"
+          })`}
           xAxisTitle="Ano"
           yAxisTitle="Número de Mortes"
-          series={getYearlyChartData(citiesByYearData, selectedCity, showAllCities)}
+          series={getYearlyChartData(
+            citiesByYearData,
+            selectedCity,
+            showAllCities
+          )}
         />
       </div>
 
       {/* Seletor de ano e cards de cidades */}
       <div className="mx-auto container my-12">
-        <h2 className="text-3xl font-bold text-center mb-4">Mortes por Cidade</h2>
-        
+        <h2 className="text-3xl font-bold text-center mb-4">
+          Mortes por Cidade
+        </h2>
+
         {/* Timeline/Seletor de ano */}
         {citiesByYearData && citiesByYearData.anos && (
-          <YearSelector 
-            years={citiesByYearData.anos} 
-            selectedYear={selectedYear} 
-            onChange={handleYearChange} 
+          <YearSelector
+            years={citiesByYearData.anos}
+            selectedYear={selectedYear}
+            onChange={handleYearChange}
           />
         )}
-        
+
         {/* Cards de cidades */}
         <NumberCards
           cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
           data={{
-            title: `Mortes por Cidade em ${selectedYear || ""} (${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`,
-            filters: []
+            title: `Mortes por Cidade em ${selectedYear || ""} (${
+              tipoLocal === "ocorrencia"
+                ? "Local de Ocorrência"
+                : "Local de Residência"
+            })`,
+            filters: [],
           }}
           selected={selectedCardCity}
           options={{
@@ -226,35 +266,47 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
               setSelectedCity(cityId);
               setShowAllCities(false);
             },
-            onClickFnc: () => {}
+            onClickFnc: () => {},
           }}
         />
       </div>
 
-      {/* Mortes por modo de transporte */}
-      {selectedCardCity && selectedYear && (
-        <div className="mx-auto container my-12">
-          <h2 className="text-3xl font-bold text-center mb-4">
-            Mortes por Modo de Transporte em {selectedCityName} - {selectedYear}
-            <div className="text-xl font-normal mt-2">
-              ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
-            </div>
-          </h2>
-          
-          {isLoadingModoTransporte ? (
-            <div className="text-center py-8">Carregando dados...</div>
-          ) : modoTransporteProcessado && modoTransporteProcessado.cards.length > 0 ? (
-            <>
-              <InfoCards cards={modoTransporteProcessado.cards} />
-              {modoTransporteProcessado.infoNaoIdentificados && modoTransporteProcessado.infoNaoIdentificados.texto && (
+      {/* Mortes por modo de transporte - só exibe se houver dados */}
+      {selectedCardCity &&
+        selectedYear &&
+        modoTransporteData &&
+        modoTransporteProcessado &&
+        modoTransporteProcessado.cards.length > 0 && (
+          <div className="mx-auto container my-12">
+            <h2 className="text-3xl font-bold text-center mb-4">
+              Mortes por Modo de Transporte em {selectedCityName} -{" "}
+              {selectedYear}
+              <div className="text-xl font-normal mt-2">
+                (
+                {tipoLocal === "ocorrencia"
+                  ? "Local de Ocorrência"
+                  : "Local de Residência"}
+                )
+              </div>
+            </h2>
+
+            <InfoCards cards={modoTransporteProcessado.cards} />
+            {modoTransporteProcessado.infoNaoIdentificados &&
+              modoTransporteProcessado.infoNaoIdentificados.texto && (
                 <div className="text-center text-gray-600 mt-4">
                   {modoTransporteProcessado.infoNaoIdentificados.texto}
                 </div>
               )}
-            </>
-          ) : (
-            <div className="text-center py-8">Nenhum dado disponível para esta cidade no ano selecionado.</div>
-          )}
+          </div>
+        )}
+
+      {/* Exibe mensagem de carregamento apenas durante o carregamento */}
+      {selectedCardCity && selectedYear && isLoadingModoTransporte && (
+        <div className="mx-auto container my-12">
+          <h2 className="text-3xl font-bold text-center mb-4">
+            Mortes por Modo de Transporte em {selectedCityName} - {selectedYear}
+          </h2>
+          <div className="text-center py-8">Carregando dados...</div>
         </div>
       )}
     </>

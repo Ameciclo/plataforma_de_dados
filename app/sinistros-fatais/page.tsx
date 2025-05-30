@@ -93,7 +93,6 @@ const fetchData = async () => {
 
 export default async function SinistrosFataisPage() {
   const { summary, citiesByYear, pageData } = await fetchData();
-  console.log("PAGE", pageData);
   return (
     <>
       <NavCover

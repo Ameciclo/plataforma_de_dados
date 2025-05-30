@@ -139,36 +139,7 @@ export function getModoTransporteCards(filtrosData) {
   
   if (!temDadosModoTransporte && !temDadosMeioTransporte && !temDadosCID) {
     console.log("Nenhum dado de transporte encontrado nas propriedades conhecidas");
-    
-    // Criar dados de exemplo para visualização
-    const dadosExemplo = {
-      "V0": 10,  // Pedestres
-      "V1": 5,   // Ciclistas
-      "V2": 15,  // Motociclistas
-      "V4": 8,   // Ocupantes de automóvel
-      "V7": 3,   // Ocupantes de ônibus
-      "outros": 2    // Outros veículos
-    };
-    
-    // Criar cards com os dados de exemplo
-    const cards = Object.entries(dadosExemplo)
-      .map(([codigo, quantidade]) => ({
-        label: modoTransporteLabels[codigo],
-        icon: modoTransporteIcons[codigo],
-        data: IntlPercentil(quantidade / Object.values(dadosExemplo).reduce((a, b) => a + b, 0))
-      }))
-      .sort((a, b) => {
-        const valueA = parseFloat(a.data.replace(',', '.').replace('%', ''));
-        const valueB = parseFloat(b.data.replace(',', '.').replace('%', ''));
-        return valueB - valueA;
-      });
-    
-    return { 
-      cards, 
-      infoNaoIdentificados: { 
-        texto: "Dados de exemplo. A API não retornou dados reais de modo de transporte." 
-      } 
-    };
+    return { cards: [], infoNaoIdentificados: { texto: "" } };
   }
   
   // Extrair e processar os dados
