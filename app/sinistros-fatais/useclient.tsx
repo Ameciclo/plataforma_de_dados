@@ -14,7 +14,8 @@ import { DATASUS_CITIES_BY_YEAR_DATA, DATASUS_FILTROS_DATA } from "../../servers
 export default function SinistrosFataisClientSide({ summaryData, citiesByYearData: initialCitiesByYearData, pageData }) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
   const [selectedYear, setSelectedYear] = useState(2023); // Pré-selecionar 2023
-  const [selectedCity, setSelectedCity] = useState(2611606); // ID do Recife
+  const [selectedCity, setSelectedCity] = useState(null); // Mostrar RMR por padrão no gráfico
+  const [selectedCardCity, setSelectedCardCity] = useState(2611606); // ID do Recife para os cards
   const [citiesByYearData, setCitiesByYearData] = useState(initialCitiesByYearData);
   const [showAllCities, setShowAllCities] = useState(false);
   const [modoTransporteData, setModoTransporteData] = useState(null);
@@ -50,11 +51,11 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   // Buscar dados de modo de transporte quando a cidade, tipo de local ou ano mudar
   useEffect(() => {
     const fetchModoTransporteData = async () => {
-      if (!selectedCity || !selectedYear) return;
+      if (!selectedCardCity || !selectedYear) return;
       
       setIsLoadingModoTransporte(true);
       try {
-        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${selectedYear}`;
+        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${selectedYear}`;
         console.log("Buscando dados de modo de transporte:", url);
         const response = await fetch(url);
         const data = await response.json();
@@ -68,7 +69,7 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
     };
 
     fetchModoTransporteData();
-  }, [selectedCity, tipoLocal, selectedYear]);
+  }, [selectedCardCity, tipoLocal, selectedYear]);
 
   // Alternar entre local de ocorrência e residência
   const handleTipoLocalChange = (tipo) => {
@@ -78,6 +79,7 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   // Selecionar cidade
   const handleCityChange = (cityId) => {
     setSelectedCity(cityId);
+    setSelectedCardCity(cityId);
     setShowAllCities(false);
   };
 
@@ -104,8 +106,8 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   ];
 
   // Obter o nome da cidade selecionada
-  const selectedCityName = selectedCity 
-    ? citiesByYearData?.cidades?.find(c => c.id === selectedCity)?.nome || "Cidade selecionada"
+  const selectedCityName = selectedCardCity 
+    ? citiesByYearData?.cidades?.find(c => c.id === selectedCardCity)?.nome || "Cidade selecionada"
     : "RMR";
 
   // Processar dados de modo de transporte
@@ -192,17 +194,21 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
             title: `Mortes por Cidade em ${selectedYear || ""} (${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`,
             filters: []
           }}
-          selected={selectedCity}
+          selected={selectedCardCity}
           options={{
             type: "default",
-            changeFunction: handleCityChange,
+            changeFunction: (cityId) => {
+              setSelectedCardCity(cityId);
+              setSelectedCity(cityId);
+              setShowAllCities(false);
+            },
             onClickFnc: () => {}
           }}
         />
       </div>
 
       {/* Mortes por modo de transporte */}
-      {selectedCity && selectedYear && (
+      {selectedCardCity && selectedYear && (
         <div className="mx-auto container my-12">
           <h2 className="text-3xl font-bold text-center mb-4">
             Mortes por Modo de Transporte em {selectedCityName} - {selectedYear}
