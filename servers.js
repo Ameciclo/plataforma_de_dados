@@ -30,4 +30,4 @@ export const DATASUS_CITIES_BY_YEAR_DATA =`http://localhost:8080/datasus-deaths/
 export const DATASUS_FILTROS_DATA =`http://localhost:8080/datasus-deaths/filtros`
 
 // Endpoint do Strapi para dados das plataformas
-export const STRAPI_PLATAFORMAS_DATA = `https://do.strapi.ameciclo.org/api/plataformas-de-dados?populate=cover,explanationbox`
+export const PLATAFORMAS_PAGE_DATA = `https://do.strapi.ameciclo.org/api/plataformas-de-dados?populate=*`

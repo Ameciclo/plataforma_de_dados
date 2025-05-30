@@ -2,7 +2,7 @@ import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import SinistrosFataisClientSide from "./useclient";
-import { DATASUS_SUMMARY_DATA, DATASUS_CITIES_BY_YEAR_DATA, STRAPI_PLATAFORMAS_DATA } from "../../servers";
+import { DATASUS_SUMMARY_DATA, DATASUS_CITIES_BY_YEAR_DATA, PLATAFORMAS_PAGE_DATA } from "../../servers";
 
 // Função para buscar os dados da API
 const fetchData = async () => {
@@ -39,14 +39,17 @@ const fetchData = async () => {
     cidades: []
   };
 
+  console.log("FETCHING DATA");
   try {
     // Buscar dados do Strapi
-    const strapiRes = await fetch(STRAPI_PLATAFORMAS_DATA, {
+    const strapiRes = await fetch(PLATAFORMAS_PAGE_DATA, {
       cache: "no-cache",
     });
+    console.log("STRAPI RES", strapiRes);
     
     if (strapiRes.ok) {
       const strapiData = await strapiRes.json();
+      console.log("STRAPI", strapiData);
       
       if (strapiData && strapiData.data && Array.isArray(strapiData.data)) {
         // Encontrar os dados da plataforma de sinistros fatais
@@ -93,7 +96,7 @@ const fetchData = async () => {
 
 export default async function SinistrosFataisPage() {
   const { summary, citiesByYear, pageData } = await fetchData();
-
+  console.log("PAGE", pageData);
   return (
     <>
       <NavCover
