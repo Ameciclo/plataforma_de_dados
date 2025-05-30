@@ -39,17 +39,14 @@ const fetchData = async () => {
     cidades: []
   };
 
-  console.log("FETCHING DATA");
   try {
     // Buscar dados do Strapi
     const strapiRes = await fetch(PLATAFORMAS_PAGE_DATA, {
       cache: "no-cache",
     });
-    console.log("STRAPI RES", strapiRes);
     
     if (strapiRes.ok) {
       const strapiData = await strapiRes.json();
-      console.log("STRAPI", strapiData);
       
       if (strapiData && strapiData.data && Array.isArray(strapiData.data)) {
         // Encontrar os dados da plataforma de sinistros fatais
