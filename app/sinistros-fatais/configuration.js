@@ -262,12 +262,39 @@ export function getModoTransporteCards(filtrosData) {
     .map(([codigo, quantidade]) => ({
       label: modoTransporteLabels[codigo],
       icon: modoTransporteIcons[codigo],
-      data: quantidade.toString()
-    }))
-    .sort((a, b) => {
-      // Ordenar por valores numéricos
-      return parseInt(b.data) - parseInt(a.data);
+      data: quantidade.toString(),
+      codigo: codigo // Adicionar o código para ordenação personalizada
+    }));
+  
+  // Adicionar card para não identificados, se houver
+  if (totalNaoIdentificados > 0) {
+    cards.push({
+      label: "Não identificado",
+      icon: "/icons/sinistros-fatais/outros.svg", // Usando o ícone de outros para não identificados
+      data: totalNaoIdentificados.toString(),
+      codigo: "nao_identificado"
     });
+  }
+  
+  // Ordenar conforme a ordem solicitada
+  cards.sort((a, b) => {
+    // Ordem personalizada: Pedestres, ciclistas, motociclistas, ocupante de automóvel, ocupante de ônibus, outros, não identificado
+    const ordem = {
+      "V0": 1, // Pedestres
+      "V1": 2, // Ciclistas
+      "V2": 3, // Motociclistas
+      "V4": 4, // Ocupante de automóvel
+      "V7": 5, // Ocupante de ônibus
+      "outros": 6, // Outros
+      "nao_identificado": 7 // Não identificado
+    };
+    
+    // Usar a ordem definida ou valor alto para códigos não mapeados
+    const ordemA = ordem[a.codigo] || 999;
+    const ordemB = ordem[b.codigo] || 999;
+    
+    return ordemA - ordemB;
+  });
   
   // Calcular porcentagem de não identificados em relação ao total geral
   const totalGeral = totalIdentificados + totalNaoIdentificados;
