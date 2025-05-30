@@ -25,7 +25,12 @@ const InfoCard = ({ label, data, icon }) => {
         <h3 className="">{label}</h3>
         <h3 className="text-4xl sm:text-5xl font-bold">{data}</h3>
       </div>
-      <img src={iconPath} className="h-20 fill-current" alt={label} />
+      <img 
+        src={iconPath} 
+        className="h-20" 
+        alt={label} 
+        style={{ filter: "invert(35%) sepia(96%) saturate(1091%) hue-rotate(152deg) brightness(92%) contrast(101%)" }} 
+      />
     </div>
   );
 };
