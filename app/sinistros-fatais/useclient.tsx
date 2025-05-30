@@ -92,6 +92,7 @@ export default function SinistrosFataisClientSide({
             (data.resumo.porCID && Object.keys(data.resumo.porCID).length > 0))
         ) {
           setModoTransporteData(data);
+          console.log(data);
         } else {
           // Se não há dados válidos, definir como null para não mostrar a seção
           setModoTransporteData(null);
@@ -154,7 +155,6 @@ export default function SinistrosFataisClientSide({
     ? getModoTransporteCards(modoTransporteData)
     : null;
 
-    console.log("MODO", modoTransporteData)
   return (
     <>
       {/* Estatísticas gerais */}
@@ -234,19 +234,6 @@ export default function SinistrosFataisClientSide({
 
       {/* Seletor de ano e cards de cidades */}
       <div className="mx-auto container my-12">
-        <h2 className="text-3xl font-bold text-center mb-4">
-          Mortes por Cidade
-        </h2>
-
-        {/* Timeline/Seletor de ano */}
-        {citiesByYearData && citiesByYearData.anos && (
-          <YearSelector
-            years={citiesByYearData.anos}
-            selectedYear={selectedYear}
-            onChange={handleYearChange}
-          />
-        )}
-
         {/* Cards de cidades */}
         <NumberCards
           cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
@@ -270,7 +257,14 @@ export default function SinistrosFataisClientSide({
           }}
         />
       </div>
-
+      {/* Timeline/Seletor de ano */}
+      {citiesByYearData && citiesByYearData.anos && (
+        <YearSelector
+          years={citiesByYearData.anos}
+          selectedYear={selectedYear}
+          onChange={handleYearChange}
+        />
+      )}
       {/* Mortes por modo de transporte - só exibe se houver dados */}
       {selectedCardCity &&
         selectedYear &&
