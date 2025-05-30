@@ -265,44 +265,31 @@ export default function SinistrosFataisClientSide({
           onChange={handleYearChange}
         />
       )}
-      {/* Mortes por modo de transporte - só exibe se houver dados */}
-      {selectedCardCity &&
-        selectedYear &&
-        modoTransporteData &&
+      {/* Mortes por modo de transporte */}
+      {modoTransporteData &&
         modoTransporteProcessado &&
         modoTransporteProcessado.cards.length > 0 && (
           <div className="mx-auto container my-12">
             <h2 className="text-3xl font-bold text-center mb-4">
-              Mortes por Modo de Transporte em {selectedCityName} -{" "}
-              {selectedYear}
-              <div className="text-xl font-normal mt-2">
-                (
-                {tipoLocal === "ocorrencia"
-                  ? "Local de Ocorrência"
-                  : "Local de Residência"}
-                )
-              </div>
+              Mortes por Modo de Transporte
             </h2>
+            <h3 className="text-xl text-center mb-8">
+              {selectedCityName} - {selectedYear} (
+              {tipoLocal === "ocorrencia"
+                ? "Local de Ocorrência"
+                : "Local de Residência"}
+              )
+            </h3>
 
             <InfoCards cards={modoTransporteProcessado.cards} />
-            {modoTransporteProcessado.infoNaoIdentificados &&
-              modoTransporteProcessado.infoNaoIdentificados.texto && (
-                <div className="text-center text-gray-600 mt-4">
-                  {modoTransporteProcessado.infoNaoIdentificados.texto}
-                </div>
-              )}
+
+            {modoTransporteProcessado.infoNaoIdentificados.texto && (
+              <p className="text-center text-gray-600 mt-4">
+                {modoTransporteProcessado.infoNaoIdentificados.texto}
+              </p>
+            )}
           </div>
         )}
-
-      {/* Exibe mensagem de carregamento apenas durante o carregamento */}
-      {selectedCardCity && selectedYear && isLoadingModoTransporte && (
-        <div className="mx-auto container my-12">
-          <h2 className="text-3xl font-bold text-center mb-4">
-            Mortes por Modo de Transporte em {selectedCityName} - {selectedYear}
-          </h2>
-          <div className="text-center py-8">Carregando dados...</div>
-        </div>
-      )}
     </>
   );
 }

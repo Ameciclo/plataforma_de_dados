@@ -107,14 +107,14 @@ export const modoTransporteLabels = {
   "outros": "Outros veículos"
 };
 
-// Ícones para cada modo de transporte
+// Ícones para cada modo de transporte (usando os ícones de sinistros-fatais)
 export const modoTransporteIcons = {
-  "V0": "pedestrian",
-  "V1": "bicycle",
-  "V2": "motorcycle",
-  "V4": "car",
-  "V7": "bus",
-  "outros": "truck"
+  "V0": "/icons/sinistros-fatais/pedestre.svg",
+  "V1": "/icons/sinistros-fatais/ciclista.svg",
+  "V2": "/icons/sinistros-fatais/modo.svg",
+  "V4": "/icons/sinistros-fatais/carro.svg",
+  "V7": "/icons/sinistros-fatais/onibus.svg",
+  "outros": "/icons/sinistros-fatais/outros.svg"
 };
 
 // Função para formatar os dados de mortes por modo de transporte
