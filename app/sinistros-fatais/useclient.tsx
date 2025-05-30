@@ -13,7 +13,7 @@ import { DATASUS_CITIES_BY_YEAR_DATA, DATASUS_FILTROS_DATA } from "../../servers
 
 export default function SinistrosFataisClientSide({ summaryData, citiesByYearData: initialCitiesByYearData, pageData }) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
-  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(2023); // Pré-selecionar 2023
   const [selectedCity, setSelectedCity] = useState(2611606); // ID do Recife
   const [citiesByYearData, setCitiesByYearData] = useState(initialCitiesByYearData);
   const [showAllCities, setShowAllCities] = useState(false);
@@ -23,7 +23,12 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   // Determinar o último ano disponível nos dados
   useEffect(() => {
     if (citiesByYearData && citiesByYearData.anos && citiesByYearData.anos.length > 0) {
-      setSelectedYear(citiesByYearData.anos[citiesByYearData.anos.length - 1]);
+      // Verificar se 2023 está disponível, caso contrário usar o último ano
+      if (citiesByYearData.anos.includes(2023)) {
+        setSelectedYear(2023);
+      } else {
+        setSelectedYear(citiesByYearData.anos[citiesByYearData.anos.length - 1]);
+      }
     }
   }, [citiesByYearData]);
 
@@ -102,12 +107,6 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   const selectedCityName = selectedCity 
     ? citiesByYearData?.cidades?.find(c => c.id === selectedCity)?.nome || "Cidade selecionada"
     : "RMR";
-
-  // Efeito para selecionar "Mostrar RMR" por padrão
-  useEffect(() => {
-    setSelectedCity(null);
-    setShowAllCities(false);
-  }, []);
 
   // Processar dados de modo de transporte
   const modoTransporteProcessado = modoTransporteData ? getModoTransporteCards(modoTransporteData) : null;
@@ -214,10 +213,10 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
           
           {isLoadingModoTransporte ? (
             <div className="text-center py-8">Carregando dados...</div>
-          ) : modoTransporteProcessado ? (
+          ) : modoTransporteProcessado && modoTransporteProcessado.cards.length > 0 ? (
             <>
               <InfoCards cards={modoTransporteProcessado.cards} />
-              {modoTransporteProcessado.infoNaoIdentificados && (
+              {modoTransporteProcessado.infoNaoIdentificados && modoTransporteProcessado.infoNaoIdentificados.texto && (
                 <div className="text-center text-gray-600 mt-4">
                   {modoTransporteProcessado.infoNaoIdentificados.texto}
                 </div>

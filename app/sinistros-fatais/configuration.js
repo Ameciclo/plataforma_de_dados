@@ -102,98 +102,102 @@ export const modoTransporteLabels = {
   "V0": "Pedestres",
   "V1": "Ciclistas",
   "V2": "Motociclistas",
-  "V3": "Ocupante de triciclo",
   "V4": "Ocupante de automóvel",
-  "V5": "Ocupante de caminhonete",
-  "V6": "Ocupante de veículo pesado",
   "V7": "Ocupante de ônibus",
-  "V8": "Outros veículos",
-  "V9": "Não identificado"
+  "outros": "Outros veículos"
 };
 
-// Ícones para cada modo de transporte (usando os ícones existentes)
+// Ícones para cada modo de transporte
 export const modoTransporteIcons = {
   "V0": "pedestrian",
   "V1": "bicycle",
   "V2": "motorcycle",
-  "V3": "tricycle",
   "V4": "car",
-  "V5": "pickup",
-  "V6": "truck",
   "V7": "bus",
-  "V8": "other_vehicle",
-  "V9": "unknown"
+  "outros": "truck"
 };
-
-// Categorias a serem exibidas (excluindo não identificados)
-export const categoriasExibidas = ["V0", "V1", "V2", "V4", "V7", "V8"];
 
 // Função para formatar os dados de mortes por modo de transporte
 export function getModoTransporteCards(filtrosData) {
   if (!filtrosData || !filtrosData.resumo || !filtrosData.resumo.porModoTransporte) {
     console.log("Dados de modo de transporte inválidos:", filtrosData);
-    return [];
+    return { cards: [], infoNaoIdentificados: { texto: "" } };
   }
   
-  const { porModoTransporte } = filtrosData.resumo;
+  console.log("Dados brutos de modo de transporte:", filtrosData.resumo.porModoTransporte);
   
-  // Calcular total excluindo não identificados (V9)
+  // Extrair e processar os dados
+  const dadosBrutos = {};
   let totalIdentificados = 0;
   let totalNaoIdentificados = 0;
   
-  Object.entries(porModoTransporte).forEach(([modo, quantidade]) => {
-    const codigoModo = modo.split(' ')[0];
-    if (codigoModo === "V9") {
+  // Mapear os códigos CID para as categorias desejadas
+  Object.entries(filtrosData.resumo.porModoTransporte).forEach(([modo, quantidade]) => {
+    // Extrair o código do modo (V0, V1, etc.)
+    const codigoCompleto = modo.trim();
+    const codigoBase = codigoCompleto.substring(0, 2);
+    
+    if (codigoBase === "V9") {
+      // Não identificados
       totalNaoIdentificados += quantidade;
+    } else if (codigoBase === "V0") {
+      // Pedestres
+      dadosBrutos["V0"] = (dadosBrutos["V0"] || 0) + quantidade;
+      totalIdentificados += quantidade;
+    } else if (codigoBase === "V1") {
+      // Ciclistas
+      dadosBrutos["V1"] = (dadosBrutos["V1"] || 0) + quantidade;
+      totalIdentificados += quantidade;
+    } else if (codigoBase === "V2" || codigoBase === "V3") {
+      // Motociclistas (inclui triciclos)
+      dadosBrutos["V2"] = (dadosBrutos["V2"] || 0) + quantidade;
+      totalIdentificados += quantidade;
+    } else if (codigoBase === "V4") {
+      // Ocupante de automóvel
+      dadosBrutos["V4"] = (dadosBrutos["V4"] || 0) + quantidade;
+      totalIdentificados += quantidade;
+    } else if (codigoBase === "V7") {
+      // Ocupante de ônibus
+      dadosBrutos["V7"] = (dadosBrutos["V7"] || 0) + quantidade;
+      totalIdentificados += quantidade;
     } else {
+      // Outros veículos (V5, V6, V8)
+      dadosBrutos["outros"] = (dadosBrutos["outros"] || 0) + quantidade;
       totalIdentificados += quantidade;
     }
   });
   
-  const totalGeral = totalIdentificados + totalNaoIdentificados;
+  console.log("Dados processados:", dadosBrutos, "Total identificados:", totalIdentificados);
   
-  if (totalGeral === 0) {
-    console.log("Total geral é zero, não há dados para mostrar");
-    return [];
+  if (totalIdentificados === 0) {
+    return { cards: [], infoNaoIdentificados: { texto: "Não há dados disponíveis para esta seleção." } };
   }
   
-  // Calcular porcentagem de não identificados
+  // Criar cards para as categorias
+  const cards = Object.entries(dadosBrutos)
+    .filter(([_, quantidade]) => quantidade > 0) // Remover categorias com zero
+    .map(([codigo, quantidade]) => ({
+      label: modoTransporteLabels[codigo],
+      icon: modoTransporteIcons[codigo],
+      data: IntlPercentil(quantidade / totalIdentificados)
+    }))
+    .sort((a, b) => {
+      // Extrair valores numéricos dos percentuais para ordenação
+      const valueA = parseFloat(a.data.replace(',', '.').replace('%', ''));
+      const valueB = parseFloat(b.data.replace(',', '.').replace('%', ''));
+      return valueB - valueA;
+    });
+  
+  // Calcular porcentagem de não identificados em relação ao total geral
+  const totalGeral = totalIdentificados + totalNaoIdentificados;
   const porcentagemNaoIdentificados = totalNaoIdentificados / totalGeral;
-  
-  // Agrupar categorias menores em "Outros veículos"
-  const dadosAgrupados = {};
-  
-  Object.entries(porModoTransporte).forEach(([modo, quantidade]) => {
-    const codigoModo = modo.split(' ')[0];
-    
-    // Pular não identificados
-    if (codigoModo === "V9") return;
-    
-    // Agrupar categorias conforme solicitado
-    if (categoriasExibidas.includes(codigoModo)) {
-      dadosAgrupados[codigoModo] = (dadosAgrupados[codigoModo] || 0) + quantidade;
-    } else if (codigoModo !== "V9") {
-      // Adicionar a "Outros veículos" se não for não identificado
-      dadosAgrupados["V8"] = (dadosAgrupados["V8"] || 0) + quantidade;
-    }
-  });
-  
-  // Criar cards para as categorias agrupadas
-  const cards = Object.entries(dadosAgrupados).map(([codigo, quantidade]) => ({
-    label: modoTransporteLabels[codigo],
-    icon: "women", // Usando ícones existentes
-    data: IntlPercentil(quantidade / totalIdentificados)
-  })).sort((a, b) => {
-    // Extrair valores numéricos dos percentuais para ordenação
-    const valueA = parseFloat(a.data.replace(',', '.').replace('%', ''));
-    const valueB = parseFloat(b.data.replace(',', '.').replace('%', ''));
-    return valueB - valueA;
-  });
   
   // Informação sobre não identificados
   const infoNaoIdentificados = {
     porcentagem: porcentagemNaoIdentificados,
-    texto: `${IntlPercentil(porcentagemNaoIdentificados)} dos registros não possuem identificação do modo de transporte.`
+    texto: totalNaoIdentificados > 0 
+      ? `${IntlPercentil(porcentagemNaoIdentificados)} dos registros não possuem identificação do modo de transporte.`
+      : ""
   };
   
   return { cards, infoNaoIdentificados };
