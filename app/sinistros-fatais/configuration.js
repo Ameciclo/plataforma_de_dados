@@ -102,13 +102,13 @@ export const modoTransporteLabels = {
   "V0": "Pedestres",
   "V1": "Ciclistas",
   "V2": "Motociclistas",
-  "V3": "Ocupantes de triciclo",
-  "V4": "Ocupantes de automóvel",
-  "V5": "Ocupantes de caminhonete",
-  "V6": "Ocupantes de veículo pesado",
-  "V7": "Ocupantes de ônibus",
-  "V8": "Outros modos",
-  "V9": "Não especificado"
+  "V3": "Ocupante de triciclo",
+  "V4": "Ocupante de automóvel",
+  "V5": "Ocupante de caminhonete",
+  "V6": "Ocupante de veículo pesado",
+  "V7": "Ocupante de ônibus",
+  "V8": "Outros veículos",
+  "V9": "Não identificado"
 };
 
 // Ícones para cada modo de transporte (usando os ícones existentes)
@@ -125,6 +125,9 @@ export const modoTransporteIcons = {
   "V9": "unknown"
 };
 
+// Categorias a serem exibidas (excluindo não identificados)
+export const categoriasExibidas = ["V0", "V1", "V2", "V4", "V7", "V8"];
+
 // Função para formatar os dados de mortes por modo de transporte
 export function getModoTransporteCards(filtrosData) {
   if (!filtrosData || !filtrosData.resumo || !filtrosData.resumo.porModoTransporte) {
@@ -133,25 +136,65 @@ export function getModoTransporteCards(filtrosData) {
   }
   
   const { porModoTransporte } = filtrosData.resumo;
-  const totalGeral = filtrosData.totalGeral || 0;
+  
+  // Calcular total excluindo não identificados (V9)
+  let totalIdentificados = 0;
+  let totalNaoIdentificados = 0;
+  
+  Object.entries(porModoTransporte).forEach(([modo, quantidade]) => {
+    const codigoModo = modo.split(' ')[0];
+    if (codigoModo === "V9") {
+      totalNaoIdentificados += quantidade;
+    } else {
+      totalIdentificados += quantidade;
+    }
+  });
+  
+  const totalGeral = totalIdentificados + totalNaoIdentificados;
   
   if (totalGeral === 0) {
     console.log("Total geral é zero, não há dados para mostrar");
     return [];
   }
   
-  console.log("Processando dados de modo de transporte:", porModoTransporte);
+  // Calcular porcentagem de não identificados
+  const porcentagemNaoIdentificados = totalNaoIdentificados / totalGeral;
   
-  // Usar ícones existentes do contagens para evitar criar novos
-  return Object.entries(porModoTransporte).map(([modo, quantidade]) => {
-    // Extrair o código do modo (V0, V1, etc.)
+  // Agrupar categorias menores em "Outros veículos"
+  const dadosAgrupados = {};
+  
+  Object.entries(porModoTransporte).forEach(([modo, quantidade]) => {
     const codigoModo = modo.split(' ')[0];
-    const label = modoTransporteLabels[codigoModo] || modo;
     
-    return {
-      label: label,
-      icon: "women", // Usando ícones existentes
-      data: IntlPercentil(quantidade / totalGeral)
-    };
+    // Pular não identificados
+    if (codigoModo === "V9") return;
+    
+    // Agrupar categorias conforme solicitado
+    if (categoriasExibidas.includes(codigoModo)) {
+      dadosAgrupados[codigoModo] = (dadosAgrupados[codigoModo] || 0) + quantidade;
+    } else if (codigoModo !== "V9") {
+      // Adicionar a "Outros veículos" se não for não identificado
+      dadosAgrupados["V8"] = (dadosAgrupados["V8"] || 0) + quantidade;
+    }
   });
+  
+  // Criar cards para as categorias agrupadas
+  const cards = Object.entries(dadosAgrupados).map(([codigo, quantidade]) => ({
+    label: modoTransporteLabels[codigo],
+    icon: "women", // Usando ícones existentes
+    data: IntlPercentil(quantidade / totalIdentificados)
+  })).sort((a, b) => {
+    // Extrair valores numéricos dos percentuais para ordenação
+    const valueA = parseFloat(a.data.replace(',', '.').replace('%', ''));
+    const valueB = parseFloat(b.data.replace(',', '.').replace('%', ''));
+    return valueB - valueA;
+  });
+  
+  // Informação sobre não identificados
+  const infoNaoIdentificados = {
+    porcentagem: porcentagemNaoIdentificados,
+    texto: `${IntlPercentil(porcentagemNaoIdentificados)} dos registros não possuem identificação do modo de transporte.`
+  };
+  
+  return { cards, infoNaoIdentificados };
 }

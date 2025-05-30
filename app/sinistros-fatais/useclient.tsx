@@ -103,19 +103,28 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
     ? citiesByYearData?.cidades?.find(c => c.id === selectedCity)?.nome || "Cidade selecionada"
     : "RMR";
 
+  // Efeito para selecionar "Mostrar RMR" por padrão
+  useEffect(() => {
+    setSelectedCity(null);
+    setShowAllCities(false);
+  }, []);
+
+  // Processar dados de modo de transporte
+  const modoTransporteProcessado = modoTransporteData ? getModoTransporteCards(modoTransporteData) : null;
+
   return (
     <>
-      {/* Seletor de tipo de local */}
-      <LocalTypeSelector 
-        selectedType={tipoLocal} 
-        onChange={handleTipoLocalChange} 
-      />
-
       {/* Estatísticas gerais */}
       <StatisticsBox
         title="Mortes no Trânsito"
         subtitle={`Dados do DATASUS - RMR (por ${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
+      />
+
+      {/* Seletor de tipo de local (movido para depois das estatísticas) */}
+      <LocalTypeSelector 
+        selectedType={tipoLocal} 
+        onChange={handleTipoLocalChange} 
       />
 
       {/* Caixas de explicação */}
@@ -205,8 +214,15 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
           
           {isLoadingModoTransporte ? (
             <div className="text-center py-8">Carregando dados...</div>
-          ) : modoTransporteData ? (
-            <InfoCards cards={getModoTransporteCards(modoTransporteData)} />
+          ) : modoTransporteProcessado ? (
+            <>
+              <InfoCards cards={modoTransporteProcessado.cards} />
+              {modoTransporteProcessado.infoNaoIdentificados && (
+                <div className="text-center text-gray-600 mt-4">
+                  {modoTransporteProcessado.infoNaoIdentificados.texto}
+                </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-8">Nenhum dado disponível para esta cidade no ano selecionado.</div>
           )}
