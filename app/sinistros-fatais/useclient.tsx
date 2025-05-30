@@ -295,11 +295,10 @@ export default function SinistrosFataisClientSide({
       {/* Seção de Documentos */}
       {pageData.supportFiles && pageData.supportFiles.length > 0 && (
         <CardsSession
-          title="Documentos"
+          title="Documentação sobre à segurança viária"
           cards={pageData.supportFiles.map(file => ({
             title: file.title || file.name,
             description: file.description || "",
-            src: file.icon?.url || "/icons/document.svg",
             url: file.url,
             target: "_blank"
           }))}

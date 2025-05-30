@@ -11,7 +11,8 @@ const fetchData = async () => {
     id: 4,
     title: "Observatório de Sinistros Fatais",
     coverImage: "/images/covers/sinistros-fatais.jpg",
-    explanationBoxes: []
+    explanationBoxes: [],
+    supportFiles: []
   };
   
   let summary = { 
@@ -60,6 +61,14 @@ const fetchData = async () => {
             explanationBoxes: platformData.explanationbox?.map(box => ({
               title: box.title,
               description: box.text
+            })) || [],
+            supportFiles: platformData.supportfiles?.map(file => ({
+              title: file.title,
+              description: file.description || "",
+              url: file.url || "#",
+              src: file.type === "legislação" ? "/icons/legislation.svg" : 
+                   file.type === "relatório" ? "/icons/report.svg" : 
+                   "/icons/document.svg"
             })) || []
           };
         }
