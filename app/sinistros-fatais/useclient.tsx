@@ -14,6 +14,7 @@ import {
   getYearlyChartData,
   getModoTransporteCards,
 } from "./configuration";
+import { CardsSession } from "../components/CardsSession";
 import {
   DATASUS_CITIES_BY_YEAR_DATA,
   DATASUS_FILTROS_DATA,
@@ -290,6 +291,20 @@ export default function SinistrosFataisClientSide({
             )}
           </div>
         )}
+      
+      {/* Seção de Documentos */}
+      {pageData.supportFiles && pageData.supportFiles.length > 0 && (
+        <CardsSession
+          title="Documentos"
+          cards={pageData.supportFiles.map(file => ({
+            title: file.title || file.name,
+            description: file.description || "",
+            src: file.icon?.url || "/icons/document.svg",
+            url: file.url,
+            target: "_blank"
+          }))}
+        />
+      )}
     </>
   );
 }

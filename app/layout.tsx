@@ -32,7 +32,7 @@ export default function RootLayout({
               { name: "Ideciclo", url: "/ideciclo" },
               { name: "Perfil Ciclista", url: "/perfil" },
               { name: "Exec. Cicloviária", url: "/observatorio" },
-              { name: "Vias Inseguras", url: "/vias-inseguras" },
+              // { name: "Vias Inseguras", url: "/vias-inseguras" },
               { name: "Sinistros Fatais", url: "/sinistros-fatais" },
             ]}
           />

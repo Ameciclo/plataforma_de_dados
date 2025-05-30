@@ -262,13 +262,11 @@ export function getModoTransporteCards(filtrosData) {
     .map(([codigo, quantidade]) => ({
       label: modoTransporteLabels[codigo],
       icon: modoTransporteIcons[codigo],
-      data: IntlPercentil(quantidade / totalIdentificados)
+      data: quantidade.toString()
     }))
     .sort((a, b) => {
-      // Extrair valores numéricos dos percentuais para ordenação
-      const valueA = parseFloat(a.data.replace(',', '.').replace('%', ''));
-      const valueB = parseFloat(b.data.replace(',', '.').replace('%', ''));
-      return valueB - valueA;
+      // Ordenar por valores numéricos
+      return parseInt(b.data) - parseInt(a.data);
     });
   
   // Calcular porcentagem de não identificados em relação ao total geral
