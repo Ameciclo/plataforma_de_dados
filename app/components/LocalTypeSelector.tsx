@@ -7,7 +7,7 @@ interface LocalTypeSelectorProps {
 
 export const LocalTypeSelector = ({ selectedType, onChange }: LocalTypeSelectorProps) => {
   return (
-    <div className="mx-auto container my-8">
+    <div className="mx-auto container my-4">
       <div className="flex justify-center space-x-4">
         <button 
           className={`px-6 py-2 rounded-lg font-medium transition-colors duration-200 ${

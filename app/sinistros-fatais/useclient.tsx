@@ -75,17 +75,17 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
 
   return (
     <>
-      {/* Seletor de tipo de local */}
-      <LocalTypeSelector 
-        selectedType={tipoLocal} 
-        onChange={handleTipoLocalChange} 
-      />
 
       {/* Estatísticas gerais */}
       <StatisticsBox
         title="Mortes no Trânsito"
         subtitle={`Dados do DATASUS - RMR (por ${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
+      />
+      {/* Seletor de tipo de local */}
+      <LocalTypeSelector 
+        selectedType={tipoLocal} 
+        onChange={handleTipoLocalChange} 
       />
 
       {/* Caixas de explicação */}
