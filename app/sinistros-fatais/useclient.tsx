@@ -60,7 +60,31 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
         const response = await fetch(url);
         const data = await response.json();
         console.log("Dados de modo de transporte recebidos:", data);
-        setModoTransporteData(data);
+        
+        // Verificar se os dados estão vazios ou em formato incorreto
+        if (!data || !data.resumo) {
+          console.error("Dados de modo de transporte inválidos ou vazios:", data);
+          // Criar dados de exemplo para teste se necessário
+          if (process.env.NODE_ENV === 'development') {
+            const dadosExemplo = {
+              resumo: {
+                porModoTransporte: {
+                  "V01": 10,  // Pedestres
+                  "V11": 5,   // Ciclistas
+                  "V21": 15,  // Motociclistas
+                  "V41": 8,   // Ocupantes de automóvel
+                  "V71": 3,   // Ocupantes de ônibus
+                  "V51": 2    // Outros veículos
+                }
+              }
+            };
+            setModoTransporteData(dadosExemplo);
+          } else {
+            setModoTransporteData(data);
+          }
+        } else {
+          setModoTransporteData(data);
+        }
       } catch (error) {
         console.error("Erro ao buscar dados de modo de transporte:", error);
       } finally {
