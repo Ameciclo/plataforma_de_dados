@@ -16,6 +16,8 @@ const InfoCard = ({ label, data, icon }) => {
     ? icon 
     : `/icons/transport/${icon}.svg`;
 
+    console.log(iconPath)
+
   return (
     <div
       key={label}

@@ -42,47 +42,47 @@ export const CardsData = (summaryData) => {
   return [
     {
       label: "Mulheres",
-      icon: "women",
+      icon: "/icons/contagens/women.svg",
       data: IntlPercentil(total_women / total_cyclists),
     },
     {
       label: "Crianças e Adolescentes",
-      icon: "children",
+      icon: "/icons/contagens/children.svg",
       data: IntlPercentil(total_juveniles / total_cyclists),
     },
     {
       label: "Carona",
-      icon: "ride",
+      icon: "/icons/contagens/ride.svg",
       data: IntlPercentil(total_ride / total_cyclists),
     },
     {
       label: "Capacete",
-      icon: "helmet",
+      icon: "/icons/contagens/helmet.svg",
       data: IntlPercentil(total_helmet / total_cyclists),
     },
     {
       label: "Serviço",
-      icon: "service",
+      icon: "/icons/contagens/service.svg",
       data: IntlPercentil(total_service / total_cyclists),
     },
     {
       label: "Cargueira",
-      icon: "cargo",
+      icon: "/icons/contagens/cargo.svg",
       data: IntlPercentil(total_cargo / total_cyclists),
     },
     {
       label: "Compartilhada",
-      icon: "shared_bike",
+      icon: "/icons/contagens/shared_bike.svg",
       data: IntlPercentil(total_shared_bike / total_cyclists),
     },
     {
       label: "Calçada",
-      icon: "sidewalk", //CRIAR!
+      icon: "/icons/contagens/sidewalk", //CRIAR!
       data: IntlPercentil(total_sidewalk / total_cyclists),
     },
     {
       label: "Contramão",
-      icon: "wrong_way",
+      icon: "/icons/contagens/wrong_way.svg",
       data: IntlPercentil(total_wrong_way / total_cyclists),
     },
   ];

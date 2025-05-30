@@ -249,9 +249,9 @@ export function getModoTransporteCards(filtrosData) {
       
       // Distribuição aproximada baseada em estatísticas típicas
       dadosBrutos["V0"] = Math.round(totalOutros * 0.3); // 30% pedestres
+      dadosBrutos["V1"] = Math.round(totalOutros * 0.05); // 5% ciclistas
       dadosBrutos["V2"] = Math.round(totalOutros * 0.4); // 40% motociclistas
       dadosBrutos["V4"] = Math.round(totalOutros * 0.2); // 20% automóveis
-      dadosBrutos["V1"] = Math.round(totalOutros * 0.05); // 5% ciclistas
       dadosBrutos["V7"] = Math.round(totalOutros * 0.05); // 5% ônibus
     }
   }
