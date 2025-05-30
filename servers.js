@@ -28,3 +28,6 @@ export const SINISTROS_STREETS_SUMMARY_DATA =`http://localhost:8080/traffic-cras
 export const DATASUS_SUMMARY_DATA =`http://localhost:8080/datasus-deaths/summary`
 export const DATASUS_CITIES_BY_YEAR_DATA =`http://localhost:8080/datasus-deaths/cities-by-year`
 export const DATASUS_FILTROS_DATA =`http://localhost:8080/datasus-deaths/filtros`
+
+// Endpoint do Strapi para dados das plataformas
+export const STRAPI_PLATAFORMAS_DATA = `https://do.strapi.ameciclo.org/api/plataformas-de-dados?populate=cover,explanationbox`
