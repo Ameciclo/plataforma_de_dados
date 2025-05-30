@@ -97,32 +97,61 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null, showAl
   }];
 }
 
-// Configuração para os filtros avançados (a ser implementado posteriormente)
-export const filterOptions = {
-  sexo: [
-    { value: "", label: "Todos" },
-    { value: "1", label: "Masculino" },
-    { value: "2", label: "Feminino" }
-  ],
-  racacor: [
-    { value: "", label: "Todas" },
-    { value: "1", label: "Branca" },
-    { value: "2", label: "Preta" },
-    { value: "4", label: "Parda" }
-  ],
-  modoTransporte: [
-    { value: "", label: "Todos" },
-    { value: "V0", label: "Pedestre" },
-    { value: "V1", label: "Ciclista" },
-    { value: "V2", label: "Motociclista" },
-    { value: "V4", label: "Ocupante de automóvel" }
-  ],
-  faixaEtaria: [
-    { value: "", label: "Todas" },
-    { value: "0-19", label: "0 a 19 anos" },
-    { value: "20-29", label: "20 a 29 anos" },
-    { value: "30-39", label: "30 a 39 anos" },
-    { value: "40-59", label: "40 a 59 anos" },
-    { value: "60+", label: "60 anos ou mais" }
-  ]
+// Mapeamento de códigos de modo de transporte para nomes legíveis
+export const modoTransporteLabels = {
+  "V0": "Pedestres",
+  "V1": "Ciclistas",
+  "V2": "Motociclistas",
+  "V3": "Ocupantes de triciclo",
+  "V4": "Ocupantes de automóvel",
+  "V5": "Ocupantes de caminhonete",
+  "V6": "Ocupantes de veículo pesado",
+  "V7": "Ocupantes de ônibus",
+  "V8": "Outros modos",
+  "V9": "Não especificado"
 };
+
+// Ícones para cada modo de transporte (usando os ícones existentes)
+export const modoTransporteIcons = {
+  "V0": "pedestrian",
+  "V1": "bicycle",
+  "V2": "motorcycle",
+  "V3": "tricycle",
+  "V4": "car",
+  "V5": "pickup",
+  "V6": "truck",
+  "V7": "bus",
+  "V8": "other_vehicle",
+  "V9": "unknown"
+};
+
+// Função para formatar os dados de mortes por modo de transporte
+export function getModoTransporteCards(filtrosData) {
+  if (!filtrosData || !filtrosData.resumo || !filtrosData.resumo.porModoTransporte) {
+    console.log("Dados de modo de transporte inválidos:", filtrosData);
+    return [];
+  }
+  
+  const { porModoTransporte } = filtrosData.resumo;
+  const totalGeral = filtrosData.totalGeral || 0;
+  
+  if (totalGeral === 0) {
+    console.log("Total geral é zero, não há dados para mostrar");
+    return [];
+  }
+  
+  console.log("Processando dados de modo de transporte:", porModoTransporte);
+  
+  // Usar ícones existentes do contagens para evitar criar novos
+  return Object.entries(porModoTransporte).map(([modo, quantidade]) => {
+    // Extrair o código do modo (V0, V1, etc.)
+    const codigoModo = modo.split(' ')[0];
+    const label = modoTransporteLabels[codigoModo] || modo;
+    
+    return {
+      label: label,
+      icon: "women", // Usando ícones existentes
+      data: IntlPercentil(quantidade / totalGeral)
+    };
+  });
+}

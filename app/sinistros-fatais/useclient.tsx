@@ -3,19 +3,22 @@ import React, { useState, useEffect } from "react";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
+import { InfoCards } from "../components/InfoCards";
 import LineChart from "../components/Charts/LineChart";
 import { YearSelector } from "../components/YearSelector";
 import { LocalTypeSelector } from "../components/LocalTypeSelector";
 import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
-import { getGeneralStatistics, getCityCardsByYear, getYearlyChartData } from "./configuration";
-import { DATASUS_CITIES_BY_YEAR_DATA } from "../../servers";
+import { getGeneralStatistics, getCityCardsByYear, getYearlyChartData, getModoTransporteCards } from "./configuration";
+import { DATASUS_CITIES_BY_YEAR_DATA, DATASUS_FILTROS_DATA } from "../../servers";
 
 export default function SinistrosFataisClientSide({ summaryData, citiesByYearData: initialCitiesByYearData, pageData }) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
   const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(2611606); // ID do Recife
   const [citiesByYearData, setCitiesByYearData] = useState(initialCitiesByYearData);
   const [showAllCities, setShowAllCities] = useState(false);
+  const [modoTransporteData, setModoTransporteData] = useState(null);
+  const [isLoadingModoTransporte, setIsLoadingModoTransporte] = useState(false);
   
   // Determinar o último ano disponível nos dados
   useEffect(() => {
@@ -39,6 +42,29 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
     fetchCitiesByYearData();
   }, [tipoLocal]);
 
+  // Buscar dados de modo de transporte quando a cidade, tipo de local ou ano mudar
+  useEffect(() => {
+    const fetchModoTransporteData = async () => {
+      if (!selectedCity || !selectedYear) return;
+      
+      setIsLoadingModoTransporte(true);
+      try {
+        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${selectedYear}`;
+        console.log("Buscando dados de modo de transporte:", url);
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log("Dados de modo de transporte recebidos:", data);
+        setModoTransporteData(data);
+      } catch (error) {
+        console.error("Erro ao buscar dados de modo de transporte:", error);
+      } finally {
+        setIsLoadingModoTransporte(false);
+      }
+    };
+
+    fetchModoTransporteData();
+  }, [selectedCity, tipoLocal, selectedYear]);
+
   // Alternar entre local de ocorrência e residência
   const handleTipoLocalChange = (tipo) => {
     setTipoLocal(tipo);
@@ -46,7 +72,7 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
 
   // Selecionar cidade
   const handleCityChange = (cityId) => {
-    setSelectedCity(cityId === selectedCity ? null : cityId);
+    setSelectedCity(cityId);
     setShowAllCities(false);
   };
 
@@ -58,7 +84,6 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
   // Alternar entre mostrar todas as cidades ou apenas RMR
   const toggleShowAllCities = () => {
     setShowAllCities(!showAllCities);
-    setSelectedCity(null);
   };
 
   // Caixas de explicação padrão caso não venham do Strapi
@@ -73,19 +98,24 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
     }
   ];
 
+  // Obter o nome da cidade selecionada
+  const selectedCityName = selectedCity 
+    ? citiesByYearData?.cidades?.find(c => c.id === selectedCity)?.nome || "Cidade selecionada"
+    : "RMR";
+
   return (
     <>
+      {/* Seletor de tipo de local */}
+      <LocalTypeSelector 
+        selectedType={tipoLocal} 
+        onChange={handleTipoLocalChange} 
+      />
 
       {/* Estatísticas gerais */}
       <StatisticsBox
         title="Mortes no Trânsito"
         subtitle={`Dados do DATASUS - RMR (por ${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
-      />
-      {/* Seletor de tipo de local */}
-      <LocalTypeSelector 
-        selectedType={tipoLocal} 
-        onChange={handleTipoLocalChange} 
       />
 
       {/* Caixas de explicação */}
@@ -162,6 +192,26 @@ export default function SinistrosFataisClientSide({ summaryData, citiesByYearDat
           }}
         />
       </div>
+
+      {/* Mortes por modo de transporte */}
+      {selectedCity && selectedYear && (
+        <div className="mx-auto container my-12">
+          <h2 className="text-3xl font-bold text-center mb-4">
+            Mortes por Modo de Transporte em {selectedCityName} - {selectedYear}
+            <div className="text-xl font-normal mt-2">
+              ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
+            </div>
+          </h2>
+          
+          {isLoadingModoTransporte ? (
+            <div className="text-center py-8">Carregando dados...</div>
+          ) : modoTransporteData ? (
+            <InfoCards cards={getModoTransporteCards(modoTransporteData)} />
+          ) : (
+            <div className="text-center py-8">Nenhum dado disponível para esta cidade no ano selecionado.</div>
+          )}
+        </div>
+      )}
     </>
   );
 }
