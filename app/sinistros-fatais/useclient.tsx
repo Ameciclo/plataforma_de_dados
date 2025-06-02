@@ -13,6 +13,7 @@ import {
   getCityCardsByYear,
   getYearlyChartData,
   getModoTransporteCards,
+  getPerfilSocioeconomico,
 } from "./configuration";
 import { CardsSession } from "../components/CardsSession";
 import {
@@ -155,6 +156,23 @@ export default function SinistrosFataisClientSide({
   const modoTransporteProcessado = modoTransporteData
     ? getModoTransporteCards(modoTransporteData)
     : null;
+    
+  // Estado para o modo de transporte selecionado
+  const [selectedModoTransporte, setSelectedModoTransporte] = useState(null);
+  
+  // Obter perfil socioeconômico
+  const perfilSocioeconomico = modoTransporteData 
+    ? getPerfilSocioeconomico(modoTransporteData, selectedModoTransporte)
+    : null;
+
+  // Função para alternar a seleção do modo de transporte
+  const handleModoTransporteClick = (codigo) => {
+    if (selectedModoTransporte === codigo) {
+      setSelectedModoTransporte(null); // Desselecionar se já estiver selecionado
+    } else {
+      setSelectedModoTransporte(codigo); // Selecionar o novo modo
+    }
+  };
 
   return (
     <>
@@ -282,12 +300,80 @@ export default function SinistrosFataisClientSide({
               )
             </h3>
 
-            <InfoCards cards={modoTransporteProcessado.cards} />
+            <InfoCards 
+              cards={modoTransporteProcessado.cards} 
+              selected={selectedModoTransporte}
+              options={{
+                type: "selectable",
+                changeFunction: handleModoTransporteClick,
+              }}
+            />
 
             {modoTransporteProcessado.infoNaoIdentificados.texto && (
               <p className="text-center text-gray-600 mt-4">
                 {modoTransporteProcessado.infoNaoIdentificados.texto}
               </p>
+            )}
+            
+            {/* Perfil socioeconômico */}
+            {perfilSocioeconomico && (
+              <div className="mt-8 p-6 bg-gray-50 rounded-lg">
+                <h3 className="text-xl font-bold mb-4">{perfilSocioeconomico.titulo}</h3>
+                
+                {/* Sexo */}
+                {Object.keys(perfilSocioeconomico.sexo).length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold mb-2">Sexo</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {Object.entries(perfilSocioeconomico.sexo).map(([sexo, quantidade]) => (
+                        <div key={sexo} className="bg-white p-3 rounded shadow-sm">
+                          <div className="text-lg font-bold">{quantidade}</div>
+                          <div className="text-sm text-gray-600">{sexo}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Raça/Cor */}
+                {Object.keys(perfilSocioeconomico.racaCor).length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold mb-2">Raça/Cor</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {Object.entries(perfilSocioeconomico.racaCor).map(([racaCor, quantidade]) => (
+                        <div key={racaCor} className="bg-white p-3 rounded shadow-sm">
+                          <div className="text-lg font-bold">{quantidade}</div>
+                          <div className="text-sm text-gray-600">{racaCor}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Faixa Etária */}
+                {Object.keys(perfilSocioeconomico.faixaEtaria).length > 0 && (
+                  <div>
+                    <h4 className="text-lg font-semibold mb-2">Faixa Etária</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {Object.entries(perfilSocioeconomico.faixaEtaria)
+                        .sort(([a], [b]) => {
+                          // Ordenar faixas etárias
+                          const idades = ["0 a 4 anos", "5 a 9 anos", "10 a 14 anos", "15 a 19 anos", 
+                                         "20 a 29 anos", "30 a 39 anos", "40 a 49 anos", "50 a 59 anos", 
+                                         "60 a 69 anos", "70 a 79 anos", "80 anos ou mais", "Não informado"];
+                          return idades.indexOf(a) - idades.indexOf(b);
+                        })
+                        .map(([faixaEtaria, quantidade]) => (
+                          <div key={faixaEtaria} className="bg-white p-3 rounded shadow-sm">
+                            <div className="text-lg font-bold">{quantidade}</div>
+                            <div className="text-sm text-gray-600">{faixaEtaria}</div>
+                          </div>
+                        ))
+                      }
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}

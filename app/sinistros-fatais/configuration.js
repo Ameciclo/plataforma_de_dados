@@ -190,7 +190,7 @@ export function getModoTransporteCards(filtrosData) {
   if (totalNaoIdentificados > 0) {
     cards.push({
       label: "Não identificado",
-      icon: "/icons/sinistros-fatais/naoespecificado.svg", // Usando o ícone de outros para não identificados
+      icon: "/icons/sinistros-fatais/outros.svg", // Usando o ícone de outros para não identificados
       data: totalNaoIdentificados.toString(),
       codigo: "nao_identificado",
     });
@@ -232,4 +232,80 @@ export function getModoTransporteCards(filtrosData) {
   };
 
   return { cards, infoNaoIdentificados };
+}
+
+// Mapeamento de modos de transporte para códigos CID
+export const modoTransporteToCID = {
+  "V0": ["Pedestre"],
+  "V1": ["Ciclista"],
+  "V2": ["Motociclista"],
+  "V4": ["Ocupante de automóvel", "Ocupante de caminhonete"],
+  "V7": ["Ocupante de ônibus"],
+  "outros": ["Ocupante de triciclo", "Ocupante de veículo pesado", "Outros modos"]
+};
+
+// Função para obter o perfil socioeconômico por modo de transporte
+export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
+  if (!filtrosData || !filtrosData.resumo) {
+    return null;
+  }
+
+  // Se não tiver modo de transporte selecionado, retorna os dados gerais
+  if (!modoTransporte) {
+    return {
+      titulo: "Perfil geral",
+      sexo: filtrosData.resumo.porSexo || {},
+      racaCor: filtrosData.resumo.porRacaCor || {},
+      faixaEtaria: filtrosData.resumo.porFaixaEtaria || {}
+    };
+  }
+
+  // Se o modo de transporte for "nao_identificado", retorna null (não temos dados)
+  if (modoTransporte === "nao_identificado") {
+    return null;
+  }
+
+  // Filtrar os dados detalhados para o modo de transporte selecionado
+  const modosDesejados = modoTransporteToCID[modoTransporte] || [];
+  
+  if (!filtrosData.dados || !modosDesejados.length) {
+    return null;
+  }
+
+  // Filtrar os dados pelo modo de transporte
+  const dadosFiltrados = filtrosData.dados.filter(item => 
+    modosDesejados.includes(item.modoTransporte?.descricao)
+  );
+
+  if (!dadosFiltrados.length) {
+    return null;
+  }
+
+  // Processar dados por sexo
+  const porSexo = {};
+  dadosFiltrados.forEach(item => {
+    const sexo = item.sexo?.descricao || "Não informado";
+    porSexo[sexo] = (porSexo[sexo] || 0) + (item.total || 1);
+  });
+
+  // Processar dados por raça/cor
+  const porRacaCor = {};
+  dadosFiltrados.forEach(item => {
+    const racaCor = item.racacor?.descricao || "Não informado";
+    porRacaCor[racaCor] = (porRacaCor[racaCor] || 0) + (item.total || 1);
+  });
+
+  // Processar dados por faixa etária
+  const porFaixaEtaria = {};
+  dadosFiltrados.forEach(item => {
+    const faixaEtaria = item.faixaEtaria || "Não informado";
+    porFaixaEtaria[faixaEtaria] = (porFaixaEtaria[faixaEtaria] || 0) + (item.total || 1);
+  });
+
+  return {
+    titulo: `Perfil de ${modoTransporteLabels[modoTransporte]}`,
+    sexo: porSexo,
+    racaCor: porRacaCor,
+    faixaEtaria: porFaixaEtaria
+  };
 }
