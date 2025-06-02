@@ -317,62 +317,129 @@ export default function SinistrosFataisClientSide({
             
             {/* Perfil socioeconômico */}
             {perfilSocioeconomico && (
-              <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-                <h3 className="text-xl font-bold mb-4">{perfilSocioeconomico.titulo}</h3>
+              <div className="mt-8 p-6 bg-gray-50 rounded-lg shadow-md">
+                <h3 className="text-2xl font-bold mb-6 text-center">{perfilSocioeconomico.titulo}</h3>
                 
-                {/* Sexo */}
-                {Object.keys(perfilSocioeconomico.sexo).length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold mb-2">Sexo</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {Object.entries(perfilSocioeconomico.sexo).map(([sexo, quantidade]) => (
-                        <div key={sexo} className="bg-white p-3 rounded shadow-sm">
-                          <div className="text-lg font-bold">{quantidade}</div>
-                          <div className="text-sm text-gray-600">{sexo}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Raça/Cor */}
-                {Object.keys(perfilSocioeconomico.racaCor).length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold mb-2">Raça/Cor</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {Object.entries(perfilSocioeconomico.racaCor).map(([racaCor, quantidade]) => (
-                        <div key={racaCor} className="bg-white p-3 rounded shadow-sm">
-                          <div className="text-lg font-bold">{quantidade}</div>
-                          <div className="text-sm text-gray-600">{racaCor}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Faixa Etária */}
-                {Object.keys(perfilSocioeconomico.faixaEtaria).length > 0 && (
-                  <div>
-                    <h4 className="text-lg font-semibold mb-2">Faixa Etária</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      {Object.entries(perfilSocioeconomico.faixaEtaria)
-                        .sort(([a], [b]) => {
-                          // Ordenar faixas etárias
-                          const idades = ["0 a 4 anos", "5 a 9 anos", "10 a 14 anos", "15 a 19 anos", 
-                                         "20 a 29 anos", "30 a 39 anos", "40 a 49 anos", "50 a 59 anos", 
-                                         "60 a 69 anos", "70 a 79 anos", "80 anos ou mais", "Não informado"];
-                          return idades.indexOf(a) - idades.indexOf(b);
-                        })
-                        .map(([faixaEtaria, quantidade]) => (
-                          <div key={faixaEtaria} className="bg-white p-3 rounded shadow-sm">
-                            <div className="text-lg font-bold">{quantidade}</div>
-                            <div className="text-sm text-gray-600">{faixaEtaria}</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Sexo */}
+                  {perfilSocioeconomico.sexo.total > 0 && (
+                    <div className="bg-white p-4 rounded-lg shadow">
+                      <h4 className="text-lg font-semibold mb-3 text-center">Sexo</h4>
+                      
+                      {/* Gráfico de barras 100% para sexo */}
+                      <div className="flex h-8 mb-3 rounded-md overflow-hidden">
+                        {perfilSocioeconomico.sexo.grafico.series[0].data.map((item, index) => (
+                          <div 
+                            key={item.name}
+                            className="h-full flex items-center justify-center text-white text-xs font-bold"
+                            style={{
+                              width: `${item.percentage}%`,
+                              backgroundColor: ['#1f77b4', '#ff7f0e', '#2ca02c'][index % 3],
+                              minWidth: item.percentage > 3 ? 'auto' : '0'
+                            }}
+                            title={`${item.name}: ${item.y} (${item.percentage.toFixed(1)}%)`}
+                          >
+                            {item.percentage > 10 ? `${item.percentage.toFixed(0)}%` : ''}
                           </div>
-                        ))
-                      }
+                        ))}
+                      </div>
+                      
+                      {/* Legenda */}
+                      <div className="grid grid-cols-1 gap-2">
+                        {perfilSocioeconomico.sexo.grafico.series[0].data.map((item, index) => (
+                          <div key={item.name} className="flex items-center">
+                            <div 
+                              className="w-4 h-4 mr-2" 
+                              style={{ backgroundColor: ['#1f77b4', '#ff7f0e', '#2ca02c'][index % 3] }}
+                            ></div>
+                            <div className="text-sm flex-1">{item.name}</div>
+                            <div className="text-sm font-semibold">{item.y} ({item.percentage.toFixed(1)}%)</div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                  
+                  {/* Raça/Cor */}
+                  {perfilSocioeconomico.racaCor.total > 0 && (
+                    <div className="bg-white p-4 rounded-lg shadow">
+                      <h4 className="text-lg font-semibold mb-3 text-center">Raça/Cor</h4>
+                      
+                      {/* Gráfico de barras 100% para raça/cor */}
+                      <div className="flex h-8 mb-3 rounded-md overflow-hidden">
+                        {perfilSocioeconomico.racaCor.grafico.series[0].data.map((item, index) => (
+                          <div 
+                            key={item.name}
+                            className="h-full flex items-center justify-center text-white text-xs font-bold"
+                            style={{
+                              width: `${item.percentage}%`,
+                              backgroundColor: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'][index % 6],
+                              minWidth: item.percentage > 3 ? 'auto' : '0'
+                            }}
+                            title={`${item.name}: ${item.y} (${item.percentage.toFixed(1)}%)`}
+                          >
+                            {item.percentage > 10 ? `${item.percentage.toFixed(0)}%` : ''}
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Legenda */}
+                      <div className="grid grid-cols-1 gap-2">
+                        {perfilSocioeconomico.racaCor.grafico.series[0].data.map((item, index) => (
+                          <div key={item.name} className="flex items-center">
+                            <div 
+                              className="w-4 h-4 mr-2" 
+                              style={{ backgroundColor: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'][index % 6] }}
+                            ></div>
+                            <div className="text-sm flex-1">{item.name}</div>
+                            <div className="text-sm font-semibold">{item.y} ({item.percentage.toFixed(1)}%)</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Faixa Etária */}
+                  {perfilSocioeconomico.faixaEtaria.total > 0 && (
+                    <div className="bg-white p-4 rounded-lg shadow">
+                      <h4 className="text-lg font-semibold mb-3 text-center">Faixa Etária</h4>
+                      
+                      {/* Gráfico de barras 100% para faixa etária */}
+                      <div className="flex h-8 mb-3 rounded-md overflow-hidden">
+                        {perfilSocioeconomico.faixaEtaria.grafico.series[0].data.map((item, index) => (
+                          <div 
+                            key={item.name}
+                            className="h-full flex items-center justify-center text-white text-xs font-bold"
+                            style={{
+                              width: `${item.percentage}%`,
+                              backgroundColor: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', 
+                                               '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b'][index % 11],
+                              minWidth: item.percentage > 3 ? 'auto' : '0'
+                            }}
+                            title={`${item.name}: ${item.y} (${item.percentage.toFixed(1)}%)`}
+                          >
+                            {item.percentage > 10 ? `${item.percentage.toFixed(0)}%` : ''}
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Legenda */}
+                      <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
+                        {perfilSocioeconomico.faixaEtaria.grafico.series[0].data.map((item, index) => (
+                          <div key={item.name} className="flex items-center">
+                            <div 
+                              className="w-4 h-4 mr-2" 
+                              style={{ backgroundColor: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', 
+                                                        '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b'][index % 11] }}
+                            ></div>
+                            <div className="text-sm flex-1">{item.name}</div>
+                            <div className="text-sm font-semibold">{item.y} ({item.percentage.toFixed(1)}%)</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

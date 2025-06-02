@@ -244,68 +244,118 @@ export const modoTransporteToCID = {
   "outros": ["Ocupante de triciclo", "Ocupante de veículo pesado", "Outros modos"]
 };
 
+// Cores para os gráficos
+export const coresPerfil = {
+  sexo: ['#1f77b4', '#ff7f0e', '#2ca02c'],
+  racaCor: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'],
+  faixaEtaria: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', 
+                '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b']
+};
+
 // Função para obter o perfil socioeconômico por modo de transporte
 export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
   if (!filtrosData || !filtrosData.resumo) {
     return null;
   }
 
+  // Dados brutos
+  let dadosBrutos = {
+    sexo: {},
+    racaCor: {},
+    faixaEtaria: {}
+  };
+  
   // Se não tiver modo de transporte selecionado, retorna os dados gerais
   if (!modoTransporte) {
-    return {
-      titulo: "Perfil geral",
+    dadosBrutos = {
       sexo: filtrosData.resumo.porSexo || {},
       racaCor: filtrosData.resumo.porRacaCor || {},
       faixaEtaria: filtrosData.resumo.porFaixaEtaria || {}
     };
+  } else {
+    // Se o modo de transporte for "nao_identificado", retorna null (não temos dados)
+    if (modoTransporte === "nao_identificado") {
+      return null;
+    }
+
+    // Filtrar os dados detalhados para o modo de transporte selecionado
+    const modosDesejados = modoTransporteToCID[modoTransporte] || [];
+    
+    if (!filtrosData.dados || !modosDesejados.length) {
+      return null;
+    }
+
+    // Filtrar os dados pelo modo de transporte
+    const dadosFiltrados = filtrosData.dados.filter(item => 
+      modosDesejados.includes(item.modoTransporte?.descricao)
+    );
+
+    if (!dadosFiltrados.length) {
+      return null;
+    }
+
+    // Processar dados por sexo
+    dadosFiltrados.forEach(item => {
+      const sexo = item.sexo?.descricao || "Não informado";
+      dadosBrutos.sexo[sexo] = (dadosBrutos.sexo[sexo] || 0) + (item.total || 1);
+    });
+
+    // Processar dados por raça/cor
+    dadosFiltrados.forEach(item => {
+      const racaCor = item.racacor?.descricao || "Não informado";
+      dadosBrutos.racaCor[racaCor] = (dadosBrutos.racaCor[racaCor] || 0) + (item.total || 1);
+    });
+
+    // Processar dados por faixa etária
+    dadosFiltrados.forEach(item => {
+      const faixaEtaria = item.faixaEtaria || "Não informado";
+      dadosBrutos.faixaEtaria[faixaEtaria] = (dadosBrutos.faixaEtaria[faixaEtaria] || 0) + (item.total || 1);
+    });
   }
 
-  // Se o modo de transporte for "nao_identificado", retorna null (não temos dados)
-  if (modoTransporte === "nao_identificado") {
-    return null;
-  }
+  // Formatar dados para gráficos de barras 100%
+  const formatarParaGrafico = (dados) => {
+    const total = Object.values(dados).reduce((sum, val) => sum + val, 0);
+    
+    return {
+      dados,
+      total,
+      grafico: {
+        series: [{
+          data: Object.entries(dados).map(([categoria, valor]) => ({
+            name: categoria,
+            y: valor,
+            percentage: total > 0 ? (valor / total) * 100 : 0
+          }))
+        }]
+      }
+    };
+  };
 
-  // Filtrar os dados detalhados para o modo de transporte selecionado
-  const modosDesejados = modoTransporteToCID[modoTransporte] || [];
-  
-  if (!filtrosData.dados || !modosDesejados.length) {
-    return null;
-  }
+  // Ordenar faixas etárias
+  const ordenarFaixasEtarias = (dados) => {
+    const ordem = [
+      "0 a 4 anos", "5 a 9 anos", "10 a 14 anos", "15 a 19 anos",
+      "20 a 29 anos", "30 a 39 anos", "40 a 49 anos", "50 a 59 anos",
+      "60 a 69 anos", "70 a 79 anos", "80 anos ou mais", "Não informado"
+    ];
+    
+    return Object.fromEntries(
+      Object.entries(dados).sort(([a], [b]) => {
+        return ordem.indexOf(a) - ordem.indexOf(b);
+      })
+    );
+  };
 
-  // Filtrar os dados pelo modo de transporte
-  const dadosFiltrados = filtrosData.dados.filter(item => 
-    modosDesejados.includes(item.modoTransporte?.descricao)
-  );
-
-  if (!dadosFiltrados.length) {
-    return null;
-  }
-
-  // Processar dados por sexo
-  const porSexo = {};
-  dadosFiltrados.forEach(item => {
-    const sexo = item.sexo?.descricao || "Não informado";
-    porSexo[sexo] = (porSexo[sexo] || 0) + (item.total || 1);
-  });
-
-  // Processar dados por raça/cor
-  const porRacaCor = {};
-  dadosFiltrados.forEach(item => {
-    const racaCor = item.racacor?.descricao || "Não informado";
-    porRacaCor[racaCor] = (porRacaCor[racaCor] || 0) + (item.total || 1);
-  });
-
-  // Processar dados por faixa etária
-  const porFaixaEtaria = {};
-  dadosFiltrados.forEach(item => {
-    const faixaEtaria = item.faixaEtaria || "Não informado";
-    porFaixaEtaria[faixaEtaria] = (porFaixaEtaria[faixaEtaria] || 0) + (item.total || 1);
-  });
+  // Processar e formatar os dados
+  const sexoProcessado = formatarParaGrafico(dadosBrutos.sexo);
+  const racaCorProcessado = formatarParaGrafico(dadosBrutos.racaCor);
+  const faixaEtariaProcessado = formatarParaGrafico(ordenarFaixasEtarias(dadosBrutos.faixaEtaria));
 
   return {
-    titulo: `Perfil de ${modoTransporteLabels[modoTransporte]}`,
-    sexo: porSexo,
-    racaCor: porRacaCor,
-    faixaEtaria: porFaixaEtaria
+    titulo: modoTransporte ? `Perfil de ${modoTransporteLabels[modoTransporte]}` : "Perfil geral",
+    sexo: sexoProcessado,
+    racaCor: racaCorProcessado,
+    faixaEtaria: faixaEtariaProcessado
   };
 }
