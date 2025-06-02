@@ -148,10 +148,10 @@ export function getModoTransporteCards(filtrosData) {
       } else if (modo === "Ciclista") {
         dadosBrutos["V1"] = (dadosBrutos["V1"] || 0) + quantidade;
         totalIdentificados += quantidade;
-      } else if (modo === "Motociclista" || modo === "Ocupante de triciclo") {
+      } else if (modo === "Motociclista") {
         dadosBrutos["V2"] = (dadosBrutos["V2"] || 0) + quantidade;
         totalIdentificados += quantidade;
-      } else if (modo === "Ocupante de automóvel") {
+      } else if (modo === "Ocupante de automóvel" || modo === "Ocupante de caminhonete") {
         dadosBrutos["V4"] = (dadosBrutos["V4"] || 0) + quantidade;
         totalIdentificados += quantidade;
       } else if (modo === "Ocupante de ônibus") {
@@ -160,7 +160,7 @@ export function getModoTransporteCards(filtrosData) {
       } else if (modo === "Não especificado") {
         totalNaoIdentificados += quantidade;
       } else {
-        // Outros veículos (caminhonete, veículo pesado, outros modos)
+        // Outros veículos (triciclo, veículo pesado, aquáticos, aéreos e outros)
         dadosBrutos["outros"] = (dadosBrutos["outros"] || 0) + quantidade;
         totalIdentificados += quantidade;
       }
@@ -190,7 +190,7 @@ export function getModoTransporteCards(filtrosData) {
   if (totalNaoIdentificados > 0) {
     cards.push({
       label: "Não identificado",
-      icon: "/icons/sinistros-fatais/outros.svg", // Usando o ícone de outros para não identificados
+      icon: "/icons/sinistros-fatais/naoespecificado.svg", // Usando o ícone de outros para não identificados
       data: totalNaoIdentificados.toString(),
       codigo: "nao_identificado",
     });
