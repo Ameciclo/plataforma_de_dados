@@ -269,15 +269,18 @@ export default function SinistrosFataisClientSide({
 
       {/* Seletor de ano e cards de cidades */}
       <div className="mx-auto container my-12">
+        <h2 className="text-3xl font-bold text-center mb-4">
+          Mortes por Cidade
+        </h2>
+        <h3 className="text-xl text-center mb-8">
+          {selectedYear} ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
+        </h3>
+        
         {/* Cards de cidades */}
         <NumberCards
           cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
           data={{
-            title: `Mortes por Cidade em ${selectedYear || ""} (${
-              tipoLocal === "ocorrencia"
-                ? "Local de Ocorrência"
-                : "Local de Residência"
-            })`,
+            title: "",
             filters: [],
           }}
           selected={selectedCardCity}
@@ -312,8 +315,8 @@ export default function SinistrosFataisClientSide({
               {selectedCityName} - {selectedYear} (
               {tipoLocal === "ocorrencia"
                 ? "Local de Ocorrência"
-                : "Local de Residência"}
-              )
+                : "Local de Residência"
+              })
             </h3>
 
             <SelectableInfoCards
@@ -337,18 +340,16 @@ export default function SinistrosFataisClientSide({
             {/* Perfil socioeconômico */}
             {perfilSocioeconomico && (
               <div className="mt-8 p-6 bg-gray-50 rounded-lg shadow-md">
-                <h3 className="text-2xl font-bold mb-2 text-center">
+                <h2 className="text-3xl font-bold text-center mb-4">
                   {perfilSocioeconomico.titulo}
-                </h3>
-                <p className="text-center text-gray-600 mb-4">
+                </h2>
+                <h3 className="text-xl text-center mb-8">
                   {selectedCityName} - {selectedYear} (
                   {tipoLocal === "ocorrencia"
                     ? "Local de Ocorrência"
-                    : "Local de Residência"}
-                  )
-                </p>
-
-
+                    : "Local de Residência"
+                  })
+                </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Sexo */}
