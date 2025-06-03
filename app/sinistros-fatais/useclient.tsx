@@ -129,8 +129,11 @@ export default function SinistrosFataisClientSide({
 
   // Selecionar ano ou intervalo de anos
   const handleYearChange = (year, endYear = null) => {
-    setSelectedYear(year);
-    setSelectedEndYear(endYear);
+    // Garantir que pelo menos um ano esteja selecionado
+    if (year !== null) {
+      setSelectedYear(year);
+      setSelectedEndYear(endYear);
+    }
   };
 
   // Alternar entre mostrar todas as cidades ou apenas RMR

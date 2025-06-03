@@ -15,16 +15,24 @@ export const YearSelector = ({
 }: YearSelectorProps) => {
   
   const handleYearClick = (year: number) => {
-    // Se não há ano selecionado ou já temos um intervalo, começar nova seleção
-    if (!selectedYear || selectedEndYear) {
+    // Se não há ano selecionado, selecionar este ano
+    if (!selectedYear) {
+      onChange(year, null);
+      return;
+    }
+    
+    // Se já temos um intervalo selecionado
+    if (selectedEndYear) {
+      // Começar nova seleção
       onChange(year, null);
       return;
     }
     
     // Se já temos um ano inicial selecionado
     if (year === selectedYear) {
-      // Clicou no mesmo ano, desseleciona
-      onChange(null, null);
+      // Clicou no mesmo ano, mas não permitimos desselecionar
+      // então mantemos o mesmo ano selecionado
+      return;
     } else if (year < selectedYear) {
       // Clicou em um ano anterior ao selecionado, inverte a ordem
       onChange(year, selectedYear);
@@ -46,9 +54,7 @@ export const YearSelector = ({
       <p className="mb-2 text-sm text-gray-600">
         {selectedEndYear 
           ? "Clique em um ano para iniciar nova seleção" 
-          : selectedYear 
-            ? "Clique em outro ano para selecionar um intervalo" 
-            : "Clique em um ano para selecionar"}
+          : "Clique em outro ano para selecionar um intervalo"}
       </p>
       <div className="flex overflow-x-auto space-x-2">
         {years.map(year => (
@@ -57,7 +63,7 @@ export const YearSelector = ({
             className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
               isInRange(year)
                 ? "bg-ameciclo text-white" 
-                : "bg-gray-200 text-gray-800 hover:bg-red-600 hover:text-white"
+                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
             }`}
             onClick={() => handleYearClick(year)}
           >
@@ -65,13 +71,11 @@ export const YearSelector = ({
           </button>
         ))}
       </div>
-      {selectedYear && (
-        <div className="mt-2 text-sm">
-          {selectedEndYear 
-            ? `Período selecionado: ${selectedYear} a ${selectedEndYear}` 
-            : `Ano selecionado: ${selectedYear}`}
-        </div>
-      )}
+      <div className="mt-2 text-sm">
+        {selectedEndYear 
+          ? `Período selecionado: ${selectedYear} a ${selectedEndYear}` 
+          : `Ano selecionado: ${selectedYear}`}
+      </div>
     </div>
   );
 };
