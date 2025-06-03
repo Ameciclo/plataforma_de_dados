@@ -1,91 +1,83 @@
+"use client";
+
 import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
-import { Map } from "../components/Maps/Map";
-import ObservatorioClientSide from "./useclient";
-import { CardsData, layersConf, vehicleCards } from "./configuration";
+import { NumberCards } from "../components/NumberCards";
+import ViasInsegurasContent from "./useclient";
 import {
   IntlNumber1Digit,
-  IntlNumber3Digit,
-  IntlNumberMax1Digit,
   IntlNumberNoDigit,
-  IntlPercentil,
 } from "../../utils";
 import {
-  SINISTROS_GEOJSON_DATA,
   SINISTROS_STREETS_SUMMARY_DATA,
-  SINISTROS_SUMMARY_DATA,
-  SINISTROS_VEHICLES_DATA,
 } from "../../servers";
-import { sinistros_page_data } from "../../public/dbs/todb_observatorio";
-import { InfoCards } from "../components/InfoCards";
 
-const fetchData = async () => {
-  const summaryRes = await fetch(SINISTROS_SUMMARY_DATA, {
-    cache: "no-cache",
-  });
-  const summary = await summaryRes.json();
-
-  const vehiclesRes = await fetch(SINISTROS_VEHICLES_DATA, {
-    cache: "no-cache",
-  });
-  const vehicles = await vehiclesRes.json();
-
-  const geojsonRes = await fetch(SINISTROS_GEOJSON_DATA, {
-    cache: "no-cache",
-  });
-  const geojson = await geojsonRes.json();
-
-  const streetsRes = await fetch(SINISTROS_STREETS_SUMMARY_DATA, {
-    cache: "no-cache",
-  });
-  const streets = await streetsRes.json();
-
-  return { summary, vehicles, geojson, streets };
+// Dados da página
+const viasInseguras_page_data = {
+  title: "Vias Inseguras",
+  cover_image_url: "/images/covers/vias-inseguras.jpg",
 };
 
-export default async function ObservatorioSinistrosPage() {
-  const { summary, vehicles, geojson, streets } = await fetchData();
+export default function ViasInsegurasPage() {
+  const [streets, setStreets] = React.useState([]);
+  
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const streetsRes = await fetch(SINISTROS_STREETS_SUMMARY_DATA, {
+          cache: "no-cache",
+        });
+        const streetsData = await streetsRes.json();
+        setStreets(streetsData);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
+    }
+    
+    fetchData();
+  }, []);
 
-  const cards = CardsData(vehicles, summary.totalVitimas);
+  if (streets.length === 0) {
+    return <div className="container mx-auto p-8 text-center">Carregando dados...</div>;
+  }
 
   return (
     <>
       <NavCover
-        title={sinistros_page_data.title}
-        src={sinistros_page_data.cover_image_url}
+        title={viasInseguras_page_data.title}
+        src={viasInseguras_page_data.cover_image_url}
       />
       <Breadcrumb
-        label="Observatório de Sinistros"
-        slug="/observatorio-sinistros"
-        routes={["/", "/observatorio-sinistros"]}
+        label="Vias Inseguras"
+        slug="/vias-inseguras"
+        routes={["/", "/vias-inseguras"]}
       />
       <StatisticsBox
-        title="Sinistros de Trânsito"
-        subtitle="Dados da CTTU - Recife (2016–2024)"
+        title="Vias Inseguras"
+        subtitle="Dados da CTTU - Recife"
         boxes={[
           {
-            title: "Total de sinistros",
-            value: IntlNumberNoDigit(summary.totalSinistros),
+            title: "Total de Vias Analisadas",
+            value: IntlNumberNoDigit(streets.length),
             unit: "",
           },
           {
-            title: "Total Vítimas (Fatais e Não)",
-            value: IntlNumberNoDigit(summary.totalVitimas),
-            unit: "",
-          },
-          // { title: "Fatais", value: summary.totalVitimasFatais, unit: "" },
-          {
-            title: "Vítimas em 2024//",
-            value: IntlNumberNoDigit(summary.mediaAnual),
+            title: "Total de Sinistros",
+            value: IntlNumberNoDigit(streets.reduce((sum, street) => sum + (street.totalSinistros || 0), 0)),
             unit: "",
           },
           {
-            title: "Crescimento com relação a 2023",
-            value: IntlPercentil(summary.crescimentoAno / 100),
-            unit: "%",
+            title: "Sinistros Fatais",
+            value: IntlNumberNoDigit(streets.reduce((sum, street) => sum + (street.totalFatais || 0), 0)),
+            unit: "",
+          },
+          {
+            title: "Média de Sinistros por Via",
+            value: IntlNumber1Digit(streets.reduce((sum, street) => sum + (street.totalSinistros || 0), 0) / streets.length),
+            unit: "",
           },
         ]}
       />
@@ -94,18 +86,46 @@ export default async function ObservatorioSinistrosPage() {
           {
             title: "O que é?",
             description:
-              "Distribuição espacial dos sinistros ao longo do tempo.",
+              "Análise das vias com maior incidência de sinistros de trânsito na cidade.",
           },
           {
             title: "Que dados são esses?",
-            description: "Quantidade de sinistros por categoria de veículo.",
+            description: "Dados de sinistros por via fornecidos pela CTTU (Companhia de Trânsito e Transporte Urbano).",
+          },
+          {
+            title: "Como interpretar?",
+            description: "As vias são classificadas pelo número total de sinistros registrados. Cores mais intensas no mapa indicam maior concentração de ocorrências.",
           },
         ]}
       />
-      <InfoCards cards={cards} />s
-      {/*      <Map layerData={geojson} layersConf={layersConf} />
-       */}
-      <ObservatorioClientSide streets={streets} />
+      
+      {/* Top 5 vias mais perigosas */}
+      <div className="mx-auto container my-12">
+        <h2 className="text-3xl font-bold text-center mb-8">
+          Vias Mais Perigosas
+        </h2>
+        <NumberCards
+          cards={streets
+            .sort((a, b) => b.totalSinistros - a.totalSinistros)
+            .slice(0, 5)
+            .map(street => ({
+              id: street.streetId,
+              title: street.name,
+              value: street.totalSinistros,
+              unit: "sinistros",
+            }))}
+          data={{
+            title: "",
+            filters: [],
+          }}
+          options={{
+            type: "default",
+          }}
+        />
+      </div>
+      
+      {/* Componente client-side com mapa e seleção por ano */}
+      <ViasInsegurasContent streets={streets} />
     </>
   );
 }

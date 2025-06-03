@@ -1,4 +1,4 @@
-// app/observatorio-sinistros/configuration.js
+// app/vias-inseguras/configuration.js
 import { IntlNumber, IntlPercentil } from "../../utils";
 
 /**
@@ -29,30 +29,91 @@ export function vehicleCards(vehicles) {
 }
 
 /**
- * Configuração de camadas para o mapa
+ * Configuração de camadas para o mapa de vias inseguras
  */
 /** @type {import('react-map-gl').LayerProps[]} */
 export const layersConf = [
   {
-    id: "Sinistros",
-    type: "circle", // literal string para LayerProps
+    id: "vias-inseguras",
+    type: "line",
     paint: {
-      // raio baseado em número de vítimas
-      "circle-radius": [
+      "line-color": [
         "interpolate",
         ["linear"],
-        ["get", "vitimas"],
-        0,
-        4,
-        5,
-        12,
+        ["get", "sinistros"],
+        0, "#FFF176",
+        10, "#FFA726",
+        20, "#F57F17",
+        50, "#E53935",
+        100, "#B71C1C"
       ],
-      "circle-color": "#E02F31",
-      "circle-opacity": 0.6,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["get", "sinistros"],
+        0, 2,
+        100, 8
+      ],
+      "line-opacity": 0.8
     },
   },
 ];
 
+/**
+ * Gera cards com estatísticas de vias inseguras
+ */
+export const getViasInsegurasStats = (streetsData) => {
+  if (!streetsData || streetsData.length === 0) return [];
+  
+  // Ordenar vias pelo número de sinistros (decrescente)
+  const sortedStreets = [...streetsData].sort((a, b) => 
+    b.totalSinistros - a.totalSinistros
+  );
+  
+  // Pegar as 5 vias mais perigosas
+  const topStreets = sortedStreets.slice(0, 5);
+  
+  // Total de sinistros em todas as vias
+  const totalSinistros = streetsData.reduce((sum, street) => 
+    sum + (street.totalSinistros || 0), 0
+  );
+  
+  // Total de sinistros fatais
+  const totalFatais = streetsData.reduce((sum, street) => 
+    sum + (street.totalFatais || 0), 0
+  );
+  
+  return [
+    {
+      id: "total-sinistros",
+      title: "Total de Sinistros",
+      value: totalSinistros,
+      unit: "",
+    },
+    {
+      id: "total-fatais",
+      title: "Sinistros Fatais",
+      value: totalFatais,
+      unit: "",
+    },
+    {
+      id: "via-mais-perigosa",
+      title: "Via Mais Perigosa",
+      value: topStreets[0]?.name || "N/A",
+      unit: `(${topStreets[0]?.totalSinistros || 0} sinistros)`,
+    },
+    {
+      id: "percentual-fatais",
+      title: "% Sinistros Fatais",
+      value: totalSinistros > 0 ? (totalFatais / totalSinistros * 100).toFixed(1) : "0",
+      unit: "%",
+    },
+  ];
+};
+
+/**
+ * Gera cards com dados de tipos de veículos
+ */
 export const CardsData = (summaryData, total) => {
   const {
     auto,
