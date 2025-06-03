@@ -273,9 +273,20 @@ export default function SinistrosFataisClientSide({
           Mortes por Cidade
         </h2>
         <h3 className="text-xl text-center mb-8">
-          {selectedYear} ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
+          {selectedYear} (
+          {tipoLocal === "ocorrencia"
+            ? "Local de Ocorrência"
+            : "Local de Residência"}
+          )
         </h3>
-        
+        {/* Timeline/Seletor de ano */}
+        {citiesByYearData && citiesByYearData.anos && (
+          <YearSelector
+            years={citiesByYearData.anos}
+            selectedYear={selectedYear}
+            onChange={handleYearChange}
+          />
+        )}
         {/* Cards de cidades */}
         <NumberCards
           cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
@@ -315,18 +326,18 @@ export default function SinistrosFataisClientSide({
               {selectedCityName} - {selectedYear} (
               {tipoLocal === "ocorrencia"
                 ? "Local de Ocorrência"
-                : "Local de Residência"
-              })
+                : "Local de Residência"}
+              )
             </h3>
 
             <SelectableInfoCards
               cards={modoTransporteProcessado.cards}
               selected={selectedModoTransporte}
               options={{
-                changeFunction: handleModoTransporteClick
+                changeFunction: handleModoTransporteClick,
               }}
             />
-            
+
             <div className="text-center text-sm text-gray-600 mt-2">
               Clique em um modo de transporte para ver seu perfil específico
             </div>
@@ -347,8 +358,8 @@ export default function SinistrosFataisClientSide({
                   {selectedCityName} - {selectedYear} (
                   {tipoLocal === "ocorrencia"
                     ? "Local de Ocorrência"
-                    : "Local de Residência"
-                  })
+                    : "Local de Residência"}
+                  )
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
