@@ -353,7 +353,7 @@ export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
   const faixaEtariaProcessado = formatarParaGrafico(ordenarFaixasEtarias(dadosBrutos.faixaEtaria));
 
   return {
-    titulo: modoTransporte ? `Perfil de ${modoTransporteLabels[modoTransporte]}` : "Perfil geral",
+    titulo: modoTransporte ? `Perfil de ${modoTransporteLabels[modoTransporte]}` : "Perfil Socioeconômico",
     sexo: sexoProcessado,
     racaCor: racaCorProcessado,
     faixaEtaria: faixaEtariaProcessado
