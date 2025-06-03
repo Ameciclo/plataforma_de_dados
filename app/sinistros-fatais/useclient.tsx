@@ -28,7 +28,8 @@ export default function SinistrosFataisClientSide({
   pageData,
 }) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
-  const [selectedYear, setSelectedYear] = useState(2023); // Pré-selecionar 2023
+  const [selectedYear, setSelectedYear] = useState(2023); // Ano inicial
+  const [selectedEndYear, setSelectedEndYear] = useState(null); // Ano final
   const [selectedCity, setSelectedCity] = useState(null); // Mostrar RMR por padrão no gráfico
   const [selectedCardCity, setSelectedCardCity] = useState(2611606); // ID do Recife para os cards
   const [citiesByYearData, setCitiesByYearData] = useState(
@@ -80,7 +81,10 @@ export default function SinistrosFataisClientSide({
 
       setIsLoadingModoTransporte(true);
       try {
-        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${selectedYear}`;
+        // Usar o ano final se estiver definido, caso contrário usar o ano inicial
+        const anoFim = selectedEndYear || selectedYear;
+
+        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${anoFim}`;
         const response = await fetch(url);
         const data = await response.json();
 
@@ -109,7 +113,7 @@ export default function SinistrosFataisClientSide({
     };
 
     fetchModoTransporteData();
-  }, [selectedCardCity, tipoLocal, selectedYear]);
+  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
 
   // Alternar entre local de ocorrência e residência
   const handleTipoLocalChange = (tipo) => {
@@ -123,9 +127,10 @@ export default function SinistrosFataisClientSide({
     setShowAllCities(false);
   };
 
-  // Selecionar ano
-  const handleYearChange = (year) => {
+  // Selecionar ano ou intervalo de anos
+  const handleYearChange = (year, endYear = null) => {
     setSelectedYear(year);
+    setSelectedEndYear(endYear);
   };
 
   // Alternar entre mostrar todas as cidades ou apenas RMR
@@ -190,6 +195,13 @@ export default function SinistrosFataisClientSide({
     setSeletorModoTransporte(valor === "todos" ? null : valor);
   };
 
+  // Formatar o texto do período selecionado
+  const getPeriodoText = () => {
+    if (!selectedYear) return "";
+    if (!selectedEndYear) return selectedYear.toString();
+    return `${selectedYear} a ${selectedEndYear}`;
+  };
+
   return (
     <>
       {/* Estatísticas gerais */}
@@ -230,7 +242,7 @@ export default function SinistrosFataisClientSide({
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
               !showAllCities && !selectedCity
                 ? "bg-ameciclo text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
             }`}
             onClick={() => {
               setShowAllCities(false);
@@ -243,7 +255,7 @@ export default function SinistrosFataisClientSide({
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
               showAllCities
                 ? "bg-ameciclo text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
             }`}
             onClick={toggleShowAllCities}
           >
@@ -273,20 +285,23 @@ export default function SinistrosFataisClientSide({
           Mortes por Cidade
         </h2>
         <h3 className="text-xl text-center mb-8">
-          {selectedYear} (
+          {getPeriodoText()} (
           {tipoLocal === "ocorrencia"
             ? "Local de Ocorrência"
             : "Local de Residência"}
           )
         </h3>
+
         {/* Timeline/Seletor de ano */}
         {citiesByYearData && citiesByYearData.anos && (
           <YearSelector
             years={citiesByYearData.anos}
             selectedYear={selectedYear}
+            selectedEndYear={selectedEndYear}
             onChange={handleYearChange}
           />
         )}
+
         {/* Cards de cidades */}
         <NumberCards
           cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
@@ -306,14 +321,7 @@ export default function SinistrosFataisClientSide({
           }}
         />
       </div>
-      {/* Timeline/Seletor de ano */}
-      {citiesByYearData && citiesByYearData.anos && (
-        <YearSelector
-          years={citiesByYearData.anos}
-          selectedYear={selectedYear}
-          onChange={handleYearChange}
-        />
-      )}
+
       {/* Mortes por modo de transporte */}
       {modoTransporteData &&
         modoTransporteProcessado &&
@@ -323,12 +331,21 @@ export default function SinistrosFataisClientSide({
               Mortes por Modo de Transporte
             </h2>
             <h3 className="text-xl text-center mb-8">
-              {selectedCityName} - {selectedYear} (
+              {selectedCityName} - {getPeriodoText()} (
               {tipoLocal === "ocorrencia"
                 ? "Local de Ocorrência"
                 : "Local de Residência"}
               )
             </h3>
+            {/* Timeline/Seletor de ano */}
+            {citiesByYearData && citiesByYearData.anos && (
+              <YearSelector
+                years={citiesByYearData.anos}
+                selectedYear={selectedYear}
+                selectedEndYear={selectedEndYear}
+                onChange={handleYearChange}
+              />
+            )}
 
             <SelectableInfoCards
               cards={modoTransporteProcessado.cards}
@@ -355,7 +372,7 @@ export default function SinistrosFataisClientSide({
                   {perfilSocioeconomico.titulo}
                 </h2>
                 <h3 className="text-xl text-center mb-8">
-                  {selectedCityName} - {selectedYear} (
+                  {selectedCityName} - {getPeriodoText()} (
                   {tipoLocal === "ocorrencia"
                     ? "Local de Ocorrência"
                     : "Local de Residência"}
