@@ -37,7 +37,7 @@ export const SelectableInfoCards: React.FC<SelectableInfoCardsProps> = ({
           className={`flex flex-col items-center p-4 rounded-lg shadow cursor-pointer transition-all ${
             selected === card.codigo
               ? 'bg-ameciclo text-white scale-105'
-              : 'bg-white hover:text-red-500'
+              : 'bg-white text-gray-800 hover:bg-red-600 hover:text-white'
           }`}
           onClick={() => handleCardClick(card.codigo)}
         >
