@@ -307,7 +307,7 @@ export default function SinistrosFataisClientSide({
 
         {/* Cards de cidades */}
         <NumberCards
-          cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal)}
+          cards={getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal, selectedEndYear)}
           data={{
             title: "",
             filters: [],

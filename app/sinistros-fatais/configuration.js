@@ -38,17 +38,31 @@ export function getGeneralStatistics(summaryData, tipoLocal = "ocorrencia") {
 }
 
 // Função para formatar os dados de cidades por ano
-export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "ocorrencia") {
+export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "ocorrencia", selectedEndYear = null) {
   if (!citiesByYearData || !selectedYear) return [];
   
   // Criar cards ordenados do maior para o menor número de mortes
   return citiesByYearData.cidades
-    .map(city => ({
-      id: city.id,
-      label: city.nome,
-      value: city[selectedYear.toString()] || 0,
-      unit: "mortes"
-    }))
+    .map(city => {
+      let totalMortes = 0;
+      
+      // Se temos um intervalo de anos, somar as mortes de todos os anos no intervalo
+      if (selectedEndYear) {
+        for (let ano = selectedYear; ano <= selectedEndYear; ano++) {
+          totalMortes += city[ano.toString()] || 0;
+        }
+      } else {
+        // Caso contrário, usar apenas o ano selecionado
+        totalMortes = city[selectedYear.toString()] || 0;
+      }
+      
+      return {
+        id: city.id,
+        label: city.nome,
+        value: totalMortes,
+        unit: "mortes"
+      };
+    })
     .sort((a, b) => b.value - a.value); // Ordenar do maior para o menor
 }
 
