@@ -7,8 +7,9 @@ import { vehicleCards } from "./configuration";
 import { ColumnFilter } from "../components/Table/TableFilters";
 import { YearSelector } from "../components/YearSelector";
 import { Map } from "../components/Maps/Map";
+import { DocumentList } from "../components/DocumentList";
 
-export default function ViasInsegurasContent({ streets }) {
+export default function ViasInsegurasContent({ streets, supportFiles = [] }) {
   // Estado para controle do ano selecionado
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedEndYear, setSelectedEndYear] = useState(null);
@@ -173,6 +174,16 @@ export default function ViasInsegurasContent({ streets }) {
           ]}
         />
       </div>
+
+      {/* Arquivos de suporte */}
+      {supportFiles && supportFiles.length > 0 && (
+        <div className="mx-auto container my-12">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Documentos e Arquivos de Suporte
+          </h2>
+          <DocumentList documents={supportFiles} />
+        </div>
+      )}
     </>
   );
 }

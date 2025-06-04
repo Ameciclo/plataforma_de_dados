@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import { StatisticsBox } from "../components/StatisticsBox";
@@ -13,25 +13,78 @@ import {
 } from "../../utils";
 import {
   SINISTROS_STREETS_SUMMARY_DATA,
+  PLATAFORMAS_PAGE_DATA
 } from "../../servers";
 
-// Dados da página
-const viasInseguras_page_data = {
-  title: "Vias Inseguras",
-  cover_image_url: "/images/covers/vias-inseguras.jpg",
-};
-
 export default function ViasInsegurasPage() {
-  const [streets, setStreets] = React.useState([]);
+  const [streets, setStreets] = useState([]);
+  const [pageData, setPageData] = useState({
+    title: "Vias Inseguras",
+    coverImage: "/images/covers/vias-inseguras.jpg",
+    explanationBoxes: [
+      {
+        title: "O que é?",
+        description: "Análise das vias com maior incidência de sinistros de trânsito na cidade."
+      },
+      {
+        title: "Que dados são esses?",
+        description: "Dados de sinistros por via fornecidos pela CTTU (Companhia de Trânsito e Transporte Urbano)."
+      },
+      {
+        title: "Como interpretar?",
+        description: "As vias são classificadas pelo número total de sinistros registrados. Cores mais intensas no mapa indicam maior concentração de ocorrências."
+      }
+    ],
+    supportFiles: []
+  });
   
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       try {
+        // Buscar dados do Strapi
+        const strapiRes = await fetch(PLATAFORMAS_PAGE_DATA, {
+          cache: "no-cache",
+        });
+        
+        if (strapiRes.ok) {
+          const strapiData = await strapiRes.json();
+          
+          if (strapiData && strapiData.data && Array.isArray(strapiData.data)) {
+            // Encontrar os dados da plataforma de vias inseguras
+            const platformData = strapiData.data.find(item => 
+              item.attributes && item.attributes.title === "Observatório de Vias Inseguras"
+            );
+            
+            if (platformData) {
+              setPageData({
+                title: platformData.attributes.title,
+                coverImage: platformData.attributes.cover?.data?.attributes?.url || "/images/covers/vias-inseguras.jpg",
+                explanationBoxes: platformData.attributes.explanationbox?.map(box => ({
+                  title: box.title,
+                  description: box.text
+                })) || pageData.explanationBoxes,
+                supportFiles: platformData.attributes.supportfiles?.map(file => ({
+                  title: file.title,
+                  description: file.description || "",
+                  url: file.url || "#",
+                  src: file.type === "legislação" ? "/icons/legislation.svg" : 
+                       file.type === "relatório" ? "/icons/report.svg" : 
+                       "/icons/document.svg"
+                })) || []
+              });
+            }
+          }
+        }
+
+        // Buscar dados das ruas
         const streetsRes = await fetch(SINISTROS_STREETS_SUMMARY_DATA, {
           cache: "no-cache",
         });
-        const streetsData = await streetsRes.json();
-        setStreets(streetsData);
+        
+        if (streetsRes.ok) {
+          const streetsData = await streetsRes.json();
+          setStreets(streetsData);
+        }
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       }
@@ -47,8 +100,8 @@ export default function ViasInsegurasPage() {
   return (
     <>
       <NavCover
-        title={viasInseguras_page_data.title}
-        src={viasInseguras_page_data.cover_image_url}
+        title={pageData.title}
+        src={pageData.coverImage}
       />
       <Breadcrumb
         label="Vias Inseguras"
@@ -82,21 +135,7 @@ export default function ViasInsegurasPage() {
         ]}
       />
       <ExplanationBoxes
-        boxes={[
-          {
-            title: "O que é?",
-            description:
-              "Análise das vias com maior incidência de sinistros de trânsito na cidade.",
-          },
-          {
-            title: "Que dados são esses?",
-            description: "Dados de sinistros por via fornecidos pela CTTU (Companhia de Trânsito e Transporte Urbano).",
-          },
-          {
-            title: "Como interpretar?",
-            description: "As vias são classificadas pelo número total de sinistros registrados. Cores mais intensas no mapa indicam maior concentração de ocorrências.",
-          },
-        ]}
+        boxes={pageData.explanationBoxes}
       />
       
       {/* Top 5 vias mais perigosas */}
@@ -125,7 +164,7 @@ export default function ViasInsegurasPage() {
       </div>
       
       {/* Componente client-side com mapa e seleção por ano */}
-      <ViasInsegurasContent streets={streets} />
+      <ViasInsegurasContent streets={streets} supportFiles={pageData.supportFiles} />
     </>
   );
 }
