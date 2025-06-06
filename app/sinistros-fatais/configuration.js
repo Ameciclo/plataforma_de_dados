@@ -204,7 +204,7 @@ export function getModoTransporteCards(filtrosData) {
   if (totalNaoIdentificados > 0) {
     cards.push({
       label: "Não identificado",
-      icon: "/icons/sinistros-fatais/outros.svg", // Usando o ícone de outros para não identificados
+      icon: "/icons/sinistros-fatais/naoespecificado.svg", // Usando o ícone de outros para não identificados
       data: totalNaoIdentificados.toString(),
       codigo: "nao_identificado",
     });
