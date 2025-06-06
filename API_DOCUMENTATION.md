@@ -203,6 +203,88 @@ GET http://localhost:8080/datasus-deaths/summary
 }
 ```
 
+### Matriz de Colisão
+
+**Endpoint:** `/datasus-deaths/matrix`
+
+**Método:** GET
+
+**Parâmetros:**
+- `cityId` (opcional): ID do município específico (se não informado, usa todos da RMR)
+- `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
+- `endYear` (opcional): Ano final para filtrar (padrão: ano atual)
+- `byResidence` (opcional): Se `true`, usa local de residência; se `false` ou não informado, usa local de ocorrência
+
+**Descrição:** Retorna uma matriz de colisão mostrando o número de mortes por tipo de vítima e contraparte.
+
+**Exemplos de Uso:**
+```
+# Matriz de colisão para toda a RMR por local de ocorrência
+GET http://localhost:8080/datasus-deaths/matrix
+
+# Matriz de colisão para o Recife em 2023
+GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2023&endYear=2023
+
+# Matriz de colisão por local de residência
+GET http://localhost:8080/datasus-deaths/matrix?byResidence=true
+
+# Matriz de colisão para o Recife entre 2018 e 2022 por local de residência
+GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&endYear=2022&byResidence=true
+```
+
+**Resposta:**
+```json
+{
+  "matrix": {
+    "pedestre": {
+      "pedestre": 0,
+      "ciclista": 5,
+      "motociclista": 25,
+      "automovel": 120,
+      "ônibus": 30,
+      "outros": 3,
+      "objeto_fixo": 0,
+      "sem_colisao": 0,
+      "nao_especificado": 10,
+      "total": 193
+    },
+    "ciclista": {
+      "pedestre": 2,
+      "ciclista": 3,
+      "motociclista": 8,
+      "automovel": 45,
+      "ônibus": 12,
+      "outros": 1,
+      "objeto_fixo": 10,
+      "sem_colisao": 15,
+      "nao_especificado": 5,
+      "total": 101
+    },
+    // ... outros modos de transporte
+    "total": {
+      "pedestre": 5,
+      "ciclista": 10,
+      "motociclista": 50,
+      "automovel": 280,
+      "ônibus": 60,
+      "outros": 15,
+      "objeto_fixo": 70,
+      "sem_colisao": 50,
+      "nao_especificado": 60,
+      "total": 600
+    }
+  },
+  "metadata": {
+    "cityId": 2611606,
+    "startYear": 2023,
+    "endYear": 2023,
+    "byResidence": false,
+    "locationType": "Local de Ocorrência",
+    "description": "Matriz de colisão mostrando o número de mortes por tipo de vítima e contraparte"
+  }
+}
+```
+
 ### Mortes por Cidade e Ano
 
 **Endpoint:** `/datasus-deaths/cities-by-year`
