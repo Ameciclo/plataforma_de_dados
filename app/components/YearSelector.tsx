@@ -63,7 +63,7 @@ export const YearSelector = ({
             className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
               isInRange(year)
                 ? "bg-ameciclo text-white" 
-                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-red-600 hover:text-white"
             }`}
             onClick={() => handleYearClick(year)}
           >
