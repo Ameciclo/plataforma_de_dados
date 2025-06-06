@@ -18,39 +18,54 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
   const [hideUnspecifiedCol, setHideUnspecifiedCol] = useState(false);
   const [hideObjectFixedCol, setHideObjectFixedCol] = useState(false);
   const [hideNoCollisionCol, setHideNoCollisionCol] = useState(false);
-  const [hideOthersCol, setHideOthersCol] = useState(false);
+  const [hideOthers, setHideOthersCol] = useState(false);
 
   if (isLoading) {
-    return <div className="text-center py-8">Carregando dados da matriz de colisão...</div>;
+    return (
+      <div className="text-center py-8">
+        Carregando dados da matriz de colisão...
+      </div>
+    );
   }
 
   if (!data) {
-    return <div className="text-center py-8">Não há dados disponíveis para a matriz de colisão.</div>;
+    return (
+      <div className="text-center py-8">
+        Não há dados disponíveis para a matriz de colisão.
+      </div>
+    );
   }
 
   const formattedData = formatCollisionMatrix(data);
   if (!formattedData) {
-    return <div className="text-center py-8">Não foi possível carregar os dados da matriz.</div>;
+    return (
+      <div className="text-center py-8">
+        Não foi possível carregar os dados da matriz.
+      </div>
+    );
   }
 
-  // Sempre remover as linhas "Não Especificado", "Objeto Fixo" e "Sem Colisão"
+  // Sempre remover as linhas "Não Especificado", "Objeto Fixo" e "Sem Colisão". Filtrar também "Outros" caso filtro "hideOthersCol" esteja ativado.
   let filteredTableData = formattedData.tableData.filter(
-    (row) => row.mode !== "Não Especificado" && 
-             row.mode !== "Objeto Fixo" && 
-             row.mode !== "Sem Colisão"
+    (row) =>
+      row.mode !== "Não Especificado" &&
+      row.mode !== "Objeto Fixo" &&
+      row.mode !== "Sem Colisão" &&
+      (hideOthers ? row.mode !== "Outros" : true)
   );
-
   // Filtrar colunas com base nas opções selecionadas
-  let filteredColumnLabels = formattedData.columnLabels.filter(label => {
+  let filteredColumnLabels = formattedData.columnLabels.filter((label) => {
     if (hideUnspecifiedCol && label === "nao_especificado") return false;
     if (hideObjectFixedCol && label === "objeto_fixo") return false;
     if (hideNoCollisionCol && label === "sem_colisao") return false;
-    if (hideOthersCol && label === "outros") return false;
+    if (hideOthers && label === "outros") return false;
     return true;
   });
 
   // Recalcular totais para a linha de totais
-  const totalRowIndex = filteredTableData.findIndex(row => row.mode === "Total");
+  const totalRowIndex = filteredTableData.findIndex(
+    (row) => row.mode === "Total"
+  );
   if (totalRowIndex !== -1) {
     // Recalcular cada coluna da linha de totais
     filteredColumnLabels.forEach((colKey) => {
@@ -58,7 +73,7 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
         .filter((r) => r.mode !== "Total")
         .reduce((sum, r) => sum + (r[colKey] || 0), 0);
     });
-    
+
     // Recalcular o total geral para cada linha
     filteredTableData.forEach((row) => {
       row.total = filteredColumnLabels.reduce(
@@ -69,27 +84,28 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
   }
 
   // Calcular o total geral para percentuais
-  const totalGeral = filteredTableData.find((row) => row.mode === "Total")?.total || 0;
+  const totalGeral =
+    filteredTableData.find((row) => row.mode === "Total")?.total || 0;
 
   const modeLabels = {
-    "pedestre": "Pedestre",
-    "ciclista": "Ciclista",
-    "motociclista": "Motociclista",
-    "ocupante_automovel": "Automóvel",
-    "automovel": "Automóvel",
-    "ocupante_onibus": "Ônibus",
-    "onibus": "Ônibus",
-    "outros": "Outros",
-    "objeto_fixo": "Objeto Fixo",
-    "sem_colisao": "Sem Colisão",
-    "nao_especificado": "Não Especificado"
+    pedestre: "Pedestre",
+    ciclista: "Ciclista",
+    motociclista: "Motociclista",
+    ocupante_automovel: "Automóvel",
+    automovel: "Automóvel",
+    ocupante_onibus: "Ônibus",
+    onibus: "Ônibus",
+    outros: "Outros",
+    objeto_fixo: "Objeto Fixo",
+    sem_colisao: "Sem Colisão",
+    nao_especificado: "Não Especificado",
   };
 
   return (
     <div className="mx-auto container my-12">
       <h2 className="text-3xl font-bold text-center mb-4">{title}</h2>
       <h3 className="text-xl text-center mb-4">{subtitle}</h3>
-      
+
       <div className="flex flex-wrap justify-center gap-4 mb-4">
         <div className="flex items-center">
           <input
@@ -101,16 +117,38 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
           />
           <label htmlFor="showPercentages">Mostrar percentuais</label>
         </div>
-        
+
         <div className="flex items-center">
           <input
             type="checkbox"
             id="hideOthersCol"
-            checked={hideOthersCol}
-            onChange={() => setHideOthersCol(!hideOthersCol)}
+            checked={hideOthers}
+            onChange={() => setHideOthersCol(!hideOthers)}
             className="mr-2"
           />
           <label htmlFor="hideOthersCol">Ocultar "Outros"</label>
+        </div>
+
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="hideObjectFixedCol"
+            checked={hideObjectFixedCol}
+            onChange={() => setHideObjectFixedCol(!hideObjectFixedCol)}
+            className="mr-2"
+          />
+          <label htmlFor="hideObjectFixedCol">Ocultar "Objeto Fixo"</label>
+        </div>
+
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="hideNoCollisionCol"
+            checked={hideNoCollisionCol}
+            onChange={() => setHideNoCollisionCol(!hideNoCollisionCol)}
+            className="mr-2"
+          />
+          <label htmlFor="hideNoCollisionCol">Ocultar "Sem Colisão"</label>
         </div>
 
         <div className="flex items-center">
@@ -123,46 +161,37 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
           />
           <label htmlFor="hideUnspecifiedCol">Ocultar "Não Especificado"</label>
         </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideObjectFixedCol"
-            checked={hideObjectFixedCol}
-            onChange={() => setHideObjectFixedCol(!hideObjectFixedCol)}
-            className="mr-2"
-          />
-          <label htmlFor="hideObjectFixedCol">Ocultar "Objeto Fixo"</label>
-        </div>
-        
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideNoCollisionCol"
-            checked={hideNoCollisionCol}
-            onChange={() => setHideNoCollisionCol(!hideNoCollisionCol)}
-            className="mr-2"
-          />
-          <label htmlFor="hideNoCollisionCol">Ocultar "Sem Colisão"</label>
-        </div>
-        
       </div>
-      
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
-              <th rowSpan={2} className="py-3 px-4 border-b border-r text-center font-semibold">
+              <th
+                rowSpan={2}
+                className="py-3 px-4 border-b border-r text-center font-semibold"
+              >
                 Vítima
               </th>
-              <th colSpan={filteredColumnLabels.length} className="py-3 px-4 border-b border-r text-center font-semibold bg-gray-100">
+              <th
+                colSpan={filteredColumnLabels.length}
+                className="py-3 px-4 border-b border-r text-center font-semibold bg-gray-100"
+              >
                 Contraparte
               </th>
-              <th rowSpan={2} className="py-3 px-4 border-b text-center font-semibold">Total</th>
+              <th
+                rowSpan={2}
+                className="py-3 px-4 border-b text-center font-semibold"
+              >
+                Total
+              </th>
             </tr>
             <tr className="bg-gray-100">
               {filteredColumnLabels.map((label, index) => (
-                <th key={index} className="py-3 px-4 border-b border-r text-center font-semibold">
+                <th
+                  key={index}
+                  className="py-3 px-4 border-b border-r text-center font-semibold"
+                >
                   {modeLabels[label] || label}
                 </th>
               ))}
@@ -172,33 +201,52 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
             {filteredTableData.map((row, rowIndex) => {
               const isTotal = rowIndex === filteredTableData.length - 1;
               return (
-                <tr key={rowIndex} className={isTotal ? "bg-gray-100" : (rowIndex % 2 === 0 ? "bg-gray-50" : "")}>
-                  <td className={`py-2 px-4 border-b border-r font-medium ${isTotal ? "font-semibold" : ""}`}>
+                <tr
+                  key={rowIndex}
+                  className={
+                    isTotal
+                      ? "bg-gray-100"
+                      : rowIndex % 2 === 0
+                      ? "bg-gray-50"
+                      : ""
+                  }
+                >
+                  <td
+                    className={`py-2 px-4 border-b border-r font-medium ${
+                      isTotal ? "font-semibold" : ""
+                    }`}
+                  >
                     {row.mode}
                   </td>
                   {filteredColumnLabels.map((colKey, colIndex) => {
                     const value = row[colKey] || 0;
-                    const percentage = totalGeral > 0 ? (value / totalGeral) * 100 : 0;
-                    
+                    const percentage =
+                      totalGeral > 0 ? (value / totalGeral) * 100 : 0;
+
                     return (
-                      <td 
-                        key={colIndex} 
-                        className={`py-2 px-4 border-b border-r text-center ${isTotal ? "font-semibold" : ""} ${
-                          value > 0 ? "bg-gray-50" : ""
-                        }`}
+                      <td
+                        key={colIndex}
+                        className={`py-2 px-4 border-b border-r text-center ${
+                          isTotal ? "font-semibold" : ""
+                        } ${value > 0 ? "bg-gray-50" : ""}`}
                       >
-                        {showPercentages 
+                        {showPercentages
                           ? `${value} (${percentage.toFixed(1)}%)`
-                          : value
-                        }
+                          : value}
                       </td>
                     );
                   })}
-                  <td className={`py-2 px-4 border-b text-center ${isTotal ? "font-semibold" : ""}`}>
+                  <td
+                    className={`py-2 px-4 border-b text-center ${
+                      isTotal ? "font-semibold" : ""
+                    }`}
+                  >
                     {showPercentages && totalGeral > 0
-                      ? `${row.total} (${((row.total / totalGeral) * 100).toFixed(1)}%)`
-                      : row.total
-                    }
+                      ? `${row.total} (${(
+                          (row.total / totalGeral) *
+                          100
+                        ).toFixed(1)}%)`
+                      : row.total}
                   </td>
                 </tr>
               );
@@ -206,9 +254,13 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
           </tbody>
         </table>
       </div>
-      
+
       <div className="text-center text-sm text-gray-600 mt-4">
-        A matriz mostra o número de mortes por tipo de vítima (linhas) em colisão com cada tipo de contraparte (colunas).
+        A matriz mostra o número de mortes por tipo de vítima (linhas) em
+        colisão com cada tipo de contraparte (colunas).
+        <br />
+        Para efeitos dessa matriz, são iguais: ciclistas e outros modos não
+        motorizados; e automóveis e caminhonetes.
       </div>
     </div>
   );
