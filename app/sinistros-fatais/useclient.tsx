@@ -15,9 +15,8 @@ import {
   getYearlyChartData,
   getModoTransporteCards,
   getPerfilSocioeconomico,
-  formatCollisionMatrix,
-  coresPerfil,
 } from "./configuration";
+import { CollisionMatrix } from "../components/CollisionMatrix";
 import { CardsSession } from "../components/CardsSession";
 import {
   DATASUS_CITIES_BY_YEAR_DATA,
@@ -371,96 +370,14 @@ export default function SinistrosFataisClientSide({
       </div>
 
       {/* Matriz de Colisão */}
-      {collisionMatrixData && (
-        <div className="mx-auto container my-12">
-          <h2 className="text-3xl font-bold text-center mb-4">
-            Matriz de Colisão
-          </h2>
-          <h3 className="text-xl text-center mb-8">
-            {selectedCardCity 
-              ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)?.nome || "Cidade selecionada"
-              : "RMR"} - {getPeriodoText()} ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
-          </h3>
-          
-          {isLoadingMatrix ? (
-            <div className="text-center py-8">Carregando dados da matriz de colisão...</div>
-          ) : (
-            <div className="overflow-x-auto">
-              {(() => {
-                const formattedData = formatCollisionMatrix(collisionMatrixData);
-                if (!formattedData) return <div className="text-center py-8">Não foi possível carregar os dados da matriz.</div>;
-                
-                return (
-                  <table className="min-w-full bg-white border border-gray-200">
-                    <thead>
-                      <tr>
-                        <th rowSpan={2} className="py-3 px-4 border-b border-r text-center font-semibold">
-                          Vítima
-                        </th>
-                        <th colSpan={formattedData.columnLabels.length} className="py-3 px-4 border-b border-r text-center font-semibold bg-gray-100">
-                          Contraparte
-                        </th>
-                        <th rowSpan={2} className="py-3 px-4 border-b text-center font-semibold">Total</th>
-                      </tr>
-                      <tr className="bg-gray-100">
-                        {formattedData.columnLabels.map((label, index) => {
-                          const modeLabels = {
-                            "pedestre": "Pedestre",
-                            "ciclista": "Ciclista",
-                            "motociclista": "Motociclista",
-                            "ocupante_automovel": "Automóvel",
-                            "automovel": "Automóvel",
-                            "ocupante_onibus": "Ônibus",
-                            "onibus": "Ônibus",
-                            "outros": "Outros",
-                            "objeto_fixo": "Objeto Fixo",
-                            "sem_colisao": "Sem Colisão",
-                            "nao_especificado": "Não Especificado"
-                          };
-                          return (
-                            <th key={index} className="py-3 px-4 border-b border-r text-center font-semibold">
-                              {modeLabels[label] || label}
-                            </th>
-                          );
-                        })}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {formattedData.tableData.map((row, rowIndex) => {
-                        const isTotal = rowIndex === formattedData.tableData.length - 1;
-                        return (
-                          <tr key={rowIndex} className={isTotal ? "bg-gray-100" : (rowIndex % 2 === 0 ? "bg-gray-50" : "")}>
-                            <td className={`py-2 px-4 border-b border-r font-medium ${isTotal ? "font-semibold" : ""}`}>
-                              {row.mode}
-                            </td>
-                            {formattedData.columnLabels.map((colKey, colIndex) => {
-                              return (
-                                <td 
-                                  key={colIndex} 
-                                  className={`py-2 px-4 border-b border-r text-center ${isTotal ? "font-semibold" : ""} ${
-                                    row[colKey] > 0 ? "bg-gray-50" : ""
-                                  }`}
-                                >
-                                  {row[colKey] || 0}
-                                </td>
-                              );
-                            })}
-                            <td className={`py-2 px-4 border-b text-center ${isTotal ? "font-semibold" : ""}`}>{row.total || 0}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                );
-              })()}
-            </div>
-          )}
-          
-          <div className="text-center text-sm text-gray-600 mt-4">
-            A matriz mostra o número de mortes por tipo de vítima (linhas) em colisão com cada tipo de contraparte (colunas).
-          </div>
-        </div>
-      )}
+      <CollisionMatrix 
+        data={collisionMatrixData}
+        isLoading={isLoadingMatrix}
+        title="Matriz de Colisão"
+        subtitle={`${selectedCardCity 
+          ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)?.nome || "Cidade selecionada"
+          : "RMR"} - ${getPeriodoText()} (${tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})`}
+      />
 
       {/* Mortes por modo de transporte */}
       {modoTransporteData &&
