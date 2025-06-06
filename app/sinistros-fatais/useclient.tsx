@@ -15,11 +15,14 @@ import {
   getYearlyChartData,
   getModoTransporteCards,
   getPerfilSocioeconomico,
+  formatCollisionMatrix,
+  coresPerfil,
 } from "./configuration";
 import { CardsSession } from "../components/CardsSession";
 import {
   DATASUS_CITIES_BY_YEAR_DATA,
   DATASUS_FILTROS_DATA,
+  DATASUS_MATRIX_DATA,
 } from "../../servers";
 
 export default function SinistrosFataisClientSide({
@@ -38,6 +41,8 @@ export default function SinistrosFataisClientSide({
   const [showAllCities, setShowAllCities] = useState(false);
   const [modoTransporteData, setModoTransporteData] = useState(null);
   const [isLoadingModoTransporte, setIsLoadingModoTransporte] = useState(false);
+  const [collisionMatrixData, setCollisionMatrixData] = useState(null);
+  const [isLoadingMatrix, setIsLoadingMatrix] = useState(false);
 
   // Determinar o último ano disponível nos dados
   useEffect(() => {
@@ -99,7 +104,6 @@ export default function SinistrosFataisClientSide({
             (data.resumo.porCID && Object.keys(data.resumo.porCID).length > 0))
         ) {
           setModoTransporteData(data);
-          console.log(data);
         } else {
           // Se não há dados válidos, definir como null para não mostrar a seção
           setModoTransporteData(null);
@@ -113,6 +117,47 @@ export default function SinistrosFataisClientSide({
     };
 
     fetchModoTransporteData();
+  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
+  
+  // Buscar dados da matriz de colisão quando a cidade, tipo de local ou ano mudar
+  useEffect(() => {
+    const fetchCollisionMatrixData = async () => {
+      if (!selectedYear) return;
+
+      setIsLoadingMatrix(true);
+      try {
+        // Usar o ano final se estiver definido, caso contrário usar o ano inicial
+        const anoFim = selectedEndYear || selectedYear;
+        
+        // Construir a URL com os parâmetros
+        let url = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${anoFim}`;
+        
+        // Adicionar cityId se uma cidade específica estiver selecionada
+        if (selectedCardCity) {
+          url += `&cityId=${selectedCardCity}`;
+        }
+        
+        // Adicionar parâmetro de tipo de local
+        url += `&byResidence=${tipoLocal === "residencia"}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Verificar se os dados são válidos
+        if (data && data.matrix) {
+          setCollisionMatrixData(data);
+        } else {
+          setCollisionMatrixData(null);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados da matriz de colisão:", error);
+        setCollisionMatrixData(null);
+      } finally {
+        setIsLoadingMatrix(false);
+      }
+    };
+
+    fetchCollisionMatrixData();
   }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
 
   // Alternar entre local de ocorrência e residência
@@ -324,6 +369,97 @@ export default function SinistrosFataisClientSide({
           }}
         />
       </div>
+
+      {/* Matriz de Colisão */}
+      {collisionMatrixData && (
+        <div className="mx-auto container my-12">
+          <h2 className="text-3xl font-bold text-center mb-4">
+            Matriz de Colisão
+          </h2>
+          <h3 className="text-xl text-center mb-8">
+            {selectedCardCity 
+              ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)?.nome || "Cidade selecionada"
+              : "RMR"} - {getPeriodoText()} ({tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"})
+          </h3>
+          
+          {isLoadingMatrix ? (
+            <div className="text-center py-8">Carregando dados da matriz de colisão...</div>
+          ) : (
+            <div className="overflow-x-auto">
+              {(() => {
+                const formattedData = formatCollisionMatrix(collisionMatrixData);
+                if (!formattedData) return <div className="text-center py-8">Não foi possível carregar os dados da matriz.</div>;
+                
+                return (
+                  <table className="min-w-full bg-white border border-gray-200">
+                    <thead>
+                      <tr className="bg-gray-100">
+                        <th className="py-3 px-4 border-b border-r text-left font-semibold">Vítima / Contraparte</th>
+                        {formattedData.columnLabels.map((label, index) => {
+                          const modeLabels = {
+                            "pedestre": "Pedestre",
+                            "ciclista": "Ciclista",
+                            "motociclista": "Motociclista",
+                            "ocupante_automovel": "Automóvel",
+                            "ocupante_onibus": "Ônibus",
+                            "outros": "Outros",
+                            "objeto_fixo": "Objeto Fixo",
+                            "sem_colisao": "Sem Colisão",
+                            "nao_especificado": "Não Especificado"
+                          };
+                          return (
+                            <th key={index} className="py-3 px-4 border-b border-r text-center font-semibold">
+                              {modeLabels[label] || label}
+                            </th>
+                          );
+                        })}
+                        <th className="py-3 px-4 border-b text-center font-semibold">Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {formattedData.tableData.map((row, rowIndex) => {
+                        const isTotal = rowIndex === formattedData.tableData.length - 1;
+                        return (
+                          <tr key={rowIndex} className={isTotal ? "bg-gray-100" : (rowIndex % 2 === 0 ? "bg-gray-50" : "")}>
+                            <td className={`py-2 px-4 border-b border-r font-medium ${isTotal ? "font-semibold" : ""}`}>
+                              {row.mode}
+                            </td>
+                            {formattedData.columnLabels.map((colKey, colIndex) => {
+                              // Calcular a intensidade da cor com base no valor
+                              const maxValue = Math.max(...formattedData.tableData
+                                .filter(r => r.mode !== "Total")
+                                .map(r => r[colKey] || 0));
+                              
+                              const intensity = maxValue > 0 ? (row[colKey] || 0) / maxValue : 0;
+                              const colorIndex = Math.min(Math.floor(intensity * 8), 8);
+                              const bgColor = row.mode === "Total" || colKey === "total" ? "" : coresPerfil.matrix[colorIndex];
+                              
+                              return (
+                                <td 
+                                  key={colIndex} 
+                                  className={`py-2 px-4 border-b border-r text-center ${isTotal ? "font-semibold" : ""}`}
+                                  style={{ backgroundColor: bgColor }}
+                                >
+                                  {row[colKey] || 0}
+                                </td>
+                              );
+                            })}
+                            <td className={`py-2 px-4 border-b text-center ${isTotal ? "font-semibold" : ""}`}>{row.total || 0}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                );
+              })()}
+            </div>
+          )}
+          
+          <div className="text-center text-sm text-gray-600 mt-4">
+            A matriz mostra o número de mortes por tipo de vítima (linhas) em colisão com cada tipo de contraparte (colunas).
+          </div>
+        </div>
+      )}
 
       {/* Mortes por modo de transporte */}
       {modoTransporteData &&

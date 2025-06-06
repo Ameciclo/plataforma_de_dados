@@ -263,8 +263,68 @@ export const coresPerfil = {
   sexo: ['#1f77b4', '#ff7f0e', '#2ca02c'],
   racaCor: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'],
   faixaEtaria: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', 
-                '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b']
+                '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b'],
+  matrix: ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b']
 };
+
+// Função para formatar os dados da matriz de colisão
+export function formatCollisionMatrix(matrixData) {
+  console.log("Dados brutos da matriz:", matrixData);
+  
+  if (!matrixData || !matrixData.matrix) {
+    return null;
+  }
+
+  // Mapeamento de nomes para exibição mais amigável
+  const modeLabels = {
+    "pedestre": "Pedestre",
+    "ciclista": "Ciclista",
+    "motociclista": "Motociclista",
+    "ocupante_automovel": "Automóvel",
+    "ocupante_onibus": "Ônibus",
+    "outros": "Outros",
+    "objeto_fixo": "Objeto Fixo",
+    "sem_colisao": "Sem Colisão",
+    "nao_especificado": "Não Especificado",
+    "total": "Total"
+  };
+
+  // Extrair os modos de transporte (linhas e colunas da matriz)
+  const modes = Object.keys(matrixData.matrix).filter(mode => mode !== "total");
+  
+  // Preparar dados para a tabela
+  const tableData = modes.map(victimMode => {
+    const row = { mode: modeLabels[victimMode] || victimMode };
+    
+    // Adicionar valores para cada coluna
+    modes.forEach(collisionMode => {
+      // Usar o nome da chave original para acessar os dados
+      row[collisionMode] = matrixData.matrix[victimMode][collisionMode] || 0;
+    });
+    
+    // Adicionar total
+    row.total = matrixData.matrix[victimMode].total || 0;
+    
+    return row;
+  });
+
+  // Adicionar linha de totais
+  const totalRow = { mode: "Total" };
+  modes.forEach(mode => {
+    totalRow[mode] = matrixData.matrix.total[mode] || 0;
+  });
+  totalRow.total = matrixData.matrix.total.total || 0;
+  
+  tableData.push(totalRow);
+
+  console.log("Dados formatados:", { tableData, modes });
+  
+  return {
+    tableData,
+    columnLabels: modes,
+    metadata: matrixData.metadata
+  };
+}
 
 // Função para obter o perfil socioeconômico por modo de transporte
 export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
