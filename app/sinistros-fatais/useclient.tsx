@@ -289,8 +289,8 @@ export default function SinistrosFataisClientSide({
           <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
               !showAllCities && !selectedCity
-                ? "bg-ameciclo text-white"
-                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
+                ? "bg-[#008888] text-white"
+                : "bg-white text-gray-800 hover:bg-[#008888] hover:text-white"
             }`}
             onClick={() => {
               setShowAllCities(false);
@@ -302,8 +302,8 @@ export default function SinistrosFataisClientSide({
           <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
               showAllCities
-                ? "bg-ameciclo text-white"
-                : "bg-white text-gray-800 hover:bg-red-600 hover:text-white"
+                ? "bg-[#008888] text-white"
+                : "bg-white text-gray-800 hover:bg-[#008888] hover:text-white"
             }`}
             onClick={toggleShowAllCities}
           >
@@ -393,15 +393,25 @@ export default function SinistrosFataisClientSide({
                 return (
                   <table className="min-w-full bg-white border border-gray-200">
                     <thead>
+                      <tr>
+                        <th rowSpan={2} className="py-3 px-4 border-b border-r text-center font-semibold">
+                          Vítima
+                        </th>
+                        <th colSpan={formattedData.columnLabels.length} className="py-3 px-4 border-b border-r text-center font-semibold bg-gray-100">
+                          Contraparte
+                        </th>
+                        <th rowSpan={2} className="py-3 px-4 border-b text-center font-semibold">Total</th>
+                      </tr>
                       <tr className="bg-gray-100">
-                        <th className="py-3 px-4 border-b border-r text-left font-semibold">Vítima / Contraparte</th>
                         {formattedData.columnLabels.map((label, index) => {
                           const modeLabels = {
                             "pedestre": "Pedestre",
                             "ciclista": "Ciclista",
                             "motociclista": "Motociclista",
                             "ocupante_automovel": "Automóvel",
+                            "automovel": "Automóvel",
                             "ocupante_onibus": "Ônibus",
+                            "onibus": "Ônibus",
                             "outros": "Outros",
                             "objeto_fixo": "Objeto Fixo",
                             "sem_colisao": "Sem Colisão",
@@ -413,7 +423,6 @@ export default function SinistrosFataisClientSide({
                             </th>
                           );
                         })}
-                        <th className="py-3 px-4 border-b text-center font-semibold">Total</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -425,20 +434,12 @@ export default function SinistrosFataisClientSide({
                               {row.mode}
                             </td>
                             {formattedData.columnLabels.map((colKey, colIndex) => {
-                              // Calcular a intensidade da cor com base no valor
-                              const maxValue = Math.max(...formattedData.tableData
-                                .filter(r => r.mode !== "Total")
-                                .map(r => r[colKey] || 0));
-                              
-                              const intensity = maxValue > 0 ? (row[colKey] || 0) / maxValue : 0;
-                              const colorIndex = Math.min(Math.floor(intensity * 8), 8);
-                              const bgColor = row.mode === "Total" || colKey === "total" ? "" : coresPerfil.matrix[colorIndex];
-                              
                               return (
                                 <td 
                                   key={colIndex} 
-                                  className={`py-2 px-4 border-b border-r text-center ${isTotal ? "font-semibold" : ""}`}
-                                  style={{ backgroundColor: bgColor }}
+                                  className={`py-2 px-4 border-b border-r text-center ${isTotal ? "font-semibold" : ""} ${
+                                    row[colKey] > 0 ? "bg-gray-50" : ""
+                                  }`}
                                 >
                                   {row[colKey] || 0}
                                 </td>

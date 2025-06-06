@@ -264,7 +264,7 @@ export const coresPerfil = {
   racaCor: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b'],
   faixaEtaria: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', 
                 '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b'],
-  matrix: ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b']
+  matrix: ['#fee5d9', '#fcbba1', '#fc9272', '#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d', '#67000d']
 };
 
 // Função para formatar os dados da matriz de colisão
