@@ -281,7 +281,9 @@ export function formatCollisionMatrix(matrixData) {
     "ciclista": "Ciclista",
     "motociclista": "Motociclista",
     "ocupante_automovel": "Automóvel",
+    "automovel": "Automóvel",
     "ocupante_onibus": "Ônibus",
+    "onibus": "Ônibus",
     "outros": "Outros",
     "objeto_fixo": "Objeto Fixo",
     "sem_colisao": "Sem Colisão",
@@ -289,8 +291,39 @@ export function formatCollisionMatrix(matrixData) {
     "total": "Total"
   };
 
+  // Garantir que todas as categorias desejadas estejam presentes
+  const requiredModes = ["pedestre", "ciclista", "motociclista", "ocupante_automovel", 
+                         "ocupante_onibus", "outros", "objeto_fixo", "sem_colisao", "nao_especificado"];
+  
+  // Adicionar categorias ausentes à matriz
+  requiredModes.forEach(mode => {
+    if (!matrixData.matrix[mode]) {
+      matrixData.matrix[mode] = { total: 0 };
+      requiredModes.forEach(col => {
+        matrixData.matrix[mode][col] = 0;
+      });
+    }
+    
+    // Garantir que cada linha tenha todas as colunas
+    requiredModes.forEach(col => {
+      if (matrixData.matrix[mode][col] === undefined) {
+        matrixData.matrix[mode][col] = 0;
+      }
+    });
+  });
+  
+  // Atualizar totais
+  requiredModes.forEach(mode => {
+    if (!matrixData.matrix.total[mode]) {
+      matrixData.matrix.total[mode] = 0;
+    }
+  });
+  
   // Extrair os modos de transporte (linhas e colunas da matriz)
-  const modes = Object.keys(matrixData.matrix).filter(mode => mode !== "total");
+  const modes = [...new Set([
+    ...Object.keys(matrixData.matrix).filter(mode => mode !== "total"),
+    ...requiredModes
+  ])];
   
   // Preparar dados para a tabela
   const tableData = modes.map(victimMode => {
@@ -299,11 +332,11 @@ export function formatCollisionMatrix(matrixData) {
     // Adicionar valores para cada coluna
     modes.forEach(collisionMode => {
       // Usar o nome da chave original para acessar os dados
-      row[collisionMode] = matrixData.matrix[victimMode][collisionMode] || 0;
+      row[collisionMode] = matrixData.matrix[victimMode]?.[collisionMode] || 0;
     });
     
     // Adicionar total
-    row.total = matrixData.matrix[victimMode].total || 0;
+    row.total = matrixData.matrix[victimMode]?.total || 0;
     
     return row;
   });
