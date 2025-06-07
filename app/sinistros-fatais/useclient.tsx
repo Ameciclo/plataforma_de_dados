@@ -174,7 +174,7 @@ export default function SinistrosFataisClientSide({
         if (deathLocation !== "all") {
           // Para o endpoint de filtros, vamos usar apenas um código por vez
           // e depois combinar os resultados manualmente
-          let combinedData = null;
+          let combinedData: any = { resumo: {}, dados: [] };
           
           if (deathLocation === "health") {
             // Buscar dados para hospitais (código 1)
@@ -186,7 +186,14 @@ export default function SinistrosFataisClientSide({
             const data2 = await response2.json();
             
             // Combinar os dados (implementação simplificada)
-            combinedData = data1 || { resumo: {}, dados: [] };
+            if (data1 && typeof data1 === 'object') {
+              combinedData = { 
+                ...data1,
+                resumo: data1.resumo || {},
+                dados: data1.dados || []
+              };
+            }
+            
             if (data2 && data2.resumo) {
               // Combinar resumos
               Object.keys(data2.resumo).forEach(key => {
@@ -197,7 +204,7 @@ export default function SinistrosFataisClientSide({
               
               // Combinar dados detalhados
               if (data2.dados) {
-                combinedData.dados = [...(combinedData.dados || []), ...(data2.dados || [])];
+                combinedData.dados = [...combinedData.dados, ...data2.dados];
               }
             }
           } else if (deathLocation === "other") {
@@ -214,7 +221,14 @@ export default function SinistrosFataisClientSide({
             const data3 = await response3.json();
             
             // Combinar os dados (implementação simplificada)
-            combinedData = data1 || { resumo: {}, dados: [] };
+            if (data1 && typeof data1 === 'object') {
+              combinedData = { 
+                ...data1,
+                resumo: data1.resumo || {},
+                dados: data1.dados || []
+              };
+            }
+            
             [data2, data3].forEach(data => {
               if (data && data.resumo) {
                 // Combinar resumos
@@ -226,7 +240,7 @@ export default function SinistrosFataisClientSide({
                 
                 // Combinar dados detalhados
                 if (data.dados) {
-                  combinedData.dados = [...(combinedData.dados || []), ...(data.dados || [])];
+                  combinedData.dados = [...combinedData.dados, ...data.dados];
                 }
               }
             });

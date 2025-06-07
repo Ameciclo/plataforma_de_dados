@@ -114,51 +114,51 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
           }`}
           onClick={() => setShowPercentages(!showPercentages)}
         >
-          {showPercentages ? "Ocultar percentuais" : "Mostrar percentuais"}
+          {showPercentages ?  "Percentuais": "Percentuais"}
         </button>
         
         <button
           className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
             hideUnspecifiedCol
-              ? "bg-[#008888] text-white"
-              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            ? "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            : "bg-[#008888] text-white"
           }`}
           onClick={() => setHideUnspecifiedCol(!hideUnspecifiedCol)}
         >
-          {hideUnspecifiedCol ? "Mostrar Não Especificado" : "Ocultar Não Especificado"}
+          {hideUnspecifiedCol ? "Não Especificado" : "Não Especificado"}
         </button>
         
         <button
           className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
             hideObjectFixedCol
-              ? "bg-[#008888] text-white"
-              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            ? "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            : "bg-[#008888] text-white"
           }`}
           onClick={() => setHideObjectFixedCol(!hideObjectFixedCol)}
         >
-          {hideObjectFixedCol ? "Mostrar Objeto Fixo" : "Ocultar Objeto Fixo"}
+          {hideObjectFixedCol ? "Objeto Fixo" : "Objeto Fixo"}
         </button>
         
         <button
           className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
             hideNoCollisionCol
-              ? "bg-[#008888] text-white"
-              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            ? "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+            : "bg-[#008888] text-white"
           }`}
           onClick={() => setHideNoCollisionCol(!hideNoCollisionCol)}
         >
-          {hideNoCollisionCol ? "Mostrar Sem Colisão" : "Ocultar Sem Colisão"}
+          {hideNoCollisionCol ? "Sem Colisão" : "Sem Colisão"}
         </button>
         
         <button
           className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
             hideOthersCol
-              ? "bg-[#008888] text-white"
-              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+              ? "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+              : "bg-[#008888] text-white"
           }`}
           onClick={() => setHideOthersCol(!hideOthersCol)}
         >
-          {hideOthersCol ? "Mostrar Outros" : "Ocultar Outros"}
+          {hideOthersCol ? "Outros" : "Outros"}
         </button>
       </div>
 
