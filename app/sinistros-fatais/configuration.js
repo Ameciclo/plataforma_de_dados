@@ -280,9 +280,7 @@ export function formatCollisionMatrix(matrixData) {
     "pedestre": "Pedestre",
     "ciclista": "Ciclista",
     "motociclista": "Motociclista",
-    "ocupante_automovel": "Automóvel",
     "automovel": "Automóvel",
-    "ocupante_onibus": "Ônibus",
     "onibus": "Ônibus",
     "outros": "Outros",
     "objeto_fixo": "Objeto Fixo",
@@ -292,8 +290,8 @@ export function formatCollisionMatrix(matrixData) {
   };
 
   // Garantir que todas as categorias desejadas estejam presentes
-  const requiredModes = ["pedestre", "ciclista", "motociclista", "ocupante_automovel", 
-                         "ocupante_onibus", "outros", "objeto_fixo", "sem_colisao", "nao_especificado"];
+  const requiredModes = ["pedestre", "ciclista", "motociclista", "automovel", 
+                         "onibus", "outros", "objeto_fixo", "sem_colisao", "nao_especificado"];
   
   // Adicionar categorias ausentes à matriz
   requiredModes.forEach(mode => {

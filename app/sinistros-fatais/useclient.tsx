@@ -23,6 +23,38 @@ import {
   DATASUS_FILTROS_DATA,
   DATASUS_MATRIX_DATA,
 } from "../../servers";
+import { DeathLocationFilter, DeathLocationType } from "../components/DeathLocationFilter";
+
+// Função auxiliar para combinar dados de diferentes locais de ocorrência
+const combineLocationData = (cities1, cities2) => {
+  const combinedCities = [...cities1];
+  
+  cities2.forEach(city2 => {
+    const existingCityIndex = combinedCities.findIndex(city1 => city1.id === city2.id);
+    
+    if (existingCityIndex !== -1) {
+      // Cidade já existe, somar os valores por ano
+      const existingCity = combinedCities[existingCityIndex];
+      let total = 0;
+      
+      // Somar os valores para cada ano
+      Object.keys(city2).forEach(key => {
+        if (key !== 'id' && key !== 'nome' && key !== 'total') {
+          existingCity[key] = (existingCity[key] || 0) + (city2[key] || 0);
+          total += city2[key] || 0;
+        }
+      });
+      
+      // Atualizar o total
+      existingCity.total = (existingCity.total || 0) + total;
+    } else {
+      // Cidade não existe, adicionar à lista
+      combinedCities.push(city2);
+    }
+  });
+  
+  return combinedCities;
+};
 
 export default function SinistrosFataisClientSide({
   summaryData,
@@ -42,6 +74,7 @@ export default function SinistrosFataisClientSide({
   const [isLoadingModoTransporte, setIsLoadingModoTransporte] = useState(false);
   const [collisionMatrixData, setCollisionMatrixData] = useState(null);
   const [isLoadingMatrix, setIsLoadingMatrix] = useState(false);
+  const [deathLocation, setDeathLocation] = useState<DeathLocationType>("all"); // Local de ocorrência do óbito
 
   // Determinar o último ano disponível nos dados
   useEffect(() => {
@@ -61,13 +94,59 @@ export default function SinistrosFataisClientSide({
     }
   }, [citiesByYearData]);
 
-  // Buscar dados quando o tipo de local mudar
+  // Buscar dados quando o tipo de local ou local de ocorrência do óbito mudar
   useEffect(() => {
     const fetchCitiesByYearData = async () => {
       try {
-        const response = await fetch(
-          `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`
-        );
+        // Construir parâmetros para a API
+        let url = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`;
+        
+        // Adicionar filtro de local de ocorrência do óbito
+        if (deathLocation !== "all") {
+          if (deathLocation === "health") {
+            // Fazer duas chamadas separadas e combinar os resultados
+            const response1 = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=1`);
+            const data1 = await response1.json();
+            
+            const response2 = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=2`);
+            const data2 = await response2.json();
+            
+            // Combinar os dados
+            const combinedData = {
+              tipo: data1.tipo,
+              anos: data1.anos,
+              cidades: combineLocationData(data1.cidades, data2.cidades)
+            };
+            
+            setCitiesByYearData(combinedData);
+            return;
+          } else if (deathLocation === "other") {
+            // Fazer três chamadas separadas e combinar os resultados
+            const response1 = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=3`);
+            const data1 = await response1.json();
+            
+            const response2 = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=5`);
+            const data2 = await response2.json();
+            
+            const response3 = await fetch(`${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=9`);
+            const data3 = await response3.json();
+            
+            // Combinar os dados
+            const combinedData = {
+              tipo: data1.tipo,
+              anos: data1.anos,
+              cidades: combineLocationData(combineLocationData(data1.cidades, data2.cidades), data3.cidades)
+            };
+            
+            setCitiesByYearData(combinedData);
+            return;
+          } else {
+            // Para "public" (código 4), fazer uma única chamada
+            url += `&localOcorrenciaObito=4`;
+          }
+        }
+        
+        const response = await fetch(url);
         const data = await response.json();
         setCitiesByYearData(data);
       } catch (error) {
@@ -76,9 +155,9 @@ export default function SinistrosFataisClientSide({
     };
 
     fetchCitiesByYearData();
-  }, [tipoLocal]);
+  }, [tipoLocal, deathLocation]);
 
-  // Buscar dados de modo de transporte quando a cidade, tipo de local ou ano mudar
+  // Buscar dados de modo de transporte quando a cidade, tipo de local, ano ou local de ocorrência do óbito mudar
   useEffect(() => {
     const fetchModoTransporteData = async () => {
       if (!selectedCardCity || !selectedYear) return;
@@ -88,9 +167,83 @@ export default function SinistrosFataisClientSide({
         // Usar o ano final se estiver definido, caso contrário usar o ano inicial
         const anoFim = selectedEndYear || selectedYear;
 
-        const url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${anoFim}`;
-        const response = await fetch(url);
-        const data = await response.json();
+        // Construir URL base
+        let url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${anoFim}`;
+        
+        // Adicionar filtro de local de ocorrência do óbito
+        if (deathLocation !== "all") {
+          // Para o endpoint de filtros, vamos usar apenas um código por vez
+          // e depois combinar os resultados manualmente
+          let combinedData = null;
+          
+          if (deathLocation === "health") {
+            // Buscar dados para hospitais (código 1)
+            const response1 = await fetch(`${url}&localOcorrenciaObito=1`);
+            const data1 = await response1.json();
+            
+            // Buscar dados para outros estabelecimentos de saúde (código 2)
+            const response2 = await fetch(`${url}&localOcorrenciaObito=2`);
+            const data2 = await response2.json();
+            
+            // Combinar os dados (implementação simplificada)
+            combinedData = data1 || { resumo: {}, dados: [] };
+            if (data2 && data2.resumo) {
+              // Combinar resumos
+              Object.keys(data2.resumo).forEach(key => {
+                if (typeof data2.resumo[key] === 'object') {
+                  combinedData.resumo[key] = { ...(combinedData.resumo[key] || {}), ...data2.resumo[key] };
+                }
+              });
+              
+              // Combinar dados detalhados
+              if (data2.dados) {
+                combinedData.dados = [...(combinedData.dados || []), ...(data2.dados || [])];
+              }
+            }
+          } else if (deathLocation === "other") {
+            // Buscar dados para domicílio (código 3)
+            const response1 = await fetch(`${url}&localOcorrenciaObito=3`);
+            const data1 = await response1.json();
+            
+            // Buscar dados para outros locais (código 5)
+            const response2 = await fetch(`${url}&localOcorrenciaObito=5`);
+            const data2 = await response2.json();
+            
+            // Buscar dados para locais ignorados (código 9)
+            const response3 = await fetch(`${url}&localOcorrenciaObito=9`);
+            const data3 = await response3.json();
+            
+            // Combinar os dados (implementação simplificada)
+            combinedData = data1 || { resumo: {}, dados: [] };
+            [data2, data3].forEach(data => {
+              if (data && data.resumo) {
+                // Combinar resumos
+                Object.keys(data.resumo).forEach(key => {
+                  if (typeof data.resumo[key] === 'object') {
+                    combinedData.resumo[key] = { ...(combinedData.resumo[key] || {}), ...data.resumo[key] };
+                  }
+                });
+                
+                // Combinar dados detalhados
+                if (data.dados) {
+                  combinedData.dados = [...(combinedData.dados || []), ...(data.dados || [])];
+                }
+              }
+            });
+          } else {
+            // Para "public" (código 4), fazer uma única chamada
+            url += `&localOcorrenciaObito=4`;
+            const response = await fetch(url);
+            combinedData = await response.json();
+          }
+          
+          if (combinedData) {
+            setModoTransporteData(combinedData);
+            return;
+          }
+        } else {
+          const response = await fetch(url);
+          const data = await response.json();
 
         // Verificar se os dados são válidos
         if (
@@ -107,6 +260,7 @@ export default function SinistrosFataisClientSide({
           // Se não há dados válidos, definir como null para não mostrar a seção
           setModoTransporteData(null);
         }
+      }
       } catch (error) {
         console.error("Erro ao buscar dados de modo de transporte:", error);
         setModoTransporteData(null);
@@ -118,7 +272,7 @@ export default function SinistrosFataisClientSide({
     fetchModoTransporteData();
   }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
   
-  // Buscar dados da matriz de colisão quando a cidade, tipo de local ou ano mudar
+  // Buscar dados da matriz de colisão quando a cidade, tipo de local, ano ou local de ocorrência do óbito mudar
   useEffect(() => {
     const fetchCollisionMatrixData = async () => {
       if (!selectedYear) return;
@@ -128,18 +282,91 @@ export default function SinistrosFataisClientSide({
         // Usar o ano final se estiver definido, caso contrário usar o ano inicial
         const anoFim = selectedEndYear || selectedYear;
         
-        // Construir a URL com os parâmetros
-        let url = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${anoFim}`;
+        // Construir a URL base com os parâmetros
+        let baseUrl = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${anoFim}`;
         
         // Adicionar cityId se uma cidade específica estiver selecionada
         if (selectedCardCity) {
-          url += `&cityId=${selectedCardCity}`;
+          baseUrl += `&cityId=${selectedCardCity}`;
         }
         
         // Adicionar parâmetro de tipo de local
-        url += `&byResidence=${tipoLocal === "residencia"}`;
+        baseUrl += `&byResidence=${tipoLocal === "residencia"}`;
         
-        const response = await fetch(url);
+        // Adicionar filtro de local de ocorrência do óbito
+        if (deathLocation !== "all") {
+          if (deathLocation === "health") {
+            // Buscar dados para hospitais (código 1) e outros estabelecimentos de saúde (código 2)
+            const response1 = await fetch(`${baseUrl}&localOcorrenciaObito=1`);
+            const data1 = await response1.json();
+            
+            const response2 = await fetch(`${baseUrl}&localOcorrenciaObito=2`);
+            const data2 = await response2.json();
+            
+            // Combinar as matrizes (implementação simplificada)
+            if (data1 && data1.matrix && data2 && data2.matrix) {
+              const combinedData = { ...data1 };
+              
+              // Combinar cada modo de transporte
+              Object.keys(data2.matrix).forEach(mode => {
+                if (!combinedData.matrix[mode]) {
+                  combinedData.matrix[mode] = { ...data2.matrix[mode] };
+                } else {
+                  // Combinar os valores para cada contraparte
+                  Object.keys(data2.matrix[mode]).forEach(counterpart => {
+                    combinedData.matrix[mode][counterpart] = 
+                      (combinedData.matrix[mode][counterpart] || 0) + 
+                      (data2.matrix[mode][counterpart] || 0);
+                  });
+                }
+              });
+              
+              setCollisionMatrixData(combinedData);
+              return;
+            }
+          } else if (deathLocation === "other") {
+            // Buscar dados para domicílio (código 3), outros locais (código 5) e ignorados (código 9)
+            const response1 = await fetch(`${baseUrl}&localOcorrenciaObito=3`);
+            const data1 = await response1.json();
+            
+            const response2 = await fetch(`${baseUrl}&localOcorrenciaObito=5`);
+            const data2 = await response2.json();
+            
+            const response3 = await fetch(`${baseUrl}&localOcorrenciaObito=9`);
+            const data3 = await response3.json();
+            
+            // Combinar as matrizes (implementação simplificada)
+            if (data1 && data1.matrix) {
+              const combinedData = { ...data1 };
+              
+              [data2, data3].forEach(data => {
+                if (data && data.matrix) {
+                  // Combinar cada modo de transporte
+                  Object.keys(data.matrix).forEach(mode => {
+                    if (!combinedData.matrix[mode]) {
+                      combinedData.matrix[mode] = { ...data.matrix[mode] };
+                    } else {
+                      // Combinar os valores para cada contraparte
+                      Object.keys(data.matrix[mode]).forEach(counterpart => {
+                        combinedData.matrix[mode][counterpart] = 
+                          (combinedData.matrix[mode][counterpart] || 0) + 
+                          (data.matrix[mode][counterpart] || 0);
+                      });
+                    }
+                  });
+                }
+              });
+              
+              setCollisionMatrixData(combinedData);
+              return;
+            }
+          } else {
+            // Para "public" (código 4), fazer uma única chamada
+            baseUrl += `&localOcorrenciaObito=4`;
+          }
+        }
+        
+        const response = await fetch(baseUrl);
         const data = await response.json();
 
         // Verificar se os dados são válidos
@@ -283,13 +510,22 @@ export default function SinistrosFataisClientSide({
           Evolução das Mortes no Trânsito
         </h2>
 
+        {/* Filtro de local de ocorrência do óbito */}
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold text-center mb-2">Local de ocorrência do óbito</h3>
+          <DeathLocationFilter 
+            selectedLocation={deathLocation}
+            onChange={setDeathLocation}
+          />
+        </div>
+
         {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
         <div className="flex justify-center mb-4">
           <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
               !showAllCities && !selectedCity
                 ? "bg-[#008888] text-white"
-                : "bg-white text-gray-800 hover:bg-[#008888] hover:text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
             }`}
             onClick={() => {
               setShowAllCities(false);
@@ -302,7 +538,7 @@ export default function SinistrosFataisClientSide({
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
               showAllCities
                 ? "bg-[#008888] text-white"
-                : "bg-white text-gray-800 hover:bg-[#008888] hover:text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
             }`}
             onClick={toggleShowAllCities}
           >

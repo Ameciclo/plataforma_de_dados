@@ -17,7 +17,7 @@ export const LocalTypeSelector = ({ selectedType, onChange }: LocalTypeSelectorP
           }`}
           onClick={() => onChange("ocorrencia")}
         >
-          Local de Ocorrência
+          Local de Ocorrência da Morte
         </button>
         <button 
           className={`px-6 py-2 rounded-lg font-medium transition-colors duration-200 ${
@@ -27,7 +27,7 @@ export const LocalTypeSelector = ({ selectedType, onChange }: LocalTypeSelectorP
           }`}
           onClick={() => onChange("residencia")}
         >
-          Local de Residência
+          Local de Residência da Vítima Fatal
         </button>
       </div>
     </div>
