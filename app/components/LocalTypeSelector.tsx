@@ -27,7 +27,7 @@ export const LocalTypeSelector = ({ selectedType, onChange }: LocalTypeSelectorP
           }`}
           onClick={() => onChange("residencia")}
         >
-          Local de Residência da Vítima Fatal
+          Local de Residência da Pessoa Morta
         </button>
       </div>
     </div>

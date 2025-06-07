@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { formatCollisionMatrix } from "../sinistros-fatais/configuration";
+import { MatrixFilterButtons } from "./MatrixFilterButtons";
 
 type CollisionMatrixProps = {
   data: any;
@@ -18,7 +19,7 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
   const [hideUnspecifiedCol, setHideUnspecifiedCol] = useState(false);
   const [hideObjectFixedCol, setHideObjectFixedCol] = useState(false);
   const [hideNoCollisionCol, setHideNoCollisionCol] = useState(false);
-  const [hideOthers, setHideOthersCol] = useState(false);
+  const [hideOthersCol, setHideOthersCol] = useState(false);
 
   if (isLoading) {
     return (
@@ -51,14 +52,14 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
       row.mode !== "Não Especificado" &&
       row.mode !== "Objeto Fixo" &&
       row.mode !== "Sem Colisão" &&
-      (hideOthers ? row.mode !== "Outros" : true)
+      (hideOthersCol ? row.mode !== "Outros" : true)
   );
   // Filtrar colunas com base nas opções selecionadas
   let filteredColumnLabels = formattedData.columnLabels.filter((label) => {
     if (hideUnspecifiedCol && label === "nao_especificado") return false;
     if (hideObjectFixedCol && label === "objeto_fixo") return false;
     if (hideNoCollisionCol && label === "sem_colisao") return false;
-    if (hideOthers && label === "outros") return false;
+    if (hideOthersCol && label === "outros") return false;
     return true;
   });
 
@@ -104,61 +105,61 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
       <h2 className="text-3xl font-bold text-center mb-4">{title}</h2>
       <h3 className="text-xl text-center mb-4">{subtitle}</h3>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-4">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="showPercentages"
-            checked={showPercentages}
-            onChange={() => setShowPercentages(!showPercentages)}
-            className="mr-2"
-          />
-          <label htmlFor="showPercentages">Mostrar percentuais</label>
-        </div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideOthersCol"
-            checked={hideOthers}
-            onChange={() => setHideOthersCol(!hideOthers)}
-            className="mr-2"
-          />
-          <label htmlFor="hideOthersCol">Ocultar "Outros"</label>
-        </div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideObjectFixedCol"
-            checked={hideObjectFixedCol}
-            onChange={() => setHideObjectFixedCol(!hideObjectFixedCol)}
-            className="mr-2"
-          />
-          <label htmlFor="hideObjectFixedCol">Ocultar "Objeto Fixo"</label>
-        </div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideNoCollisionCol"
-            checked={hideNoCollisionCol}
-            onChange={() => setHideNoCollisionCol(!hideNoCollisionCol)}
-            className="mr-2"
-          />
-          <label htmlFor="hideNoCollisionCol">Ocultar "Sem Colisão"</label>
-        </div>
-
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="hideUnspecifiedCol"
-            checked={hideUnspecifiedCol}
-            onChange={() => setHideUnspecifiedCol(!hideUnspecifiedCol)}
-            className="mr-2"
-          />
-          <label htmlFor="hideUnspecifiedCol">Ocultar "Não Especificado"</label>
-        </div>
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            showPercentages
+              ? "bg-[#008888] text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+          }`}
+          onClick={() => setShowPercentages(!showPercentages)}
+        >
+          {showPercentages ? "Ocultar percentuais" : "Mostrar percentuais"}
+        </button>
+        
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            hideUnspecifiedCol
+              ? "bg-[#008888] text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+          }`}
+          onClick={() => setHideUnspecifiedCol(!hideUnspecifiedCol)}
+        >
+          {hideUnspecifiedCol ? "Mostrar Não Especificado" : "Ocultar Não Especificado"}
+        </button>
+        
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            hideObjectFixedCol
+              ? "bg-[#008888] text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+          }`}
+          onClick={() => setHideObjectFixedCol(!hideObjectFixedCol)}
+        >
+          {hideObjectFixedCol ? "Mostrar Objeto Fixo" : "Ocultar Objeto Fixo"}
+        </button>
+        
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            hideNoCollisionCol
+              ? "bg-[#008888] text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+          }`}
+          onClick={() => setHideNoCollisionCol(!hideNoCollisionCol)}
+        >
+          {hideNoCollisionCol ? "Mostrar Sem Colisão" : "Ocultar Sem Colisão"}
+        </button>
+        
+        <button
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            hideOthersCol
+              ? "bg-[#008888] text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
+          }`}
+          onClick={() => setHideOthersCol(!hideOthersCol)}
+        >
+          {hideOthersCol ? "Mostrar Outros" : "Ocultar Outros"}
+        </button>
       </div>
 
       <div className="overflow-x-auto">
