@@ -38,6 +38,7 @@ type CausasSecundariasProps = {
   isLoading: boolean;
   title: string;
   subtitle: string;
+  cidDescriptions: Record<string, string>;
 };
 
 export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
@@ -45,9 +46,8 @@ export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
   isLoading,
   title,
   subtitle,
+  cidDescriptions,
 }) => {
-  const [activeTab, setActiveTab] = useState<string>("linhaa");
-
   if (isLoading) {
     return <div className="text-center py-8">Carregando causas secundárias...</div>;
   }
@@ -56,41 +56,24 @@ export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
     return null;
   }
 
-  const linhas = [
-    { id: "linhaa", label: "Linha A", description: "Causa direta da morte" },
-    { id: "linhab", label: "Linha B", description: "Estado mórbido que causou a morte" },
-    { id: "linhac", label: "Linha C", description: "Estado mórbido que causou o anterior" },
-    { id: "linhad", label: "Linha D", description: "Estado mórbido que causou o anterior" },
-    { id: "linhaii", label: "Parte II", description: "Outras condições significativas" },
-  ];
-
-  const causas = data.causasSecundarias[activeTab as keyof typeof data.causasSecundarias] || [];
+  const causas = data.causasSecundarias.linhaa || [];
   const totalCausas = causas.reduce((sum, causa) => sum + causa.count, 0);
+
+  // Função para obter a descrição de um código CID
+  const getDescricao = (codigo: string) => {
+    // Extrair a categoria (primeiros 3 caracteres)
+    const categoria = codigo.substring(0, 3);
+    return cidDescriptions[categoria] || "Descrição não disponível";
+  };
 
   return (
     <div className="mx-auto container my-12">
       <h2 className="text-3xl font-bold text-center mb-4">{title}</h2>
       <h3 className="text-xl text-center mb-8">{subtitle}</h3>
 
-      <div className="flex flex-wrap justify-center gap-2 mb-6">
-        {linhas.map((linha) => (
-          <button
-            key={linha.id}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              activeTab === linha.id
-                ? "bg-[#008888] text-white"
-                : "bg-white text-gray-800 hover:bg-[#008888] hover:text-white"
-            }`}
-            onClick={() => setActiveTab(linha.id)}
-          >
-            {linha.label}
-          </button>
-        ))}
-      </div>
-
       <div className="bg-white p-4 rounded-lg shadow mb-4">
         <h4 className="text-lg font-semibold mb-2">
-          {linhas.find((l) => l.id === activeTab)?.label} - {linhas.find((l) => l.id === activeTab)?.description}
+          Linha A - Causa direta da morte
         </h4>
         
         {causas.length > 0 ? (
@@ -99,6 +82,7 @@ export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
               <thead>
                 <tr className="bg-gray-100">
                   <th className="py-2 px-4 text-left">Código CID</th>
+                  <th className="py-2 px-4 text-left">Descrição</th>
                   <th className="py-2 px-4 text-left">Quantidade</th>
                   <th className="py-2 px-4 text-left">Percentual</th>
                 </tr>
@@ -110,6 +94,7 @@ export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
                   .map((causa, index) => (
                     <tr key={causa.codigo} className={index % 2 === 0 ? "bg-gray-50" : ""}>
                       <td className="py-2 px-4">{causa.codigo}</td>
+                      <td className="py-2 px-4">{getDescricao(causa.codigo)}</td>
                       <td className="py-2 px-4">{causa.count}</td>
                       <td className="py-2 px-4">
                         {((causa.count / totalCausas) * 100).toFixed(1)}%

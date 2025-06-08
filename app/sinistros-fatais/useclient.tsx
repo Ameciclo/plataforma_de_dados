@@ -977,6 +977,7 @@ export default function SinistrosFataisClientSide({
               subtitle={`${selectedCityName} - ${getPeriodoText()} (${
                 tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"
               })`}
+              cidDescriptions={require("../../public/CID10CAT.json")}
             />
           </div>
         )}
