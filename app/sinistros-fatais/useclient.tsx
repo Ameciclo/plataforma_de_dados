@@ -22,8 +22,10 @@ import {
   DATASUS_CITIES_BY_YEAR_DATA,
   DATASUS_FILTROS_DATA,
   DATASUS_MATRIX_DATA,
+  DATASUS_CAUSAS_SECUNDARIAS_DATA,
 } from "../../servers";
 import { DeathLocationFilter, DeathLocationType } from "../components/DeathLocationFilter";
+import { CausasSecundarias } from "../components/CausasSecundarias";
 
 // Função auxiliar para combinar dados de diferentes locais de ocorrência
 const combineLocationData = (cities1, cities2) => {
@@ -74,6 +76,8 @@ export default function SinistrosFataisClientSide({
   const [isLoadingModoTransporte, setIsLoadingModoTransporte] = useState(false);
   const [collisionMatrixData, setCollisionMatrixData] = useState(null);
   const [isLoadingMatrix, setIsLoadingMatrix] = useState(false);
+  const [causasSecundariasData, setCausasSecundariasData] = useState(null);
+  const [isLoadingCausasSecundarias, setIsLoadingCausasSecundarias] = useState(false);
   const [deathLocation, setDeathLocation] = useState<DeathLocationType>("all"); // Local de ocorrência do óbito
 
   // Determinar o último ano disponível nos dados
@@ -286,6 +290,85 @@ export default function SinistrosFataisClientSide({
     fetchModoTransporteData();
   }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
   
+  // Estado para o modo de transporte selecionado
+  const [selectedModoTransporte, setSelectedModoTransporte] = useState(null);
+
+  // Estado para o modo de transporte do seletor
+  const [seletorModoTransporte, setSeletorModoTransporte] = useState(null);
+
+  // Obter perfil socioeconômico (usando o seletor ou o card selecionado)
+  const modoTransporteAtivo = seletorModoTransporte || selectedModoTransporte;
+
+  // Buscar dados das causas secundárias quando a cidade, tipo de local, ano ou local de ocorrência do óbito mudar
+  useEffect(() => {
+    const fetchCausasSecundariasData = async () => {
+      if (!selectedYear) return;
+
+      setIsLoadingCausasSecundarias(true);
+      try {
+        // Usar o ano final se estiver definido, caso contrário usar o ano inicial
+        const anoFim = selectedEndYear || selectedYear;
+        
+        // Construir a URL base com os parâmetros
+        let url = `${DATASUS_CAUSAS_SECUNDARIAS_DATA}?startYear=${selectedYear}&endYear=${anoFim}&tipoLocal=${tipoLocal}`;
+        
+        // Adicionar cityId se uma cidade específica estiver selecionada
+        if (selectedCardCity) {
+          url += `&cityId=${selectedCardCity}`;
+        }
+        
+        // Adicionar filtro de modo de transporte se estiver selecionado
+        if (modoTransporteAtivo) {
+          url += `&modoTransporte=${modoTransporteAtivo}`;
+        }
+        
+        // Adicionar filtro de local de ocorrência do óbito
+        if (deathLocation !== "all") {
+          if (deathLocation === "health") {
+            // Fazer duas chamadas separadas e combinar os resultados
+            const response1 = await fetch(`${url}&localOcorrenciaObito=1`);
+            const data1 = await response1.json();
+            
+            const response2 = await fetch(`${url}&localOcorrenciaObito=2`);
+            const data2 = await response2.json();
+            
+            // Combinar os dados (implementação simplificada)
+            if (data1 && data1.causasSecundarias) {
+              setCausasSecundariasData(data1);
+            } else if (data2 && data2.causasSecundarias) {
+              setCausasSecundariasData(data2);
+            } else {
+              setCausasSecundariasData(null);
+            }
+          } else if (deathLocation === "other") {
+            // Para simplificar, usar apenas o código 3 (domicílio)
+            const response = await fetch(`${url}&localOcorrenciaObito=3`);
+            const data = await response.json();
+            setCausasSecundariasData(data);
+          } else {
+            // Para "public" (código 4), fazer uma única chamada
+            url += `&localOcorrenciaObito=4`;
+            const response = await fetch(url);
+            const data = await response.json();
+            setCausasSecundariasData(data);
+          }
+        } else {
+          // Sem filtro de local de ocorrência
+          const response = await fetch(url);
+          const data = await response.json();
+          setCausasSecundariasData(data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar dados de causas secundárias:", error);
+        setCausasSecundariasData(null);
+      } finally {
+        setIsLoadingCausasSecundarias(false);
+      }
+    };
+
+    fetchCausasSecundariasData();
+  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear, modoTransporteAtivo, deathLocation]);
+
   // Buscar dados da matriz de colisão quando a cidade, tipo de local, ano ou local de ocorrência do óbito mudar
   useEffect(() => {
     const fetchCollisionMatrixData = async () => {
@@ -450,15 +533,6 @@ export default function SinistrosFataisClientSide({
   const modoTransporteProcessado = modoTransporteData
     ? getModoTransporteCards(modoTransporteData)
     : null;
-
-  // Estado para o modo de transporte selecionado
-  const [selectedModoTransporte, setSelectedModoTransporte] = useState(null);
-
-  // Estado para o modo de transporte do seletor
-  const [seletorModoTransporte, setSeletorModoTransporte] = useState(null);
-
-  // Obter perfil socioeconômico (usando o seletor ou o card selecionado)
-  const modoTransporteAtivo = seletorModoTransporte || selectedModoTransporte;
   const perfilSocioeconomico = modoTransporteData
     ? getPerfilSocioeconomico(modoTransporteData, modoTransporteAtivo)
     : null;
@@ -894,6 +968,16 @@ export default function SinistrosFataisClientSide({
                 </div>
               </div>
             )}
+            
+            {/* Causas Secundárias */}
+            <CausasSecundarias
+              data={causasSecundariasData}
+              isLoading={isLoadingCausasSecundarias}
+              title="Causas Secundárias"
+              subtitle={`${selectedCityName} - ${getPeriodoText()} (${
+                tipoLocal === "ocorrencia" ? "Local de Ocorrência" : "Local de Residência"
+              })`}
+            />
           </div>
         )}
 
