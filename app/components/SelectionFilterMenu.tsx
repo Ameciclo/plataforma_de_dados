@@ -20,7 +20,15 @@ interface SelectionFilterMenuProps {
   selectedCityName: string;
 }
 
-export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps> = ({
+interface CityOption {
+  id: number;
+  nome: string;
+}
+
+export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
+  citiesList?: CityOption[];
+  onCityChange?: (cityId: number) => void;
+}> = ({
   baseType,
   onBaseTypeChange,
   deathLocation,
@@ -30,7 +38,9 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps> = ({
   availableYears,
   onYearChange,
   selectedCity,
-  selectedCityName
+  selectedCityName,
+  citiesList = [],
+  onCityChange = () => {}
 }) => {
   const [isOpen, setIsOpen] = useState<string | null>(null);
   
@@ -227,6 +237,31 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps> = ({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
+            
+            {isOpen === 'city' && (
+              <div className="absolute bottom-full left-0 mb-2 w-full max-h-60 overflow-y-auto bg-white shadow-lg rounded-lg border border-gray-200 p-2">
+                {citiesList.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-1">
+                    {citiesList.map(city => (
+                      <button 
+                        key={city.id}
+                        className={`w-full text-left px-4 py-2 rounded-lg ${city.id === selectedCity ? 'bg-[#008888] text-white' : 'hover:bg-gray-100'}`}
+                        onClick={() => {
+                          onCityChange(city.id);
+                          setIsOpen(null);
+                        }}
+                      >
+                        {city.nome}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-2">
+                    <p className="text-sm text-gray-600">Selecione uma cidade nos cards acima</p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -979,6 +979,8 @@ export default function SinistrosFataisClientSide({
         onYearChange={handleYearChange}
         selectedCity={selectedCardCity}
         selectedCityName={selectedCityName}
+        citiesList={citiesByYearData?.cidades || []}
+        onCityChange={handleCityChange}
       />
     </>
   );
