@@ -8,6 +8,7 @@ import { SelectableInfoCards } from "../components/SelectableInfoCards";
 import LineChart from "../components/Charts/LineChart";
 import { YearSelector } from "../components/YearSelector";
 import { LocalTypeSelector } from "../components/LocalTypeSelector";
+import { SelectionFilterMenu, FilterBaseType, FilterDeathLocationType } from "../components/SelectionFilterMenu";
 import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
 import {
   getGeneralStatistics,
@@ -577,12 +578,6 @@ export default function SinistrosFataisClientSide({
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
       />
 
-      {/* Seletor de tipo de local (movido para depois das estatísticas) */}
-      <LocalTypeSelector
-        selectedType={tipoLocal}
-        onChange={handleTipoLocalChange}
-      />
-
       {/* Caixas de explicação */}
       <ExplanationBoxes
         boxes={
@@ -598,16 +593,7 @@ export default function SinistrosFataisClientSide({
           Evolução das Mortes no Trânsito
         </h2>
 
-        {/* Filtro de local de ocorrência do óbito */}
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold text-center mb-2">Local de ocorrência do óbito</h3>
-          <DeathLocationFilter 
-            selectedLocation={deathLocation}
-            onChange={setDeathLocation}
-          />
-        </div>
-
-        {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
+          {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
         <div className="flex justify-center mb-4">
           <button
             className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
@@ -663,15 +649,6 @@ export default function SinistrosFataisClientSide({
           )
         </h3>
 
-        {/* Timeline/Seletor de ano */}
-        {citiesByYearData && citiesByYearData.anos && (
-          <YearSelector
-            years={citiesByYearData.anos}
-            selectedYear={selectedYear}
-            selectedEndYear={selectedEndYear}
-            onChange={handleYearChange}
-          />
-        )}
 
         {/* Cards de cidades */}
         <NumberCards
@@ -718,15 +695,7 @@ export default function SinistrosFataisClientSide({
                 : "Local de Residência"}
               )
             </h3>
-            {/* Timeline/Seletor de ano */}
-            {citiesByYearData && citiesByYearData.anos && (
-              <YearSelector
-                years={citiesByYearData.anos}
-                selectedYear={selectedYear}
-                selectedEndYear={selectedEndYear}
-                onChange={handleYearChange}
-              />
-            )}
+
 
             <SelectableInfoCards
               cards={modoTransporteProcessado.cards}
@@ -994,6 +963,23 @@ export default function SinistrosFataisClientSide({
           }))}
         />
       )}
+
+      {/* Menu de filtros fixo na parte inferior */}
+      <div className="pb-16">
+        {/* Espaço para evitar que o conteúdo fique escondido atrás do menu fixo */}
+      </div>
+      <SelectionFilterMenu
+        baseType={tipoLocal as FilterBaseType}
+        onBaseTypeChange={handleTipoLocalChange}
+        deathLocation={deathLocation as FilterDeathLocationType}
+        onDeathLocationChange={setDeathLocation}
+        selectedYear={selectedYear}
+        selectedEndYear={selectedEndYear}
+        availableYears={citiesByYearData?.anos || []}
+        onYearChange={handleYearChange}
+        selectedCity={selectedCardCity}
+        selectedCityName={selectedCityName}
+      />
     </>
   );
 }

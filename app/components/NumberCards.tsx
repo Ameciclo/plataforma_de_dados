@@ -1,5 +1,5 @@
 import React from "react";
-import { MultipleSelectionFilters } from "./SelectionFilterMenu";
+import { MultipleSelectionFilters } from "./MultipleSelectionFilters";
 import {
   IntlNumberMin1Max3Digits,
   IntlNumber1Digit,
