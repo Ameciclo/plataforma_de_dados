@@ -92,12 +92,13 @@ export default function SinistrosFataisClientSide({
   );
   const [deathLocation, setDeathLocation] = useState<DeathLocationType>("all"); // Local de ocorrência do óbito
 
-  // Determinar o último ano disponível nos dados
+  // Determinar o último ano disponível nos dados apenas na primeira carga
   useEffect(() => {
     if (
       citiesByYearData &&
       citiesByYearData.anos &&
-      citiesByYearData.anos.length > 0
+      citiesByYearData.anos.length > 0 &&
+      !selectedYear // Apenas se não houver ano selecionado
     ) {
       // Verificar se 2023 está disponível, caso contrário usar o último ano
       if (citiesByYearData.anos.includes(2023)) {
@@ -108,7 +109,7 @@ export default function SinistrosFataisClientSide({
         );
       }
     }
-  }, [citiesByYearData]);
+  }, [citiesByYearData, selectedYear]);
 
   // Buscar dados quando o tipo de local ou local de ocorrência do óbito mudar
   useEffect(() => {
@@ -602,6 +603,30 @@ export default function SinistrosFataisClientSide({
     if (!selectedEndYear) return selectedYear.toString();
     return `${selectedYear} a ${selectedEndYear}`;
   };
+  
+  // Obter texto completo dos filtros para subtítulos
+  const getFullFilterText = () => {
+    const baseType = tipoLocal === "ocorrencia" 
+      ? "Local de ocorrência da morte" 
+      : "Local de residência da pessoa morta";
+    
+    const deathLocText = (() => {
+      switch(deathLocation) {
+        case "all": return "Todos os locais";
+        case "health": return "Hospital/Estabelecimento de saúde";
+        case "public": return "Via pública";
+        case "other": return "Outros locais e ignorados";
+        default: return "Todos os locais";
+      }
+    })();
+    
+    return `${selectedCityName} - ${getPeriodoText()} - ${baseType} - ${deathLocText}`;
+  };
+  
+  // Verificar se o filtro de local de ocorrência do óbito está sendo aplicado corretamente na API
+  useEffect(() => {
+    console.log(`Filtro aplicado: Base=${tipoLocal}, Local=${deathLocation}, Ano=${selectedYear}-${selectedEndYear || selectedYear}, Cidade=${selectedCityName}`);
+  }, [tipoLocal, deathLocation, selectedYear, selectedEndYear, selectedCityName]);
 
   return (
     <>
@@ -610,8 +635,8 @@ export default function SinistrosFataisClientSide({
         title="Mortes no Trânsito"
         subtitle={`Dados do DATASUS - RMR (por ${
           tipoLocal === "ocorrencia"
-            ? "Local de Ocorrência"
-            : "Local de Residência"
+            ? "Local de ocorrência da morte"
+            : "Local de residência da pessoa morta"
         })`}
         boxes={getGeneralStatistics(summaryData, tipoLocal)}
       />
@@ -631,11 +656,7 @@ export default function SinistrosFataisClientSide({
           Mortes por Cidade
         </h2>
         <h3 className="text-xl text-center mb-8">
-          {getPeriodoText()} (
-          {tipoLocal === "ocorrencia"
-            ? "Local de Ocorrência"
-            : "Local de Residência"}
-          )
+          {getFullFilterText()}
         </h3>
 
         {/* Cards de cidades */}
@@ -699,8 +720,8 @@ export default function SinistrosFataisClientSide({
         <LineChart
           title={`Mortes por Ano na RMR (${
             tipoLocal === "ocorrencia"
-              ? "Local de Ocorrência"
-              : "Local de Residência"
+              ? "Local de ocorrência da morte"
+              : "Local de residência da pessoa morta"
           })`}
           xAxisTitle="Ano"
           yAxisTitle="Número de Mortes"
@@ -717,16 +738,7 @@ export default function SinistrosFataisClientSide({
         data={collisionMatrixData}
         isLoading={isLoadingMatrix}
         title="Matriz de Colisão"
-        subtitle={`${
-          selectedCardCity
-            ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)
-                ?.nome || "Cidade selecionada"
-            : "RMR"
-        } - ${getPeriodoText()} (${
-          tipoLocal === "ocorrencia"
-            ? "Local de Ocorrência"
-            : "Local de Residência"
-        })`}
+        subtitle={getFullFilterText()}
       />
   
      <div className="m-8 p-6 bg-gray-50 rounded-lg shadow-lg border">
@@ -739,11 +751,7 @@ export default function SinistrosFataisClientSide({
                 Mortes por Modo de Transporte
               </h2>
               <h3 className="text-xl text-center mb-8">
-                {selectedCityName} - {getPeriodoText()} (
-                {tipoLocal === "ocorrencia"
-                  ? "Local de Ocorrência"
-                  : "Local de Residência"}
-                )
+                {getFullFilterText()}
               </h3>
 
               <SelectableInfoCards
@@ -771,11 +779,7 @@ export default function SinistrosFataisClientSide({
                     {perfilSocioeconomico.titulo}
                   </h2>
                   <h3 className="text-xl text-center mb-8">
-                    {selectedCityName} - {getPeriodoText()} (
-                    {tipoLocal === "ocorrencia"
-                      ? "Local de Ocorrência"
-                      : "Local de Residência"}
-                    )
+                    {getFullFilterText()}
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1007,11 +1011,7 @@ export default function SinistrosFataisClientSide({
                 data={causasSecundariasData}
                 isLoading={isLoadingCausasSecundarias}
                 title="Causas Secundárias"
-                subtitle={`${selectedCityName} - ${getPeriodoText()} (${
-                  tipoLocal === "ocorrencia"
-                    ? "Local de Ocorrência"
-                    : "Local de Residência"
-                })`}
+                subtitle={getFullFilterText()}
                 cidDescriptions={require("../../public/CID10CAT.json")}
               />
             </div>
