@@ -383,74 +383,85 @@ export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
       return null;
     }
 
-    // Filtrar os dados detalhados para o modo de transporte selecionado
-    const modosDesejados = modoTransporteToCID[modoTransporte] || [];
-    
-    if (!filtrosData.dados || !modosDesejados.length) {
+    // Verificar se temos dados detalhados
+    if (!filtrosData.dados || filtrosData.dados.length === 0) {
       return null;
     }
-
-    // Filtrar os dados pelo modo de transporte
+    
+    // Obter o total de mortes para este modo de transporte dos cards
+    const modosDesejados = modoTransporteToCID[modoTransporte] || [];
+    if (modosDesejados.length === 0) {
+      return null;
+    }
+    
+    let totalMortesModo = 0;
+    if (filtrosData.resumo.porModoTransporte) {
+      modosDesejados.forEach(modo => {
+        totalMortesModo += filtrosData.resumo.porModoTransporte[modo] || 0;
+      });
+    }
+    
+    // Se não há mortes para este modo, retornar null
+    if (totalMortesModo === 0) {
+      return null;
+    }
+    
+    // Filtrar os dados detalhados
     const dadosFiltrados = filtrosData.dados.filter(item => 
       modosDesejados.includes(item.modoTransporte?.descricao)
     );
-
-    if (!dadosFiltrados.length) {
+    
+    // Se não há dados filtrados, retornar null
+    if (dadosFiltrados.length === 0) {
       return null;
     }
-
-    // Processar dados por sexo
+    
+    // Processar dados por sexo, raça/cor e faixa etária
+    const contagens = {
+      sexo: {},
+      racaCor: {},
+      faixaEtaria: {}
+    };
+    
+    // Contar ocorrências
     dadosFiltrados.forEach(item => {
       const sexo = item.sexo?.descricao || "Não informado";
-      dadosBrutos.sexo[sexo] = (dadosBrutos.sexo[sexo] || 0) + (item.total || 1);
-    });
-
-    // Processar dados por raça/cor
-    dadosFiltrados.forEach(item => {
       const racaCor = item.racacor?.descricao || "Não informado";
-      dadosBrutos.racaCor[racaCor] = (dadosBrutos.racaCor[racaCor] || 0) + (item.total || 1);
-    });
-
-    // Processar dados por faixa etária
-    dadosFiltrados.forEach(item => {
       const faixaEtaria = item.faixaEtaria || "Não informado";
-      dadosBrutos.faixaEtaria[faixaEtaria] = (dadosBrutos.faixaEtaria[faixaEtaria] || 0) + (item.total || 1);
+      
+      contagens.sexo[sexo] = (contagens.sexo[sexo] || 0) + 1;
+      contagens.racaCor[racaCor] = (contagens.racaCor[racaCor] || 0) + 1;
+      contagens.faixaEtaria[faixaEtaria] = (contagens.faixaEtaria[faixaEtaria] || 0) + 1;
     });
+    
+    // Ajustar contagens para corresponder ao total de mortes
+    const ajustarContagens = (contagens, totalMortes) => {
+      const totalContado = Object.values(contagens).reduce((sum, val) => sum + val, 0);
+      if (totalContado === 0 || totalContado === totalMortes) return contagens;
+      
+      const fator = totalMortes / totalContado;
+      const resultado = {};
+      
+      Object.entries(contagens).forEach(([chave, valor]) => {
+        resultado[chave] = Math.round(valor * fator);
+      });
+      
+      return resultado;
+    };
+    
+    // Ajustar contagens para corresponder ao total de mortes dos cards
+    dadosBrutos.sexo = ajustarContagens(contagens.sexo, totalMortesModo);
+    dadosBrutos.racaCor = ajustarContagens(contagens.racaCor, totalMortesModo);
+    dadosBrutos.faixaEtaria = ajustarContagens(contagens.faixaEtaria, totalMortesModo);
   }
 
-  // Formatar dados para gráficos de barras 100%
-  const formatarParaGrafico = (dados) => {
-    const total = Object.values(dados).reduce((sum, val) => sum + val, 0);
-    
-    return {
-      dados,
-      total,
-      grafico: {
-        series: [{
-          data: Object.entries(dados).map(([categoria, valor]) => ({
-            name: categoria,
-            y: valor,
-            percentage: total > 0 ? (valor / total) * 100 : 0
-          }))
-        }]
-      }
-    };
-  };
-
-  // Ordenar faixas etárias
-  const ordenarFaixasEtarias = (dados) => {
-    const ordem = [
-      "0 a 4 anos", "5 a 9 anos", "10 a 14 anos", "15 a 19 anos",
-      "20 a 29 anos", "30 a 39 anos", "40 a 49 anos", "50 a 59 anos",
-      "60 a 69 anos", "70 a 79 anos", "80 anos ou mais", "Não informado"
-    ];
-    
-    return Object.fromEntries(
-      Object.entries(dados).sort(([a], [b]) => {
-        return ordem.indexOf(a) - ordem.indexOf(b);
-      })
-    );
-  };
+  // Log para depuração
+  console.log("Dados brutos para perfil:", {
+    modoTransporte,
+    sexo: dadosBrutos.sexo,
+    racaCor: dadosBrutos.racaCor,
+    faixaEtaria: dadosBrutos.faixaEtaria
+  });
 
   // Processar e formatar os dados
   const sexoProcessado = formatarParaGrafico(dadosBrutos.sexo);
@@ -464,3 +475,37 @@ export function getPerfilSocioeconomico(filtrosData, modoTransporte = null) {
     faixaEtaria: faixaEtariaProcessado
   };
 }
+
+// Formatar dados para gráficos de barras 100%
+const formatarParaGrafico = (dados) => {
+  const total = Object.values(dados).reduce((sum, val) => sum + val, 0);
+  
+  return {
+    dados,
+    total,
+    grafico: {
+      series: [{
+        data: Object.entries(dados).map(([categoria, valor]) => ({
+          name: categoria,
+          y: valor,
+          percentage: total > 0 ? (valor / total) * 100 : 0
+        }))
+      }]
+    }
+  };
+};
+
+// Ordenar faixas etárias
+const ordenarFaixasEtarias = (dados) => {
+  const ordem = [
+    "0 a 4 anos", "5 a 9 anos", "10 a 14 anos", "15 a 19 anos",
+    "20 a 29 anos", "30 a 39 anos", "40 a 49 anos", "50 a 59 anos",
+    "60 a 69 anos", "70 a 79 anos", "80 anos ou mais", "Não informado"
+  ];
+  
+  return Object.fromEntries(
+    Object.entries(dados).sort(([a], [b]) => {
+      return ordem.indexOf(a) - ordem.indexOf(b);
+    })
+  );
+};
