@@ -214,6 +214,7 @@ GET http://localhost:8080/datasus-deaths/summary
 - `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
 - `endYear` (opcional): Ano final para filtrar (padrão: ano atual)
 - `byResidence` (opcional): Se `true`, usa local de residência; se `false` ou não informado, usa local de ocorrência
+- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
 
 **Descrição:** Retorna uma matriz de colisão mostrando o número de mortes por tipo de vítima e contraparte.
 
@@ -230,6 +231,9 @@ GET http://localhost:8080/datasus-deaths/matrix?byResidence=true
 
 # Matriz de colisão para o Recife entre 2018 e 2022 por local de residência
 GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&endYear=2022&byResidence=true
+
+# Matriz de colisão para mortes ocorridas em via pública
+GET http://localhost:8080/datasus-deaths/matrix?deathLocation=4
 ```
 
 **Resposta:**
@@ -240,8 +244,8 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
       "pedestre": 0,
       "ciclista": 5,
       "motociclista": 25,
-      "automovel": 120,
-      "ônibus": 30,
+      "ocupanete_automovel": 120,
+      "onibus": 30,
       "outros": 3,
       "objeto_fixo": 0,
       "sem_colisao": 0,
@@ -252,8 +256,8 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
       "pedestre": 2,
       "ciclista": 3,
       "motociclista": 8,
-      "automovel": 45,
-      "ônibus": 12,
+      "ocupanete_automovel": 45,
+      "onibus": 12,
       "outros": 1,
       "objeto_fixo": 10,
       "sem_colisao": 15,
@@ -265,8 +269,8 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
       "pedestre": 5,
       "ciclista": 10,
       "motociclista": 50,
-      "automovel": 280,
-      "ônibus": 60,
+      "ocupanete_automovel": 280,
+      "onibus": 60,
       "outros": 15,
       "objeto_fixo": 70,
       "sem_colisao": 50,
@@ -279,6 +283,7 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
     "startYear": 2023,
     "endYear": 2023,
     "byResidence": false,
+    "deathLocation": "4",
     "locationType": "Local de Ocorrência",
     "description": "Matriz de colisão mostrando o número de mortes por tipo de vítima e contraparte"
   }
@@ -293,6 +298,7 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
 
 **Parâmetros:**
 - `tipo` (opcional): Tipo de local a considerar (`ocorrencia` ou `residencia`). Padrão: `ocorrencia`.
+- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado).
 
 **Descrição:** Retorna dados de mortes por cidade da RMR, divididos por ano.
 
@@ -300,12 +306,18 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
 ```
 GET http://localhost:8080/datasus-deaths/cities-by-year
 GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=residencia
+GET http://localhost:8080/datasus-deaths/cities-by-year?localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=ocorrencia&localOcorrenciaObito=4
 ```
 
 **Resposta:**
 ```json
 {
   "tipo": "Local de Ocorrência",
+  "localOcorrenciaObito": {
+    "valor": "4",
+    "descricao": "Via pública"
+  },
   "anos": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
   "cidades": [
     {
@@ -337,6 +349,89 @@ GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=residencia
 - `faixaEtariaMin` (opcional): Idade mínima
 - `faixaEtariaMax` (opcional): Idade máxima
 - `modoTransporte` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, V4 = Ocupante de automóvel, etc.)
+- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
+
+### Causas Secundárias
+
+**Endpoint:** `/datasus-deaths/causas-secundarias`
+
+**Método:** GET
+
+**Parâmetros:**
+- `cityId` (opcional): ID do município específico (se não informado, usa todos da RMR)
+- `tipoLocal` (opcional): `residencia` ou `ocorrencia` (padrão: `ocorrencia`)
+- `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
+- `endYear` (opcional): Ano final para filtrar (padrão: ano atual)
+- `idadeMin` (opcional): Idade mínima para filtrar
+- `idadeMax` (opcional): Idade máxima para filtrar
+- `sexo` (opcional): Código do sexo (1 = Masculino, 2 = Feminino)
+- `modoTransporte` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, etc.)
+- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
+
+**Descrição:** Retorna as causas secundárias das mortes por sinistro de trânsito, agrupadas por linhas da declaração de óbito (A, B, C, D e II).
+
+**Exemplos de Uso:**
+```
+# Todas as causas secundárias na RMR
+GET http://localhost:8080/datasus-deaths/causas-secundarias
+
+# Causas secundárias para óbitos em via pública
+GET http://localhost:8080/datasus-deaths/causas-secundarias?localOcorrenciaObito=4
+
+# Causas secundárias para motociclistas
+GET http://localhost:8080/datasus-deaths/causas-secundarias?modoTransporte=V2
+
+# Causas secundárias para homens entre 20 e 29 anos
+GET http://localhost:8080/datasus-deaths/causas-secundarias?sexo=1&idadeMin=20&idadeMax=29
+
+# Combinação de filtros
+GET http://localhost:8080/datasus-deaths/causas-secundarias?cityId=2611606&startYear=2018&endYear=2022&modoTransporte=V2&localOcorrenciaObito=4
+```
+
+**Resposta:**
+```json
+{
+  "filtrosAplicados": {
+    "cidade": 2611606,
+    "tipoLocal": "ocorrencia",
+    "periodoAnos": {
+      "inicio": 2018,
+      "fim": 2022
+    },
+    "modoTransporte": {
+      "codigo": "V2",
+      "descricao": "Motociclista"
+    },
+    "localOcorrenciaObito": {
+      "codigo": "4",
+      "descricao": "Via pública"
+    }
+  },
+  "totalRegistros": 150,
+  "causasSecundarias": {
+    "linhaa": [
+      { "codigo": "S06.9", "count": 45 },
+      { "codigo": "S27.9", "count": 30 },
+      { "codigo": "T07", "count": 25 },
+      // ...
+    ],
+    "linhab": [
+      { "codigo": "T14.9", "count": 40 },
+      { "codigo": "S36.9", "count": 35 },
+      // ...
+    ],
+    "linhac": [
+      // ...
+    ],
+    "linhad": [
+      // ...
+    ],
+    "linhaii": [
+      // ...
+    ]
+  },
+  "descricao": "Causas secundárias das mortes por sinistro de trânsito"
+}
 
 **Descrição:** Permite filtrar os dados de mortes no trânsito por diversos critérios.
 
@@ -365,6 +460,12 @@ GET http://localhost:8080/datasus-deaths/filtros?modoTransporte=V2&sexo=1
 
 # Combinação: Óbitos em Recife por local de residência entre 2018 e 2022
 GET http://localhost:8080/datasus-deaths/filtros?municipio=2611606&tipoLocal=residencia&anoInicio=2018&anoFim=2022
+
+# Óbitos ocorridos em via pública
+GET http://localhost:8080/datasus-deaths/filtros?localOcorrenciaObito=4
+
+# Combinação: Motociclistas com óbito em via pública
+GET http://localhost:8080/datasus-deaths/filtros?modoTransporte=V2&localOcorrenciaObito=4
 ```
 
 **Resposta:**
@@ -404,6 +505,11 @@ GET http://localhost:8080/datasus-deaths/filtros?municipio=2611606&tipoLocal=res
     },
     "porModoTransporte": {
       "Motociclista": 456
+    },
+    "porLocalOcorrenciaObito": {
+      "Via pública": 300,
+      "Hospital": 120,
+      "Outros": 36
     }
   },
   "dados": [
