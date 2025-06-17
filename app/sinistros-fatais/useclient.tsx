@@ -430,79 +430,21 @@ export default function SinistrosFataisClientSide({
         // Adicionar parâmetro de tipo de local
         baseUrl += `&byResidence=${tipoLocal === "residencia"}`;
 
-        // Adicionar filtro de local de ocorrência do óbito
+        // Adicionar filtro de local de ocorrência do óbito usando o parâmetro deathLocation
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Buscar dados para hospitais (código 1) e outros estabelecimentos de saúde (código 2)
-            const response1 = await fetch(`${baseUrl}&localOcorrenciaObito=1`);
-            const data1 = await response1.json();
-
-            const response2 = await fetch(`${baseUrl}&localOcorrenciaObito=2`);
-            const data2 = await response2.json();
-
-            // Combinar as matrizes (implementação simplificada)
-            if (data1 && data1.matrix && data2 && data2.matrix) {
-              const combinedData = { ...data1 };
-
-              // Combinar cada modo de transporte
-              Object.keys(data2.matrix).forEach((mode) => {
-                if (!combinedData.matrix[mode]) {
-                  combinedData.matrix[mode] = { ...data2.matrix[mode] };
-                } else {
-                  // Combinar os valores para cada contraparte
-                  Object.keys(data2.matrix[mode]).forEach((counterpart) => {
-                    combinedData.matrix[mode][counterpart] =
-                      (combinedData.matrix[mode][counterpart] || 0) +
-                      (data2.matrix[mode][counterpart] || 0);
-                  });
-                }
-              });
-
-              setCollisionMatrixData(combinedData);
-              return;
-            }
+            // Hospitais (código 1) e outros estabelecimentos de saúde (código 2)
+            baseUrl += `&deathLocation=1,2`;
           } else if (deathLocation === "other") {
-            // Buscar dados para domicílio (código 3), outros locais (código 5) e ignorados (código 9)
-            const response1 = await fetch(`${baseUrl}&localOcorrenciaObito=3`);
-            const data1 = await response1.json();
-
-            const response2 = await fetch(`${baseUrl}&localOcorrenciaObito=5`);
-            const data2 = await response2.json();
-
-            const response3 = await fetch(`${baseUrl}&localOcorrenciaObito=9`);
-            const data3 = await response3.json();
-
-            // Combinar as matrizes (implementação simplificada)
-            if (data1 && data1.matrix) {
-              const combinedData = { ...data1 };
-
-              [data2, data3].forEach((data) => {
-                if (data && data.matrix) {
-                  // Combinar cada modo de transporte
-                  Object.keys(data.matrix).forEach((mode) => {
-                    if (!combinedData.matrix[mode]) {
-                      combinedData.matrix[mode] = { ...data.matrix[mode] };
-                    } else {
-                      // Combinar os valores para cada contraparte
-                      Object.keys(data.matrix[mode]).forEach((counterpart) => {
-                        combinedData.matrix[mode][counterpart] =
-                          (combinedData.matrix[mode][counterpart] || 0) +
-                          (data.matrix[mode][counterpart] || 0);
-                      });
-                    }
-                  });
-                }
-              });
-
-              setCollisionMatrixData(combinedData);
-              return;
-            }
+            // Domicílio (código 3), outros locais (código 5) e ignorados (código 9)
+            baseUrl += `&deathLocation=3,5,9`;
           } else {
-            // Para "public" (código 4), fazer uma única chamada
-            baseUrl += `&localOcorrenciaObito=4`;
+            // Para "public" (código 4)
+            baseUrl += `&deathLocation=4`;
           }
         }
 
+        console.log(`Buscando matriz de colisão: ${baseUrl}`);
         const response = await fetch(baseUrl);
         const data = await response.json();
 
@@ -521,7 +463,7 @@ export default function SinistrosFataisClientSide({
     };
 
     fetchCollisionMatrixData();
-  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
+  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear, deathLocation]);
 
   // Alternar entre local de ocorrência e residência
   const handleTipoLocalChange = (tipo) => {
