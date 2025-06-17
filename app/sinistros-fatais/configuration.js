@@ -39,7 +39,26 @@ export function getGeneralStatistics(summaryData, tipoLocal = "ocorrencia") {
 
 // Função para formatar os dados de cidades por ano
 export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "ocorrencia", selectedEndYear = null) {
+  console.log("getCityCardsByYear - Entrada:", {
+    citiesByYearData,
+    selectedYear,
+    tipoLocal,
+    selectedEndYear,
+    hasCidades: !!citiesByYearData?.cidades,
+    hasAnos: !!citiesByYearData?.anos,
+    cidadesLength: citiesByYearData?.cidades?.length,
+    anosLength: citiesByYearData?.anos?.length
+  });
   if (!citiesByYearData || !selectedYear) return [];
+  if (!citiesByYearData.cidades || citiesByYearData.cidades.length === 0) {
+    console.warn("Array de cidades vazio em getCityCardsByYear");
+    return [{
+      id: 0,
+      label: "Sem dados disponíveis",
+      value: 0,
+      unit: "mortes"
+    }];
+  }
   
   // Criar cards ordenados do maior para o menor número de mortes
   return citiesByYearData.cidades
@@ -68,7 +87,21 @@ export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "
 
 // Função para formatar os dados do gráfico de evolução anual
 export function getYearlyChartData(citiesByYearData, selectedCity = null, showAllCities = false) {
-  if (!citiesByYearData || !citiesByYearData.anos) return [];
+  console.log("getYearlyChartData - Entrada:", {
+    citiesByYearData,
+    selectedCity,
+    showAllCities,
+    hasCidades: !!citiesByYearData?.cidades,
+    hasAnos: !!citiesByYearData?.anos,
+    anos: citiesByYearData?.anos
+  });
+  if (!citiesByYearData || !citiesByYearData.anos || citiesByYearData.anos.length === 0) {
+    console.warn("Dados incompletos ou array de anos vazio em getYearlyChartData");
+    return [{
+      name: "Sem dados",
+      data: [{name: "Sem dados", y: 0}]
+    }];
+  }
   
   // Se uma cidade está selecionada, mostrar apenas dados dessa cidade
   if (selectedCity) {
@@ -269,7 +302,7 @@ export const coresPerfil = {
 
 // Função para formatar os dados da matriz de colisão
 export function formatCollisionMatrix(matrixData) {
-  console.log("Dados brutos da matriz:", matrixData);
+  console.log("Dados brutos da matriz:", JSON.stringify(matrixData, null, 2));
   
   if (!matrixData || !matrixData.matrix) {
     return null;

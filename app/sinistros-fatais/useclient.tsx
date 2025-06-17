@@ -121,10 +121,10 @@ export default function SinistrosFataisClientSide({
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Usar valores separados por vírgula
+            // Tentar com valores separados por vírgula
             url += `&localOcorrenciaObito=1,2`;
           } else if (deathLocation === "other") {
-            // Usar valores separados por vírgula
+            // Tentar com valores separados por vírgula
             url += `&localOcorrenciaObito=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
@@ -134,6 +134,43 @@ export default function SinistrosFataisClientSide({
 
         const response = await fetch(url);
         const data = await response.json();
+        console.log("Dados de cidades por ano:", {
+          url,
+          deathLocation,
+          data,
+          anos: data?.anos,
+          anosLength: data?.anos?.length,
+          cidades: data?.cidades?.length
+        });
+        
+        // Verificar se os dados estão completos
+        if (!data.anos || data.anos.length === 0) {
+          console.error("Erro: Array de anos vazio na resposta do backend");
+          
+          // Se o backend não suporta valores separados por vírgula, fazer chamadas individuais
+          if (deathLocation === "health") {
+            // Fazer chamada para código 1 apenas
+            const fallbackUrl = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=1`;
+            console.log("Tentando fallback para health:", fallbackUrl);
+            const fallbackResponse = await fetch(fallbackUrl);
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackData.anos && fallbackData.anos.length > 0) {
+              setCitiesByYearData(fallbackData);
+              return;
+            }
+          } else if (deathLocation === "other") {
+            // Fazer chamada para código 3 apenas
+            const fallbackUrl = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=3`;
+            console.log("Tentando fallback para other:", fallbackUrl);
+            const fallbackResponse = await fetch(fallbackUrl);
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackData.anos && fallbackData.anos.length > 0) {
+              setCitiesByYearData(fallbackData);
+              return;
+            }
+          }
+        }
+        
         setCitiesByYearData(data);
       } catch (error) {
         console.error("Erro ao buscar dados por tipo de local:", error);
@@ -174,6 +211,14 @@ export default function SinistrosFataisClientSide({
         const data = await response.json();
 
         // Verificar se os dados são válidos
+        console.log("Dados de modo de transporte:", {
+          url,
+          deathLocation,
+          hasResumo: !!data?.resumo,
+          hasPorModoTransporte: !!data?.resumo?.porModoTransporte,
+          porModoTransporte: data?.resumo?.porModoTransporte,
+          data
+        });
         if (
           data &&
           data.resumo &&
@@ -249,6 +294,12 @@ export default function SinistrosFataisClientSide({
         // Fazer a chamada à API
         const response = await fetch(url);
         const data = await response.json();
+        console.log("Dados de causas secundárias:", {
+          url,
+          deathLocation,
+          hasCausasSecundarias: !!data?.causasSecundarias,
+          data
+        });
         setCausasSecundariasData(data);
       } catch (error) {
         console.error("Erro ao buscar dados de causas secundárias:", error);
@@ -328,6 +379,12 @@ export default function SinistrosFataisClientSide({
         const data = await response.json();
 
         // Verificar se os dados são válidos
+        console.log("Dados da matriz de colisão:", {
+          url: baseUrl,
+          deathLocation,
+          hasMatrix: !!data?.matrix,
+          data
+        });
         if (data && data.matrix) {
           setCollisionMatrixData(data);
         } else {
