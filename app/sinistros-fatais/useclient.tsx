@@ -121,55 +121,11 @@ export default function SinistrosFataisClientSide({
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Fazer duas chamadas separadas e combinar os resultados
-            const response1 = await fetch(
-              `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=1`
-            );
-            const data1 = await response1.json();
-
-            const response2 = await fetch(
-              `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=2`
-            );
-            const data2 = await response2.json();
-
-            // Combinar os dados
-            const combinedData = {
-              tipo: data1.tipo,
-              anos: data1.anos,
-              cidades: combineLocationData(data1.cidades, data2.cidades),
-            };
-
-            setCitiesByYearData(combinedData);
-            return;
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=1,2`;
           } else if (deathLocation === "other") {
-            // Fazer três chamadas separadas e combinar os resultados
-            const response1 = await fetch(
-              `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=3`
-            );
-            const data1 = await response1.json();
-
-            const response2 = await fetch(
-              `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=5`
-            );
-            const data2 = await response2.json();
-
-            const response3 = await fetch(
-              `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=9`
-            );
-            const data3 = await response3.json();
-
-            // Combinar os dados
-            const combinedData = {
-              tipo: data1.tipo,
-              anos: data1.anos,
-              cidades: combineLocationData(
-                combineLocationData(data1.cidades, data2.cidades),
-                data3.cidades
-              ),
-            };
-
-            setCitiesByYearData(combinedData);
-            return;
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
             url += `&localOcorrenciaObito=4`;
@@ -202,115 +158,36 @@ export default function SinistrosFataisClientSide({
 
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
-          // Para o endpoint de filtros, vamos usar apenas um código por vez
-          // e depois combinar os resultados manualmente
-          let combinedData: any = { resumo: {}, dados: [] };
-
           if (deathLocation === "health") {
-            // Buscar dados para hospitais (código 1)
-            const response1 = await fetch(`${url}&localOcorrenciaObito=1`);
-            const data1 = await response1.json();
-
-            // Buscar dados para outros estabelecimentos de saúde (código 2)
-            const response2 = await fetch(`${url}&localOcorrenciaObito=2`);
-            const data2 = await response2.json();
-
-            // Combinar os dados (implementação simplificada)
-            if (data1 && typeof data1 === "object") {
-              combinedData = {
-                ...data1,
-                resumo: data1.resumo || {},
-                dados: data1.dados || [],
-              };
-            }
-
-            if (data2 && data2.resumo) {
-              // Combinar resumos
-              Object.keys(data2.resumo).forEach((key) => {
-                if (typeof data2.resumo[key] === "object") {
-                  combinedData.resumo[key] = {
-                    ...(combinedData.resumo[key] || {}),
-                    ...data2.resumo[key],
-                  };
-                }
-              });
-
-              // Combinar dados detalhados
-              if (data2.dados) {
-                combinedData.dados = [...combinedData.dados, ...data2.dados];
-              }
-            }
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=1,2`;
           } else if (deathLocation === "other") {
-            // Buscar dados para domicílio (código 3)
-            const response1 = await fetch(`${url}&localOcorrenciaObito=3`);
-            const data1 = await response1.json();
-
-            // Buscar dados para outros locais (código 5)
-            const response2 = await fetch(`${url}&localOcorrenciaObito=5`);
-            const data2 = await response2.json();
-
-            // Buscar dados para locais ignorados (código 9)
-            const response3 = await fetch(`${url}&localOcorrenciaObito=9`);
-            const data3 = await response3.json();
-
-            // Combinar os dados (implementação simplificada)
-            if (data1 && typeof data1 === "object") {
-              combinedData = {
-                ...data1,
-                resumo: data1.resumo || {},
-                dados: data1.dados || [],
-              };
-            }
-
-            [data2, data3].forEach((data) => {
-              if (data && data.resumo) {
-                // Combinar resumos
-                Object.keys(data.resumo).forEach((key) => {
-                  if (typeof data.resumo[key] === "object") {
-                    combinedData.resumo[key] = {
-                      ...(combinedData.resumo[key] || {}),
-                      ...data.resumo[key],
-                    };
-                  }
-                });
-
-                // Combinar dados detalhados
-                if (data.dados) {
-                  combinedData.dados = [...combinedData.dados, ...data.dados];
-                }
-              }
-            });
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
             url += `&localOcorrenciaObito=4`;
-            const response = await fetch(url);
-            combinedData = await response.json();
           }
+        }
 
-          if (combinedData) {
-            setModoTransporteData(combinedData);
-            return;
-          }
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Verificar se os dados são válidos
+        if (
+          data &&
+          data.resumo &&
+          ((data.resumo.porModoTransporte &&
+            Object.keys(data.resumo.porModoTransporte).length > 0) ||
+            (data.resumo.porMeioTransporte &&
+              Object.keys(data.resumo.porMeioTransporte).length > 0) ||
+            (data.resumo.porCID &&
+              Object.keys(data.resumo.porCID).length > 0))
+        ) {
+          setModoTransporteData(data);
         } else {
-          const response = await fetch(url);
-          const data = await response.json();
-
-          // Verificar se os dados são válidos
-          if (
-            data &&
-            data.resumo &&
-            ((data.resumo.porModoTransporte &&
-              Object.keys(data.resumo.porModoTransporte).length > 0) ||
-              (data.resumo.porMeioTransporte &&
-                Object.keys(data.resumo.porMeioTransporte).length > 0) ||
-              (data.resumo.porCID &&
-                Object.keys(data.resumo.porCID).length > 0))
-          ) {
-            setModoTransporteData(data);
-          } else {
-            // Se não há dados válidos, definir como null para não mostrar a seção
-            setModoTransporteData(null);
-          }
+          // Se não há dados válidos, definir como null para não mostrar a seção
+          setModoTransporteData(null);
         }
       } catch (error) {
         console.error("Erro ao buscar dados de modo de transporte:", error);
@@ -358,39 +235,21 @@ export default function SinistrosFataisClientSide({
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Fazer duas chamadas separadas e combinar os resultados
-            const response1 = await fetch(`${url}&localOcorrenciaObito=1`);
-            const data1 = await response1.json();
-
-            const response2 = await fetch(`${url}&localOcorrenciaObito=2`);
-            const data2 = await response2.json();
-
-            // Combinar os dados (implementação simplificada)
-            if (data1 && data1.causasSecundarias) {
-              setCausasSecundariasData(data1);
-            } else if (data2 && data2.causasSecundarias) {
-              setCausasSecundariasData(data2);
-            } else {
-              setCausasSecundariasData(null);
-            }
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=1,2`;
           } else if (deathLocation === "other") {
-            // Para simplificar, usar apenas o código 3 (domicílio)
-            const response = await fetch(`${url}&localOcorrenciaObito=3`);
-            const data = await response.json();
-            setCausasSecundariasData(data);
+            // Usar valores separados por vírgula
+            url += `&localOcorrenciaObito=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
             url += `&localOcorrenciaObito=4`;
-            const response = await fetch(url);
-            const data = await response.json();
-            setCausasSecundariasData(data);
           }
-        } else {
-          // Sem filtro de local de ocorrência
-          const response = await fetch(url);
-          const data = await response.json();
-          setCausasSecundariasData(data);
         }
+
+        // Fazer a chamada à API
+        const response = await fetch(url);
+        const data = await response.json();
+        setCausasSecundariasData(data);
       } catch (error) {
         console.error("Erro ao buscar dados de causas secundárias:", error);
         setCausasSecundariasData(null);
@@ -453,55 +312,11 @@ export default function SinistrosFataisClientSide({
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Buscar dados para hospitais (código 1)
-            const response1 = await fetch(`${baseUrl}&deathLocation=1`);
-            const data1 = await response1.json();
-            
-            // Buscar dados para outros estabelecimentos de saúde (código 2)
-            const response2 = await fetch(`${baseUrl}&deathLocation=2`);
-            const data2 = await response2.json();
-            
-            if (data1?.matrix || data2?.matrix) {
-              const combinedMatrix = combineMatrices(data1?.matrix, data2?.matrix);
-              setCollisionMatrixData({
-                matrix: combinedMatrix,
-                metadata: {
-                  ...(data1?.metadata || data2?.metadata || {}),
-                  deathLocation: "1,2"
-                }
-              });
-            } else {
-              setCollisionMatrixData(null);
-            }
-            return;
+            // Usar valores separados por vírgula
+            baseUrl += `&deathLocation=1,2`;
           } else if (deathLocation === "other") {
-            // Buscar dados para domicílio (código 3)
-            const response1 = await fetch(`${baseUrl}&deathLocation=3`);
-            const data1 = await response1.json();
-            
-            // Buscar dados para outros locais (código 5)
-            const response2 = await fetch(`${baseUrl}&deathLocation=5`);
-            const data2 = await response2.json();
-            
-            // Buscar dados para locais ignorados (código 9)
-            const response3 = await fetch(`${baseUrl}&deathLocation=9`);
-            const data3 = await response3.json();
-            
-            let combinedMatrix = combineMatrices(data1?.matrix, data2?.matrix);
-            combinedMatrix = combineMatrices(combinedMatrix, data3?.matrix);
-            
-            if (combinedMatrix) {
-              setCollisionMatrixData({
-                matrix: combinedMatrix,
-                metadata: {
-                  ...(data1?.metadata || data2?.metadata || data3?.metadata || {}),
-                  deathLocation: "3,5,9"
-                }
-              });
-            } else {
-              setCollisionMatrixData(null);
-            }
-            return;
+            // Usar valores separados por vírgula
+            baseUrl += `&deathLocation=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
             baseUrl += `&deathLocation=4`;
