@@ -214,7 +214,7 @@ GET http://localhost:8080/datasus-deaths/summary
 - `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
 - `endYear` (opcional): Ano final para filtrar (padrão: ano atual)
 - `byResidence` (opcional): Se `true`, usa local de residência; se `false` ou não informado, usa local de ocorrência
-- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
+- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado). Aceita múltiplos valores separados por vírgula (ex: `1,2` para locais de saúde)
 
 **Descrição:** Retorna uma matriz de colisão mostrando o número de mortes por tipo de vítima e contraparte.
 
@@ -234,6 +234,12 @@ GET http://localhost:8080/datasus-deaths/matrix?cityId=2611606&startYear=2018&en
 
 # Matriz de colisão para mortes ocorridas em via pública
 GET http://localhost:8080/datasus-deaths/matrix?deathLocation=4
+
+# Matriz de colisão para mortes ocorridas em locais de saúde (hospitais e outros estabelecimentos)
+GET http://localhost:8080/datasus-deaths/matrix?deathLocation=1,2
+
+# Matriz de colisão para mortes ocorridas em outros locais (domicílio, outros e ignorado)
+GET http://localhost:8080/datasus-deaths/matrix?deathLocation=3,5,9
 ```
 
 **Resposta:**
@@ -297,26 +303,32 @@ GET http://localhost:8080/datasus-deaths/matrix?deathLocation=4
 **Método:** GET
 
 **Parâmetros:**
-- `tipo` (opcional): Tipo de local a considerar (`ocorrencia` ou `residencia`). Padrão: `ocorrencia`.
-- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado).
+- `type` (opcional): Tipo de local a considerar (`occurrence` ou `residence`). Padrão: `occurrence`.
+- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado). Aceita múltiplos valores separados por vírgula (ex: `1,2` para locais de saúde).
+
+**Parâmetros legados (ainda suportados para compatibilidade):**
+- `tipo`: Equivalente a `type` (`ocorrencia` = `occurrence`, `residencia` = `residence`)
+- `localOcorrenciaObito`: Equivalente a `deathLocation`
 
 **Descrição:** Retorna dados de mortes por cidade da RMR, divididos por ano.
 
 **Exemplo de Uso:**
 ```
 GET http://localhost:8080/datasus-deaths/cities-by-year
-GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=residencia
-GET http://localhost:8080/datasus-deaths/cities-by-year?localOcorrenciaObito=4
-GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=ocorrencia&localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/cities-by-year?type=residence
+GET http://localhost:8080/datasus-deaths/cities-by-year?deathLocation=4
+GET http://localhost:8080/datasus-deaths/cities-by-year?type=occurrence&deathLocation=4
+GET http://localhost:8080/datasus-deaths/cities-by-year?deathLocation=1,2
+GET http://localhost:8080/datasus-deaths/cities-by-year?deathLocation=3,5,9
 ```
 
 **Resposta:**
 ```json
 {
-  "tipo": "Local de Ocorrência",
-  "localOcorrenciaObito": {
-    "valor": "4",
-    "descricao": "Via pública"
+  "locationType": "Occurrence Location",
+  "deathLocation": {
+    "value": "4",
+    "description": "Via pública"
   },
   "anos": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
   "cidades": [
@@ -340,16 +352,28 @@ GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=ocorrencia&localOco
 **Método:** GET
 
 **Parâmetros:**
-- `municipio` (opcional): ID do município específico (se não informado, usa todos da RMR)
-- `tipoLocal` (opcional): `residencia` ou `ocorrencia` (padrão: `ocorrencia`)
-- `anoInicio` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
-- `anoFim` (opcional): Ano final para filtrar
-- `sexo` (opcional): Código do sexo (1 = Masculino, 2 = Feminino)
-- `racacor` (opcional): Código da raça/cor (1 = Branca, 2 = Preta, 4 = Parda, etc.)
-- `faixaEtariaMin` (opcional): Idade mínima
-- `faixaEtariaMax` (opcional): Idade máxima
-- `modoTransporte` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, V4 = Ocupante de automóvel, etc.)
-- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
+- `cityId` (opcional): ID do município específico (se não informado, usa todos da RMR)
+- `locationType` (opcional): `residence` ou `occurrence` (padrão: `occurrence`)
+- `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
+- `endYear` (opcional): Ano final para filtrar
+- `gender` (opcional): Código do sexo (1 = Masculino, 2 = Feminino)
+- `race` (opcional): Código da raça/cor (1 = Branca, 2 = Preta, 4 = Parda, etc.)
+- `ageMin` (opcional): Idade mínima
+- `ageMax` (opcional): Idade máxima
+- `transportMode` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, V4 = Ocupante de automóvel, etc.)
+- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado). Aceita múltiplos valores separados por vírgula (ex: `1,2` para locais de saúde)
+
+**Parâmetros legados (ainda suportados para compatibilidade):**
+- `municipio`: Equivalente a `cityId`
+- `tipoLocal`: Equivalente a `locationType` (`residencia` = `residence`, `ocorrencia` = `occurrence`)
+- `anoInicio`: Equivalente a `startYear`
+- `anoFim`: Equivalente a `endYear`
+- `sexo`: Equivalente a `gender`
+- `racacor`: Equivalente a `race`
+- `faixaEtariaMin`: Equivalente a `ageMin`
+- `faixaEtariaMax`: Equivalente a `ageMax`
+- `modoTransporte`: Equivalente a `transportMode`
+- `localOcorrenciaObito`: Equivalente a `deathLocation`
 
 ### Causas Secundárias
 
@@ -359,14 +383,22 @@ GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=ocorrencia&localOco
 
 **Parâmetros:**
 - `cityId` (opcional): ID do município específico (se não informado, usa todos da RMR)
-- `tipoLocal` (opcional): `residencia` ou `ocorrencia` (padrão: `ocorrencia`)
+- `locationType` (opcional): `residence` ou `occurrence` (padrão: `occurrence`)
 - `startYear` (opcional): Ano inicial para filtrar (padrão: últimos 10 anos)
 - `endYear` (opcional): Ano final para filtrar (padrão: ano atual)
-- `idadeMin` (opcional): Idade mínima para filtrar
-- `idadeMax` (opcional): Idade máxima para filtrar
-- `sexo` (opcional): Código do sexo (1 = Masculino, 2 = Feminino)
-- `modoTransporte` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, etc.)
-- `localOcorrenciaObito` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado)
+- `ageMin` (opcional): Idade mínima para filtrar
+- `ageMax` (opcional): Idade máxima para filtrar
+- `gender` (opcional): Código do sexo (1 = Masculino, 2 = Feminino)
+- `transportMode` (opcional): Código do modo de transporte (V0 = Pedestre, V2 = Motociclista, etc.)
+- `deathLocation` (opcional): Código do local de ocorrência do óbito (1 = hospital, 2 = outros estabelecimentos de saúde, 3 = domicílio, 4 = via pública, 5 = outros, 9 = ignorado). Aceita múltiplos valores separados por vírgula (ex: `1,2` para locais de saúde)
+
+**Parâmetros legados (ainda suportados para compatibilidade):**
+- `tipoLocal`: Equivalente a `locationType`
+- `idadeMin`: Equivalente a `ageMin`
+- `idadeMax`: Equivalente a `ageMax`
+- `sexo`: Equivalente a `gender`
+- `modoTransporte`: Equivalente a `transportMode`
+- `localOcorrenciaObito`: Equivalente a `deathLocation`
 
 **Descrição:** Retorna as causas secundárias das mortes por sinistro de trânsito, agrupadas por linhas da declaração de óbito (A, B, C, D e II).
 
@@ -376,35 +408,38 @@ GET http://localhost:8080/datasus-deaths/cities-by-year?tipo=ocorrencia&localOco
 GET http://localhost:8080/datasus-deaths/causas-secundarias
 
 # Causas secundárias para óbitos em via pública
-GET http://localhost:8080/datasus-deaths/causas-secundarias?localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/causas-secundarias?deathLocation=4
+
+# Causas secundárias para óbitos em locais de saúde (hospitais e outros estabelecimentos)
+GET http://localhost:8080/datasus-deaths/causas-secundarias?deathLocation=1,2
 
 # Causas secundárias para motociclistas
-GET http://localhost:8080/datasus-deaths/causas-secundarias?modoTransporte=V2
+GET http://localhost:8080/datasus-deaths/causas-secundarias?transportMode=V2
 
 # Causas secundárias para homens entre 20 e 29 anos
-GET http://localhost:8080/datasus-deaths/causas-secundarias?sexo=1&idadeMin=20&idadeMax=29
+GET http://localhost:8080/datasus-deaths/causas-secundarias?gender=1&ageMin=20&ageMax=29
 
 # Combinação de filtros
-GET http://localhost:8080/datasus-deaths/causas-secundarias?cityId=2611606&startYear=2018&endYear=2022&modoTransporte=V2&localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/causas-secundarias?cityId=2611606&startYear=2018&endYear=2022&transportMode=V2&deathLocation=4
 ```
 
 **Resposta:**
 ```json
 {
   "filtrosAplicados": {
-    "cidade": 2611606,
-    "tipoLocal": "ocorrencia",
-    "periodoAnos": {
-      "inicio": 2018,
-      "fim": 2022
+    "city": 2611606,
+    "locationType": "occurrence",
+    "yearPeriod": {
+      "start": 2018,
+      "end": 2022
     },
-    "modoTransporte": {
-      "codigo": "V2",
-      "descricao": "Motociclista"
+    "transportMode": {
+      "code": "V2",
+      "description": "Motociclista"
     },
-    "localOcorrenciaObito": {
-      "codigo": "4",
-      "descricao": "Via pública"
+    "deathLocation": {
+      "code": "4",
+      "description": "Via pública"
     }
   },
   "totalRegistros": 150,
@@ -441,31 +476,37 @@ GET http://localhost:8080/datasus-deaths/causas-secundarias?cityId=2611606&start
 GET http://localhost:8080/datasus-deaths/filtros
 
 # Óbitos por local de residência
-GET http://localhost:8080/datasus-deaths/filtros?tipoLocal=residencia
+GET http://localhost:8080/datasus-deaths/filtros?locationType=residence
 
 # Óbitos apenas no Recife
-GET http://localhost:8080/datasus-deaths/filtros?municipio=2611606
+GET http://localhost:8080/datasus-deaths/filtros?cityId=2611606
 
 # Óbitos apenas de pessoas do sexo masculino
-GET http://localhost:8080/datasus-deaths/filtros?sexo=1
+GET http://localhost:8080/datasus-deaths/filtros?gender=1
 
 # Óbitos de pessoas entre 20 e 29 anos
-GET http://localhost:8080/datasus-deaths/filtros?faixaEtariaMin=20&faixaEtariaMax=29
+GET http://localhost:8080/datasus-deaths/filtros?ageMin=20&ageMax=29
 
 # Óbitos de motociclistas
-GET http://localhost:8080/datasus-deaths/filtros?modoTransporte=V2
+GET http://localhost:8080/datasus-deaths/filtros?transportMode=V2
 
 # Combinação: Motociclistas do sexo masculino
-GET http://localhost:8080/datasus-deaths/filtros?modoTransporte=V2&sexo=1
+GET http://localhost:8080/datasus-deaths/filtros?transportMode=V2&gender=1
 
 # Combinação: Óbitos em Recife por local de residência entre 2018 e 2022
-GET http://localhost:8080/datasus-deaths/filtros?municipio=2611606&tipoLocal=residencia&anoInicio=2018&anoFim=2022
+GET http://localhost:8080/datasus-deaths/filtros?cityId=2611606&locationType=residence&startYear=2018&endYear=2022
 
 # Óbitos ocorridos em via pública
-GET http://localhost:8080/datasus-deaths/filtros?localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/filtros?deathLocation=4
+
+# Óbitos ocorridos em locais de saúde (hospitais e outros estabelecimentos)
+GET http://localhost:8080/datasus-deaths/filtros?deathLocation=1,2
+
+# Óbitos ocorridos em outros locais (domicílio, outros e ignorado)
+GET http://localhost:8080/datasus-deaths/filtros?deathLocation=3,5,9
 
 # Combinação: Motociclistas com óbito em via pública
-GET http://localhost:8080/datasus-deaths/filtros?modoTransporte=V2&localOcorrenciaObito=4
+GET http://localhost:8080/datasus-deaths/filtros?transportMode=V2&deathLocation=4
 ```
 
 **Resposta:**
