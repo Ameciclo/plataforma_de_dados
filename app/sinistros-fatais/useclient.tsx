@@ -115,20 +115,22 @@ export default function SinistrosFataisClientSide({
   useEffect(() => {
     const fetchCitiesByYearData = async () => {
       try {
-        // Construir parâmetros para a API
-        let url = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`;
+        // Construir parâmetros para a API usando os novos nomes padronizados
+        // Mapear tipoLocal para type (ocorrencia -> occurrence, residencia -> residence)
+        const locationType = tipoLocal === "ocorrencia" ? "occurrence" : "residence";
+        let url = `${DATASUS_CITIES_BY_YEAR_DATA}?type=${locationType}`;
 
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Tentar com valores separados por vírgula
-            url += `&localOcorrenciaObito=1,2`;
+            // Usar valores separados por vírgula
+            url += `&deathLocation=1,2`;
           } else if (deathLocation === "other") {
-            // Tentar com valores separados por vírgula
-            url += `&localOcorrenciaObito=3,5,9`;
+            // Usar valores separados por vírgula
+            url += `&deathLocation=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
-            url += `&localOcorrenciaObito=4`;
+            url += `&deathLocation=4`;
           }
         }
 
@@ -147,22 +149,45 @@ export default function SinistrosFataisClientSide({
         if (!data.anos || data.anos.length === 0) {
           console.error("Erro: Array de anos vazio na resposta do backend");
           
-          // Se o backend não suporta valores separados por vírgula, fazer chamadas individuais
-          if (deathLocation === "health") {
-            // Fazer chamada para código 1 apenas
-            const fallbackUrl = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=1`;
-            console.log("Tentando fallback para health:", fallbackUrl);
-            const fallbackResponse = await fetch(fallbackUrl);
-            const fallbackData = await fallbackResponse.json();
-            if (fallbackData.anos && fallbackData.anos.length > 0) {
-              setCitiesByYearData(fallbackData);
-              return;
+          // Tentar com os parâmetros legados
+          const legacyUrl = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}`;
+          
+          if (deathLocation !== "all") {
+            if (deathLocation === "health") {
+              // Usar valores separados por vírgula
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=1,2`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              if (fallbackData.anos && fallbackData.anos.length > 0) {
+                setCitiesByYearData(fallbackData);
+                return;
+              }
+            } else if (deathLocation === "other") {
+              // Usar valores separados por vírgula
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=3,5,9`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              if (fallbackData.anos && fallbackData.anos.length > 0) {
+                setCitiesByYearData(fallbackData);
+                return;
+              }
+            } else {
+              // Para "public" (código 4), fazer uma única chamada
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=4`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              if (fallbackData.anos && fallbackData.anos.length > 0) {
+                setCitiesByYearData(fallbackData);
+                return;
+              }
             }
-          } else if (deathLocation === "other") {
-            // Fazer chamada para código 3 apenas
-            const fallbackUrl = `${DATASUS_CITIES_BY_YEAR_DATA}?tipo=${tipoLocal}&localOcorrenciaObito=3`;
-            console.log("Tentando fallback para other:", fallbackUrl);
-            const fallbackResponse = await fetch(fallbackUrl);
+          } else {
+            // Tentar sem filtro de local
+            console.log("Tentando com parâmetros legados sem filtro de local:", legacyUrl);
+            const fallbackResponse = await fetch(legacyUrl);
             const fallbackData = await fallbackResponse.json();
             if (fallbackData.anos && fallbackData.anos.length > 0) {
               setCitiesByYearData(fallbackData);
@@ -188,22 +213,25 @@ export default function SinistrosFataisClientSide({
       setIsLoadingModoTransporte(true);
       try {
         // Usar o ano final se estiver definido, caso contrário usar o ano inicial
-        const anoFim = selectedEndYear || selectedYear;
+        const endYear = selectedEndYear || selectedYear;
+        
+        // Mapear tipoLocal para locationType (ocorrencia -> occurrence, residencia -> residence)
+        const locationType = tipoLocal === "ocorrencia" ? "occurrence" : "residence";
 
-        // Construir URL base
-        let url = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${anoFim}`;
+        // Construir URL base com os novos nomes de parâmetros
+        let url = `${DATASUS_FILTROS_DATA}?cityId=${selectedCardCity}&locationType=${locationType}&startYear=${selectedYear}&endYear=${endYear}`;
 
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
             // Usar valores separados por vírgula
-            url += `&localOcorrenciaObito=1,2`;
+            url += `&deathLocation=1,2`;
           } else if (deathLocation === "other") {
             // Usar valores separados por vírgula
-            url += `&localOcorrenciaObito=3,5,9`;
+            url += `&deathLocation=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
-            url += `&localOcorrenciaObito=4`;
+            url += `&deathLocation=4`;
           }
         }
 
@@ -219,6 +247,7 @@ export default function SinistrosFataisClientSide({
           porModoTransporte: data?.resumo?.porModoTransporte,
           data
         });
+        
         if (
           data &&
           data.resumo &&
@@ -231,6 +260,92 @@ export default function SinistrosFataisClientSide({
         ) {
           setModoTransporteData(data);
         } else {
+          // Tentar com os parâmetros legados
+          const legacyUrl = `${DATASUS_FILTROS_DATA}?municipio=${selectedCardCity}&tipoLocal=${tipoLocal}&anoInicio=${selectedYear}&anoFim=${endYear}`;
+          
+          if (deathLocation !== "all") {
+            if (deathLocation === "health") {
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=1,2`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              
+              if (
+                fallbackData &&
+                fallbackData.resumo &&
+                ((fallbackData.resumo.porModoTransporte &&
+                  Object.keys(fallbackData.resumo.porModoTransporte).length > 0) ||
+                  (fallbackData.resumo.porMeioTransporte &&
+                    Object.keys(fallbackData.resumo.porMeioTransporte).length > 0) ||
+                  (fallbackData.resumo.porCID &&
+                    Object.keys(fallbackData.resumo.porCID).length > 0))
+              ) {
+                setModoTransporteData(fallbackData);
+                setIsLoadingModoTransporte(false);
+                return;
+              }
+            } else if (deathLocation === "other") {
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=3,5,9`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              
+              if (
+                fallbackData &&
+                fallbackData.resumo &&
+                ((fallbackData.resumo.porModoTransporte &&
+                  Object.keys(fallbackData.resumo.porModoTransporte).length > 0) ||
+                  (fallbackData.resumo.porMeioTransporte &&
+                    Object.keys(fallbackData.resumo.porMeioTransporte).length > 0) ||
+                  (fallbackData.resumo.porCID &&
+                    Object.keys(fallbackData.resumo.porCID).length > 0))
+              ) {
+                setModoTransporteData(fallbackData);
+                setIsLoadingModoTransporte(false);
+                return;
+              }
+            } else {
+              const fallbackUrl = `${legacyUrl}&localOcorrenciaObito=4`;
+              console.log("Tentando com parâmetros legados:", fallbackUrl);
+              const fallbackResponse = await fetch(fallbackUrl);
+              const fallbackData = await fallbackResponse.json();
+              
+              if (
+                fallbackData &&
+                fallbackData.resumo &&
+                ((fallbackData.resumo.porModoTransporte &&
+                  Object.keys(fallbackData.resumo.porModoTransporte).length > 0) ||
+                  (fallbackData.resumo.porMeioTransporte &&
+                    Object.keys(fallbackData.resumo.porMeioTransporte).length > 0) ||
+                  (fallbackData.resumo.porCID &&
+                    Object.keys(fallbackData.resumo.porCID).length > 0))
+              ) {
+                setModoTransporteData(fallbackData);
+                setIsLoadingModoTransporte(false);
+                return;
+              }
+            }
+          } else {
+            console.log("Tentando com parâmetros legados sem filtro de local:", legacyUrl);
+            const fallbackResponse = await fetch(legacyUrl);
+            const fallbackData = await fallbackResponse.json();
+            
+            if (
+              fallbackData &&
+              fallbackData.resumo &&
+              ((fallbackData.resumo.porModoTransporte &&
+                Object.keys(fallbackData.resumo.porModoTransporte).length > 0) ||
+                (fallbackData.resumo.porMeioTransporte &&
+                  Object.keys(fallbackData.resumo.porMeioTransporte).length > 0) ||
+                (fallbackData.resumo.porCID &&
+                  Object.keys(fallbackData.resumo.porCID).length > 0))
+            ) {
+              setModoTransporteData(fallbackData);
+              setIsLoadingModoTransporte(false);
+              return;
+            }
+          }
+          
           // Se não há dados válidos, definir como null para não mostrar a seção
           setModoTransporteData(null);
         }
@@ -262,10 +377,13 @@ export default function SinistrosFataisClientSide({
       setIsLoadingCausasSecundarias(true);
       try {
         // Usar o ano final se estiver definido, caso contrário usar o ano inicial
-        const anoFim = selectedEndYear || selectedYear;
+        const endYear = selectedEndYear || selectedYear;
+        
+        // Mapear tipoLocal para locationType (ocorrencia -> occurrence, residencia -> residence)
+        const locationType = tipoLocal === "ocorrencia" ? "occurrence" : "residence";
 
         // Construir a URL base com os parâmetros
-        let url = `${DATASUS_CAUSAS_SECUNDARIAS_DATA}?startYear=${selectedYear}&endYear=${anoFim}&tipoLocal=${tipoLocal}`;
+        let url = `${DATASUS_CAUSAS_SECUNDARIAS_DATA}?startYear=${selectedYear}&endYear=${endYear}&locationType=${locationType}`;
 
         // Adicionar cityId se uma cidade específica estiver selecionada
         if (selectedCardCity) {
@@ -274,20 +392,20 @@ export default function SinistrosFataisClientSide({
 
         // Adicionar filtro de modo de transporte se estiver selecionado
         if (modoTransporteAtivo) {
-          url += `&modoTransporte=${modoTransporteAtivo}`;
+          url += `&transportMode=${modoTransporteAtivo}`;
         }
 
         // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
             // Usar valores separados por vírgula
-            url += `&localOcorrenciaObito=1,2`;
+            url += `&deathLocation=1,2`;
           } else if (deathLocation === "other") {
             // Usar valores separados por vírgula
-            url += `&localOcorrenciaObito=3,5,9`;
+            url += `&deathLocation=3,5,9`;
           } else {
             // Para "public" (código 4), fazer uma única chamada
-            url += `&localOcorrenciaObito=4`;
+            url += `&deathLocation=4`;
           }
         }
 
@@ -300,7 +418,41 @@ export default function SinistrosFataisClientSide({
           hasCausasSecundarias: !!data?.causasSecundarias,
           data
         });
-        setCausasSecundariasData(data);
+        
+        if (data && data.causasSecundarias) {
+          setCausasSecundariasData(data);
+        } else {
+          // Tentar com os parâmetros legados
+          let legacyUrl = `${DATASUS_CAUSAS_SECUNDARIAS_DATA}?startYear=${selectedYear}&endYear=${endYear}&tipoLocal=${tipoLocal}`;
+          
+          if (selectedCardCity) {
+            legacyUrl += `&cityId=${selectedCardCity}`;
+          }
+          
+          if (modoTransporteAtivo) {
+            legacyUrl += `&modoTransporte=${modoTransporteAtivo}`;
+          }
+          
+          if (deathLocation !== "all") {
+            if (deathLocation === "health") {
+              legacyUrl += `&localOcorrenciaObito=1,2`;
+            } else if (deathLocation === "other") {
+              legacyUrl += `&localOcorrenciaObito=3,5,9`;
+            } else {
+              legacyUrl += `&localOcorrenciaObito=4`;
+            }
+          }
+          
+          console.log("Tentando com parâmetros legados:", legacyUrl);
+          const fallbackResponse = await fetch(legacyUrl);
+          const fallbackData = await fallbackResponse.json();
+          
+          if (fallbackData && fallbackData.causasSecundarias) {
+            setCausasSecundariasData(fallbackData);
+          } else {
+            setCausasSecundariasData(null);
+          }
+        }
       } catch (error) {
         console.error("Erro ao buscar dados de causas secundárias:", error);
         setCausasSecundariasData(null);
@@ -327,18 +479,18 @@ export default function SinistrosFataisClientSide({
       setIsLoadingMatrix(true);
       try {
         // Usar o ano final se estiver definido, caso contrário usar o ano inicial
-        const anoFim = selectedEndYear || selectedYear;
+        const endYear = selectedEndYear || selectedYear;
+        
+        // Mapear tipoLocal para locationType (ocorrencia -> occurrence, residencia -> residence)
+        const locationType = tipoLocal === "ocorrencia" ? "occurrence" : "residence";
 
-        // Construir a URL base com os parâmetros
-        let baseUrl = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${anoFim}`;
+        // Construir a URL base com os parâmetros usando os novos nomes padronizados
+        let baseUrl = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${endYear}&locationType=${locationType}`;
 
         // Adicionar cityId se uma cidade específica estiver selecionada
         if (selectedCardCity) {
           baseUrl += `&cityId=${selectedCardCity}`;
         }
-
-        // Adicionar parâmetro de tipo de local
-        baseUrl += `&byResidence=${tipoLocal === "residencia"}`;
 
         // Função para combinar matrizes
         const combineMatrices = (matrix1, matrix2) => {
@@ -385,10 +537,36 @@ export default function SinistrosFataisClientSide({
           hasMatrix: !!data?.matrix,
           data
         });
+        
         if (data && data.matrix) {
           setCollisionMatrixData(data);
         } else {
-          setCollisionMatrixData(null);
+          // Tentar com os parâmetros legados
+          let legacyUrl = `${DATASUS_MATRIX_DATA}?startYear=${selectedYear}&endYear=${endYear}&byResidence=${tipoLocal === "residencia"}`;
+          
+          if (selectedCardCity) {
+            legacyUrl += `&cityId=${selectedCardCity}`;
+          }
+          
+          if (deathLocation !== "all") {
+            if (deathLocation === "health") {
+              legacyUrl += `&deathLocation=1,2`;
+            } else if (deathLocation === "other") {
+              legacyUrl += `&deathLocation=3,5,9`;
+            } else {
+              legacyUrl += `&deathLocation=4`;
+            }
+          }
+          
+          console.log("Tentando com parâmetros legados:", legacyUrl);
+          const fallbackResponse = await fetch(legacyUrl);
+          const fallbackData = await fallbackResponse.json();
+          
+          if (fallbackData && fallbackData.matrix) {
+            setCollisionMatrixData(fallbackData);
+          } else {
+            setCollisionMatrixData(null);
+          }
         }
       } catch (error) {
         console.error("Erro ao buscar dados da matriz de colisão:", error);
