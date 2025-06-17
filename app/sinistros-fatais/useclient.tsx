@@ -430,21 +430,85 @@ export default function SinistrosFataisClientSide({
         // Adicionar parâmetro de tipo de local
         baseUrl += `&byResidence=${tipoLocal === "residencia"}`;
 
-        // Adicionar filtro de local de ocorrência do óbito usando o parâmetro deathLocation
+        // Função para combinar matrizes
+        const combineMatrices = (matrix1, matrix2) => {
+          if (!matrix1) return matrix2;
+          if (!matrix2) return matrix1;
+          
+          const result = { ...matrix1 };
+          
+          Object.keys(matrix2).forEach(mode => {
+            if (!result[mode]) {
+              result[mode] = { ...matrix2[mode] };
+            } else {
+              Object.keys(matrix2[mode]).forEach(counterpart => {
+                result[mode][counterpart] = (result[mode][counterpart] || 0) + (matrix2[mode][counterpart] || 0);
+              });
+            }
+          });
+          
+          return result;
+        };
+
+        // Adicionar filtro de local de ocorrência do óbito
         if (deathLocation !== "all") {
           if (deathLocation === "health") {
-            // Hospitais (código 1) e outros estabelecimentos de saúde (código 2)
-            baseUrl += `&deathLocation=1,2`;
+            // Buscar dados para hospitais (código 1)
+            const response1 = await fetch(`${baseUrl}&deathLocation=1`);
+            const data1 = await response1.json();
+            
+            // Buscar dados para outros estabelecimentos de saúde (código 2)
+            const response2 = await fetch(`${baseUrl}&deathLocation=2`);
+            const data2 = await response2.json();
+            
+            if (data1?.matrix || data2?.matrix) {
+              const combinedMatrix = combineMatrices(data1?.matrix, data2?.matrix);
+              setCollisionMatrixData({
+                matrix: combinedMatrix,
+                metadata: {
+                  ...(data1?.metadata || data2?.metadata || {}),
+                  deathLocation: "1,2"
+                }
+              });
+            } else {
+              setCollisionMatrixData(null);
+            }
+            return;
           } else if (deathLocation === "other") {
-            // Domicílio (código 3), outros locais (código 5) e ignorados (código 9)
-            baseUrl += `&deathLocation=3,5,9`;
+            // Buscar dados para domicílio (código 3)
+            const response1 = await fetch(`${baseUrl}&deathLocation=3`);
+            const data1 = await response1.json();
+            
+            // Buscar dados para outros locais (código 5)
+            const response2 = await fetch(`${baseUrl}&deathLocation=5`);
+            const data2 = await response2.json();
+            
+            // Buscar dados para locais ignorados (código 9)
+            const response3 = await fetch(`${baseUrl}&deathLocation=9`);
+            const data3 = await response3.json();
+            
+            let combinedMatrix = combineMatrices(data1?.matrix, data2?.matrix);
+            combinedMatrix = combineMatrices(combinedMatrix, data3?.matrix);
+            
+            if (combinedMatrix) {
+              setCollisionMatrixData({
+                matrix: combinedMatrix,
+                metadata: {
+                  ...(data1?.metadata || data2?.metadata || data3?.metadata || {}),
+                  deathLocation: "3,5,9"
+                }
+              });
+            } else {
+              setCollisionMatrixData(null);
+            }
+            return;
           } else {
-            // Para "public" (código 4)
+            // Para "public" (código 4), fazer uma única chamada
             baseUrl += `&deathLocation=4`;
           }
         }
 
-        console.log(`Buscando matriz de colisão: ${baseUrl}`);
+        // Para "all" ou "public", fazer uma única chamada
         const response = await fetch(baseUrl);
         const data = await response.json();
 
