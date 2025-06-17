@@ -76,7 +76,7 @@ export default function SinistrosFataisClientSide({
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
   const [selectedYear, setSelectedYear] = useState(2023); // Ano inicial
   const [selectedEndYear, setSelectedEndYear] = useState(null); // Ano final
-  const [selectedCity, setSelectedCity] = useState(null); // Mostrar RMR por padrão no gráfico
+  const [selectedCity, setSelectedCity] = useState(2611606); // Mostrar Recife por padrão no gráfico
   const [selectedCardCity, setSelectedCardCity] = useState(2611606); // ID do Recife para os cards
   const [citiesByYearData, setCitiesByYearData] = useState(
     initialCitiesByYearData
@@ -689,33 +689,6 @@ export default function SinistrosFataisClientSide({
         <h2 className="text-3xl font-bold text-center mb-4">
           Evolução das Mortes no Trânsito
         </h2>
-
-        {/* Botão para alternar entre mostrar todas as cidades ou apenas RMR */}
-        <div className="flex justify-center mb-4">
-          <button
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
-              !showAllCities && !selectedCity
-                ? "bg-[#008888] text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
-            }`}
-            onClick={() => {
-              setShowAllCities(false);
-              setSelectedCity(null);
-            }}
-          >
-            Mostrar RMR
-          </button>
-          <button
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ml-4 ${
-              showAllCities
-                ? "bg-[#008888] text-white"
-                : "bg-gray-200 text-gray-800 hover:bg-[#008888] hover:text-white"
-            }`}
-            onClick={toggleShowAllCities}
-          >
-            Mostrar Todas as Cidades
-          </button>
-        </div>
 
         <LineChart
           title={`Mortes por Ano na RMR (${
