@@ -321,7 +321,7 @@ export default function SinistrosFataisClientSide({
     };
 
     fetchModoTransporteData();
-  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear]);
+  }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear, deathLocation]);
 
   // Estado para o modo de transporte selecionado
   const [selectedModoTransporte, setSelectedModoTransporte] = useState(null);
