@@ -76,7 +76,7 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-ameciclo shadow-lg border-t border-gray-200 z-50">
       <div className="container mx-auto px-4 py-2">
         <div className="flex flex-wrap justify-between items-center">
           {/* Base Type Filter */}
@@ -93,7 +93,7 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
             </button>
             
             {isOpen === 'baseType' && (
-              <div className="absolute bottom-full left-0 mb-2 w-full bg-white shadow-lg rounded-lg border border-gray-200 p-2">
+              <div className="absolute bottom-full left-0 mb-2 w-full bg-white shadow-lg rounded-lg border border-gray-100 p-2">
                 <button 
                   className={`w-full text-left px-4 py-2 rounded-lg mb-1 ${baseType === 'ocorrencia' ? 'bg-[#008888] text-white' : 'hover:bg-gray-100'}`}
                   onClick={() => {
@@ -130,7 +130,7 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
             </button>
             
             {isOpen === 'deathLocation' && (
-              <div className="absolute bottom-full left-0 mb-2 w-full bg-white shadow-lg rounded-lg border border-gray-200 p-2">
+              <div className="absolute bottom-full left-0 mb-2 w-full bg-white shadow-lg rounded-lg border border-gray-100 p-2">
                 <button 
                   className={`w-full text-left px-4 py-2 rounded-lg mb-1 ${deathLocation === 'all' ? 'bg-[#008888] text-white' : 'hover:bg-gray-100'}`}
                   onClick={() => {
