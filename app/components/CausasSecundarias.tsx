@@ -112,7 +112,7 @@ export const CausasSecundarias: React.FC<CausasSecundariasProps> = ({
       <div className="text-center text-sm text-gray-600 mt-4">
         <p>Total de registros: {data.totalRegistros}</p>
         <p className="mt-2">
-          As causas secundárias são extraídas das linhas A, B, C, D e Parte II da Declaração de Óbito.
+          As causas secundárias são extraídas da linha A da Declaração de Óbito.
         </p>
       </div>
     </div>
