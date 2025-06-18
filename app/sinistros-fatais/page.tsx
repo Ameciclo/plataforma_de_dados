@@ -55,24 +55,24 @@ const fetchData = async () => {
         const platformData = strapiData.data[0];
         
         if (platformData) {
+          // Verificar se há arquivos de suporte e processá-los corretamente
+          const supportFiles = platformData.supportfiles?.map(file => {
+            console.log("Processando arquivo:", file.title, "URL:", file.file?.url, "Cover:", file.cover?.url);
+            return {
+              title: file.title || "Documento",
+              description: file.description || "",
+              url: file.file?.url || "#",
+              src: file.cover?.url || (
+                file.type === "legislação" ? "/icons/legislation.svg" : 
+                file.type === "relatório" ? "/icons/report.svg" : 
+                "/icons/document.svg"
+              )
+            };
+          }) || [];
+          
+          console.log(`Processados ${supportFiles.length} arquivos de suporte`);
+          
           try {
-            // Verificar se há arquivos de suporte e processá-los corretamente
-            const supportFiles = platformData.supportfiles?.map(file => {
-              console.log("Processando arquivo:", file.title, "URL:", file.file?.url, "Cover:", file.cover?.url);
-              return {
-                title: file.title || "Documento",
-                description: file.description || "",
-                url: file.file?.url || "#",
-                src: file.cover?.url || (
-                  file.type === "legislação" ? "/icons/legislation.svg" : 
-                  file.type === "relatório" ? "/icons/report.svg" : 
-                  "/icons/document.svg"
-                )
-              };
-            }) || [];
-            
-            console.log(`Processados ${supportFiles.length} arquivos de suporte`);
-            
             pageData = {
               id: platformData.id,
               title: platformData.title,
@@ -87,18 +87,18 @@ const fetchData = async () => {
             // Verificar se os arquivos de suporte têm URLs válidas
             const validFiles = supportFiles.filter(file => file.url && file.url !== "#");
             console.log(`${validFiles.length} de ${supportFiles.length} arquivos têm URLs válidas`);
+            
+            // Log detalhado para depuração
+            console.log({
+              id: platformData.id,
+              title: platformData.title,
+              coverImageUrl: platformData.cover?.url,
+              explanationBoxesCount: platformData.explanationbox?.length || 0,
+              supportFilesCount: supportFiles.length
+            });
           } catch (error) {
             console.error("Erro ao processar dados do Strapi:", error);
           }
-          
-          // Log detalhado para depuração
-          console.log({
-            id: platformData.id,
-            title: platformData.title,
-            coverImageUrl: platformData.cover?.url,
-            explanationBoxesCount: platformData.explanationbox?.length || 0,
-            supportFilesCount: supportFiles.length
-          });
           
           console.log("Cover URL:", platformData.cover?.url);
         }
