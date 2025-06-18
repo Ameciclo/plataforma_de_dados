@@ -747,7 +747,7 @@ export default function SinistrosFataisClientSide({
         </h2>
 
         <LineChart
-          title={`Mortes por Ano na RMR (${
+          title={`Mortes por Ano em ${selectedCityName} (${
             tipoLocal === "ocorrencia"
               ? "Local de ocorrência da morte"
               : "Local de residência da pessoa morta"
@@ -805,7 +805,9 @@ export default function SinistrosFataisClientSide({
               {perfilSocioeconomico && (
                 <div className="mt-8 p-6">
                   <h2 className="text-3xl font-bold text-center mb-4">
-                    {perfilSocioeconomico.titulo}
+                    {perfilSocioeconomico.titulo.startsWith("Perfil de ") 
+                      ? `Perfil Socioeconômico de ${perfilSocioeconomico.titulo.substring(10)}`
+                      : perfilSocioeconomico.titulo}
                   </h2>
                   <h3 className="text-xl text-center mb-8">
                     {getFullFilterText()}
@@ -1039,7 +1041,7 @@ export default function SinistrosFataisClientSide({
               <CausasSecundarias
                 data={causasSecundariasData}
                 isLoading={isLoadingCausasSecundarias}
-                title="Causas Secundárias"
+                title={modoTransporteAtivo ? `Causas Secundárias para ${modoTransporteData?.resumo?.porModoTransporte?.[modoTransporteAtivo]?.descricao || modoTransporteData?.resumo?.porMeioTransporte?.[modoTransporteAtivo]?.descricao || ""}` : "Causas Secundárias"}
                 subtitle={getFullFilterText()}
                 cidDescriptions={require("../../public/CID10CAT.json")}
               />

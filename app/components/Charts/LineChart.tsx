@@ -35,7 +35,7 @@ function LineChart({title, xAxisTitle = "Ano", yAxisTitle = "Quantidade", series
   };
 
   return (
-    <div className="shadow-2xl rounded p-10 text-center">
+    <div className="shadow-2xl rounded p-6 pt-4 text-center">
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
