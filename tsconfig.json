@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "app/ideciclo/[id]/configuration.tjs"  ],
+, "app/ideciclo/[id]/configuration.tjs", "app/vias-inseguras/useclienttsx"  ],
   "exclude": [
     "node_modules"
   ]

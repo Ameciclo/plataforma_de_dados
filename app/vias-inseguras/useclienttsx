@@ -3,20 +3,35 @@
 import React, { useState, useEffect } from "react";
 import { NumberCards } from "../components/NumberCards";
 import { Table } from "../components/Table/Table";
-import { vehicleCards } from "./configuration";
+import { vehicleCards } from "./configurationjs";
 import { ColumnFilter } from "../components/Table/TableFilters";
 import { YearSelector } from "../components/YearSelector";
 import { Map } from "../components/Maps/Map";
-import { DocumentList } from "../components/DocumentList";
+import { DocumentsList } from "../components/DocumentList";
 
-export default function ViasInsegurasContent({ streets, supportFiles = [] }) {
+type Street = {
+  streetId: number;
+  name: string;
+  totalSinistros: number;
+  totalFatais: number;
+  year?: string;
+  geometry?: any;
+};
+
+export default function ViasInsegurasContent({ 
+  streets, 
+  supportFiles = [] 
+}: { 
+  streets: Street[]; 
+  supportFiles: any[] 
+}) {
   // Estado para controle do ano selecionado
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedEndYear, setSelectedEndYear] = useState(null);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedEndYear, setSelectedEndYear] = useState<number | null>(null);
   
   // Extrair anos disponíveis dos dados
   const availableYears = React.useMemo(() => {
-    const years = new Set();
+    const years = new Set<number>();
     streets.forEach(street => {
       if (street.year) {
         years.add(parseInt(street.year));
@@ -44,6 +59,7 @@ export default function ViasInsegurasContent({ streets, supportFiles = [] }) {
     if (!selectedYear) return streets;
     
     return streets.filter(street => {
+      if (!street.year) return false;
       const streetYear = parseInt(street.year);
       if (!selectedEndYear) {
         return streetYear === selectedYear;
@@ -181,7 +197,7 @@ export default function ViasInsegurasContent({ streets, supportFiles = [] }) {
           <h2 className="text-3xl font-bold text-center mb-8">
             Documentos e Arquivos de Suporte
           </h2>
-          <DocumentList documents={supportFiles} />
+          <DocumentsList documents={supportFiles} docTypes={[]} />
         </div>
       )}
     </>

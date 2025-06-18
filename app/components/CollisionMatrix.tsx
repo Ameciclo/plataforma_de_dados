@@ -76,7 +76,7 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
     });
 
     // Recalcular o total geral para cada linha
-    filteredTableData.forEach((row) => {
+    filteredTableData.forEach((row: any) => {
       row.total = filteredColumnLabels.reduce(
         (sum, colKey) => sum + (row[colKey] || 0),
         0
@@ -86,7 +86,7 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
 
   // Calcular o total geral para percentuais
   const totalGeral =
-    filteredTableData.find((row) => row.mode === "Total")?.total || 0;
+    (filteredTableData.find((row) => row.mode === "Total") as any)?.total || 0;
 
   const modeLabels = {
     pedestre: "Pedestre",
@@ -241,11 +241,11 @@ export const CollisionMatrix: React.FC<CollisionMatrixProps> = ({
                     }`}
                   >
                     {showPercentages && totalGeral > 0
-                      ? `${row.total} (${(
-                          (row.total / totalGeral) *
+                      ? `${(row as any).total} (${(
+                          ((row as any).total / totalGeral) *
                           100
                         ).toFixed(1)}%)`
-                      : row.total}
+                      : (row as any).total}
                   </td>
                 </tr>
               );

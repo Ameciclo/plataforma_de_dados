@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { MultipleSelectionFilters } from "../components/SelectionFilterMenu";
+import MultipleSelectionFilters from "../components/MultipleSelectionFilters";
 import { DocumentsList } from "../components/DocumentList";
 import { docTypes } from "./configuration";
 
