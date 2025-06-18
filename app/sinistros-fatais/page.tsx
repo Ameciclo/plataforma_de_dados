@@ -2,7 +2,7 @@ import React from "react";
 import { NavCover } from "../components/NavCover";
 import { Breadcrumb } from "../components/Breadcrumb";
 import SinistrosFataisClientSide from "./useclient";
-import { DATASUS_SUMMARY_DATA, DATASUS_CITIES_BY_YEAR_DATA, PLATAFORMAS_PAGE_DATA } from "../../servers";
+import { DATASUS_SUMMARY_DATA, DATASUS_CITIES_BY_YEAR_DATA, OBSERVATORIO_SINISTROS_PAGE_DATA } from "../../servers";
 
 // Função para buscar os dados da API
 const fetchData = async () => {
@@ -42,35 +42,65 @@ const fetchData = async () => {
 
   try {
     // Buscar dados do Strapi
-    const strapiRes = await fetch(PLATAFORMAS_PAGE_DATA, {
+    const strapiRes = await fetch(OBSERVATORIO_SINISTROS_PAGE_DATA, {
       cache: "no-cache",
     });
     
     if (strapiRes.ok) {
       const strapiData = await strapiRes.json();
+      console.log("Dados do Strapi recebidos");
       
-      if (strapiData && strapiData.data && Array.isArray(strapiData.data)) {
-        // Encontrar os dados da plataforma de sinistros fatais
-        const platformData = strapiData.data.find(item => item.title === "Observatório de Sinistros Fatais");
+      if (strapiData && strapiData.data && Array.isArray(strapiData.data) && strapiData.data.length > 0) {
+        // Como estamos filtrando pelo título na URL, pegamos o primeiro item
+        const platformData = strapiData.data[0];
         
         if (platformData) {
-          pageData = {
+          try {
+            // Verificar se há arquivos de suporte e processá-los corretamente
+            const supportFiles = platformData.supportfiles?.map(file => {
+              console.log("Processando arquivo:", file.title, "URL:", file.file?.url, "Cover:", file.cover?.url);
+              return {
+                title: file.title || "Documento",
+                description: file.description || "",
+                url: file.file?.url || "#",
+                src: file.cover?.url || (
+                  file.type === "legislação" ? "/icons/legislation.svg" : 
+                  file.type === "relatório" ? "/icons/report.svg" : 
+                  "/icons/document.svg"
+                )
+              };
+            }) || [];
+            
+            console.log(`Processados ${supportFiles.length} arquivos de suporte`);
+            
+            pageData = {
+              id: platformData.id,
+              title: platformData.title,
+              coverImage: platformData.cover?.url || "/images/covers/sinistros-fatais.jpg",
+              explanationBoxes: platformData.explanationbox?.map(box => ({
+                title: box.title,
+                description: box.text
+              })) || [],
+              supportFiles: supportFiles
+            };
+            
+            // Verificar se os arquivos de suporte têm URLs válidas
+            const validFiles = supportFiles.filter(file => file.url && file.url !== "#");
+            console.log(`${validFiles.length} de ${supportFiles.length} arquivos têm URLs válidas`);
+          } catch (error) {
+            console.error("Erro ao processar dados do Strapi:", error);
+          }
+          
+          // Log detalhado para depuração
+          console.log({
             id: platformData.id,
             title: platformData.title,
-            coverImage: platformData.cover?.url || "/images/covers/sinistros-fatais.jpg",
-            explanationBoxes: platformData.explanationbox?.map(box => ({
-              title: box.title,
-              description: box.text
-            })) || [],
-            supportFiles: platformData.supportfiles?.map(file => ({
-              title: file.title,
-              description: file.description || "",
-              url: file.url || "#",
-              src: file.type === "legislação" ? "/icons/legislation.svg" : 
-                   file.type === "relatório" ? "/icons/report.svg" : 
-                   "/icons/document.svg"
-            })) || []
-          };
+            coverImageUrl: platformData.cover?.url,
+            explanationBoxesCount: platformData.explanationbox?.length || 0,
+            supportFilesCount: supportFiles.length
+          });
+          
+          console.log("Cover URL:", platformData.cover?.url);
         }
       }
     }

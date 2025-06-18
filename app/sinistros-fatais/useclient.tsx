@@ -1050,16 +1050,27 @@ export default function SinistrosFataisClientSide({
           )}
       </div>
       {/* Seção de Documentos */}
-      {pageData.supportFiles && pageData.supportFiles.length > 0 && (
-        <CardsSession
-          title="Documentação sobre segurança viária"
-          cards={pageData.supportFiles.map((file) => ({
-            title: file.title || file.name,
-            description: file.description || "",
-            url: file.url,
-            target: "_blank",
-          }))}
-        />
+      {pageData.supportFiles && pageData.supportFiles.length > 0 ? (
+        <>
+          {console.log("Arquivos de suporte disponíveis:", JSON.stringify(pageData.supportFiles))}
+          <CardsSession
+            title="Documentação sobre segurança viária"
+            cards={pageData.supportFiles.map((file) => {
+              console.log("Processando arquivo:", JSON.stringify(file));
+              return {
+                title: file.title || file.name || "Documento",
+                description: file.description || "",
+                url: file.url || "#",
+                src: file.src || "/icons/document.svg",
+                target: "_blank",
+              };
+            })}
+          />
+        </>
+      ) : (
+        <div className="text-center my-8 p-4">
+          <p className="text-gray-500">Nenhum documento disponível no momento.</p>
+        </div>
       )}
 
       {/* Menu de filtros fixo na parte inferior */}
