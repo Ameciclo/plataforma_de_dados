@@ -20,6 +20,7 @@ import {
   getYearlyChartData,
   getModoTransporteCards,
   getPerfilSocioeconomico,
+  modoTransporteLabels,
 } from "./configuration";
 import { CollisionMatrix } from "../components/CollisionMatrix";
 import { CardsSession } from "../components/CardsSession";
@@ -1041,7 +1042,7 @@ export default function SinistrosFataisClientSide({
               <CausasSecundarias
                 data={causasSecundariasData}
                 isLoading={isLoadingCausasSecundarias}
-                title={modoTransporteAtivo ? `Causas Secundárias para ${modoTransporteData?.resumo?.porModoTransporte?.[modoTransporteAtivo]?.descricao || modoTransporteData?.resumo?.porMeioTransporte?.[modoTransporteAtivo]?.descricao || ""}` : "Causas Secundárias"}
+                title={modoTransporteAtivo ? `Causas Secundárias para ${modoTransporteLabels[modoTransporteAtivo] || ""}` : "Causas Secundárias"}
                 subtitle={getFullFilterText()}
                 cidDescriptions={require("../../public/CID10CAT.json")}
               />
