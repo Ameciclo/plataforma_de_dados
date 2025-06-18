@@ -31,5 +31,8 @@ export const DATASUS_FILTROS_DATA =`http://localhost:8080/datasus-deaths/filtros
 export const DATASUS_MATRIX_DATA =`http://localhost:8080/datasus-deaths/matrix`
 export const DATASUS_CAUSAS_SECUNDARIAS_DATA =`http://localhost:8080/datasus-deaths/causas-secundarias`
 
-// Endpoint do Strapi para dados das plataformas
+// Endpoint do Strapi específico para o Observatório de Sinistros Fatais
+export const OBSERVATORIO_SINISTROS_PAGE_DATA = `https://do.strapi.ameciclo.org/api/plataformas-de-dados?filters[title][$eq]=Observatório de Sinistros Fatais&populate[supportfiles][populate]=*&populate[cover]=*&populate[explanationbox]=*`
+
+// Endpoint do Strapi para dados das plataformas (mantido para compatibilidade)
 export const PLATAFORMAS_PAGE_DATA = `https://do.strapi.ameciclo.org/api/plataformas-de-dados?populate=*`
