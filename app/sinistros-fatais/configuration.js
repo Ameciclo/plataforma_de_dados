@@ -619,6 +619,7 @@ export function getStackedTransportModeData(citiesByYearData, selectedCity, tipo
   Object.keys(categoriasAgrupadas).forEach(categoria => {
     seriesMap[categoria] = {
       name: categoria,
+      type: 'column',
       data: Array(anosDisponiveis.length).fill(0),
       color: modoTransporteCores[categoria]
     };

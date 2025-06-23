@@ -7,11 +7,7 @@ interface StackedBarChartProps {
   xAxisTitle?: string;
   yAxisTitle?: string;
   categories: string[];
-  series: {
-    name: string;
-    data: number[];
-    color?: string;
-  }[];
+  series: Highcharts.SeriesOptionsType[];
 }
 
 function StackedBarChart({
@@ -20,10 +16,10 @@ function StackedBarChart({
   yAxisTitle = "Quantidade",
   categories,
   series,
-}: StackedBarChartProps) {
-  const [isPercentage, setIsPercentage] = useState(false);
+}: StackedBarChartProps): React.ReactElement {
+  const [isPercentage, setIsPercentage] = useState<boolean>(false);
   
-  const getOptions = () => {
+  const getOptions = (): Highcharts.Options => {
     return {
       chart: {
         type: "column",

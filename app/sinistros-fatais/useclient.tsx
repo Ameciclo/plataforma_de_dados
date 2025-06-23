@@ -3,27 +3,27 @@ import React, { useState, useEffect } from "react";
 import { NumberCards } from "../components/NumberCards";
 import { StatisticsBox } from "../components/StatisticsBox";
 import { ExplanationBoxes } from "../components/ExplanationBox";
-import { InfoCards } from "../components/InfoCards";
 import { SelectableInfoCards } from "../components/SelectableInfoCards";
-import LineChart from "../components/Charts/LineChart";
+// import { InfoCards } from "../components/InfoCards";
+// import LineChart from "../components/Charts/LineChart";
+// import { YearSelector } from "../components/YearSelector";
+// import { LocalTypeSelector } from "../components/LocalTypeSelector";
+// import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
 import StackedBarChart from "../components/Charts/StackedBarChart";
-import { YearSelector } from "../components/YearSelector";
-import { LocalTypeSelector } from "../components/LocalTypeSelector";
 import {
   SelectionFilterMenu,
   FilterBaseType,
   FilterDeathLocationType,
 } from "../components/SelectionFilterMenu";
-import { IntlNumberNoDigit, IntlPercentil } from "../../utils";
 import {
   getGeneralStatistics,
   getCityCardsByYear,
-  getYearlyChartData,
+//  getYearlyChartData,
   getModoTransporteCards,
   getPerfilSocioeconomico,
   modoTransporteLabels,
-  getStackedTransportModeData,
 } from "./configuration";
+import { getStackedTransportModeData } from "./stackedChartConfig";
 import { CollisionMatrix } from "../components/CollisionMatrix";
 import { CardsSession } from "../components/CardsSession";
 import {
@@ -33,7 +33,7 @@ import {
   DATASUS_CAUSAS_SECUNDARIAS_DATA,
 } from "../../servers";
 import {
-  DeathLocationFilter,
+//  DeathLocationFilter,
   DeathLocationType,
 } from "../components/DeathLocationFilter";
 import { CausasSecundarias } from "../components/CausasSecundarias";
@@ -78,7 +78,7 @@ export default function SinistrosFataisClientSide({
 }) {
   const [tipoLocal, setTipoLocal] = useState("ocorrencia");
   const [selectedYear, setSelectedYear] = useState(2023); // Ano inicial
-  const [selectedEndYear, setSelectedEndYear] = useState(null); // Ano final
+  const [selectedEndYear, setSelectedEndYear] = useState<number | null>(null); // Ano final
   const [selectedCity, setSelectedCity] = useState(2611606); // Mostrar Recife por padrão no gráfico
   const [selectedCardCity, setSelectedCardCity] = useState(2611606); // ID do Recife para os cards
   const [citiesByYearData, setCitiesByYearData] = useState(
@@ -364,10 +364,10 @@ export default function SinistrosFataisClientSide({
   }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear, deathLocation]);
 
   // Estado para o modo de transporte selecionado
-  const [selectedModoTransporte, setSelectedModoTransporte] = useState(null);
+  const [selectedModoTransporte, setSelectedModoTransporte] = useState<string | null>(null);
 
   // Estado para o modo de transporte do seletor
-  const [seletorModoTransporte, setSeletorModoTransporte] = useState(null);
+  const [seletorModoTransporte, setSeletorModoTransporte] = useState<string | null>(null);
 
   // Obter perfil socioeconômico (usando o seletor ou o card selecionado)
   const modoTransporteAtivo = seletorModoTransporte || selectedModoTransporte;
@@ -583,19 +583,19 @@ export default function SinistrosFataisClientSide({
   }, [selectedCardCity, tipoLocal, selectedYear, selectedEndYear, deathLocation]);
 
   // Alternar entre local de ocorrência e residência
-  const handleTipoLocalChange = (tipo) => {
+  const handleTipoLocalChange = (tipo: string): void => {
     setTipoLocal(tipo);
   };
 
   // Selecionar cidade
-  const handleCityChange = (cityId) => {
+  const handleCityChange = (cityId: number): void => {
     setSelectedCity(cityId);
     setSelectedCardCity(cityId);
     setShowAllCities(false);
   };
 
   // Selecionar ano ou intervalo de anos
-  const handleYearChange = (year, endYear = null) => {
+  const handleYearChange = (year: number, endYear: number | null = null): void => {
     // Garantir que pelo menos um ano esteja selecionado
     if (year !== null) {
       setSelectedYear(year);
@@ -604,7 +604,7 @@ export default function SinistrosFataisClientSide({
   };
 
   // Alternar entre mostrar todas as cidades ou apenas RMR
-  const toggleShowAllCities = () => {
+  const toggleShowAllCities = (): void => {
     setShowAllCities(!showAllCities);
   };
 
@@ -636,8 +636,8 @@ export default function SinistrosFataisClientSide({
     ? getPerfilSocioeconomico(modoTransporteData, modoTransporteAtivo)
     : null;
 
-  // Função para alternar a seleção do modo de transporte nos cards
-  const handleModoTransporteClick = (codigo) => {
+  // Função para alternar a seleção do modo d  // Função para alternar a seleção do modo de transporte nos cards
+  const handleModoTransporteClick = (codigo: string): void => {
     // Limpar o seletor quando um card é clicado
     setSeletorModoTransporte(null);
 
@@ -649,7 +649,7 @@ export default function SinistrosFataisClientSide({
   };
 
   // Função para mudar o modo de transporte pelo seletor
-  const handleSeletorModoTransporteChange = (e) => {
+  const handleSeletorModoTransporteChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     const valor = e.target.value;
     // Limpar a seleção do card quando o seletor é usado
     setSelectedModoTransporte(null);
@@ -657,14 +657,14 @@ export default function SinistrosFataisClientSide({
   };
 
   // Formatar o texto do período selecionado
-  const getPeriodoText = () => {
+  const getPeriodoText = (): string => {
     if (!selectedYear) return "";
     if (!selectedEndYear) return selectedYear.toString();
     return `${selectedYear} a ${selectedEndYear}`;
   };
   
   // Obter texto completo dos filtros para subtítulos
-  const getFullFilterText = () => {
+  const getFullFilterText = (): string => {
     const baseType = tipoLocal === "ocorrencia" 
       ? "Local de ocorrência da morte" 
       : "Local de residência da pessoa morta";
@@ -682,24 +682,24 @@ export default function SinistrosFataisClientSide({
     return `${selectedCityName} - ${getPeriodoText()} - ${baseType} - ${deathLocText}`;
   };
 
-    // Obter texto completo dos filtros para subtítulos
-    const getFullFilterTextNoYear = () => {
-      const baseType = tipoLocal === "ocorrencia" 
-        ? "Local de ocorrência da morte" 
-        : "Local de residência da pessoa morta";
-      
-      const deathLocText = (() => {
-        switch(deathLocation) {
-          case "all": return "Todos os locais";
-          case "health": return "Hospital/Estabelecimento de saúde";
-          case "public": return "Via pública";
-          case "other": return "Outros locais e ignorados";
-          default: return "Todos os locais";
-        }
-      })();
-      
-      return `${selectedCityName} - ${baseType} - ${deathLocText}`;
-    };
+  // Obter texto completo dos filtros para subtítulos sem o ano
+  const getFullFilterTextNoYear = (): string => {
+    const baseType = tipoLocal === "ocorrencia" 
+      ? "Local de ocorrência da morte" 
+      : "Local de residência da pessoa morta";
+    
+    const deathLocText = (() => {
+      switch(deathLocation) {
+        case "all": return "Todos os locais";
+        case "health": return "Hospital/Estabelecimento de saúde";
+        case "public": return "Via pública";
+        case "other": return "Outros locais e ignorados";
+        default: return "Todos os locais";
+      }
+    })();
+    
+    return `${selectedCityName} - ${baseType} - ${deathLocText}`;
+  };
     
   // Verificar se o filtro de local de ocorrência do óbito está sendo aplicado corretamente na API
   useEffect(() => {
