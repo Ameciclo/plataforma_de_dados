@@ -45,14 +45,14 @@ export const FEATURED_PAGES = [
       "Monitoramento dos sinistros fatais de trânsito na RMR com dados do DATASUS.",
     target: "_self",
   },
-  {
-    title: "Vias Inseguras",
-    src: "/icons/home/perigosas.png",
-    url: "/vias-inseguras",
-    description:
-      "Monitoramento das vias com mais sinistros de trânsito no Recife de acordo com a CTTU/PCR.",
-    target: "_self",
-  },
+  // {
+  //   title: "Vias Inseguras",
+  //   src: "/icons/home/perigosas.png",
+  //   url: "/vias-inseguras",
+  //   description:
+  //     "Monitoramento das vias com mais sinistros de trânsito no Recife de acordo com a CTTU/PCR.",
+  //   target: "_self",
+  // },
   {
     title: "Orçamento Estadual para o Clima",
     src: "/icons/home/logo2.1d0f07c6.png",
