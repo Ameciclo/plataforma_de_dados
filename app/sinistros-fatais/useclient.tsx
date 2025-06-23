@@ -681,7 +681,26 @@ export default function SinistrosFataisClientSide({
     
     return `${selectedCityName} - ${getPeriodoText()} - ${baseType} - ${deathLocText}`;
   };
-  
+
+    // Obter texto completo dos filtros para subtítulos
+    const getFullFilterTextNoYear = () => {
+      const baseType = tipoLocal === "ocorrencia" 
+        ? "Local de ocorrência da morte" 
+        : "Local de residência da pessoa morta";
+      
+      const deathLocText = (() => {
+        switch(deathLocation) {
+          case "all": return "Todos os locais";
+          case "health": return "Hospital/Estabelecimento de saúde";
+          case "public": return "Via pública";
+          case "other": return "Outros locais e ignorados";
+          default: return "Todos os locais";
+        }
+      })();
+      
+      return `${selectedCityName} - ${baseType} - ${deathLocText}`;
+    };
+    
   // Verificar se o filtro de local de ocorrência do óbito está sendo aplicado corretamente na API
   useEffect(() => {
     console.log(`Filtro aplicado: Base=${tipoLocal}, Local=${deathLocation}, Ano=${selectedYear}-${selectedEndYear || selectedYear}, Cidade=${selectedCityName}`);
@@ -749,15 +768,8 @@ export default function SinistrosFataisClientSide({
           Evolução das Mortes no Trânsito
         </h2>
         <h3 className="text-xl text-center mb-8">
-          {`${selectedCityName} - ${tipoLocal === "ocorrencia" ? "Local de ocorrência da morte" : "Local de residência da pessoa morta"}`}
+          {getFullFilterTextNoYear()}
         </h3>
-        
-        {console.log("Dados para gráfico empilhado:", {
-          citiesByYearData: !!citiesByYearData,
-          anos: citiesByYearData?.years || citiesByYearData?.anos,
-          selectedCardCity,
-          tipoLocal
-        })}
         
         <StackedBarChart
           title={`Distribuição de Mortes por Modo de Transporte ao Longo dos Anos`}

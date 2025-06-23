@@ -577,11 +577,17 @@ export function getStackedTransportModeData(citiesByYearData, selectedCity, tipo
     "Pedestre": "#1f77b4", // Pedestres - azul
     "Ciclista": "#ff7f0e", // Ciclistas - laranja
     "Motociclista": "#2ca02c", // Motociclistas - verde
-    "Ocupante de automóvel": "#d62728", // Ocupante de automóvel - vermelho
-    "Ocupante de caminhonete": "#d62728", // Ocupante de automóvel - vermelho (mesmo cor)
-    "Ocupante de ônibus": "#9467bd", // Ocupante de ônibus - roxo
-    "Outros modos": "#8c564b", // Outros veículos - marrom
-    "Não especificado": "#e377c2" // Não identificado - rosa
+    "Ocupante de veículo": "#d62728", // Ocupante de veículo - vermelho
+    "Outros": "#8c564b", // Outros - marrom
+  };
+  
+  // Mapeamento para agrupar categorias
+  const categoriasAgrupadas = {
+    "Pedestre": ["Pedestre"],
+    "Ciclista": ["Ciclista"],
+    "Motociclista": ["Motociclista"],
+    "Ocupante de veículo": ["Ocupante de automóvel", "Ocupante de caminhonete", "Ocupante de ônibus", "Ocupante de veículo pesado", "Ocupante de triciclo"],
+    "Outros": ["Outros modos", "Não especificado"]
   };
   
   // Encontrar a cidade selecionada nos dados
@@ -600,21 +606,13 @@ export function getStackedTransportModeData(citiesByYearData, selectedCity, tipo
   // Usar todas as cidades se nenhuma cidade específica foi selecionada
   const cidades = selectedCity ? [cidadeSelecionada] : citiesByYearData.cities;
   
-  // Inicializar séries para cada modo de transporte
+  // Inicializar séries para as categorias agrupadas
   const seriesMap = {};
-  
-  // Inicializar modos de transporte disponíveis
-  const modosTransporte = citiesByYearData.transportModes || [
-    "Pedestre", "Ciclista", "Motociclista", "Ocupante de automóvel", 
-    "Ocupante de caminhonete", "Ocupante de ônibus", "Outros modos", "Não especificado"
-  ];
-  
-  // Inicializar séries para cada modo de transporte
-  modosTransporte.forEach(modo => {
-    seriesMap[modo] = {
-      name: modo,
+  Object.keys(categoriasAgrupadas).forEach(categoria => {
+    seriesMap[categoria] = {
+      name: categoria,
       data: Array(anosDisponiveis.length).fill(0),
-      color: modoTransporteCores[modo] || "#999999"
+      color: modoTransporteCores[categoria]
     };
   });
   
@@ -624,18 +622,24 @@ export function getStackedTransportModeData(citiesByYearData, selectedCity, tipo
     
     // Para cada modo de transporte
     Object.entries(cidade.transportModes).forEach(([modo, dadosModo]) => {
-      if (!seriesMap[modo]) {
-        seriesMap[modo] = {
-          name: modo,
-          data: Array(anosDisponiveis.length).fill(0),
-          color: modoTransporteCores[modo] || "#999999"
-        };
+      // Encontrar a categoria agrupada para este modo
+      let categoriaAgrupada = null;
+      for (const [categoria, modos] of Object.entries(categoriasAgrupadas)) {
+        if (modos.includes(modo)) {
+          categoriaAgrupada = categoria;
+          break;
+        }
+      }
+      
+      // Se não encontrou uma categoria, usar "Outros"
+      if (!categoriaAgrupada) {
+        categoriaAgrupada = "Outros";
       }
       
       // Para cada ano disponível
       anosDisponiveis.forEach((ano, anoIndex) => {
-        // Adicionar o valor ao ano correspondente
-        seriesMap[modo].data[anoIndex] += dadosModo[ano.toString()] || 0;
+        // Adicionar o valor ao ano correspondente na categoria agrupada
+        seriesMap[categoriaAgrupada].data[anoIndex] += dadosModo[ano.toString()] || 0;
       });
     });
   });
@@ -650,11 +654,8 @@ export function getStackedTransportModeData(citiesByYearData, selectedCity, tipo
       "Pedestre": 1,
       "Ciclista": 2,
       "Motociclista": 3,
-      "Ocupante de automóvel": 4,
-      "Ocupante de caminhonete": 5,
-      "Ocupante de ônibus": 6,
-      "Outros modos": 7,
-      "Não especificado": 8
+      "Ocupante de veículo": 4,
+      "Outros": 5
     };
     
     return (ordem[a.name] || 999) - (ordem[b.name] || 999);

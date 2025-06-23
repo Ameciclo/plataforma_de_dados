@@ -22,7 +22,8 @@ interface SelectionFilterMenuProps {
 
 interface CityOption {
   id: number;
-  nome: string;
+  nome?: string;
+  name?: string;
 }
 
 export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
@@ -251,7 +252,7 @@ export const SelectionFilterMenu: React.FC<SelectionFilterMenuProps & {
                           setIsOpen(null);
                         }}
                       >
-                        {city.nome}
+                        {city.name || city.nome || `Cidade ${city.id}`}
                       </button>
                     ))}
                   </div>
