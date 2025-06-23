@@ -310,7 +310,7 @@ GET http://localhost:8080/datasus-deaths/matrix?deathLocation=3,5,9
 - `tipo`: Equivalente a `type` (`ocorrencia` = `occurrence`, `residencia` = `residence`)
 - `localOcorrenciaObito`: Equivalente a `deathLocation`
 
-**Descrição:** Retorna dados de mortes por cidade da RMR, divididos por ano.
+**Descrição:** Retorna dados de mortes por cidade da RMR, divididos por ano e modo de transporte.
 
 **Exemplo de Uso:**
 ```
@@ -330,15 +330,31 @@ GET http://localhost:8080/datasus-deaths/cities-by-year?deathLocation=3,5,9
     "value": "4",
     "description": "Via pública"
   },
-  "anos": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
-  "cidades": [
+  "years": [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+  "transportModes": ["Pedestre", "Ciclista", "Motociclista", "Ocupante de automóvel", "Ocupante de ônibus", "Outros modos"],
+  "cities": [
     {
       "id": 2611606,
-      "nome": "Recife",
+      "name": "Recife",
       "2013": 50,
       "2014": 55,
       // ... outros anos
-      "total": 500
+      "total": 500,
+      "transportModes": {
+        "Pedestre": {
+          "2013": 15,
+          "2014": 18,
+          // ... outros anos
+          "total": 150
+        },
+        "Motociclista": {
+          "2013": 25,
+          "2014": 28,
+          // ... outros anos
+          "total": 250
+        },
+        // ... outros modos de transporte
+      }
     },
     // ... outras cidades
   ]

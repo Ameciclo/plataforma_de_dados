@@ -44,13 +44,13 @@ export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "
     selectedYear,
     tipoLocal,
     selectedEndYear,
-    hasCidades: !!citiesByYearData?.cidades,
-    hasAnos: !!citiesByYearData?.anos,
-    cidadesLength: citiesByYearData?.cidades?.length,
-    anosLength: citiesByYearData?.anos?.length
+    hasCidades: !!citiesByYearData?.cities,
+    hasAnos: !!citiesByYearData?.years,
+    cidadesLength: citiesByYearData?.cities?.length,
+    anosLength: citiesByYearData?.years?.length
   });
   if (!citiesByYearData || !selectedYear) return [];
-  if (!citiesByYearData.cidades || citiesByYearData.cidades.length === 0) {
+  if (!citiesByYearData.cities || citiesByYearData.cities.length === 0) {
     console.warn("Array de cidades vazio em getCityCardsByYear");
     return [{
       id: 0,
@@ -61,7 +61,7 @@ export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "
   }
   
   // Criar cards ordenados do maior para o menor número de mortes
-  return citiesByYearData.cidades
+  return citiesByYearData.cities
     .map(city => {
       let totalMortes = 0;
       
@@ -77,7 +77,7 @@ export function getCityCardsByYear(citiesByYearData, selectedYear, tipoLocal = "
       
       return {
         id: city.id,
-        label: city.nome,
+        label: city.name,
         value: totalMortes,
         unit: "mortes"
       };
@@ -91,11 +91,11 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null, showAl
     citiesByYearData,
     selectedCity,
     showAllCities,
-    hasCidades: !!citiesByYearData?.cidades,
-    hasAnos: !!citiesByYearData?.anos,
-    anos: citiesByYearData?.anos
+    hasCidades: !!citiesByYearData?.cities,
+    hasAnos: !!citiesByYearData?.years,
+    anos: citiesByYearData?.years
   });
-  if (!citiesByYearData || !citiesByYearData.anos || citiesByYearData.anos.length === 0) {
+  if (!citiesByYearData || !citiesByYearData.years || citiesByYearData.years.length === 0) {
     console.warn("Dados incompletos ou array de anos vazio em getYearlyChartData");
     return [{
       name: "Sem dados",
@@ -105,12 +105,12 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null, showAl
   
   // Se uma cidade está selecionada, mostrar apenas dados dessa cidade
   if (selectedCity) {
-    const cityData = citiesByYearData.cidades.find(c => c.id === selectedCity);
+    const cityData = citiesByYearData.cities.find(c => c.id === selectedCity);
     if (!cityData) return [];
     
     return [{
-      name: cityData.nome,
-      data: citiesByYearData.anos.map(ano => ({
+      name: cityData.name,
+      data: citiesByYearData.years.map(ano => ({
         name: ano.toString(),
         y: cityData[ano.toString()] || 0
       }))
@@ -119,9 +119,9 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null, showAl
   
   // Se showAllCities é true, mostrar todas as cidades da RMR
   if (showAllCities) {
-    return citiesByYearData.cidades.map(city => ({
-      name: city.nome,
-      data: citiesByYearData.anos.map(ano => ({
+    return citiesByYearData.cities.map(city => ({
+      name: city.name,
+      data: citiesByYearData.years.map(ano => ({
         name: ano.toString(),
         y: city[ano.toString()] || 0
       }))
@@ -131,8 +131,8 @@ export function getYearlyChartData(citiesByYearData, selectedCity = null, showAl
   // Caso contrário, somar todas as cidades da RMR por ano
   return [{
     name: "RMR",
-    data: citiesByYearData.anos.map(ano => {
-      const total = citiesByYearData.cidades.reduce(
+    data: citiesByYearData.years.map(ano => {
+      const total = citiesByYearData.cities.reduce(
         (sum, city) => sum + (city[ano.toString()] || 0), 
         0
       );
@@ -542,3 +542,128 @@ const ordenarFaixasEtarias = (dados) => {
     })
   );
 };
+
+// Função para gerar dados para o gráfico empilhado por modo de transporte
+export function getStackedTransportModeData(citiesByYearData, selectedCity, tipoLocal = "ocorrencia") {
+  console.log("getStackedTransportModeData - Entrada:", {
+    hasCitiesByYearData: !!citiesByYearData,
+    hasAnos: !!citiesByYearData?.years,
+    anos: citiesByYearData?.years,
+    selectedCity,
+    tipoLocal,
+    transportModes: citiesByYearData?.transportModes
+  });
+  
+  // Se não temos dados, retornar estrutura vazia
+  if (!citiesByYearData?.years) {
+    return {
+      categories: [],
+      series: []
+    };
+  }
+  
+  // Filtrar anos a partir de 2015
+  const anosDisponiveis = [...citiesByYearData.years].filter(ano => ano >= 2015).sort();
+  
+  if (anosDisponiveis.length === 0) {
+    return {
+      categories: [],
+      series: []
+    };
+  }
+  
+  // Mapear os modos de transporte para as séries
+  const modoTransporteCores = {
+    "Pedestre": "#1f77b4", // Pedestres - azul
+    "Ciclista": "#ff7f0e", // Ciclistas - laranja
+    "Motociclista": "#2ca02c", // Motociclistas - verde
+    "Ocupante de automóvel": "#d62728", // Ocupante de automóvel - vermelho
+    "Ocupante de caminhonete": "#d62728", // Ocupante de automóvel - vermelho (mesmo cor)
+    "Ocupante de ônibus": "#9467bd", // Ocupante de ônibus - roxo
+    "Outros modos": "#8c564b", // Outros veículos - marrom
+    "Não especificado": "#e377c2" // Não identificado - rosa
+  };
+  
+  // Encontrar a cidade selecionada nos dados
+  const cidadeSelecionada = selectedCity 
+    ? citiesByYearData.cities.find(cidade => cidade.id === selectedCity)
+    : null;
+  
+  // Se não encontrou a cidade e uma cidade foi selecionada, retornar vazio
+  if (!cidadeSelecionada && selectedCity) {
+    return {
+      categories: [],
+      series: []
+    };
+  }
+  
+  // Usar todas as cidades se nenhuma cidade específica foi selecionada
+  const cidades = selectedCity ? [cidadeSelecionada] : citiesByYearData.cities;
+  
+  // Inicializar séries para cada modo de transporte
+  const seriesMap = {};
+  
+  // Inicializar modos de transporte disponíveis
+  const modosTransporte = citiesByYearData.transportModes || [
+    "Pedestre", "Ciclista", "Motociclista", "Ocupante de automóvel", 
+    "Ocupante de caminhonete", "Ocupante de ônibus", "Outros modos", "Não especificado"
+  ];
+  
+  // Inicializar séries para cada modo de transporte
+  modosTransporte.forEach(modo => {
+    seriesMap[modo] = {
+      name: modo,
+      data: Array(anosDisponiveis.length).fill(0),
+      color: modoTransporteCores[modo] || "#999999"
+    };
+  });
+  
+  // Para cada cidade, processar os dados por modo de transporte e ano
+  cidades.forEach(cidade => {
+    if (!cidade.transportModes) return;
+    
+    // Para cada modo de transporte
+    Object.entries(cidade.transportModes).forEach(([modo, dadosModo]) => {
+      if (!seriesMap[modo]) {
+        seriesMap[modo] = {
+          name: modo,
+          data: Array(anosDisponiveis.length).fill(0),
+          color: modoTransporteCores[modo] || "#999999"
+        };
+      }
+      
+      // Para cada ano disponível
+      anosDisponiveis.forEach((ano, anoIndex) => {
+        // Adicionar o valor ao ano correspondente
+        seriesMap[modo].data[anoIndex] += dadosModo[ano.toString()] || 0;
+      });
+    });
+  });
+  
+  // Converter o mapa de séries para um array e remover séries vazias
+  const series = Object.values(seriesMap)
+    .filter(serie => serie.data.some(valor => valor > 0));
+  
+  // Ordenar as séries conforme a ordem desejada
+  series.sort((a, b) => {
+    const ordem = {
+      "Pedestre": 1,
+      "Ciclista": 2,
+      "Motociclista": 3,
+      "Ocupante de automóvel": 4,
+      "Ocupante de caminhonete": 5,
+      "Ocupante de ônibus": 6,
+      "Outros modos": 7,
+      "Não especificado": 8
+    };
+    
+    return (ordem[a.name] || 999) - (ordem[b.name] || 999);
+  });
+  
+  console.log("Séries geradas:", series);
+  
+  return {
+    categories: anosDisponiveis.map(ano => ano.toString()),
+    series
+  };
+}

@@ -6,6 +6,7 @@ import { ExplanationBoxes } from "../components/ExplanationBox";
 import { InfoCards } from "../components/InfoCards";
 import { SelectableInfoCards } from "../components/SelectableInfoCards";
 import LineChart from "../components/Charts/LineChart";
+import StackedBarChart from "../components/Charts/StackedBarChart";
 import { YearSelector } from "../components/YearSelector";
 import { LocalTypeSelector } from "../components/LocalTypeSelector";
 import {
@@ -21,6 +22,7 @@ import {
   getModoTransporteCards,
   getPerfilSocioeconomico,
   modoTransporteLabels,
+  getStackedTransportModeData,
 } from "./configuration";
 import { CollisionMatrix } from "../components/CollisionMatrix";
 import { CardsSession } from "../components/CardsSession";
@@ -622,7 +624,7 @@ export default function SinistrosFataisClientSide({
 
   // Obter o nome da cidade selecionada
   const selectedCityName = selectedCardCity
-    ? citiesByYearData?.cidades?.find((c) => c.id === selectedCardCity)?.nome ||
+    ? citiesByYearData?.cities?.find((c) => c.id === selectedCardCity)?.name ||
       "Cidade selecionada"
     : "RMR";
 
@@ -741,25 +743,27 @@ export default function SinistrosFataisClientSide({
         />
       </div>
 
-      {/* Gráfico de mortes por ano */}
+      {/* Gráfico empilhado por modo de transporte */}
       <div className="mx-auto container my-12">
         <h2 className="text-3xl font-bold text-center mb-4">
           Evolução das Mortes no Trânsito
         </h2>
-
-        <LineChart
-          title={`Mortes por Ano em ${selectedCityName} (${
-            tipoLocal === "ocorrencia"
-              ? "Local de ocorrência da morte"
-              : "Local de residência da pessoa morta"
-          })`}
+        <h3 className="text-xl text-center mb-8">
+          {`${selectedCityName} - ${tipoLocal === "ocorrencia" ? "Local de ocorrência da morte" : "Local de residência da pessoa morta"}`}
+        </h3>
+        
+        {console.log("Dados para gráfico empilhado:", {
+          citiesByYearData: !!citiesByYearData,
+          anos: citiesByYearData?.years || citiesByYearData?.anos,
+          selectedCardCity,
+          tipoLocal
+        })}
+        
+        <StackedBarChart
+          title={`Distribuição de Mortes por Modo de Transporte ao Longo dos Anos`}
           xAxisTitle="Ano"
           yAxisTitle="Número de Mortes"
-          series={getYearlyChartData(
-            citiesByYearData,
-            selectedCity,
-            showAllCities
-          )}
+          {...getStackedTransportModeData(citiesByYearData, selectedCardCity, tipoLocal)}
         />
       </div>
 
@@ -1084,11 +1088,11 @@ export default function SinistrosFataisClientSide({
         onDeathLocationChange={setDeathLocation}
         selectedYear={selectedYear}
         selectedEndYear={selectedEndYear}
-        availableYears={citiesByYearData?.anos || []}
+        availableYears={citiesByYearData?.years || []}
         onYearChange={handleYearChange}
         selectedCity={selectedCardCity}
         selectedCityName={selectedCityName}
-        citiesList={citiesByYearData?.cidades || []}
+        citiesList={citiesByYearData?.cities || []}
         onCityChange={handleCityChange}
       />
     </>
