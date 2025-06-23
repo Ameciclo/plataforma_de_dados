@@ -11,6 +11,14 @@ export function getGeneralStatistics(summaryData, tipoLocal = "ocorrencia") {
     ? summaryData.porLocalOcorrencia 
     : summaryData.porLocalResidencia;
   
+  // Determinar se houve aumento ou diminuição
+  const crescimento = data.crescimentoRelacaoAnoAnterior;
+  const variacaoTitulo = crescimento > 0 
+    ? "AUMENTO em relação ao ano anterior" 
+    : crescimento < 0 
+      ? "DIMINUIÇÃO em relação ao ano anterior" 
+      : "Sem variação em relação ao ano anterior";
+  
   return [
     {
       title: `Mortes no último ano (${data.ultimoAno})`,
@@ -18,8 +26,8 @@ export function getGeneralStatistics(summaryData, tipoLocal = "ocorrencia") {
       unit: ""
     },
     {
-      title: "Variação em relação ao ano anterior",
-      value: IntlPercentil(data.crescimentoRelacaoAnoAnterior / 100),
+      title: variacaoTitulo,
+      value: IntlPercentil(Math.abs(data.crescimentoRelacaoAnoAnterior) / 100),
       unit: ""
     },
     {
