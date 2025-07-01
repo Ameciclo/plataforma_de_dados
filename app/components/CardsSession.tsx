@@ -61,11 +61,11 @@ const Card = ({
                 />
               ) : (
                 <Image
-                  className="h-40 hover:fill-red-500 hover:text-red-500"
+                  className="h-40 hover:fill-red-500 hover:text-red-500 object-contain"
                   src={src}
                   alt={title}
-                  height={100}
-                  width={100}
+                  height={160}
+                  width={160}
                 />
               )
             )}
