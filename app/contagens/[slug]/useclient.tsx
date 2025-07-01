@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../components/Table/TableFilters";
@@ -13,6 +13,23 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export const CountingComparisionTable = ({ data, firstSlug }) => {
+  const [totalType, setTotalType] = useState('total_cyclists');
+
+  const totalOptions = [
+    { value: 'total_cyclists', label: 'Total de Ciclistas' },
+    { value: 'total_women', label: 'Total de Mulheres' },
+    { value: 'total_helmet', label: 'Total com Capacete' },
+    { value: 'total_cargo', label: 'Total com Carga' },
+    { value: 'total_juveniles', label: 'Total de Jovens' },
+    { value: 'total_shared_bike', label: 'Total Bike Compartilhada' },
+    { value: 'total_sidewalk', label: 'Total na Calçada' },
+    { value: 'total_wrong_way', label: 'Total Contramão' }
+  ];
+
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [data]);
+
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -58,8 +75,23 @@ export const CountingComparisionTable = ({ data, firstSlug }) => {
         Filter: ColumnFilter,
       },
       {
-        Header: "Total de Ciclistas",
-        accessor: "total_cyclists",
+        Header: () => (
+          <div className="flex flex-col gap-2">
+            <select 
+              value={totalType} 
+              onChange={(e) => setTotalType(e.target.value)}
+              className="text-sm border rounded px-2 py-1"
+            >
+              {totalOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        ),
+        accessor: totalType,
+        Cell: ({ row }) => row.original[totalType] || 0,
         Filter: ColumnFilter,
         disableFilters: true,
       },
@@ -84,7 +116,7 @@ export const CountingComparisionTable = ({ data, firstSlug }) => {
   return (
     <Table
       title={"Compare com outras contagens"}
-      data={data}
+      data={sortedData}
       columns={columns}
     />
   );

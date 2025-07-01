@@ -9,8 +9,7 @@ export const CardsSession = ({
   title?: string;
   cards: any[];
 }) => {
-  console.log("CardsSession - cards recebidos:", cards);
-  
+ 
   return (
     <section>
       <div className="flex-1 container mx-auto p-10 text-center">
@@ -42,8 +41,7 @@ const Card = ({
   url = "#",
   target = "_blank",
 }) => {  
-  console.log("Renderizando card:", { title, description, src, url, target });
-  
+ 
   // Verificar se a src é uma URL externa ou um caminho local
   const isExternalImage = src && (src.startsWith('http://') || src.startsWith('https://'));
   

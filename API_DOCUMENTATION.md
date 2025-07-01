@@ -50,8 +50,8 @@ GET http://localhost:8080/cyclist-counts
       "name": "Contagem Centro",
       "date": "2023-05-15T00:00:00.000Z",
       "coordinates": {
-        "x": -34.91224,
-        "y": -8.09803,
+        "longitude": -34.91224,
+        "latitude": -8.09803,
         "type": "Point",
         "name": "Contagem Centro"
       },
@@ -82,8 +82,8 @@ GET http://localhost:8080/cyclist-counts
       "total_cyclists": 150,
       "date": "2023-05-15T00:00:00.000Z",
       "coordinates": {
-        "x": -34.91224,
-        "y": -8.09803,
+        "longitude": -34.91224,
+        "latitude": -8.09803,
         "type": "Point",
         "name": "Contagem Centro"
       }
@@ -104,8 +104,8 @@ GET http://localhost:8080/cyclist-counts
 
 **Campos Adicionados:**
 - `coordinates`: Coordenadas geográficas extraídas do formato PostGIS
-  - `x`: Longitude
-  - `y`: Latitude
+  - `longitude`: Longitude
+  - `latitude`: Latitude
   - `type`: Tipo de geometria (sempre "Point")
   - `name`: Nome da contagem
 - `total_*`: Totais por categoria de características dos ciclistas para cada contagem individual

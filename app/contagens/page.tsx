@@ -52,8 +52,8 @@ export default async function Contagens() {
   let pointsData: pointData[] = data.map((d) => ({
     key: d.id,
     type: 'ameciclo',
-    latitude: d.coordinates.y,
-    longitude: d.coordinates.x,
+    latitude: d.coordinates.latitude,
+    longitude: d.coordinates.longitude,
     popup: {
       name: d.name,
       total: d.total_cyclists,

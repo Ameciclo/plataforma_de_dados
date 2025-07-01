@@ -4,36 +4,36 @@ import { characteristicsMap } from "../configuration";
 import { colors } from "../configuration";
 
 export function getPointsData(d) {
-  const { name, coordinates } = d;
+  const { name, coordinates } = d[0];
 
   const points = [
     {
       key: name,
-      latitude: coordinates.y,
-      longitude: coordinates.x,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
     },
     {
       key: `${name}_north`,
-      latitude: coordinates.y + 0.001,
-      longitude: coordinates.x,
+      latitude: coordinates.latitude + 0.001,
+      longitude: coordinates.longitude,
       color: colors[0]
     },
     {
       key: `${name}_south`,
-      latitude: coordinates.y - 0.001,
-      longitude: coordinates.x,
+      latitude: coordinates.latitude - 0.001,
+      longitude: coordinates.longitude,
       color: colors[1]
     },
     {
       key: `${name}_east`,
-      latitude: coordinates.y,
-      longitude: coordinates.x + 0.001,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude + 0.001,
       color: colors[2]
     },
     {
       key: `${name}_west`,
-      latitude: coordinates.y,
-      longitude: coordinates.x - 0.001,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude - 0.001,
       color: colors[3]
     },
   ];
@@ -45,32 +45,32 @@ export const getPointsDataForSingleCounting = (d) => {
   return [
     {
       key: d.name,
-      latitude: d.coordinates.y,
-      longitude: d.coordinates.x,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.summary.total,
     },
     {
       key: d.name + " north",
-      latitude: d.coordinates.y,
-      longitude: d.coordinates.x,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.north.name,
     },
     {
       key: d.name + " south",
-      latitude: d.coordinates.y,
-      longitude: d.coordinates.x,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.south.name,
     },
     {
       key: d.name + " east",
-      latitude: d.coordinates.y,
-      longitude: d.coordinates.x,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.east.name,
     },
     {
       key: d.name + " west",
-      latitude: d.coordinates.y,
-      longitude: d.coordinates.x,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.west.name,
     },
   ];
