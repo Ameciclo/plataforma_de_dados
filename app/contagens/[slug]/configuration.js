@@ -4,37 +4,37 @@ import { characteristicsMap } from "../configuration";
 import { colors } from "../configuration";
 
 export function getPointsData(d) {
-  const { name, coordinates } = d[0];
-
+  const { name, coordinates } = d;
+  const coord = coordinates[0];
   const points = [
     {
       key: name,
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude,
+      latitude: coord.latitude,
+      longitude: coord.longitude,
     },
     {
       key: `${name}_north`,
-      latitude: coordinates.latitude + 0.001,
-      longitude: coordinates.longitude,
-      color: colors[0]
+      latitude: coord.latitude + 0.001,
+      longitude: coord.longitude,
+      color: colors[0],
     },
     {
       key: `${name}_south`,
-      latitude: coordinates.latitude - 0.001,
-      longitude: coordinates.longitude,
-      color: colors[1]
+      latitude: coord.latitude - 0.001,
+      longitude: coord.longitude,
+      color: colors[1],
     },
     {
       key: `${name}_east`,
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude + 0.001,
-      color: colors[2]
+      latitude: coord.latitude,
+      longitude: coord.longitude + 0.001,
+      color: colors[2],
     },
     {
       key: `${name}_west`,
-      latitude: coordinates.latitude,
-      longitude: coordinates.longitude - 0.001,
-      color: colors[3]
+      latitude: coord.latitude,
+      longitude: coord.longitude - 0.001,
+      color: colors[3],
     },
   ];
 

@@ -56,7 +56,7 @@ const Contagem = async ({ params }) => {
     customColor: "bg-ameciclo",
   };
   const pointsData = getPointsData(data) as pointData[];
-  console.log("data: ",data)
+  
   const { series, hours } = getChartData(data.sessions);
 
   return (
@@ -69,7 +69,7 @@ const Contagem = async ({ params }) => {
           className="bg-green-200 rounded h-32 shadow-2xl lg:col-span-2 col-span-3"
           style={{ minHeight: "400px" }}
         >
-          {/* <PointMap pointsData={pointsData} height="400px" /> */}
+          <PointMap pointsData={pointsData} height="400px" />
         </div>
         <div className="rounded shadow-2xl lg:col-span-1 col-span-3 flex justify-between flex-col">
           <FlowContainer data={data} />
