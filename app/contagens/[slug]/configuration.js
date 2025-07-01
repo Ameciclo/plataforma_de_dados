@@ -170,7 +170,8 @@ export function getChartData(sessions) {
 
   Object.values(sessions).forEach((session) => {
     const { start_time, total_cyclists, characteristics } = session;
-    const hour = parseInt(start_time.split(":")[0]);
+    const date = new Date(start_time);
+    const hour = date.getHours();
     hours.push(hour);
     totalCyclists.push(total_cyclists);
 
