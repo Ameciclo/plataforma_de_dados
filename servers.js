@@ -10,10 +10,8 @@ export const IDECICLO_STRUCTURES_DATA = `https://api.ideciclo.ameciclo.org/struc
 export const IDECICLO_FORMS_DATA = `https://api.ideciclo.ameciclo.org/forms`
 export const PERFIL_DATA = `https://api.perfil.ameciclo.org/v1/cyclist-profile/summary/`
 
-//export const COUNTINGS_SUMMARY_DATA =`https://api.garfo.ameciclo.org/cyclist-counts`     
-//export const COUNTINGS_DATA =`https://api.garfo.ameciclo.org/cyclist-counts/edition`
-export const COUNTINGS_SUMMARY_DATA =`http://localhost:8080/cyclist-counts`     
-export const COUNTINGS_DATA =`http://localhost:8080/cyclist-counts/edition`
+export const COUNTINGS_SUMMARY_DATA =`https://api.garfo.ameciclo.org/cyclist-counts`     
+export const COUNTINGS_DATA =`https://api.garfo.ameciclo.org/cyclist-counts/edition`
 
 export const OBSERVATORY_DATA =`https://api.garfo.ameciclo.org/cyclist-infra/relationsByCity`
 export const OBSERVATORY_DATA_WAYS =`https://api.garfo.ameciclo.org/cyclist-infra/ways`
