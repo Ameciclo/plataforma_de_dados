@@ -56,6 +56,7 @@ const Contagem = async ({ params }) => {
     customColor: "bg-ameciclo",
   };
   const pointsData = getPointsData(data) as pointData[];
+  
   const { series, hours } = getChartData(data.sessions);
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { matchSorter } from "match-sorter";
 import Link from "next/link";
 import { ColumnFilter } from "../../components/Table/TableFilters";
@@ -13,6 +13,10 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export const CountingComparisionTable = ({ data, firstSlug }) => {
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [data]);
+
   const filterTypes = React.useMemo(
     () => ({
       // Add a new fuzzyTextFilterFn filter type.
@@ -60,7 +64,6 @@ export const CountingComparisionTable = ({ data, firstSlug }) => {
       {
         Header: "Total de Ciclistas",
         accessor: "total_cyclists",
-        Filter: ColumnFilter,
         disableFilters: true,
       },
       {
@@ -84,7 +87,7 @@ export const CountingComparisionTable = ({ data, firstSlug }) => {
   return (
     <Table
       title={"Compare com outras contagens"}
-      data={data}
+      data={sortedData}
       columns={columns}
     />
   );

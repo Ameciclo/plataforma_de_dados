@@ -60,7 +60,6 @@ export const CountingComparisionTable = ({ data, ids }) => {
       {
         Header: "Total de Ciclistas",
         accessor: "total_cyclists",
-        Filter: ColumnFilter,
         disableFilters: true,
       },
       {

@@ -3,40 +3,43 @@ import { IntlNumber, IntlDateStr, IntlPercentil } from "../../../../utils";
 import { colors } from "../../configuration"
 
 export const getPointsDataForSingleCounting = (d, color) => {
+  console.log(d)
+  const [name, coordinates, summary] = d
+  const coord = coordinates[0];
   return [
     {
-      key: d.name,
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
-      name: d.summary.total,
+      key: name,
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      name: summary.total,
       color: color,
     },
     {
-      key: d.name + " north",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
-      name: d.north.name,
+      key: name + " north",
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      name: north.name,
       color: color,
     },
     {
-      key: d.name + " south",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
-      name: d.south.name,
+      key: name + " south",
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      name: south.name,
       color: color,
     },
     {
-      key: d.name + " east",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
-      name: d.east.name,
+      key: name + " east",
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      name: east.name,
       color: color,
     },
     {
-      key: d.name + " west",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
-      name: d.west.name,
+      key: name + " west",
+      latitude: coord.latitude,
+      longitude: coord.longitude,
+      name: west.name,
       color: color,
     },
   ];
@@ -46,8 +49,8 @@ export const getPointDataForSingleCounting = (d, color) => {
   return [
     {
       key: d.name,
-      latitude: d.coordinates[0].point.x,
-      longitude: d.coordinates[0].point.y,
+      latitude: d.coordinates[0].latitude,
+      longitude: d.coordinates[0].longitude,
       name: d.summary.total,
       color: color,
     },

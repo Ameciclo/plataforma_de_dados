@@ -5,37 +5,36 @@ import { colors } from "../configuration";
 
 export function getPointsData(d) {
   const { name, coordinates } = d;
-  const [centralPoint] = coordinates;
-
+  const coord = coordinates[0];
   const points = [
     {
       key: name,
-      latitude: centralPoint.point.x,
-      longitude: centralPoint.point.y,
+      latitude: coord.latitude,
+      longitude: coord.longitude,
     },
     {
       key: `${name}_north`,
-      latitude: centralPoint.point.x + 0.001,
-      longitude: centralPoint.point.y,
-      color: colors[0]
+      latitude: coord.latitude + 0.001,
+      longitude: coord.longitude,
+      color: colors[0],
     },
     {
       key: `${name}_south`,
-      latitude: centralPoint.point.x - 0.001,
-      longitude: centralPoint.point.y,
-      color: colors[1]
+      latitude: coord.latitude - 0.001,
+      longitude: coord.longitude,
+      color: colors[1],
     },
     {
       key: `${name}_east`,
-      latitude: centralPoint.point.x,
-      longitude: centralPoint.point.y + 0.001,
-      color: colors[2]
+      latitude: coord.latitude,
+      longitude: coord.longitude + 0.001,
+      color: colors[2],
     },
     {
       key: `${name}_west`,
-      latitude: centralPoint.point.x,
-      longitude: centralPoint.point.y - 0.001,
-      color: colors[3]
+      latitude: coord.latitude,
+      longitude: coord.longitude - 0.001,
+      color: colors[3],
     },
   ];
 
@@ -46,32 +45,32 @@ export const getPointsDataForSingleCounting = (d) => {
   return [
     {
       key: d.name,
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.summary.total,
     },
     {
       key: d.name + " north",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.north.name,
     },
     {
       key: d.name + " south",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.south.name,
     },
     {
       key: d.name + " east",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.east.name,
     },
     {
       key: d.name + " west",
-      latitude: d.coordinates.point.x,
-      longitude: d.coordinates.point.y,
+      latitude: d.coordinates.latitude,
+      longitude: d.coordinates.longitude,
       name: d.west.name,
     },
   ];
@@ -171,7 +170,8 @@ export function getChartData(sessions) {
 
   Object.values(sessions).forEach((session) => {
     const { start_time, total_cyclists, characteristics } = session;
-    const hour = parseInt(start_time.split(":")[0]);
+    const date = new Date(start_time);
+    const hour = date.getHours();
     hours.push(hour);
     totalCyclists.push(total_cyclists);
 

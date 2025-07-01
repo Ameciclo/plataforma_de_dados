@@ -1,5 +1,5 @@
 import React from "react";
-import { MultipleSelectionFilters } from "./SelectionFilterMenu";
+import { MultipleSelectionFilters } from "./MultipleSelectionFilters";
 import {
   IntlNumberMin1Max3Digits,
   IntlNumber1Digit,
@@ -67,7 +67,7 @@ export const NumberCard = ({
 export const NumberCards = ({ cards, data, selected, options }) => {
   return (
     <section className="mx-auto container">
-      <div className="mx-auto text-center my-12 md:my-24">
+      <div className="mx-auto text-center">
         <MultipleSelectionFilters {...data} />
         <section className="container mx-auto gap-8 my-5 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {cards.map((city) => (

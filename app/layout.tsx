@@ -30,8 +30,10 @@ export default function RootLayout({
               { name: "Contagens", url: "/contagens" },
               { name: "Documentos", url: "/documentos" },
               { name: "Ideciclo", url: "/ideciclo" },
-              { name: "Observatório", url: "/observatorio" },
-              { name: "Perfil", url: "/perfil" },
+              { name: "Perfil Ciclista", url: "/perfil" },
+              { name: "Exec. Cicloviária", url: "/observatorio" },
+              // { name: "Vias Inseguras", url: "/vias-inseguras" },
+              { name: "Sinistros Fatais", url: "/sinistros-fatais" },
             ]}
           />
           {children}
