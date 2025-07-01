@@ -15,7 +15,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 fuzzyTextFilterFn.autoRemove = (val) => !val;
 
 export const ContagensTable = ({ data }) => {
-  const [cyclistFilter, setCyclistFilter] = React.useState([]);
+  const [cyclistFilter, setCyclistFilter] = React.useState<[number | undefined, number | undefined]>([undefined, undefined]);
   const [filteredData, setFilteredData] = React.useState(data);
 
   React.useEffect(() => {
@@ -141,7 +141,7 @@ export const ContagensTable = ({ data }) => {
             />
             <button
               className="px-3 py-1 bg-ameciclo text-white rounded hover:bg-opacity-80"
-              onClick={() => setCyclistFilter([])}
+              onClick={() => setCyclistFilter([undefined, undefined])}
             >
               Limpar
             </button>
