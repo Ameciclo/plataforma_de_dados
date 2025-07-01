@@ -33,12 +33,82 @@ GET http://localhost:8080/cities
 
 **Método:** GET
 
-**Descrição:** Retorna um resumo das contagens de ciclistas.
+**Descrição:** Retorna um resumo das contagens de ciclistas, incluindo coordenadas geográficas e totais por categoria para cada contagem.
 
 **Exemplo de Uso:**
 ```
 GET http://localhost:8080/cyclist-counts
 ```
+
+**Resposta:**
+```json
+{
+  "counts": [
+    {
+      "id": 1,
+      "slug": "1-2023-05-15-contagem-centro",
+      "name": "Contagem Centro",
+      "date": "2023-05-15T00:00:00.000Z",
+      "coordinates": {
+        "x": -34.91224,
+        "y": -8.09803,
+        "type": "Point",
+        "name": "Contagem Centro"
+      },
+      "city": {
+        "id": 2611606,
+        "name": "Recife",
+        "state": "PE"
+      },
+      "total_cyclists": 150,
+      "total_cargo": 12,
+      "total_helmet": 89,
+      "total_juveniles": 8,
+      "total_motor": 3,
+      "total_ride": 45,
+      "total_service": 15,
+      "total_shared_bike": 7,
+      "total_sidewalk": 23,
+      "total_women": 67,
+      "total_wrong_way": 5
+    }
+  ],
+  "summary": {
+    "total_cyclists": 1250,
+    "number_counts": 8,
+    "different_counts_points": 0,
+    "where_max_count": {
+      "slug": "1-2023-05-15-contagem-centro",
+      "total_cyclists": 150,
+      "date": "2023-05-15T00:00:00.000Z",
+      "coordinates": {
+        "x": -34.91224,
+        "y": -8.09803,
+        "type": "Point",
+        "name": "Contagem Centro"
+      }
+    },
+    "total_cargo": 95,
+    "total_helmet": 712,
+    "total_juveniles": 64,
+    "total_motor": 24,
+    "total_ride": 360,
+    "total_service": 120,
+    "total_shared_bike": 56,
+    "total_sidewalk": 184,
+    "total_women": 536,
+    "total_wrong_way": 40
+  }
+}
+```
+
+**Campos Adicionados:**
+- `coordinates`: Coordenadas geográficas extraídas do formato PostGIS
+  - `x`: Longitude
+  - `y`: Latitude
+  - `type`: Tipo de geometria (sempre "Point")
+  - `name`: Nome da contagem
+- `total_*`: Totais por categoria de características dos ciclistas para cada contagem individual
 
 ### Contagens por Edição
 
